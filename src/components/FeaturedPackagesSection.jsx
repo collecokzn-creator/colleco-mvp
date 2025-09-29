@@ -1,0 +1,60 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+// Lightweight featured packages; images omitted for now to keep bundle slim
+export default function FeaturedPackagesSection() {
+  const packages = [
+    {
+      id: "cape-winelands-getaway",
+      title: "Cape Town + Winelands Getaway",
+      highlights: ["Table Mountain", "Stellenbosch tastings", "Atlantic seaboard"],
+      nights: 4,
+      priceFrom: 899,
+      to: "/plan-trip?dest=Cape%20Town&category=Tour"
+    },
+    {
+      id: "kruger-big5-lodge",
+      title: "Kruger Big 5 Lodge Stay",
+      highlights: ["Private game drives", "Sundowners", "Bush braai"],
+      nights: 3,
+      priceFrom: 1199,
+      to: "/plan-trip?dest=Kruger&category=Safari"
+    },
+    {
+      id: "zanzibar-group-retreat",
+      title: "Zanzibar Group Beach Retreat",
+      highlights: ["Stone Town tour", "Reef snorkelling", "Spice farm"],
+      nights: 5,
+      priceFrom: 1290,
+      to: "/plan-trip?dest=Zanzibar&category=Resort"
+    },
+  ];
+
+  return (
+    <section className="max-w-6xl mx-auto px-6 py-10 sm:py-12">
+      <h2 className="text-2xl sm:text-3xl font-bold">Featured packages</h2>
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {packages.map((pkg) => (
+          <article key={pkg.id} className="rounded-lg border border-cream-border bg-cream p-5 shadow-sm hover:shadow transition">
+            <h3 className="font-semibold text-lg leading-snug">{pkg.title}</h3>
+            <ul className="mt-2 text-sm text-brand-brown/80 list-disc list-inside">
+              {pkg.highlights.map((h) => (
+                <li key={h}>{h}</li>
+              ))}
+            </ul>
+            <div className="mt-3 text-sm text-brand-brown/90 flex items-center gap-3">
+              <span className="inline-flex items-center rounded bg-white/70 px-2 py-1 border border-cream-border">{pkg.nights} nights</span>
+              <span className="inline-flex items-center">From ${pkg.priceFrom} pp</span>
+            </div>
+            <div className="mt-4">
+              <Link to={pkg.to} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight">
+                See details
+                <span aria-hidden>→</span>
+              </Link>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}

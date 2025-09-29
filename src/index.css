@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Align base with brand palette to avoid dark edges peeking through */
+body { @apply bg-cream text-brand-brown; }
+html, body, #root { height: 100%; }
+html, body { color-scheme: light; }
+
+/* Configurable sticky offset for headers/panels */
+:root { --sticky-offset: 4rem; }
+@media (min-width: 640px) { :root { --sticky-offset: 4.5rem; } }
+@media (min-width: 1024px) { :root { --sticky-offset: 5rem; } }
+
+/* Reserve space for scrollbars to avoid overlay black lines on Windows */
+html { overflow-y: scroll; }
+
+/* Toast & subtle UI animations */
+@media (prefers-reduced-motion: no-preference) {
+	.toast-fade { animation: toastIn .35s ease-out; }
+	@keyframes toastIn { 0% { opacity: 0; transform: translateY(6px);} 100% { opacity:1; transform: translateY(0);} }
+}
+
+/* Reduced motion: ensure no transform jerk */
+@media (prefers-reduced-motion: reduce) {
+	.toast-fade { transition: none; animation: none; }
+}
+
+/* Themed scrollbars (avoid dark/black lines) */
+/* WebKit browsers (Chrome, Edge, Safari) */
+*::-webkit-scrollbar { height: 8px; width: 8px; }
+/* Match track color exactly to page background (#f9f6f2) to avoid a visible seam */
+*::-webkit-scrollbar-track { background: #f9f6f2; }
+*::-webkit-scrollbar-thumb {
+	background-color: transparent; /* hidden by default */
+	border-radius: 8px;
+	border: 2px solid #f9f6f2;
+}
+/* Reveal thumb on container hover (desktop) */
+*:hover::-webkit-scrollbar-thumb { background-color: #efe8df; }
+*:hover::-webkit-scrollbar-thumb:hover { background-color: #e8dfd4; }
+*::-webkit-scrollbar-corner { background: #F7F4EF; }
+
+/* Sidebar-specific scrollbars match the panel background */
+.sidebar-scroll::-webkit-scrollbar-track { background: #f3e9dc; }
+.sidebar-scroll:hover::-webkit-scrollbar-thumb { background-color: #e9dfd2; }

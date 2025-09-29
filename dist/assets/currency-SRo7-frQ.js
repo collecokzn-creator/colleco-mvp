@@ -1,0 +1,1 @@
+function i(r,t="USD",e="en-US",n={}){try{return new Intl.NumberFormat(e,{style:"currency",currency:t,minimumFractionDigits:2,...n}).format(Number(r)||0)}catch{const m=(Number(r)||0).toFixed(2);return`${t} ${m}`}}export{i as f};

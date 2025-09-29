@@ -1,0 +1,103 @@
+{
+  "xi7i20cur09mg594vgb": {
+    "id": "xi7i20cur09mg594vgb",
+    "prompt": "Family trip to Rome and Florence for 6 nights in June, 2 adults 1 child, budget $4000, love food and history",
+    "data": {
+      "original": "Family trip to Rome and Florence for 6 nights in June, 2 adults 1 child, budget $4000, love food and history",
+      "destinations": [
+        "Family",
+        "Rome",
+        "Florence",
+        "June"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 6,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": 4000,
+        "perPerson": false
+      },
+      "interests": [
+        "food",
+        "family",
+        "history"
+      ],
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Rome",
+          "destination": "Rome",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Florence",
+          "destination": "Florence",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Day 4 - June",
+          "destination": "June",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Day 5 - June",
+          "destination": "June",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Day 6 - June",
+          "destination": "June",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 2880,
+        "breakdown": {
+          "lodging": 1800,
+          "activities": 450,
+          "food": 630
+        },
+        "note": "Heuristic estimate"
+      }
+    },
+    "createdAt": 1759157802299
+  }
+}

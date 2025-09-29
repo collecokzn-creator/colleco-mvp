@@ -1,0 +1,5 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.nextEditSuggestions.enabled": false
+}
