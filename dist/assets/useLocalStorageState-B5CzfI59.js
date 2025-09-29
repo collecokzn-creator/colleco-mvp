@@ -1,1 +1,0 @@
-import{r as a}from"./index-E_l07fEO.js";function n(t,e){const[o,c]=a.useState(()=>{try{const r=localStorage.getItem(t);return r?JSON.parse(r):e}catch(r){return console.error("Error reading from localStorage",r),e}});return a.useEffect(()=>{try{localStorage.setItem(t,JSON.stringify(o))}catch(r){console.error("Error writing to localStorage",r)}},[t,o]),[o,c]}export{n as u};
