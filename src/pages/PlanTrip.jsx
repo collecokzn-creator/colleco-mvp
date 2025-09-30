@@ -1143,7 +1143,7 @@ export default function PlanTrip() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        {e.url && <a href={e.url} target="_blank" rel="noopener" className="px-2 py-1 text-xs rounded border border-cream-border hover:bg-cream-hover">Open</a>}
+                        {e.url && <a href={e.url} target="_blank" rel="noreferrer" className="px-2 py-1 text-xs rounded border border-cream-border hover:bg-cream-hover">Open</a>}
                         <button
                           onClick={()=> addToBasket({
                             id: `ev_${e.source}_${e.id}`,
@@ -1200,7 +1200,7 @@ export default function PlanTrip() {
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
-                                {e.url && <a href={e.url} target="_blank" rel="noopener" className="px-2 py-1 text-xs rounded border border-cream-border hover:bg-cream-hover">Open</a>}
+                                {e.url && <a href={e.url} target="_blank" rel="noreferrer" className="px-2 py-1 text-xs rounded border border-cream-border hover:bg-cream-hover">Open</a>}
                                 <button
                                   onClick={()=> addToBasket({
                                     id: `ev_${e.source}_${e.id}`,
