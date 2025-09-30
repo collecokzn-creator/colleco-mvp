@@ -861,6 +861,7 @@ export default function PlanTrip() {
           {/* Cascading location filter bar */}
           {/* Live region for announcing results count to assistive tech */}
           <div aria-live="polite" role="status" className="sr-only">{sortedFiltered.length} results in catalog</div>
+          {showAdvanced && (
           <div className="flex flex-wrap gap-2 sm:gap-2.5 md:gap-3 mb-3">
             <select
               value={locFilters.continent}
@@ -929,11 +930,12 @@ export default function PlanTrip() {
             </select>
             {/* Presets moved into Advanced panel */}
           </div>
+          )}
           {/* Preset status and recent filters */}
           <span aria-live="polite" className="sr-only">
             {presetStatus==='saved'?'Preset saved':presetStatus==='applied'?'Preset applied':presetStatus==='deleted'?'Preset deleted':''}
           </span>
-          {!simpleMode && recentFilters.length>0 && (
+          {!simpleMode && showAdvanced && recentFilters.length>0 && (
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3">
               <span className="text-[11px] text-brand-brown/60 mr-1">Recent:</span>
               {recentFilters.map((r, idx) => {
