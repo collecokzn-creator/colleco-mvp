@@ -55,14 +55,29 @@ Open http://localhost:3000.
   ```powershell
   npm run build
   ```
-- Serve `dist/` with your preferred static host; run `npm run server` alongside for APIs.
+Serve `dist/` with your preferred static host; run `npm run server` alongside for APIs.
+
+### UI Layering (z-index) Policy
+- Header/nav: z-50
+- Sticky toolbars/panels: z-[45]
+- Footer: z-40
+- Skip link: z-60
+- Status banner (offline/API): z-[70]
+- Dropdowns/menus/floating buttons: z-50
+- Modals: z-80; Toasts: z-90
+
+Always ensure sticky elements use `top: calc(var(--header-h) + var(--banner-h))` and pages add `padding-top` equal to the same to avoid overlap.
+
+### GitHub Pages Guardrails (Vite)
+- Disable or remove any Jekyll workflows; only use the Vite Pages workflow.
+- Do NOT create `public/index.html` (it can cause raw JSX to be served). Keep the root `index.html` only.
+- Keep `public/manifest.webmanifest` at the root of the deployed site and reference it as `/manifest.webmanifest`.
+- For SPAs use hash routing in Pages (`VITE_USE_HASH=1`) to avoid deep-link 404s.
 
 ## Troubleshooting
-- If Events show nothing:
   - Ensure country/city or a search term ≥ 3 chars
   - Enable demo mode in Settings
   - Add provider keys and enable providers in Settings
-- PowerShell one-liners to curl endpoints can be brittle. Use Settings → API Status for a quick check.# CollEco MVP
 
 A Vite + React 18 app styled with Tailwind. It includes a Trip Planner, Partner Dashboard, and a Collaboration Workspace with Analytics.
 
