@@ -44,10 +44,11 @@ export default function RootLayout() {
     window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
   };
   return (
-    <div className="min-h-screen bg-cream">
+  <div className="min-h-screen bg-cream">
       {/* Connectivity bar */}
       {(!apiOk || offline) && (
-        <div role="status" aria-live="polite" className="fixed top-0 left-0 right-0 z-[70] bg-red-50 text-red-700 border-b border-red-200 text-xs px-3 py-1.5 flex items-center justify-between">
+        <div role="status" aria-live="polite" className="fixed top-0 left-0 right-0 z-[70] bg-red-50 text-red-700 border-b border-red-200 text-xs px-3 py-1.5 flex items-center justify-between"
+             style={{ ['--banner-h']: '28px' }}>
           <span>{offline ? 'You appear to be offline.' : 'API unavailable. Some features may not work.'}</span>
           {lastPingMs ? <span className="text-red-600/70">last ping {lastPingMs} ms</span> : null}
         </div>
@@ -55,10 +56,10 @@ export default function RootLayout() {
       {/* Skip to content (accessibility) */}
       <a href="#main-content" className="sr-only focus:not-sr-only fixed top-2 left-2 z-[60] px-3 py-2 bg-white border border-cream-border shadow text-brand-brown rounded">Skip to content</a>
       {/* Top Navbar (fixed) */}
-      <Navbar />
+  <Navbar />
 
       {/* Main content area: body scroll; reserve space for fixed header/footer */}
-      <div className="pt-16 pb-24">
+      <div className="pb-24" style={{ paddingTop: 'calc(var(--header-h) + var(--banner-h))' }}>
         <div className="flex">
           <Sidebar />
           <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0" tabIndex="-1">
@@ -85,7 +86,7 @@ export default function RootLayout() {
         <button
           type="button"
           onClick={scrollToTop}
-          className="fixed bottom-24 right-4 z-50 px-3 py-2 rounded-full bg-brand-brown text-white shadow-lg border border-cream-border text-sm hover:bg-brand-brown/90 focus:outline-none focus:ring-2 focus:ring-brand-brown/40 focus:ring-offset-2 focus:ring-offset-cream"
+          className="fixed bottom-[calc(var(--footer-h)+0.5rem)] right-4 z-50 px-3 py-2 rounded-full bg-brand-brown text-white shadow-lg border border-cream-border text-sm hover:bg-brand-brown/90 focus:outline-none focus:ring-2 focus:ring-brand-brown/40 focus:ring-offset-2 focus:ring-offset-cream"
           aria-label="Back to top"
         >
           ↑ Top

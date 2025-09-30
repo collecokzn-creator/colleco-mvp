@@ -583,7 +583,7 @@ export default function PlanTrip() {
         </>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10 min-w-0">
         {/* Catalog */}
         <div className="lg:col-span-2">
           {/* Live Weather — uses current city/country filters; toggleable via Settings */}
@@ -612,7 +612,7 @@ export default function PlanTrip() {
           )}
           {(simpleMode || activeTab==='catalog') && (
           <>
-          <div className="flex items-center justify-between mb-3 sticky [top:var(--sticky-offset)] z-10 bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/60 px-1 py-2 rounded border border-cream-border shadow-sm">
+          <div className="flex items-center justify-between mb-3 sticky [top:calc(var(--header-h)+var(--banner-h))] z-[45] bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/60 px-1 py-2 rounded border border-cream-border shadow-sm">
             <h3 className="font-semibold text-lg">Product Catalog <span className="text-sm text-brand-brown/60">• {sortedFiltered.length}</span></h3>
             <div className="flex items-center gap-2">
               {/* Catalog sort control */}
@@ -1257,7 +1257,7 @@ export default function PlanTrip() {
         </div>
     {/* Basket (hidden in Simple mode) */}
     {!simpleMode && (
-  <div className="rounded border border-cream-border bg-cream p-4 h-fit sticky [top:calc(var(--sticky-offset)+2rem)]">
+  <div className="rounded border border-cream-border bg-cream p-4 h-fit sticky [top:calc(var(--header-h)+var(--banner-h)+2rem)]">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold">Basket ({basket.length})</h3>
             {!confirmClear && (
@@ -1387,7 +1387,7 @@ export default function PlanTrip() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-[calc(var(--footer-h)+1rem)]">
         <Link to="/bookings" className="p-4 bg-cream-sand border border-cream-border rounded-md hover:bg-cream-hover transition">
           <div className="font-semibold">Bookings</div>
           <p className="text-sm text-brand-brown/80">See all confirmations and status in one place.</p>
