@@ -20,7 +20,7 @@ export default function RootLayout() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [hasBackend]);
+  }, []);
 
   // Connectivity + API health poller
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function RootLayout() {
     };
     ping();
     return () => { if (timer) clearTimeout(timer); };
-  }, []);
+  }, [hasBackend]);
 
   const scrollToTop = () => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

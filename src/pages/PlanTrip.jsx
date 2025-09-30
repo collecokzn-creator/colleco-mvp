@@ -346,7 +346,7 @@ export default function PlanTrip() {
   const [activeTab, setActiveTab] = useState(() => {
     try { return localStorage.getItem('planTripTab') || 'catalog'; } catch { return 'catalog'; }
   }); // 'catalog' | 'events'
-  useEffect(() => { try { localStorage.setItem('planTripTab', activeTab); } catch {}; }, [activeTab]);
+  useEffect(() => { try { localStorage.setItem('planTripTab', activeTab); } catch {} }, [activeTab]);
   // If entering Simple Mode while Events tab active, force back to Catalog
   useEffect(() => { if(simpleMode && activeTab !== 'catalog') setActiveTab('catalog'); }, [simpleMode]);
   useEffect(() => {
@@ -952,7 +952,7 @@ export default function PlanTrip() {
                 );
               })}
               <button
-                onClick={()=>{ setRecentFilters([]); try { localStorage.setItem('planTripRecentFilters:v1', '[]'); } catch {}; showToast('Recent filters cleared', 'info'); }}
+                onClick={()=>{ setRecentFilters([]); try { localStorage.setItem('planTripRecentFilters:v1', '[]'); } catch {} showToast('Recent filters cleared', 'info'); }}
                 className="text-[11px] px-2 py-1 rounded-full border border-cream-border bg-white hover:bg-cream-hover"
                 title="Clear recent filters"
               >Clear recents</button>

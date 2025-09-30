@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function FeesBreakdown({ items = [], currency = "USD", fees }) {
-  const subtotal = items.reduce((s, it) => s + Math.max(0, Number(it.amount || 0)), 0);
+  const _subtotal = items.reduce((s, it) => s + Math.max(0, Number(it.amount || 0)), 0);
   const f = fees || computeFeesLocal(items);
   return (
     <div className="border border-cream-border rounded p-3 bg-cream text-brand-brown text-sm">
