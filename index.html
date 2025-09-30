@@ -33,7 +33,11 @@
     </script>
   </head>
   <body>
+    <noscript>
+      <strong>This app requires JavaScript to run correctly. Please enable JavaScript.</strong>
+    </noscript>
     <div id="root"></div>
-  <script type="module" src="./src/main.jsx"></script>
+    <!-- Vite will transform this to the built JS in /assets at build time -->
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

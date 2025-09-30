@@ -7,9 +7,6 @@ on:
 
 permissions:
   contents: read
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
-
   pages: write
   id-token: write
 
