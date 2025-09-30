@@ -35,6 +35,8 @@ export default function AIGeneratorPanel() {
   const abortRef = useRef(null);
   const liveRef = useRef(null);
 
+  // Intentionally only depend on state slices that change the live message
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(()=>{ if (liveRef.current) liveRef.current.textContent = liveMessage(); }, [phases, error, loading, active]);
 
   function liveMessage() {

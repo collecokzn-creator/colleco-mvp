@@ -1,5 +1,4 @@
 import React from 'react'
-import useLocalStorage from './hooks/useLocalStorage.js'
 import useBasketReducer from './hooks/useBasketReducer.js'
 
 // quick mock catalog

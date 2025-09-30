@@ -107,7 +107,7 @@ export default function CollabAnalytics() {
     totals.bottlenecks.sort((x, y) => y.ageMin - x.ageMin);
 
     return totals;
-  }, [filtered]);
+  }, [filtered, isInRange]);
 
   const roleLabel = (r) => r === ROLES.agent ? "Agent" : r === ROLES.client ? "Client" : r === ROLES.productOwner ? "Product Owner" : r;
   const exportCsv = () => {
@@ -115,7 +115,7 @@ export default function CollabAnalytics() {
     const rows = [
       ["bookingId","ref","title","clientName","messagesInRange","attachmentsInRange","lastMsgAgeMin","awaiting","avgRespAgent","avgRespClient","avgRespPO","inapp","whatsapp","email","sms","call","note"],
     ];
-    const days = aggregate.dailyCounts; // not per thread but okay; we keep per-thread core metrics
+  const _days = aggregate.dailyCounts; // not per thread but okay; we keep per-thread core metrics
     for (const t of filtered) {
       const msgs = (t.messages || []).filter(m => isInRange(m.createdAt));
       const atts = (t.attachments || []).filter(a => isInRange(a.addedAt));

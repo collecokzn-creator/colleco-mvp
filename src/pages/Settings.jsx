@@ -131,7 +131,7 @@ export default function Settings() {
             <input type="checkbox" checked={demoEvents} onChange={onDemoToggle} />
             <span>Show demo events (force demo results in Events UI)</span>
           </label>
-          <p className="text-xs text-brand-brown/70 mt-1">This sets a local flag only. The server also auto-falls back to demo when no provider keys are configured.</p>
+            <p className="text-xs text-brand-brown/70 mt-1">This sets a local flag only. The server also auto-falls back to demo when no provider keys are configured.</p>
         </section>
 
         <section className="pt-4 border-t border-cream-border">
@@ -148,7 +148,7 @@ export default function Settings() {
             <input type="checkbox" checked={smartAliases} onChange={onSmartAliasesToggle} />
             <span>Use location aliases (CPT, JHB, KZN…)</span>
           </label>
-          <p className="text-xs text-brand-brown/70 mt-1">When enabled, common shorthand codes and nicknames are recognized in search (e.g., CPT → Cape Town, JHB → Johannesburg, KZN → KwaZulu-Natal).</p>
+          <p className="text-xs text-brand-brown/70 mt-1">When enabled, common shorthand codes and nicknames are recognized in search (e.g., CPT &rarr; Cape Town, JHB &rarr; Johannesburg, KZN &rarr; KwaZulu-Natal).</p>
         </section>
 
         <section className="pt-4 border-t border-cream-border">

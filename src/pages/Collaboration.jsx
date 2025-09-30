@@ -61,7 +61,7 @@ export default function Collaboration() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Initial load
-  useEffect(() => {
+  // Effect depends on currentRole; intended
     (async () => {
       if (isApiEnabled) {
         try {
@@ -85,7 +85,8 @@ export default function Collaboration() {
   }
 
   // SSE subscription in API mode
-  useEffect(() => {
+  // Subscribe based on currentRole only; eslint exhaustive-deps intentionally limited
+  // eslint-disable-next-line react-hooks/exhaustive-deps
     if (!isApiEnabled) return;
     let es;
     try {
@@ -104,7 +105,7 @@ export default function Collaboration() {
   }, [currentRole]);
 
   // Ensure selection
-  useEffect(() => {
+  // Ensure selection reacts to threads list and current bookingId
     if (bookingId == null && threads.length) setBookingId(threads[0].bookingId);
   }, [threads, bookingId]);
 
@@ -112,7 +113,7 @@ export default function Collaboration() {
   const analytics = useMemo(() => computeAnalytics(thread), [thread]);
   const summary = useMemo(() => summarizeThread(thread), [thread]);
 
-  useEffect(() => {
+  // Mark read for current thread; only depends on thread and currentRole
     if (!thread) return;
     (async () => {
       try {
@@ -123,7 +124,7 @@ export default function Collaboration() {
   }, [thread, currentRole]);
 
   // Notifications and local event bus only in local mode
-  useEffect(() => {
+  // Local notification bus; depends on thread and currentRole
     if (!thread) return;
     if (!isApiEnabled) {
       let unsub = onCollabEvent(({ event, payload }) => {

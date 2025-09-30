@@ -6,7 +6,7 @@ import ExperienceCard from "../components/ui/ExperienceCard";
 import MemoryNote from "../components/ui/MemoryNote";
 import LiveTripProgress from "../components/ui/LiveTripProgress";
 import jsPDF from "jspdf";
-import { useTripState, setMemory, computeProgress, addItemToDay } from "../utils/useTripState";
+import { useTripState, setMemory, computeProgress } from "../utils/useTripState";
 import { useBasketState } from "../utils/useBasketState";
 import { useLocalStorageState } from "../useLocalStorageState";
 import FeesBreakdown from "../components/payments/FeesBreakdown";
@@ -37,10 +37,10 @@ export default function Itinerary() {
   // Undo / Redo stacks (simple LIFO of full trip snapshots)
   const undoStackRef = useRef([]); // past states
   const redoStackRef = useRef([]); // future states after undo
-  const [historyVersion, setHistoryVersion] = useState(0); // bump to rerender buttons
+  const [_historyVersion, setHistoryVersion] = useState(0); // bump to rerender buttons
   const [showHistory, setShowHistory] = useState(false);
   // Coalescing state for rapid keyboard reorders
-  const coalesceRef = useRef({ active:false, timer:null, baseSnapshot:null });
+  const _coalesceRef = useRef({ active:false, timer:null, baseSnapshot:null });
 
   function pushUndo(prevTrip, label){
     const snapshot = JSON.parse(JSON.stringify(prevTrip));
@@ -173,7 +173,7 @@ export default function Itinerary() {
     dragItem.current = { day, index };
     e.dataTransfer.effectAllowed = 'move';
   }
-  function onDragEnter(e, day, index) {
+  function onDragEnter(_e, day, index) {
     dragOverItem.current = { day, index };
   }
   function onDragEnd() {

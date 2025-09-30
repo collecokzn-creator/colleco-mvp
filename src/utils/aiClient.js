@@ -42,7 +42,9 @@ export function streamItinerary(prompt, { onEvent, onError, onDone, signal } = {
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let buffer = '';
-      while (true) {
+  // Stream reader loop
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });

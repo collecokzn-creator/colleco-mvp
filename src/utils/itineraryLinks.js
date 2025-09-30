@@ -5,9 +5,6 @@
 //   trailProvider, trailUrl
 // }
 
-const mapPlatform = {
-  GOOGLE: 'google'
-};
 
 /**
  * Build a Google Maps navigation or place URL for an itinerary item.

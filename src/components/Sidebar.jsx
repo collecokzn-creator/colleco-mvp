@@ -82,7 +82,7 @@ export default function Sidebar() {
 
     const focusables = getFocusable();
     const first = focusables[0];
-    const last = focusables[focusables.length - 1];
+  const _last = focusables[focusables.length - 1];
     if (first) first.focus();
 
     const onKeyDown = (e) => {
