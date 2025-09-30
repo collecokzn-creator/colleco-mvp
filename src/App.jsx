@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.jsx";
 const Home = lazy(() => import("./pages/Home.jsx"));
 const Quotes = lazy(() => import("./pages/Quotes.jsx"));
@@ -35,8 +35,11 @@ export default function App() {
       import("./pages/Itinerary.jsx");
     });
   }, []);
+  const useHash = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_USE_HASH === '1');
+  const RouterComponent = useHash ? HashRouter : BrowserRouter;
+  const basename = (!useHash && typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) ? import.meta.env.BASE_URL : undefined;
   return (
-    <Router>
+    <RouterComponent basename={basename}>
       <Suspense fallback={<div className="p-6 text-brand-brown">Loading…</div>}>
         <Routes>
           <Route element={<RootLayout />}> 
@@ -72,6 +75,6 @@ export default function App() {
           </Route>
         </Routes>
       </Suspense>
-    </Router>
+    </RouterComponent>
   );
 }

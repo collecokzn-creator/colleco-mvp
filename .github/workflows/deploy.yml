@@ -45,6 +45,8 @@ jobs:
           else
             echo "VITE_BASE_PATH=/${{ github.event.repository.name }}/" >> $GITHUB_ENV
           fi
+          # Use hash routing on GitHub Pages to eliminate deep-link 404s
+          echo "VITE_USE_HASH=1" >> $GITHUB_ENV
 
       - name: Build
         run: npm run build
