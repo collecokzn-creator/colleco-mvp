@@ -5,6 +5,9 @@ import { Outlet } from "react-router-dom";
 import globePng from "../assets/Globeicon.png";
 
 export default function RootLayout() {
+  // Feature flag: when deploying as a static site (GitHub Pages), there's no backend to ping.
+  // Set VITE_HAS_BACKEND=1 to enable API health polling in environments with a server.
+  const hasBackend = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_HAS_BACKEND === '1');
   const [showBackTop, setShowBackTop] = useState(false);
   const [apiOk, setApiOk] = useState(true);
   const [offline, setOffline] = useState(false);
@@ -26,12 +29,18 @@ export default function RootLayout() {
       const t0 = performance.now();
       const on = navigator.onLine;
       setOffline(!on);
-      try {
-        const r = await fetch('/health', { cache: 'no-store' });
-        setLastPingMs(Math.round(performance.now() - t0));
-        setApiOk(r.ok);
-      } catch {
-        setApiOk(false);
+      if (hasBackend) {
+        try {
+          const r = await fetch('/health', { cache: 'no-store' });
+          setLastPingMs(Math.round(performance.now() - t0));
+          setApiOk(r.ok);
+        } catch {
+          setApiOk(false);
+        }
+      } else {
+        // No backend expected in static hosting: treat API as OK and avoid noisy console 404s.
+        setLastPingMs(0);
+        setApiOk(true);
       }
       timer = setTimeout(ping, 8000);
     };
@@ -46,11 +55,11 @@ export default function RootLayout() {
   return (
   <div className="min-h-screen bg-cream">
       {/* Connectivity bar */}
-      {(!apiOk || offline) && (
+      {(offline || (hasBackend && !apiOk)) && (
         <div role="status" aria-live="polite" className="fixed top-0 left-0 right-0 z-[70] bg-red-50 text-red-700 border-b border-red-200 text-xs px-3 py-1.5 flex items-center justify-between"
              style={{ ['--banner-h']: '28px' }}>
           <span>{offline ? 'You appear to be offline.' : 'API unavailable. Some features may not work.'}</span>
-          {lastPingMs ? <span className="text-red-600/70">last ping {lastPingMs} ms</span> : null}
+          {hasBackend && lastPingMs ? <span className="text-red-600/70">last ping {lastPingMs} ms</span> : null}
         </div>
       )}
       {/* Skip to content (accessibility) */}
