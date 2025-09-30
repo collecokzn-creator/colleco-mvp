@@ -1,13 +1,15 @@
-// Bumped to v22 – manual update messaging + explicit activation reason + safer old cache cleanup.
+// Bumped to v23 – cache manifest and force update to flush stale HTML.
 // Change log:
+// v23: Cache manifest.webmanifest; force new install to help purge stale index.html in clients.
 // v22: Added CLIENT_UPDATE_AVAILABLE broadcast when a new SW takes control & manual CHECK_FOR_UPDATE message.
 // v21: Background sync stub & broadcast of itinerary sync results.
-const STATIC_CACHE = 'colleco-static-v22';
+const STATIC_CACHE = 'colleco-static-v23';
 const ITINERARY_JSON_PATH = '/assets/data/itinerary.json';
 const ASSETS = [
   '/',
   '/index.html',
   '/offline.html',
+  '/manifest.webmanifest',
   '/bookings',
   '/itinerary',
   ITINERARY_JSON_PATH,
@@ -64,6 +66,24 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
+  // Manifest: network-first with cache fallback; generate minimal fallback if both fail
+  if (url.pathname === '/manifest.webmanifest') {
+    event.respondWith((async () => {
+      const cache = await caches.open(STATIC_CACHE);
+      try {
+        const fresh = await fetch(req, { cache: 'no-cache' });
+        if (fresh && fresh.ok) { cache.put(req, fresh.clone()).catch(() => {}); return fresh; }
+      } catch {}
+      const cached = await cache.match(req);
+      if (cached) return cached;
+      const fallback = {
+        name: 'CollEco Travel', short_name: 'CollEco', start_url: '/', display: 'standalone', background_color: '#f9f6f2', theme_color: '#e86f00', icons: []
+      };
+      return new Response(JSON.stringify(fallback), { status: 200, headers: { 'Content-Type': 'application/manifest+json' } });
+    })());
+    return;
+  }
+
 
   // Navigation requests: offline fallback
   if (req.mode === 'navigate') {
