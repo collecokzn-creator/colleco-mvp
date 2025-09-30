@@ -52,6 +52,11 @@ export default function PlanTrip() {
   const [weatherCollapsed, setWeatherCollapsed] = useState(() => {
     try { return localStorage.getItem('weatherCollapsed') === '1'; } catch { return false; }
   });
+
+  // Compact header by default; reveal full filter toolset on demand
+  const [showAdvanced, setShowAdvanced] = useState(() => {
+    try { return localStorage.getItem('planTrip:showAdvanced') === '1'; } catch { return false; }
+  });
   useEffect(() => {
     function onStorage(e){ if(!e) return; if(e.key === 'showWeather'){ setShowWeather(e.newValue !== '0'); } }
     window.addEventListener('storage', onStorage);
@@ -612,221 +617,245 @@ export default function PlanTrip() {
           )}
           {(simpleMode || activeTab==='catalog') && (
           <>
-          <div className="flex items-center justify-between mb-3 sticky [top:calc(var(--header-h)+var(--banner-h))] z-[45] bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/60 px-1 py-2 rounded border border-cream-border shadow-sm">
-            <h3 className="font-semibold text-lg">Product Catalog <span className="text-sm text-brand-brown/60">• {sortedFiltered.length}</span></h3>
-            <div className="flex items-center gap-2">
-              {/* Catalog sort control */}
-              <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
-                <span className="hidden sm:inline">Sort</span>
-                <select
-                  aria-label="Sort catalog"
-                  className="text-[11px] px-2 py-1 border border-cream-border rounded bg-white"
-                  value={catalogSort}
-                  onChange={(e)=> setCatalogSort(e.target.value)}
-                >
-                  <option value="relevance">Relevance</option>
-                  <option value="alpha">A → Z</option>
-                  <option value="priceAsc">Price: Low to High</option>
-                  <option value="priceDesc">Price: High to Low</option>
-                </select>
-              </label>
-              {/* Inline hint suggestion button (updates as you type) */}
-              <input
-                ref={setSearchEl}
-                value={query}
-                onChange={e=>{
-                  setQuery(e.target.value);
-                  const params = new URLSearchParams(location.search);
-                  if(e.target.value) params.set('q', e.target.value); else params.delete('q');
-                  navigate({ search: params.toString() ? `?${params.toString()}` : '' }, { replace: true });
-                }}
-                placeholder="Search catalog…"
-                title="Press / to focus"
-                className="text-sm px-2 py-1 border border-cream-border rounded bg-white"
-                aria-label="Search product catalog"
-                onKeyDown={(e)=>{
-                  if(e.key==='Escape'){
-                    e.preventDefault();
-                    const params = new URLSearchParams(location.search);
-                    params.delete('q');
-                    setQuery('');
-                    navigate({ search: params.toString() ? `?${params.toString()}` : '' }, { replace: true });
-                  } else if(e.key==='Enter'){
-                    e.preventDefault();
-                    applySmartSearch();
-                  }
-                }}
-              />
-              {smartSuggestion && (
+          <div className="flex flex-col gap-2 mb-3 sticky [top:calc(var(--header-h)+var(--banner-h))] z-[45] bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/60 px-2 py-2 rounded border border-cream-border shadow-sm">
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="font-semibold text-lg">Product Catalog <span className="text-sm text-brand-brown/60">• {sortedFiltered.length}</span></h3>
+              <div className="flex items-center gap-2">
+                {/* Catalog sort control */}
+                <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
+                  <span className="hidden sm:inline">Sort</span>
+                  <select
+                    aria-label="Sort catalog"
+                    className="text-[11px] px-2 py-1 border border-cream-border rounded bg-white"
+                    value={catalogSort}
+                    onChange={(e)=> setCatalogSort(e.target.value)}
+                  >
+                    <option value="relevance">Relevance</option>
+                    <option value="alpha">A → Z</option>
+                    <option value="priceAsc">Price: Low to High</option>
+                    <option value="priceDesc">Price: High to Low</option>
+                  </select>
+                </label>
+                {/* Compact search */}
+                <div className="relative">
+                  <input
+                    ref={setSearchEl}
+                    value={query}
+                    onChange={e=>{
+                      setQuery(e.target.value);
+                      const params = new URLSearchParams(location.search);
+                      if(e.target.value) params.set('q', e.target.value); else params.delete('q');
+                      navigate({ search: params.toString() ? `?${params.toString()}` : '' }, { replace: true });
+                    }}
+                    placeholder="Search catalog…"
+                    title="Press / to focus"
+                    className="text-sm pl-2 pr-8 py-1 border border-cream-border rounded bg-white w-[14rem] max-w-[48vw]"
+                    aria-label="Search product catalog"
+                    onKeyDown={(e)=>{
+                      if(e.key==='Escape'){
+                        e.preventDefault();
+                        const params = new URLSearchParams(location.search);
+                        params.delete('q');
+                        setQuery('');
+                        navigate({ search: params.toString() ? `?${params.toString()}` : '' }, { replace: true });
+                      } else if(e.key==='Enter'){
+                        e.preventDefault();
+                        applySmartSearch();
+                      }
+                    }}
+                  />
+                  {smartSuggestion && (
+                    <button
+                      type="button"
+                      onClick={applySmartSearch}
+                      className="absolute right-1 top-1/2 -translate-y-1/2 text-[11px] px-2 py-0.5 rounded bg-white border border-cream-border shadow-sm hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 inline-flex items-center gap-1"
+                      aria-label="Apply smart filters suggestion"
+                    >
+                      <span className="text-brand-brown/70">🔎</span>
+                      <span className="hidden md:inline truncate max-w-[10rem]">{smartSuggestion.text}</span>
+                    </button>
+                  )}
+                </div>
+                {/* Near Me + Advanced toggle */}
                 <button
                   type="button"
-                  onClick={applySmartSearch}
-                  className="ml-2 text-[11px] px-2 py-1 rounded bg-white border border-cream-border shadow-sm hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 inline-flex items-center gap-1"
-                  aria-label="Apply smart filters suggestion"
-                >
-                  <span className="text-brand-brown/70">🔎</span>
-                  <span className="truncate max-w-[12rem]">{smartSuggestion.text}</span>
-                </button>
-              )}
-              {/* Near Me: uses saved My Location if present */}
-              <button
-                type="button"
-                className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
-                title="Use my location"
-                onClick={()=>{
-                  const loc = loadMyLocation();
-                  if(!loc || (!loc.city && !loc.province && !loc.country)){
-                    showToast('Set your location first', 'warn');
-                    return;
-                  }
-                  const params = new URLSearchParams(location.search);
-                  ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
-                  if(loc.city) params.set('city', loc.city); else if(loc.province) params.set('province', loc.province); else if(loc.country) params.set('country', loc.country);
-                  navigate({ search: `?${params.toString()}` }, { replace: false });
-                  showToast('Applied filters near your location', 'success');
-                }}
-              >Near me</button>
-              <button
-                type="button"
-                className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
-                title="Set my location"
-                onClick={()=> setLocModalOpen(true)}
-              >Set my location</button>
-              {!simpleMode && (
-                <span className="hidden md:inline text-[11px] text-brand-brown/60" title="Smart Search">
-                  Tip: try “Hotels in Durban”, then press Enter
-                </span>
-              )}
+                  className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                  title="Use my location"
+                  onClick={()=>{
+                    const loc = loadMyLocation();
+                    if(!loc || (!loc.city && !loc.province && !loc.country)){
+                      showToast('Set your location first', 'warn');
+                      return;
+                    }
+                    const params = new URLSearchParams(location.search);
+                    ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
+                    if(loc.city) params.set('city', loc.city); else if(loc.province) params.set('province', loc.province); else if(loc.country) params.set('country', loc.country);
+                    navigate({ search: `?${params.toString()}` }, { replace: false });
+                    showToast('Applied filters near your location', 'success');
+                  }}
+                >Near me</button>
+                <button
+                  type="button"
+                  className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                  title="More filters and tools"
+                  aria-expanded={showAdvanced}
+                  onClick={()=>{ const next=!showAdvanced; setShowAdvanced(next); try{ localStorage.setItem('planTrip:showAdvanced', next?'1':'0'); }catch{} }}
+                >{showAdvanced? 'Hide' : 'Advanced'}</button>
+              </div>
             </div>
-            {!simpleMode && quickActions.length>0 && (
-              <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Quick actions">
-                {quickActions.map((qa, idx)=> (
+            {!simpleMode && (
+              <span className="hidden md:block text-[11px] text-brand-brown/60">Tip: try “Hotels in Durban”, then press Enter</span>
+            )}
+            {showAdvanced && (
+              <div className="border-t border-cream-border pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {/* Quick actions */}
+                {quickActions.length>0 && (
+                  <div className="flex flex-wrap gap-2" role="group" aria-label="Quick actions">
+                    {quickActions.map((qa, idx)=> (
+                      <button
+                        key={idx}
+                        type="button"
+                        className="text-xs px-2 py-1 rounded border border-cream-border hover:bg-cream-muted focus:outline-none focus:ring-2 focus:ring-brand-brown/30"
+                        onClick={()=>{
+                          const params = new URLSearchParams(location.search);
+                          ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
+                          Object.entries(qa.params).forEach(([k,v])=> v && params.set(k, v));
+                          navigate({ search: `?${params.toString()}` }, { replace: false });
+                          try { showToast && showToast(`Applied ${qa.label.replace(/ \(.*\)$/,'')}`, 'success'); } catch {}
+                        }}
+                      >
+                        {qa.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {/* Presets */}
+                {!simpleMode && (
+                  <div className="flex flex-wrap items-center gap-1">
+                    <select
+                      value={selectedPreset}
+                      onChange={(e)=>{ setSelectedPreset(e.target.value); if(e.target.value) applyPreset(e.target.value); }}
+                      className="text-xs px-2 py-1 border border-cream-border rounded bg-white"
+                      aria-label="Apply preset"
+                      title="Apply preset"
+                    >
+                      <option value="">Presets…</option>
+                      {presets.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
+                    </select>
+                    <input
+                      value={presetName}
+                      onChange={e=>setPresetName(e.target.value)}
+                      placeholder="Preset name"
+                      className="text-xs px-2 py-1 border border-cream-border rounded bg-white"
+                      aria-label="Preset name"
+                    />
+                    <button onClick={savePreset} className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover" title="Save current filters as preset">Save</button>
+                    <button disabled={!selectedPreset} onClick={()=>deletePreset(selectedPreset)} className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover disabled:opacity-50" title="Delete selected preset">Delete</button>
+                  </div>
+                )}
+                {/* Price / Paid/Free */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
+                    <span className="hidden sm:inline">Min</span>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min="0"
+                      value={locFilters.priceMin}
+                      onChange={(e)=> updateParam('priceMin', e.target.value)}
+                      className={`w-20 text-[11px] px-2 py-1 border rounded bg-white ${(()=>{ const min=Number(locFilters.priceMin||''); const max=Number(locFilters.priceMax||''); const hasMin=!Number.isNaN(min)&&locFilters.priceMin!==''; const hasMax=!Number.isNaN(max)&&locFilters.priceMax!==''; return (hasMin&&hasMax&&min>max)?'border-red-400':'border-cream-border'; })()}`}
+                      aria-label="Minimum price"
+                      placeholder="Min"
+                    />
+                  </label>
+                  <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
+                    <span className="hidden sm:inline">Max</span>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min="0"
+                      value={locFilters.priceMax}
+                      onChange={(e)=> updateParam('priceMax', e.target.value)}
+                      className={`w-20 text-[11px] px-2 py-1 border rounded bg-white ${(()=>{ const min=Number(locFilters.priceMin||''); const max=Number(locFilters.priceMax||''); const hasMin=!Number.isNaN(min)&&locFilters.priceMin!==''; const hasMax=!Number.isNaN(max)&&locFilters.priceMax!==''; return (hasMin&&hasMax&&min>max)?'border-red-400':'border-cream-border'; })()}`}
+                      aria-label="Maximum price"
+                      placeholder="Max"
+                    />
+                  </label>
+                  {(() => { const min=Number(locFilters.priceMin||''); const max=Number(locFilters.priceMax||''); const hasMin=!Number.isNaN(min)&&locFilters.priceMin!==''; const hasMax=!Number.isNaN(max)&&locFilters.priceMax!==''; if (hasMin&&hasMax&&min>max) { return (<span role="alert" className="text-[11px] text-red-600">Min is greater than Max</span>); } return null; })()}
+                  <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      checked={!!locFilters.paidOnly}
+                      onChange={(e)=> { const checked = e.target.checked; updateParam('paidOnly', checked ? '1' : ''); if (checked) { updateParam('freeOnly',''); } }}
+                      aria-label="Paid items only"
+                      disabled={!!locFilters.freeOnly}
+                    />
+                    <span>Paid only</span>
+                  </label>
+                  <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
+                    <input
+                      type="checkbox"
+                      checked={!!locFilters.freeOnly}
+                      onChange={(e)=> { const checked = e.target.checked; updateParam('freeOnly', checked ? '1' : ''); if (checked) { updateParam('paidOnly',''); } }}
+                      aria-label="Free items only"
+                      disabled={!!locFilters.paidOnly}
+                    />
+                    <span>Free only</span>
+                  </label>
+                </div>
+                {/* Utilities: copy link, reset, set my location */}
+                <div className="flex flex-wrap items-center gap-2">
                   <button
-                    key={idx}
-                    type="button"
-                    className="text-xs px-2 py-1 rounded border border-cream-border hover:bg-cream-muted focus:outline-none focus:ring-2 focus:ring-brand-brown/30"
+                    onClick={async ()=>{
+                      try {
+                        const url = window.location.href;
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                          await navigator.clipboard.writeText(url);
+                        } else {
+                          const ta = document.createElement('textarea');
+                          ta.value = url;
+                          ta.setAttribute('readonly','');
+                          ta.style.position = 'absolute';
+                          ta.style.left = '-9999px';
+                          document.body.appendChild(ta);
+                          ta.select();
+                          document.execCommand('copy');
+                          document.body.removeChild(ta);
+                        }
+                        setCopyLinkStatus('ok');
+                        showToast('Link copied', 'success');
+                        setTimeout(()=> setCopyLinkStatus(''), 1500);
+                      } catch {
+                        setCopyLinkStatus('err');
+                        showToast('Copy failed', 'error');
+                        setTimeout(()=> setCopyLinkStatus(''), 2000);
+                      }
+                    }}
+                    className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                    title="Copy shareable link"
+                    aria-label="Copy shareable link"
+                  >Copy link</button>
+                  <button
                     onClick={()=>{
                       const params = new URLSearchParams(location.search);
-                      ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
-                      Object.entries(qa.params).forEach(([k,v])=> v && params.set(k, v));
-                      navigate({ search: `?${params.toString()}` }, { replace: false });
-                      try { showToast && showToast(`Applied ${qa.label.replace(/ \(.*\)$/,'')}`, 'success'); } catch {}
+                      ['continent','country','province','city','area','category','priceMin','priceMax','paidOnly','freeOnly','q'].forEach(k=>params.delete(k));
+                      setQuery('');
+                      navigate({ search: '' }, { replace: true });
                     }}
-                  >
-                    {qa.label}
-                  </button>
-                ))}
+                    className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                    title="Reset filters and search"
+                  >Reset</button>
+                  <button
+                    type="button"
+                    className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                    title="Set my location"
+                    onClick={()=> setLocModalOpen(true)}
+                  >Set my location</button>
+                  <span aria-live="polite" className="sr-only">{copyLinkStatus==='ok' ? 'Link copied' : (copyLinkStatus==='err' ? 'Copy failed' : '')}</span>
+                </div>
               </div>
             )}
-              {!simpleMode && (
-              <button
-                onClick={()=>{
-                  const params = new URLSearchParams(location.search);
-                  ['continent','country','province','city','area','category','priceMin','priceMax','paidOnly','freeOnly','q'].forEach(k=>params.delete(k));
-                  setQuery('');
-                  navigate({ search: '' }, { replace: true });
-                }}
-                className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
-                title="Reset filters and search"
-              >
-                Reset filters & search
-              </button>
-              )}
-              {/* Price / Paid/Free filters */}
-              <div className="flex items-center gap-2">
-                <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
-                  <span className="hidden sm:inline">Min</span>
-                  <input
-                    type="number"
-                    inputMode="numeric"
-                    min="0"
-                    value={locFilters.priceMin}
-                    onChange={(e)=> updateParam('priceMin', e.target.value)}
-                    className={`w-20 text-[11px] px-2 py-1 border rounded bg-white ${(()=>{ const min=Number(locFilters.priceMin||''); const max=Number(locFilters.priceMax||''); const hasMin=!Number.isNaN(min)&&locFilters.priceMin!==''; const hasMax=!Number.isNaN(max)&&locFilters.priceMax!==''; return (hasMin&&hasMax&&min>max)?'border-red-400':'border-cream-border'; })()}`}
-                    aria-label="Minimum price"
-                    placeholder="Min"
-                  />
-                </label>
-                <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
-                  <span className="hidden sm:inline">Max</span>
-                  <input
-                    type="number"
-                    inputMode="numeric"
-                    min="0"
-                    value={locFilters.priceMax}
-                    onChange={(e)=> updateParam('priceMax', e.target.value)}
-                    className={`w-20 text-[11px] px-2 py-1 border rounded bg-white ${(()=>{ const min=Number(locFilters.priceMin||''); const max=Number(locFilters.priceMax||''); const hasMin=!Number.isNaN(min)&&locFilters.priceMin!==''; const hasMax=!Number.isNaN(max)&&locFilters.priceMax!==''; return (hasMin&&hasMax&&min>max)?'border-red-400':'border-cream-border'; })()}`}
-                    aria-label="Maximum price"
-                    placeholder="Max"
-                  />
-                </label>
-                {(() => { const min=Number(locFilters.priceMin||''); const max=Number(locFilters.priceMax||''); const hasMin=!Number.isNaN(min)&&locFilters.priceMin!==''; const hasMax=!Number.isNaN(max)&&locFilters.priceMax!==''; if (hasMin&&hasMax&&min>max) { return (<span role="alert" className="text-[11px] text-red-600">Min is greater than Max</span>); } return null; })()}
-                <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
-                  <input
-                    type="checkbox"
-                    checked={!!locFilters.paidOnly}
-                    onChange={(e)=> {
-                      const checked = e.target.checked;
-                      updateParam('paidOnly', checked ? '1' : '');
-                      if (checked) { updateParam('freeOnly',''); }
-                    }}
-                    aria-label="Paid items only"
-                    disabled={!!locFilters.freeOnly}
-                  />
-                  <span>Paid only</span>
-                </label>
-                <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
-                  <input
-                    type="checkbox"
-                    checked={!!locFilters.freeOnly}
-                    onChange={(e)=> {
-                      const checked = e.target.checked;
-                      updateParam('freeOnly', checked ? '1' : '');
-                      if (checked) { updateParam('paidOnly',''); }
-                    }}
-                    aria-label="Free items only"
-                    disabled={!!locFilters.paidOnly}
-                  />
-                  <span>Free only</span>
-                </label>
-              </div>
-              {!simpleMode && (
-              <button
-                onClick={async ()=>{
-                  try {
-                    const url = window.location.href;
-                    if (navigator.clipboard && navigator.clipboard.writeText) {
-                      await navigator.clipboard.writeText(url);
-                    } else {
-                      const ta = document.createElement('textarea');
-                      ta.value = url;
-                      ta.setAttribute('readonly','');
-                      ta.style.position = 'absolute';
-                      ta.style.left = '-9999px';
-                      document.body.appendChild(ta);
-                      ta.select();
-                      document.execCommand('copy');
-                      document.body.removeChild(ta);
-                    }
-                    setCopyLinkStatus('ok');
-                    showToast('Link copied', 'success');
-                    setTimeout(()=> setCopyLinkStatus(''), 1500);
-                  } catch {
-                    setCopyLinkStatus('err');
-                    showToast('Copy failed', 'error');
-                    setTimeout(()=> setCopyLinkStatus(''), 2000);
-                  }
-                }}
-                className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
-                title="Copy shareable link"
-                aria-label="Copy shareable link"
-              >Copy link</button>
-              )}
-              <span aria-live="polite" className="sr-only">{copyLinkStatus==='ok' ? 'Link copied' : (copyLinkStatus==='err' ? 'Copy failed' : '')}</span>
-              {!simpleMode && (
-                <span className="text-xs text-brand-brown/60 hidden sm:inline">Demo set • Extend via API later</span>
-              )}
-            </div>
+          </div>
           
           {/* Shareable link button feedback via sr-only region above */}
           {/* Cascading location filter bar */}
@@ -898,30 +927,7 @@ export default function PlanTrip() {
               <option value="">All categories</option>
               {categories.map(cat => <option key={cat} value={cat}>{cat} {counts.category[cat] ? `(${counts.category[cat]})` : ''}</option>)}
             </select>
-            {/* Presets controls (hidden in Simple mode) */}
-            {!simpleMode && (
-              <div className="flex items-center gap-1">
-                <select
-                  value={selectedPreset}
-                  onChange={(e)=>{ setSelectedPreset(e.target.value); if(e.target.value) applyPreset(e.target.value); }}
-                  className="text-xs px-2 py-1 border border-cream-border rounded bg-white"
-                  aria-label="Apply preset"
-                  title="Apply preset"
-                >
-                  <option value="">Presets…</option>
-                  {presets.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
-                </select>
-                <input
-                  value={presetName}
-                  onChange={e=>setPresetName(e.target.value)}
-                  placeholder="Preset name"
-                  className="text-xs px-2 py-1 border border-cream-border rounded bg-white"
-                  aria-label="Preset name"
-                />
-                <button onClick={savePreset} className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover" title="Save current filters as preset">Save</button>
-                <button disabled={!selectedPreset} onClick={()=>deletePreset(selectedPreset)} className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover disabled:opacity-50" title="Delete selected preset">Delete</button>
-              </div>
-            )}
+            {/* Presets moved into Advanced panel */}
           </div>
           {/* Preset status and recent filters */}
           <span aria-live="polite" className="sr-only">
