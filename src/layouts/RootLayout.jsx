@@ -20,7 +20,7 @@ export default function RootLayout() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [hasBackend]);
 
   // Connectivity + API health poller
   useEffect(() => {

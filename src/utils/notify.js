@@ -9,6 +9,6 @@ export function notify(role, title, body) {
       }
     }
   } catch {}
-  // Fallback: console & toast placeholder
-  console.info(`[Notify:${role}] ${title} - ${body}`);
+  // Fallback: console & toast placeholder (warn allowed by ESLint policy)
+  console.warn(`[Notify:${role}] ${title} - ${body}`);
 }

@@ -349,7 +349,6 @@ const LOCATION_ALIASES = new Map(Object.entries({
   'ams': { city: 'Amsterdam' },
   'lhr': { city: 'London' },
   'dxb': { city: 'Dubai' },
-  'lon': { city: 'London' },
   'nyc': { city: 'New York' },
   'lon': { city: 'London' },
   'fra': { city: 'Frankfurt' },
