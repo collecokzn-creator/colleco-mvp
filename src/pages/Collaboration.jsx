@@ -4,7 +4,6 @@ import {
   addAttachment as addLocalAttachment,
   CHANNELS,
   computeAnalytics,
-  ensureThread,
   listThreads as listLocalThreads,
   loadThreads,
   markRead as markLocalRead,
@@ -60,8 +59,8 @@ export default function Collaboration() {
   const [autoSync, setAutoSync] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // Initial load
-  // Effect depends on currentRole; intended
+  // Initial load + reload on role change
+  useEffect(() => {
     (async () => {
       if (isApiEnabled) {
         try {
@@ -75,7 +74,7 @@ export default function Collaboration() {
         ensureLocalSeed();
       }
     })();
-  }, []);
+  }, [currentRole]);
 
   function ensureLocalSeed() {
     if (!Object.keys(loadThreads()).length) {
@@ -86,8 +85,9 @@ export default function Collaboration() {
 
   // SSE subscription in API mode
   // Subscribe based on currentRole only; eslint exhaustive-deps intentionally limited
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-    if (!isApiEnabled) return;
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!isApiEnabled) return undefined;
     let es;
     try {
       const base = (import.meta.env.VITE_API_BASE || "");
@@ -95,7 +95,7 @@ export default function Collaboration() {
       url.searchParams.set("role", currentRole);
       if (import.meta.env.VITE_API_TOKEN) url.searchParams.set("token", import.meta.env.VITE_API_TOKEN);
       es = new EventSource(url.toString());
-      es.addEventListener("hello", () => {/*noop*/});
+      es.addEventListener("hello", () => {/* noop */});
       const refresh = async () => { try { const list = await apiList(currentRole); setThreads(list); } catch {} };
       es.addEventListener("message", refresh);
       es.addEventListener("attachment", refresh);
@@ -104,8 +104,8 @@ export default function Collaboration() {
     return () => { try { es?.close(); } catch {} };
   }, [currentRole]);
 
-  // Ensure selection
   // Ensure selection reacts to threads list and current bookingId
+  useEffect(() => {
     if (bookingId == null && threads.length) setBookingId(threads[0].bookingId);
   }, [threads, bookingId]);
 
@@ -114,6 +114,7 @@ export default function Collaboration() {
   const summary = useMemo(() => summarizeThread(thread), [thread]);
 
   // Mark read for current thread; only depends on thread and currentRole
+  useEffect(() => {
     if (!thread) return;
     (async () => {
       try {
@@ -124,10 +125,10 @@ export default function Collaboration() {
   }, [thread, currentRole]);
 
   // Notifications and local event bus only in local mode
-  // Local notification bus; depends on thread and currentRole
-    if (!thread) return;
+  useEffect(() => {
+    if (!thread) return undefined;
     if (!isApiEnabled) {
-      let unsub = onCollabEvent(({ event, payload }) => {
+      const unsub = onCollabEvent(({ event, payload }) => {
         if (!thread || payload?.bookingId !== thread.bookingId) return;
         if (event === "message") {
           const m = payload.message;
@@ -143,6 +144,7 @@ export default function Collaboration() {
       try { if ("Notification" in window) Notification.requestPermission?.(); } catch {}
       return () => { try { unsub?.(); } catch {} };
     }
+    return undefined;
   }, [thread, currentRole]);
 
   // Auto-simulate WhatsApp replies
@@ -159,7 +161,7 @@ export default function Collaboration() {
       }
     }, 12000);
     return () => clearInterval(id);
-  }, [autoSync, thread]);
+  }, [autoSync, thread, currentRole]);
 
   async function send() {
     const content = message.trim();

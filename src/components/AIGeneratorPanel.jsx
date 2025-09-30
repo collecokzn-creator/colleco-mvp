@@ -30,7 +30,7 @@ export default function AIGeneratorPanel() {
   const [showDiff, setShowDiff] = useState(false);
   const [flightIntent, setFlightIntent] = useState(null);
   const [intents, setIntents] = useState([]);
-  const [lastOps, setLastOps] = useState(null);
+  const [, setLastOps] = useState(null);
   const [opsUndo, setOpsUndo] = useState([]);
   const abortRef = useRef(null);
   const liveRef = useRef(null);
@@ -477,7 +477,7 @@ export default function AIGeneratorPanel() {
           <button onClick={handleRefine} disabled={refining || !refineText.trim()} className="px-3 py-1.5 rounded bg-brand-orange text-white text-xs font-semibold disabled:opacity-40">Refine</button>
           {applied && <span className="text-[11px] text-green-700">Stored draft ready to import.</span>}
         </div>
-        <p className="text-[10px] text-brand-brown/60">Tips: Keep it short and actionable — e.g., "add museum", "add 2 more nights", "swap to family‑friendly", "reduce budget by 10%".</p>
+  <p className="text-[10px] text-brand-brown/60">Tips: Keep it short and actionable — e.g., &quot;add museum&quot;, &quot;add 2 more nights&quot;, &quot;swap to family‑friendly&quot;, &quot;reduce budget by 10%&quot;.</p>
         {uploadedId && <p className="text-[10px] text-green-700">Draft stored on server (id {uploadedId}).</p>}
       </div>
       <div aria-live="polite" aria-atomic="true" className="sr-only" ref={liveRef} />

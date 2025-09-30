@@ -114,7 +114,6 @@ export default function Itinerary() {
   }, [items, overlay]);
 
   const flatMerged = useMemo(() => Object.values(merged).flat(), [merged]);
-  const dayNumbers = Object.keys(merged).map(Number).sort((a,b) => a-b);
 
   function handleDownloadItemICS(item) {
     const ics = buildSingleICS(item);
@@ -165,7 +164,7 @@ export default function Itinerary() {
     if (typeof obj !== 'object' || !obj) return false;
     if (typeof obj.custom !== 'object' || typeof obj.done !== 'object') return false;
     // custom days
-    for (const [day, arr] of Object.entries(obj.custom)) {
+    for (const [_day, arr] of Object.entries(obj.custom)) {
       if (!Array.isArray(arr)) return false;
       for (const it of arr) {
         if (typeof it !== 'object' || !it) return false;
@@ -200,7 +199,7 @@ export default function Itinerary() {
     }
   }
 
-  function applyImported(json, replacing) {
+  function applyImported(json, _replacing) {
     try {
       // custom
       for (const [d, arr] of Object.entries(json.custom || {})) {

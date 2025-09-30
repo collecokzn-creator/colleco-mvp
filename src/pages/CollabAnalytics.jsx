@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { listThreads, computeAnalytics, ROLES } from "../utils/collabStore";
 
 export default function CollabAnalytics() {
@@ -19,7 +19,7 @@ export default function CollabAnalytics() {
     return threads.filter(t => `${t.ref} ${t.clientName} ${t.title}`.toLowerCase().includes(term));
   }, [threads, q]);
 
-  const isInRange = (ts) => {
+  const isInRange = useCallback((ts) => {
     if (!ts) return false;
     const d = new Date(ts);
     if (fromDate) {
@@ -31,7 +31,7 @@ export default function CollabAnalytics() {
       if (d > t) return false;
     }
     return true;
-  };
+  }, [fromDate, toDate]);
 
   const aggregate = useMemo(() => {
     const totals = {

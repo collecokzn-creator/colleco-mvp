@@ -102,16 +102,18 @@ export default function PlanTrip() {
   }, [locFilters]);
   // Update recent filters list when filters change (skip when all empty)
   useEffect(()=>{
-  const f = locFilters;
-  const keys = ['continent','country','province','city','area','category','priceMin','priceMax','paidOnly','freeOnly'];
+    // Avoid dynamic property access on the locFilters object directly to satisfy exhaustive-deps
+    const { continent, country, province, city, area, category, priceMin, priceMax, paidOnly, freeOnly } = locFilters;
+    const keys = ['continent','country','province','city','area','category','priceMin','priceMax','paidOnly','freeOnly'];
+    const vals = { continent, country, province, city, area, category, priceMin, priceMax, paidOnly, freeOnly };
     const hasAny = keys.some(k => {
-      const v = f[k];
+      const v = vals[k];
       const s = typeof v === 'boolean' ? (v ? '1' : '') : String(v || '').trim();
       return s !== '';
     });
     if (!hasAny) return;
     const signature = keys.map(k=>{
-      const v = f[k];
+      const v = vals[k];
       const s = typeof v === 'boolean' ? (v ? '1' : '') : String(v || '').trim().toLowerCase();
       return `${k}=${encodeURIComponent(s)}`;
     }).join('&');
@@ -138,6 +140,7 @@ export default function PlanTrip() {
     locFilters.priceMax,
     locFilters.paidOnly,
     locFilters.freeOnly,
+    locFilters
   ]);
 
   function applyFilters(nextFilters){
@@ -348,7 +351,7 @@ export default function PlanTrip() {
   }); // 'catalog' | 'events'
   useEffect(() => { try { localStorage.setItem('planTripTab', activeTab); } catch {} }, [activeTab]);
   // If entering Simple Mode while Events tab active, force back to Catalog
-  useEffect(() => { if(simpleMode && activeTab !== 'catalog') setActiveTab('catalog'); }, [simpleMode]);
+  useEffect(() => { if(simpleMode && activeTab !== 'catalog') setActiveTab('catalog'); }, [simpleMode, activeTab]);
   useEffect(() => {
     const term = query.trim();
     const city = locFilters.city.trim();
@@ -374,7 +377,7 @@ export default function PlanTrip() {
       }
     }, 350);
     return () => { alive = false; clearTimeout(t); };
-  }, [locFilters.city, locFilters.country, query, includePast, simpleMode]);
+  }, [locFilters.city, locFilters.country, query, includePast, simpleMode, eventsSort]);
 
   // Helpers to update URL params and clear deeper-level filters on change
   function updateLocationParam(level, value){
@@ -400,7 +403,7 @@ export default function PlanTrip() {
     const q = query.trim().toLowerCase();
     let base = PRODUCTS;
     // Apply location filters if any present
-    const { continent, country, province, city, area, category } = locFilters;
+  const { continent, country, province, city, area, category: _category } = locFilters;
     if (continent || country || province || city || area) {
       base = base.filter(p =>
         (!continent || (p.continent||'').toLowerCase() === continent.toLowerCase()) &&
@@ -410,8 +413,8 @@ export default function PlanTrip() {
         (!area || (p.area||'').toLowerCase() === area.toLowerCase())
       );
     }
-    if (category) {
-      base = base.filter(p => (p.category||'').toLowerCase() === category.toLowerCase());
+    if (_category) {
+      base = base.filter(p => (p.category||'').toLowerCase() === _category.toLowerCase());
     }
     // Price and paid filters
     const min = Number(locFilters.priceMin||'');
@@ -522,7 +525,9 @@ export default function PlanTrip() {
     const { smartAliases } = loadSmartSettings();
     const s = getSuggestion(raw, { products: PRODUCTS, myLocation, enableAliases: smartAliases });
     if(!s) return null;
-    return { text: s.label, count: s.count, cat: s.params.category, loc: (()=>{ const {category, ...rest}=s.params; return rest; })() };
+    // Remove category from params for loc without triggering no-unused-vars
+    const rest = { ...s.params }; delete rest.category;
+    return { text: s.label, count: s.count, cat: s.params.category, loc: rest };
   }, [query, myLocation]);
 
   // Dynamic Quick Actions: one-click filters derived from top cities
@@ -1356,7 +1361,7 @@ export default function PlanTrip() {
                   basket.forEach(i => {
                     const qty = Number(i.quantity)||1;
                     const unit = Number(i.price)||0;
-                    const lineTotal = unit * qty;
+                    const _lineTotal = unit * qty; // eslint-disable-line no-unused-vars
                     const loc = [i.city, i.province, i.country].filter(Boolean).join(', ');
                     lines.push(`- ${qty} x ${i.title}${unit>0?` @ ${formatCurrency(unit,'USD')}`:' (Included)'}${loc?` • ${loc}`:''}`);
                   });
