@@ -55,7 +55,7 @@ export default function PlanTrip() {
 
   // Compact header by default; reveal full filter toolset on demand
   const [showAdvanced, setShowAdvanced] = useState(() => {
-    try { return localStorage.getItem('planTrip:showAdvanced') === '1'; } catch { return false; }
+    try { return localStorage.getItem('planTrip:showAdvanced:v2') === '1'; } catch { return false; }
   });
   useEffect(() => {
     function onStorage(e){ if(!e) return; if(e.key === 'showWeather'){ setShowWeather(e.newValue !== '0'); } }
@@ -699,7 +699,7 @@ export default function PlanTrip() {
                   className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
                   title="More filters and tools"
                   aria-expanded={showAdvanced}
-                  onClick={()=>{ const next=!showAdvanced; setShowAdvanced(next); try{ localStorage.setItem('planTrip:showAdvanced', next?'1':'0'); }catch{} }}
+                  onClick={()=>{ const next=!showAdvanced; setShowAdvanced(next); try{ localStorage.setItem('planTrip:showAdvanced:v2', next?'1':'0'); }catch{} }}
                 >{showAdvanced? 'Hide' : 'Advanced'}</button>
               </div>
             </div>
