@@ -26,9 +26,11 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.21",
-  "eslint": "^8.57.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
     "jsdom": "^25.0.1",
     "png-to-ico": "^2.1.8",
     "postcss": "^8.5.6",

@@ -5,6 +5,8 @@
 */
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const expressRateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 const { parsePrompt, parseFlightRequest, parseIntent } = require('./aiParser');
@@ -23,6 +25,7 @@ const AI_CACHE_MAX = 50;
 const DATA_DIR = path.join(__dirname, 'data');
 fs.mkdirSync(DATA_DIR, { recursive: true });
 const AI_ANALYTICS_FILE = path.join(DATA_DIR, 'ai_analytics.log');
+const AI_ANALYTICS_ENABLED = process.env.AI_ANALYTICS !== '0';
 const AI_DRAFTS_FILE = path.join(DATA_DIR, 'ai_drafts.json');
 function loadDrafts(){
   try { if(fs.existsSync(AI_DRAFTS_FILE)){ return JSON.parse(fs.readFileSync(AI_DRAFTS_FILE,'utf8')) || {}; } } catch{ }
@@ -85,7 +88,7 @@ function tokenHashFromReq(req){
   return crypto.createHash('sha1').update(t).digest('hex').slice(0,20);
 }
 
-function rateLimit(ip){
+function aiRateLimit(ip){
   // Token bucket strategy if enabled
   if(AI_BUCKET_CAPACITY > 0){
     const now = Date.now();
@@ -130,6 +133,7 @@ function setCached(key, data){
   }
 }
 function logAI(meta){
+  if(!AI_ANALYTICS_ENABLED) return;
   try {
     fs.appendFileSync(AI_ANALYTICS_FILE, JSON.stringify(meta)+"\n", 'utf8');
   } catch(e){ /* ignore */ }
@@ -149,15 +153,39 @@ function recordAnalytics(prompt, parsed){
 }
 
 const app = express();
+// Security: trust reverse proxy and hide framework header
+app.set('trust proxy', 1);
+app.disable('x-powered-by');
+
+// Apply security headers
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+
+// Restrictive CORS via env ALLOWED_ORIGINS (comma separated); allow all if unset
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map(s=>s.trim()).filter(Boolean);
+app.use(cors({
+  origin(origin, cb){
+    if(!origin) return cb(null, true);
+    if(ALLOWED_ORIGINS.length===0) return cb(null, true);
+    return ALLOWED_ORIGINS.includes(origin) ? cb(null, true) : cb(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
+}));
+
+// Global rate limiter (complements per-endpoint limits)
+const globalLimiter = expressRateLimit({ windowMs: 60_000, max: 120, standardHeaders: true, legacyHeaders: false });
+app.use((req,res,next)=>{ if(req.path==='/events' || req.path==='/health') return next(); return globalLimiter(req,res,next); });
 const PORT = process.env.PORT || 4000;
 const API_TOKEN = process.env.API_TOKEN || '';
+if(process.env.NODE_ENV === 'production' && !API_TOKEN){
+  console.warn('[security] API_TOKEN not set in production; protected endpoints will be open.');
+}
 const HYBRID_LLM = process.env.HYBRID_LLM === '1';
 let llmAdapter = null;
 if(HYBRID_LLM){
   try { llmAdapter = require('./llmAdapter'); console.log('[ai] hybrid LLM adapter loaded'); } catch(e){ console.warn('[ai] failed to load llmAdapter', e.message); }
 }
 
-app.use(cors());
 app.use(express.json({ limit: '2mb' }));
 
 // --- Auth middleware ---
@@ -676,7 +704,7 @@ app.post('/api/ai/itinerary', authCheck, async (req, res) => {
   const { prompt } = req.body || {};
   if (!prompt || !prompt.toString().trim()) return res.status(400).json({ error: 'prompt required' });
   const ip = req.ip || req.connection.remoteAddress || 'unknown';
-  if(!rateLimit(ip)) return res.status(429).json({ error: 'rate_limited' });
+  if(!aiRateLimit(ip)) return res.status(429).json({ error: 'rate_limited' });
   const key = cacheKey(prompt);
   const cached = getCached(key);
   if(cached){ aiMetrics.cacheHits++; aiMetrics.total++; aiMetrics.latencyMs.gen.push(Date.now()-t0); return res.json({ ok: true, data: cached, cached: true }); }
@@ -727,7 +755,7 @@ app.get('/api/ai/itinerary/stream', authCheck, async (req, res) => {
   const prompt = (req.query.prompt || '').toString();
   if (!prompt.trim()) { res.status(400).json({ error: 'prompt required' }); return; }
   const ip = req.ip || req.connection.remoteAddress || 'unknown';
-  if(!rateLimit(ip)) { res.status(429).json({ error: 'rate_limited' }); return; }
+  if(!aiRateLimit(ip)) { res.status(429).json({ error: 'rate_limited' }); return; }
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
@@ -781,7 +809,7 @@ app.post('/api/ai/itinerary/refine', authCheck, async (req, res) => {
   if(!prompt || !prompt.toString().trim()) return res.status(400).json({ error: 'prompt required' });
   if(!instructions || !instructions.toString().trim()) return res.status(400).json({ error: 'instructions required' });
   const ip = req.ip || req.connection.remoteAddress || 'unknown';
-  if(!rateLimit(ip)) return res.status(429).json({ error: 'rate_limited' });
+  if(!aiRateLimit(ip)) return res.status(429).json({ error: 'rate_limited' });
   let base = parsePrompt(prompt);
   if(base.error) return res.status(400).json({ error: base.error });
   const text = instructions.toLowerCase();
