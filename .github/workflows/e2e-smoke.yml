@@ -19,10 +19,22 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Start backend server
+        run: |
+          node server/server.js &
+          echo "Backend starting..."
+          for i in {1..15}; do
+            if curl -fsS http://localhost:4000/health >/dev/null 2>&1; then
+              echo "Backend is up"; break; fi; echo "waiting backend ($i)"; sleep 1;
+          done
       - name: Start preview server
         run: |
           npx serve -s dist -l 5174 &
-          echo "Preview started" && sleep 2
+          echo "Preview starting..."
+          for i in {1..15}; do
+            if curl -fsS http://localhost:5174 >/dev/null 2>&1; then
+              echo "Preview is up"; break; fi; echo "waiting preview ($i)"; sleep 1;
+          done
       - name: Cypress run (smoke)
         uses: cypress-io/github-action@v6
         with:
