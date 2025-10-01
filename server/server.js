@@ -954,6 +954,30 @@ app.get('/api/ai/session/:id', authCheck, (req, res) => {
   res.json({ ...s, scoped: !!s.tokenHash });
 });
 
-app.listen(PORT, () => {
-  console.log(`[collab-api] listening on http://localhost:${PORT}`);
-});
+// Robust listen with fallback when port is already in use
+function listenWithFallback(startPort, maxTries = 5) {
+  let attempt = 0;
+  function tryListen(port) {
+    const server = app.listen(port, () => {
+      console.log(`[collab-api] listening on http://localhost:${port}`);
+    });
+    server.on('error', (err) => {
+      if (err && err.code === 'EADDRINUSE' && attempt < maxTries - 1) {
+        const next = port + 1;
+        attempt += 1;
+        if (attempt === 1) {
+          console.warn(`[collab-api] Port ${port} in use. Trying ${next}... (set PORT to override)`);
+        } else {
+          console.warn(`[collab-api] Port ${port} in use. Trying ${next}...`);
+        }
+        tryListen(next);
+      } else {
+        console.error('[collab-api] Failed to start server:', err && err.message ? err.message : err);
+        process.exit(1);
+      }
+    });
+  }
+  tryListen(Number(startPort));
+}
+
+listenWithFallback(PORT, 6);

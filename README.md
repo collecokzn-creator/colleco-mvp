@@ -57,6 +57,16 @@ Open http://localhost:3000.
   ```
 Serve `dist/` with your preferred static host; run `npm run server` alongside for APIs.
 
+### Production environment (backend)
+For any internet-exposed deployment of the Express server, set these environment variables via your platform's secret manager (never commit secrets):
+
+- NODE_ENV=production
+- API_TOKEN=<strong-random-token>
+- ALLOWED_ORIGINS=https://your-domain.com,https://<user>.github.io/<repo>
+- AI_ANALYTICS=0 (set to 1 only if you need local analytics logs)
+
+See SECURITY.md for complete hardening guidance (headers, CORS, rate limits, auth).
+
 ### UI Layering (z-index) Policy
 - Header/nav: z-50
 - Sticky toolbars/panels: z-[45]
