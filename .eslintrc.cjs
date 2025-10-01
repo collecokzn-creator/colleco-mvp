@@ -37,6 +37,25 @@ module.exports = {
       env: { node: true },
       globals: { describe: 'readonly', it: 'readonly', expect: 'readonly', vi: 'readonly', beforeEach: 'readonly', afterEach: 'readonly' },
       rules: { 'no-console': 'off' }
+    },
+    {
+      // Cypress E2E tests
+      files: ['cypress/**/*.js', 'cypress/**/*.ts', '**/*.cy.js', '**/*.cy.ts'],
+      env: { browser: true, node: false, mocha: true },
+      globals: {
+        cy: 'readonly',
+        Cypress: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        before: 'readonly',
+        after: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly'
+      },
+      rules: {
+        // Allow Cypress globals without marking them as undefined
+        'no-undef': 'off'
+      }
     }
   ]
 };
