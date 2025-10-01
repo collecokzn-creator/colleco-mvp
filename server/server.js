@@ -980,4 +980,10 @@ function listenWithFallback(startPort, maxTries = 5) {
   tryListen(Number(startPort));
 }
 
-listenWithFallback(PORT, 6);
+// Only start the server when running this file directly.
+if (require.main === module) {
+  listenWithFallback(PORT, 6);
+}
+
+// Export the app for testing/integration usage
+module.exports = app;

@@ -1,0 +1,32 @@
+name: E2E Smoke
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install deps
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Start preview server
+        run: |
+          npx serve -s dist -l 5174 &
+          echo "Preview started" && sleep 2
+      - name: Cypress run (smoke)
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          spec: cypress/e2e/smoke.cy.js
+        env:
+          API_BASE: http://localhost:4000
