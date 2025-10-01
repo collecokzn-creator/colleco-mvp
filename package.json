@@ -15,7 +15,7 @@
     "smoke:build": "npm run build",
     "smoke:start:stack": "concurrently -k -s first -n api,web -c blue,green \"cross-env PORT=4010 node server/server.js\" \"npx serve -s dist -l 5174\"",
     "smoke:run": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js",
-    "smoke:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:5174,http://localhost:4010/health \"npm run smoke:run\""
+  "smoke:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:run\""
   },
   "dependencies": {
     "cors": "^2.8.5",
