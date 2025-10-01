@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs && vite",
+  "dev": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs && node scripts/dev-detect-api.mjs && vite",
     "prebuild": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs",
     "build": "vite build",
     "preview": "vite preview",
