@@ -1,3 +1,14 @@
+# Default reviewer(s) for all files
+* @collecokzn-creator
+
+# If you later add a team, you can assign reviews to the team (example):
+# * @your-org/team-name
+
+# Example: Assign frontend files to a frontend reviewer
+/frontend/* @collecokzn-creator
+
+# Example: Assign backend files to another reviewer (when you have more devs)
+/backend/* @collecokzn-creator
 # Default owners for all files
 * @collecokzn-creator
 

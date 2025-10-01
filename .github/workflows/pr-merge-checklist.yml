@@ -7,6 +7,10 @@ on:
 jobs:
   comment:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - name: Post checklist comment
         uses: peter-evans/create-or-update-comment@v4
