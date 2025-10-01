@@ -1,5 +1,7 @@
 # Colleco MVP
 
+[![E2E Smoke](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/e2e-smoke.yml/badge.svg)](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/e2e-smoke.yml)
+
 A React + Vite SPA with a minimal Express backend for collaboration and events aggregation. Includes location-aware product discovery, events from trusted providers with a demo fallback, and an admin Settings page with provider toggles and API status.
 
 ## Quick start
