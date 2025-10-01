@@ -84,6 +84,33 @@ Always ensure sticky elements use `top: calc(var(--header-h) + var(--banner-h))`
 - Keep `public/manifest.webmanifest` at the root of the deployed site and reference it as `/manifest.webmanifest`.
 - For SPAs use hash routing in Pages (`VITE_USE_HASH=1`) to avoid deep-link 404s.
 
+### Local smoke tests (E2E)
+A minimal Cypress smoke test verifies the built app renders and the backend `/health` responds.
+
+- One command (build → start backend on 4010 → serve dist on 5174 → wait → run smoke):
+	```powershell
+	npm run smoke:all
+	```
+- Manual (step-by-step):
+	```powershell
+	# 1) Build
+	npm run build
+
+	# 2) Start backend and static preview (port 4010 and 5174)
+	npm run smoke:start:stack
+
+	# 3) In another terminal, run Cypress against the local API
+	$env:API_BASE='http://localhost:4010'; npm run cy:run
+	```
+- Interactive mode:
+	```powershell
+	$env:API_BASE='http://localhost:4010'; npm run cy:open
+	```
+
+Notes:
+- The backend may auto-fallback if the port is in use; `smoke:start:stack` pins it to 4010 to avoid conflicts.
+- If you run the backend manually, set `API_BASE` to match its URL before running Cypress.
+
 ## Troubleshooting
   - Ensure country/city or a search term ≥ 3 chars
   - Enable demo mode in Settings
