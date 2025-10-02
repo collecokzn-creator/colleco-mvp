@@ -29,9 +29,9 @@ export default function Navbar() {
 
 	return (
 		<nav className="bg-cream text-brand-brown shadow-md border-b border-cream-border fixed top-0 left-0 right-0 z-50">
-			<div className="container mx-auto flex items-center justify-between px-4 sm:px-6 h-16">
-				{/* Left side - Hamburger + Logo/Branding */}
-				<div className="flex items-center gap-3">
+			<div className="container mx-auto flex items-center px-4 sm:px-6 h-16">
+				{/* Left side - Hamburger Menu */}
+				<div className="flex items-center">
 					<button
 						type="button"
 						onClick={toggleSidebar}
@@ -41,17 +41,21 @@ export default function Navbar() {
 					>
 						☰
 					</button>
-					<Link to="/" className="flex items-center gap-1">
+				</div>
+
+				{/* Center - Logo and Brand - Prominent display */}
+				<div className="flex-1 flex items-center justify-center">
+					<Link to="/" className="flex items-center gap-2">
 						<img
 							src={logoPng}
 							alt="CollEco Logo"
-							className="h-10 w-10 sm:h-11 sm:w-11 object-contain shrink-0"
-							width="44"
-							height="44"
+							className="h-11 w-11 sm:h-12 sm:w-12 object-contain shrink-0"
+							width="48"
+							height="48"
 						/>
-						<span className="hidden sm:flex flex-col justify-center leading-tight">
-							<span className="text-lg font-bold tracking-tight text-brand-orange leading-tight">CollEco Travel</span>
-							<span className="text-[11px] font-light italic text-brand-brown tracking-wide leading-tight" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>
+						<span className="flex flex-col justify-center items-center leading-tight">
+							<span className="text-lg sm:text-xl font-bold tracking-tight text-brand-orange leading-tight text-center">CollEco Travel</span>
+							<span className="text-[11px] sm:text-[12px] font-light italic text-brand-brown tracking-wide leading-tight text-center" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>
 								The Odyssey of Adventure
 							</span>
 						</span>
@@ -59,9 +63,9 @@ export default function Navbar() {
 				</div>
 
 				{/* Right side - Search */}
-				<div className="flex items-center gap-3 flex-1 justify-end">
+				<div className="flex items-center justify-end">
 					{/* Desktop search bar */}
-					<div className="hidden sm:block flex-1 max-w-md">
+					<div className="hidden sm:block w-64">
 						<SearchBar />
 					</div>
 					
