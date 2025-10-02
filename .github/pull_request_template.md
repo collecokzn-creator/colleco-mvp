@@ -1,44 +1,18 @@
-## Summary
+## 📝 Description
+<!-- Briefly describe what this PR does and why -->
 
-- What changed and why? Link issues if applicable.
+## ✅ Checklist
+- [ ] Code compiles and runs locally
+- [ ] Tests (if any) pass successfully
+- [ ] No console errors or warnings
+- [ ] PR title follows convention (e.g. `feat:`, `fix:`, `docs:`)
+- [ ] Documentation updated (if needed)
 
-## Type of change
+## 🔍 Related Issues / Tickets
+<!-- Link to issues, e.g. Closes #123 -->
 
-- [ ] Bug fix
-- [ ] Feature
-- [ ] Chore/Refactor
-- [ ] Security/Hardening
+## 📸 Screenshots (if applicable)
+<!-- Drag & drop screenshots here -->
 
-## Security checklist
-
-- [ ] No secrets committed
-- [ ] CORS `ALLOWED_ORIGINS` updated if needed
-- [ ] `API_TOKEN` required for protected routes in prod
-- [ ] Rate limiting in place for new endpoints
-- [ ] Inputs validated or sanitized (where applicable)
-
-## Validation
-
-- [ ] Lint passes
-- [ ] Tests pass
-- [ ] Production build succeeds
-- [ ] Local smoke test (optional)
-
-## Notes
-
-- Any follow-ups or rollout steps
-
-## Merge Readiness (CI/CD & Deploy)
-
-- [ ] GitHub Pages workflow enabled (deploy.yml) and legacy Jekyll workflow is disabled
-- [ ] For Pages: hash routing active via `VITE_USE_HASH=1`; base path set (`VITE_BASE_PATH`)
-- [ ] Backend environment prepared (production):
-	- [ ] `NODE_ENV=production`
-	- [ ] `API_TOKEN` set and required for protected routes
-	- [ ] `ALLOWED_ORIGINS` includes the frontend origin(s)
-	- [ ] Optional SMTP and provider keys are configured if those features are used
-- [ ] Post-merge verification plan:
-	- [ ] `/health` reachable
-	- [ ] CORS preflight succeeds from frontend
-	- [ ] Deep links work on Pages (hash routes)
-	- [ ] PWA manifest loads at `/manifest.webmanifest`
+## 👀 Reviewer Notes
+<!-- Anything specific you'd like reviewers to focus on -->
