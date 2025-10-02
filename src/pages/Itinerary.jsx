@@ -628,7 +628,7 @@ export default function Itinerary() {
       </div>
 
       {/* Transparent pricing and payment */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="md:col-span-2">
           <FeesBreakdown items={paymentItems} currency="USD" />
         </div>
