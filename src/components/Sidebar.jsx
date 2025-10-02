@@ -3,10 +3,10 @@ import { NavLink, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
   const linkBase =
-    "block px-2 py-2 rounded hover:bg-cream-hover hover:text-brand-orange transition-colors text-[12px] leading-tight whitespace-nowrap text-center";
+    "block px-3 py-2.5 rounded hover:bg-cream-hover hover:text-brand-orange transition-colors text-[13px] leading-tight whitespace-nowrap text-left";
   const linkClass = ({ isActive }) =>
     isActive
-  ? `${linkBase} bg-cream-hover text-brand-brown font-semibold`
+  ? `${linkBase} bg-cream-hover text-brand-orange font-semibold`
   : `${linkBase} text-brand-brown`;
 
   const [open, setOpen] = useState(true);
@@ -110,9 +110,9 @@ export default function Sidebar() {
 
   const containerClass = isMobile
     ? (open
-        ? "fixed top-16 left-0 w-64 h-[calc(100vh-64px-56px)] bg-cream-sand text-brand-brown py-4 px-2 z-40 shadow"
+        ? "fixed top-16 left-0 w-72 h-[calc(100vh-64px-56px)] bg-cream-sand text-brand-brown py-4 px-3 z-40 shadow overflow-y-auto"
         : "hidden")
-    : "w-40 bg-cream-sand text-brand-brown py-4 px-2 flex-shrink-0 sticky top-16 self-start overflow-auto";
+    : "w-48 bg-cream-sand text-brand-brown py-4 px-3 flex-shrink-0 sticky top-16 self-start overflow-auto";
 
   const navId = 'explore-nav';
 
@@ -165,22 +165,81 @@ export default function Sidebar() {
           </div>
         )}
 
-  <nav id={navId} role="navigation" aria-label="Explore" aria-labelledby="explore-title" className={`mt-3 space-y-1 text-center ${open ? "block" : "hidden"} group-hover:block focus-within:block`}>
-          <NavLink to="/" className={linkClass} end>
-            Home
-          </NavLink>
-          <NavLink to="/about" className={linkClass}>
-            About
-          </NavLink>
-          <NavLink to="/safety" className={linkClass}>
-            Safety Promise
-          </NavLink>
-          <NavLink to="/contact" className={linkClass}>
-            Contacts
-          </NavLink>
-          <NavLink to="/terms" className={linkClass} title="Terms & Conditions">
-            Terms & Conditions
-          </NavLink>
+  <nav id={navId} role="navigation" aria-label="Explore" aria-labelledby="explore-title" className={`mt-3 space-y-3 text-center ${open ? "block" : "hidden"} group-hover:block focus-within:block`}>
+          
+          {/* Trip Planning Section */}
+          <div className="space-y-1">
+            <div className="text-brand-orange font-semibold text-[11px] uppercase tracking-wider mb-2">Trip Planning</div>
+            <NavLink to="/plan-trip" className={linkClass}>
+              Trip Planner
+            </NavLink>
+            <NavLink to="/ai" className={linkClass}>
+              Trip Assist
+            </NavLink>
+            <NavLink to="/quote/new" className={linkClass}>
+              New Quote
+            </NavLink>
+            <NavLink to="/quotes" className={linkClass}>
+              Quotes
+            </NavLink>
+            <NavLink to="/itinerary" className={linkClass}>
+              Itinerary
+            </NavLink>
+            <NavLink to="/bookings" className={linkClass}>
+              Bookings
+            </NavLink>
+          </div>
+
+          {/* Partner & Business Section */}
+          <div className="space-y-1">
+            <div className="text-brand-orange font-semibold text-[11px] uppercase tracking-wider mb-2">Partner & Business</div>
+            <NavLink to="/partner-dashboard" className={linkClass}>
+              Dashboard
+            </NavLink>
+            <NavLink to="/collaboration" className={linkClass}>
+              Collaboration
+            </NavLink>
+            <NavLink to="/collab-analytics" className={linkClass}>
+              Collab Analytics
+            </NavLink>
+            <NavLink to="/admin-console" className={linkClass}>
+              Admin Console
+            </NavLink>
+          </div>
+
+          {/* Account Section */}
+          <div className="space-y-1">
+            <div className="text-brand-orange font-semibold text-[11px] uppercase tracking-wider mb-2">Account</div>
+            <NavLink to="/profile" className={linkClass}>
+              Profile
+            </NavLink>
+            <NavLink to="/settings" className={linkClass}>
+              Settings
+            </NavLink>
+            <NavLink to="/login" className={linkClass}>
+              Login / Register
+            </NavLink>
+          </div>
+
+          {/* Information Section */}
+          <div className="space-y-1">
+            <div className="text-brand-orange font-semibold text-[11px] uppercase tracking-wider mb-2">Information</div>
+            <NavLink to="/" className={linkClass} end>
+              Home
+            </NavLink>
+            <NavLink to="/about" className={linkClass}>
+              About
+            </NavLink>
+            <NavLink to="/safety" className={linkClass}>
+              Safety Promise
+            </NavLink>
+            <NavLink to="/contact" className={linkClass}>
+              Contacts
+            </NavLink>
+            <NavLink to="/terms" className={linkClass} title="Terms & Conditions">
+              Terms & Conditions
+            </NavLink>
+          </div>
         </nav>
       </div>
     </aside>
