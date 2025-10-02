@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
   const linkBase =
-    "block px-3 py-2.5 rounded hover:bg-cream-hover hover:text-brand-orange transition-colors text-[13px] leading-tight whitespace-nowrap text-left";
+    "block px-2 py-2 rounded hover:bg-cream-hover hover:text-brand-orange transition-colors text-[12px] leading-tight text-left";
   const linkClass = ({ isActive }) =>
     isActive
   ? `${linkBase} bg-cream-hover text-brand-orange font-semibold`
@@ -67,6 +67,30 @@ export default function Sidebar() {
     return () => window.removeEventListener('keydown', onKey);
   }, [isMobile, open]);
 
+  // Handle click outside to close sidebar
+  useEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (event) => {
+      if (asideRef.current && !asideRef.current.contains(event.target)) {
+        // Don't close if clicking on the hamburger menu button
+        const hamburgerBtn = document.querySelector('button[aria-label="Toggle Explore Sidebar"]');
+        if (hamburgerBtn && hamburgerBtn.contains(event.target)) return;
+        
+        setOpen(false);
+      }
+    };
+
+    // Add click listener to document
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [open]);
+
   // Focus trap while mobile drawer is open, and restore focus on close
   useEffect(() => {
     if (!(isMobile && open)) {
@@ -119,9 +143,9 @@ export default function Sidebar() {
 
   const containerClass = isMobile
     ? (open
-        ? "fixed top-16 left-0 w-72 h-[calc(100vh-64px-56px)] bg-cream-sand text-brand-brown py-4 px-3 z-40 shadow overflow-y-auto"
+        ? "fixed top-16 left-0 w-56 h-[calc(100vh-64px-56px)] bg-cream-sand text-brand-brown py-4 px-2 z-40 shadow overflow-y-auto"
         : "hidden")
-    : "w-48 bg-cream-sand text-brand-brown py-4 px-3 flex-shrink-0 sticky top-16 self-start overflow-auto";
+    : "w-36 bg-cream-sand text-brand-brown py-4 px-2 flex-shrink-0 sticky top-16 self-start overflow-auto";
 
   const navId = 'explore-nav';
 
@@ -161,27 +185,23 @@ export default function Sidebar() {
           </span>
         </button>
 
-        {/* Mobile-only close button inside overlay */}
-        {isMobile && open && (
-          <div className="mt-2 text-center">
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="inline-flex items-center gap-1 px-2 py-0.5 rounded border border-cream-border bg-cream text-brand-brown text-[12px] hover:bg-cream-hover"
-            >
-              Close
-            </button>
-          </div>
-        )}
+
 
   <nav id={navId} role="navigation" aria-label="Explore" aria-labelledby="explore-title" className={`mt-3 space-y-2 ${open ? "block" : "hidden"} group-hover:block focus-within:block`}>
           
+          {/* Home - Quick Access */}
+          <div className="border-b border-cream-border/50 pb-2">
+            <NavLink to="/" className={linkClass} end>
+              🏠 Home
+            </NavLink>
+          </div>
+
           {/* Login/Register Section */}
           <div className="border-b border-cream-border/50 pb-2">
             <button
               type="button"
               onClick={() => toggleSection('login')}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+              className="w-full flex items-center justify-between px-2 py-2 rounded hover:bg-cream-hover transition-colors text-[13px] font-semibold text-brand-orange"
             >
               <span>Login/Register</span>
               <span className={`transition-transform duration-200 ${expandedSections.login ? "rotate-180" : "rotate-0"}`}>▾</span>
@@ -203,7 +223,7 @@ export default function Sidebar() {
             <button
               type="button"
               onClick={() => toggleSection('tripPlanner')}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+              className="w-full flex items-center justify-between px-2 py-2 rounded hover:bg-cream-hover transition-colors text-[13px] font-semibold text-brand-orange"
             >
               <span>Trip Planner</span>
               <span className={`transition-transform duration-200 ${expandedSections.tripPlanner ? "rotate-180" : "rotate-0"}`}>▾</span>
@@ -237,7 +257,7 @@ export default function Sidebar() {
             <button
               type="button"
               onClick={() => toggleSection('partnerBusiness')}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+              className="w-full flex items-center justify-between px-2 py-2 rounded hover:bg-cream-hover transition-colors text-[13px] font-semibold text-brand-orange"
             >
               <span>Partner & Business</span>
               <span className={`transition-transform duration-200 ${expandedSections.partnerBusiness ? "rotate-180" : "rotate-0"}`}>▾</span>
@@ -265,7 +285,7 @@ export default function Sidebar() {
             <button
               type="button"
               onClick={() => toggleSection('accounts')}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+              className="w-full flex items-center justify-between px-2 py-2 rounded hover:bg-cream-hover transition-colors text-[13px] font-semibold text-brand-orange"
             >
               <span>Accounts</span>
               <span className={`transition-transform duration-200 ${expandedSections.accounts ? "rotate-180" : "rotate-0"}`}>▾</span>
@@ -296,16 +316,13 @@ export default function Sidebar() {
             <button
               type="button"
               onClick={() => toggleSection('information')}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+              className="w-full flex items-center justify-between px-2 py-2 rounded hover:bg-cream-hover transition-colors text-[13px] font-semibold text-brand-orange"
             >
               <span>Information</span>
               <span className={`transition-transform duration-200 ${expandedSections.information ? "rotate-180" : "rotate-0"}`}>▾</span>
             </button>
             {expandedSections.information && (
               <div className="mt-2 space-y-1 pl-2">
-                <NavLink to="/" className={linkClass} end>
-                  Home
-                </NavLink>
                 <NavLink to="/about" className={linkClass}>
                   About
                 </NavLink>
