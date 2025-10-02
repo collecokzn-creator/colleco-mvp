@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import logoPng from "../assets/colleco-logo.png";
 import SearchBar from "./SearchBar.jsx";
 
 export default function Navbar() {
 	const location = useLocation();
 	const [showMobileSearch, setShowMobileSearch] = useState(false);
+	const mobileSearchRef = useRef(null);
 
 	const toggleSidebar = () => {
 		window.dispatchEvent(new Event('toggle-sidebar'));
@@ -26,6 +27,29 @@ export default function Navbar() {
 		window.addEventListener('keydown', onKey);
 		return () => window.removeEventListener('keydown', onKey);
 	}, []);
+
+	// Close mobile search on click outside
+	useEffect(() => {
+		if (!showMobileSearch) return;
+
+		const handleClickOutside = (event) => {
+			if (mobileSearchRef.current && !mobileSearchRef.current.contains(event.target)) {
+				// Don't close if clicking on the search button itself
+				const searchButton = event.target.closest('button[title="Search"]');
+				if (searchButton) return;
+				
+				setShowMobileSearch(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		document.addEventListener('touchstart', handleClickOutside);
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+			document.removeEventListener('touchstart', handleClickOutside);
+		};
+	}, [showMobileSearch]);
 
 	return (
 		<nav className="bg-cream text-brand-brown shadow-md border-b border-cream-border fixed top-0 left-0 right-0 z-50">
@@ -77,14 +101,14 @@ export default function Navbar() {
 						aria-label={showMobileSearch ? "Close search" : "Open search"}
 						title="Search"
 					>
-						{showMobileSearch ? '×' : '🔍'}
+						🔍
 					</button>
 				</div>
 			</div>
 			
 			{/* Mobile search overlay */}
 			{showMobileSearch && (
-				<div className="sm:hidden absolute top-full left-0 right-0 bg-cream border-b border-cream-border shadow-md z-40">
+				<div ref={mobileSearchRef} className="sm:hidden absolute top-full left-0 right-0 bg-cream border-b border-cream-border shadow-md z-40">
 					<div className="container mx-auto px-4 py-3">
 						<SearchBar />
 					</div>

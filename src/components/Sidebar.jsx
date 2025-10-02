@@ -231,7 +231,7 @@ export default function Sidebar() {
             {expandedSections.tripPlanner && (
               <div className="mt-2 space-y-1 pl-2">
                 <NavLink to="/plan-trip" className={linkClass}>
-                  Trip Planner
+                  Plan Trip
                 </NavLink>
                 <NavLink to="/ai" className={linkClass}>
                   Trip Assist
