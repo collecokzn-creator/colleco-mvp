@@ -73,7 +73,9 @@ export default function RootLayout() {
           <Sidebar />
           <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0" tabIndex="-1">
             <section className="px-6 py-6">
-              <Outlet />
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-cream-border/50 p-6 min-h-screen">
+                <Outlet />
+              </div>
             </section>
           </main>
         </div>

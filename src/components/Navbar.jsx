@@ -52,7 +52,7 @@ export default function Navbar() {
 	}, [showMobileSearch]);
 
 	return (
-		<nav className="bg-cream text-brand-brown shadow-md border-b border-cream-border fixed top-0 left-0 right-0 z-50">
+		<nav className="bg-gradient-to-r from-cream via-white to-cream text-brand-brown shadow-lg border-b border-cream-border/50 fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
 			<div className="container mx-auto flex items-center px-4 sm:px-6 h-16">
 				{/* Left side - Hamburger Menu */}
 				<div className="flex items-center">
@@ -73,7 +73,7 @@ export default function Navbar() {
 						<img
 							src={logoPng}
 							alt="CollEco Logo"
-							className="h-11 w-11 sm:h-12 sm:w-12 object-contain shrink-0"
+							className="h-11 w-11 sm:h-12 sm:w-12 object-contain shrink-0 bg-transparent rounded-lg p-1"
 							width="48"
 							height="48"
 						/>
