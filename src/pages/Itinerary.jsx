@@ -6,7 +6,7 @@ import ExperienceCard from "../components/ui/ExperienceCard";
 import MemoryNote from "../components/ui/MemoryNote";
 import LiveTripProgress from "../components/ui/LiveTripProgress";
 import jsPDF from "jspdf";
-import { useTripState, setMemory, computeProgress, addItemToDay } from "../utils/useTripState";
+import { useTripState, setMemory, computeProgress } from "../utils/useTripState";
 import { useBasketState } from "../utils/useBasketState";
 import { useLocalStorageState } from "../useLocalStorageState";
 import FeesBreakdown from "../components/payments/FeesBreakdown";
@@ -37,10 +37,13 @@ export default function Itinerary() {
   // Undo / Redo stacks (simple LIFO of full trip snapshots)
   const undoStackRef = useRef([]); // past states
   const redoStackRef = useRef([]); // future states after undo
-  const [historyVersion, setHistoryVersion] = useState(0); // bump to rerender buttons
+  const [_historyVersion, setHistoryVersion] = useState(0); // bump to rerender buttons
   const [showHistory, setShowHistory] = useState(false);
   // Coalescing state for rapid keyboard reorders
-  const coalesceRef = useRef({ active:false, timer:null, baseSnapshot:null });
+  const _coalesceRef = useRef({ active:false, timer:null, baseSnapshot:null });
+  // Stable refs for undo/redo to avoid effect dependency churn
+  const undoRef = useRef(() => {});
+  const redoRef = useRef(() => {});
 
   function pushUndo(prevTrip, label){
     const snapshot = JSON.parse(JSON.stringify(prevTrip));
@@ -66,15 +69,19 @@ export default function Itinerary() {
     setTrip(next.trip);
     setHistoryVersion(v=>v+1);
   }
+  // Keep refs updated with latest functions
+  undoRef.current = undo;
+  redoRef.current = redo;
+  // Global keyboard listener (Ctrl/Cmd+Z / Shift+Z) without re-subscribing every render
   useEffect(()=>{
-    function onKey(e){
+    const onKey = (e) => {
       const key = e.key.toLowerCase();
-      if((e.ctrlKey||e.metaKey) && key==='z' && !e.shiftKey){ e.preventDefault(); undo(); }
-      else if((e.ctrlKey||e.metaKey) && key==='z' && e.shiftKey){ e.preventDefault(); redo(); }
-    }
+      if((e.ctrlKey||e.metaKey) && key==='z' && !e.shiftKey){ e.preventDefault(); undoRef.current(); }
+      else if((e.ctrlKey||e.metaKey) && key==='z' && e.shiftKey){ e.preventDefault(); redoRef.current(); }
+    };
     window.addEventListener('keydown', onKey);
     return ()=> window.removeEventListener('keydown', onKey);
-  },[]);
+  }, []);
 
   // Detect AI draft in localStorage
   useEffect(()=>{
@@ -173,10 +180,10 @@ export default function Itinerary() {
     dragItem.current = { day, index };
     e.dataTransfer.effectAllowed = 'move';
   }
-  function onDragEnter(e, day, index) {
+  function onDragEnter(_e, day, index) {
     dragOverItem.current = { day, index };
   }
-  function onDragEnd() {
+  const onDragEnd = () => {
     const from = dragItem.current; const to = dragOverItem.current;
     if (!from || !to || from.day !== to.day || from.index === to.index) { dragItem.current = dragOverItem.current = null; return; }
     let newOrderIds = [];
@@ -192,7 +199,7 @@ export default function Itinerary() {
     }
     announce(`Reordered to position ${to.index+1} in day ${to.day}`);
     dragItem.current = dragOverItem.current = null;
-  }
+  };
 
   function announce(msg){
     // Screen reader live region update
@@ -367,7 +374,7 @@ export default function Itinerary() {
                 .map((d) => (
                   <ItineraryDay key={d} day={d}
                     onDragOver={e=>{ if(reorderingDay){ e.preventDefault(); }}}
-                    onDrop={e=>{
+                    onDrop={_e=>{
                       if(!reorderingDay) return;
                       const from = dragItem.current; if(!from) return;
                       if(from.day===d) return; // handled by in-day logic
@@ -680,7 +687,7 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
       setHighContrastFocus(false);
       setEnableToasts(true);
       setAnimationsEnabled(true);
-    }catch(e){ /* ignore */ }
+  }catch(_err){ /* ignore */ }
   }
   // Focus trap when open
   useEffect(()=>{
@@ -689,7 +696,7 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
       const first = focusable?.[0];
       const last = focusable?.[focusable.length-1];
       first && first.focus();
-      function onKey(e){
+      const onKey = (e) => {
         if(e.key==='Escape'){ setOpen(false); triggerRef.current?.focus(); }
         if(e.key==='Tab' && focusable && focusable.length){
           if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }

@@ -114,7 +114,6 @@ export default function Itinerary() {
   }, [items, overlay]);
 
   const flatMerged = useMemo(() => Object.values(merged).flat(), [merged]);
-  const dayNumbers = Object.keys(merged).map(Number).sort((a,b) => a-b);
 
   function handleDownloadItemICS(item) {
     const ics = buildSingleICS(item);
@@ -165,7 +164,7 @@ export default function Itinerary() {
     if (typeof obj !== 'object' || !obj) return false;
     if (typeof obj.custom !== 'object' || typeof obj.done !== 'object') return false;
     // custom days
-    for (const [day, arr] of Object.entries(obj.custom)) {
+    for (const [_day, arr] of Object.entries(obj.custom)) {
       if (!Array.isArray(arr)) return false;
       for (const it of arr) {
         if (typeof it !== 'object' || !it) return false;
@@ -200,7 +199,7 @@ export default function Itinerary() {
     }
   }
 
-  function applyImported(json, replacing) {
+  function applyImported(json, _replacing) {
     try {
       // custom
       for (const [d, arr] of Object.entries(json.custom || {})) {
@@ -360,76 +359,88 @@ export default function Itinerary() {
             <span>Day {day}</span>
           </h3>
           <ul className="space-y-6 border-l border-dashed border-emerald-300 pl-4 ml-4">
-            {filteredMerged[day].map((item, idx) => {
-              const media = mediaFor(item);
-              const [ref, inView] = useInViewOnce();
-              return (
-                <li ref={ref} key={item.id} className={`relative group ${inView ? 'animate-fadeIn' : 'opacity-0 translate-y-1'}`}>                    
-                  <span className="absolute -left-5 top-3 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white shadow" />
-                  <div className={`rounded-lg border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 ${item._local ? 'ring-1 ring-indigo-200' : ''}`}>
-                    <div className="flex flex-col md:flex-row">
-                      <div className="md:w-40 w-full h-28 md:h-auto shrink-0 relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-                        {media.srcSet ? (
-                          <picture>
-                            {media.wide && <source media="(min-width: 768px)" srcSet={media.wide} />}
-                            <img loading="lazy" src={media.src} srcSet={media.srcSet} alt={media.alt} className="w-full h-full object-cover object-center select-none pointer-events-none transition filter will-change-transform duration-700 ease-out blur-sm group-[.animate-fadeIn]:blur-0" />
-                          </picture>
-                        ) : (
-                          <img loading="lazy" src={media.src} alt={media.alt} className="w-full h-full object-cover object-center select-none pointer-events-none transition filter will-change-transform duration-700 ease-out blur-sm group-[.animate-fadeIn]:blur-0" />
-                        )}
-                        {overlay.done[item.id] && <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center text-emerald-700 font-semibold text-xs tracking-wide">DONE</div>}
-                      </div>
-                      <div className="flex-1 p-4 flex flex-col gap-2">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h4 className={`font-medium text-gray-800 text-sm md:text-base ${overlay.done[item.id] ? 'line-through opacity-60' : ''}`}>{item.title}</h4>
-                              {item._local && <span className="px-1.5 py-0.5 rounded bg-indigo-50 text-[10px] text-indigo-600">LOCAL</span>}
-                              {item.type && <span className="px-2 py-0.5 rounded bg-emerald-50 text-[10px] uppercase tracking-wide text-emerald-700">{item.type}</span>}
-                            </div>
-                            {item.description && <p className="text-xs text-gray-600 mt-1 leading-relaxed">{item.description}</p>}
-                            <p className="text-[11px] text-gray-500 mt-1">
-                              {formatTimeRange(item.start, item.end)}{item.location ? ` • ${item.location}` : ''}
-                            </p>
-                            {item.distanceKm && (
-                              <p className="text-[11px] text-gray-400 mt-1">{item.distanceKm} km • {item.elevationGainM || 0} m gain</p>
-                            )}
-                            {item.notes && (
-                              <p className="mt-2 text-[11px] bg-amber-50 border border-amber-200 rounded p-2 text-amber-700">{item.notes}</p>
-                            )}
-                          </div>
-                          <div className="flex flex-wrap gap-2 items-start justify-end">
-                            <button onClick={() => toggleDone(item.id)} className="action-btn">{overlay.done[item.id] ? 'Undo' : 'Done'}</button>
-                            {item.trailProvider && (
-                              <a href={buildTrailUrl(item)} target="_blank" rel="noopener noreferrer" className="action-btn">Trail</a>
-                            )}
-                            <a href={buildGoogleMapsUrl(item)} target="_blank" rel="noopener noreferrer" className="action-btn">Map</a>
-                            {(item.start && item.end) && (
-                              <a href={buildGoogleCalendarUrl(item)} target="_blank" rel="noopener noreferrer" className="action-btn">Add Calendar</a>
-                            )}
-                            <button onClick={() => handleDownloadItemICS(item)} className="action-btn">ICS</button>
-                            {item._local && (
-                              <button onClick={() => removeCustomItem(day, item.id)} className="action-btn">Remove</button>
-                            )}
-                          </div>
-                        </div>
-                        {item.tags && item.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {item.tags.map(t => (
-                              <span key={t} className="px-2 py-0.5 rounded bg-gray-100 text-[10px] tracking-wide uppercase text-gray-600">{t}</span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
+            {filteredMerged[day].map((item) => (
+              <ItineraryListItem
+                key={item.id}
+                item={item}
+                day={day}
+                overlay={overlay}
+                toggleDone={toggleDone}
+                removeCustomItem={removeCustomItem}
+                handleDownloadItemICS={handleDownloadItemICS}
+              />
+            ))}
           </ul>
         </section>
       ))}
     </div>
+  );
+}
+
+function ItineraryListItem({ item, day, overlay, toggleDone, removeCustomItem, handleDownloadItemICS }) {
+  const media = mediaFor(item);
+  const [ref, inView] = useInViewOnce();
+  return (
+    <li ref={ref} className={`relative group ${inView ? 'animate-fadeIn' : 'opacity-0 translate-y-1'}`}>
+      <span className="absolute -left-5 top-3 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white shadow" />
+      <div className={`rounded-lg border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 ${item._local ? 'ring-1 ring-indigo-200' : ''}`}>
+        <div className="flex flex-col md:flex-row">
+          <div className="md:w-40 w-full h-28 md:h-auto shrink-0 relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+            {media.srcSet ? (
+              <picture>
+                {media.wide && <source media="(min-width: 768px)" srcSet={media.wide} />}
+                <img loading="lazy" src={media.src} srcSet={media.srcSet} alt={media.alt} className="w-full h-full object-cover object-center select-none pointer-events-none transition filter will-change-transform duration-700 ease-out blur-sm group-[.animate-fadeIn]:blur-0" />
+              </picture>
+            ) : (
+              <img loading="lazy" src={media.src} alt={media.alt} className="w-full h-full object-cover object-center select-none pointer-events-none transition filter will-change-transform duration-700 ease-out blur-sm group-[.animate-fadeIn]:blur-0" />
+            )}
+            {overlay.done[item.id] && <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center text-emerald-700 font-semibold text-xs tracking-wide">DONE</div>}
+          </div>
+          <div className="flex-1 p-4 flex flex-col gap-2">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h4 className={`font-medium text-gray-800 text-sm md:text-base ${overlay.done[item.id] ? 'line-through opacity-60' : ''}`}>{item.title}</h4>
+                  {item._local && <span className="px-1.5 py-0.5 rounded bg-indigo-50 text-[10px] text-indigo-600">LOCAL</span>}
+                  {item.type && <span className="px-2 py-0.5 rounded bg-emerald-50 text-[10px] uppercase tracking-wide text-emerald-700">{item.type}</span>}
+                </div>
+                {item.description && <p className="text-xs text-gray-600 mt-1 leading-relaxed">{item.description}</p>}
+                <p className="text-[11px] text-gray-500 mt-1">
+                  {formatTimeRange(item.start, item.end)}{item.location ? ` • ${item.location}` : ''}
+                </p>
+                {item.distanceKm && (
+                  <p className="text-[11px] text-gray-400 mt-1">{item.distanceKm} km • {item.elevationGainM || 0} m gain</p>
+                )}
+                {item.notes && (
+                  <p className="mt-2 text-[11px] bg-amber-50 border border-amber-200 rounded p-2 text-amber-700">{item.notes}</p>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2 items-start justify-end">
+                <button onClick={() => toggleDone(item.id)} className="action-btn">{overlay.done[item.id] ? 'Undo' : 'Done'}</button>
+                {item.trailProvider && (
+                  <a href={buildTrailUrl(item)} target="_blank" rel="noreferrer" className="action-btn">Trail</a>
+                )}
+                <a href={buildGoogleMapsUrl(item)} target="_blank" rel="noreferrer" className="action-btn">Map</a>
+                {(item.start && item.end) && (
+                  <a href={buildGoogleCalendarUrl(item)} target="_blank" rel="noreferrer" className="action-btn">Add Calendar</a>
+                )}
+                <button onClick={() => handleDownloadItemICS(item)} className="action-btn">ICS</button>
+                {item._local && (
+                  <button onClick={() => removeCustomItem(day, item.id)} className="action-btn">Remove</button>
+                )}
+              </div>
+            </div>
+            {item.tags && item.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-1">
+                {item.tags.map(t => (
+                  <span key={t} className="px-2 py-0.5 rounded bg-gray-100 text-[10px] tracking-wide uppercase text-gray-600">{t}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </li>
   );
 }
 

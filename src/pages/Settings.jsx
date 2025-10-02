@@ -131,7 +131,7 @@ export default function Settings() {
             <input type="checkbox" checked={demoEvents} onChange={onDemoToggle} />
             <span>Show demo events (force demo results in Events UI)</span>
           </label>
-          <p className="text-xs text-brand-brown/70 mt-1">This sets a local flag only. The server also auto-falls back to demo when no provider keys are configured.</p>
+            <p className="text-xs text-brand-brown/70 mt-1">This sets a local flag only. The server also auto-falls back to demo when no provider keys are configured.</p>
         </section>
 
         <section className="pt-4 border-t border-cream-border">
@@ -148,12 +148,12 @@ export default function Settings() {
             <input type="checkbox" checked={smartAliases} onChange={onSmartAliasesToggle} />
             <span>Use location aliases (CPT, JHB, KZN…)</span>
           </label>
-          <p className="text-xs text-brand-brown/70 mt-1">When enabled, common shorthand codes and nicknames are recognized in search (e.g., CPT → Cape Town, JHB → Johannesburg, KZN → KwaZulu-Natal).</p>
+          <p className="text-xs text-brand-brown/70 mt-1">When enabled, common shorthand codes and nicknames are recognized in search (e.g., CPT &rarr; Cape Town, JHB &rarr; Johannesburg, KZN &rarr; KwaZulu-Natal).</p>
         </section>
 
         <section className="pt-4 border-t border-cream-border">
           <h3 className="font-semibold text-brand-brown mb-2">Custom Location Aliases</h3>
-          <p className="text-sm text-brand-brown/80 mb-3">Add your own shortcuts (e.g., "PSB" → Port Shepstone). These merge with built-ins and only apply on this device.</p>
+          <p className="text-sm text-brand-brown/80 mb-3">Add your own shortcuts (e.g., &quot;PSB&quot; → Port Shepstone). These merge with built-ins and only apply on this device.</p>
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-end">
             <div className="flex-1">
               <label className="block text-xs text-brand-brown/70 mb-1">Alias key</label>

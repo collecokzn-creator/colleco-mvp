@@ -10,7 +10,7 @@ const catalog = [
 
 export default function BasketBuilder() {
   const [basket, dispatch] = useBasketReducer()
-  const [saved] = useLocalStorage('savedItineraries', [])
+  const [_saved] = useLocalStorage('savedItineraries', [])
 
   const add = (p) => dispatch({ type: 'add', payload: p })
 

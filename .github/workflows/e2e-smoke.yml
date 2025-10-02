@@ -1,0 +1,46 @@
+name: E2E Smoke
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install deps
+        run: npm ci
+      - name: Build
+        run: |
+          export VITE_HAS_BACKEND=1
+          npm run build
+      - name: Start backend server
+        run: |
+          node server/server.js &
+          echo "Backend starting..."
+          for i in {1..40}; do
+            if curl -fsS http://localhost:4000/health >/dev/null 2>&1; then
+              echo "Backend is up"; break; fi; echo "waiting backend ($i)"; sleep 1;
+          done
+      - name: Start preview server
+        run: |
+          npx serve -s dist -l 5174 &
+          echo "Preview starting..."
+          for i in {1..40}; do
+            if curl -fsS http://localhost:5174 >/dev/null 2>&1; then
+              echo "Preview is up"; break; fi; echo "waiting preview ($i)"; sleep 1;
+          done
+      - name: Cypress run (smoke)
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          spec: cypress/e2e/smoke.cy.js
+        env:
+          API_BASE: http://localhost:4000

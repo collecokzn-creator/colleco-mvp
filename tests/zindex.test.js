@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import fs from 'node:fs';
 import path from 'node:path';
 
 const cfgPath = path.join(process.cwd(), 'tailwind.config.js');

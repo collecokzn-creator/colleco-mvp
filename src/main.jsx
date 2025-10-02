@@ -35,7 +35,7 @@ function InstallBanner() {
       <span style={{color:'#4a3a2a'}}>Install CollEco for a faster app experience.</span>
       <div style={{marginLeft:'auto',display:'flex',gap:8}}>
         <button onClick={() => setShow(false)} style={{padding:'6px 10px',borderRadius:8,border:'1px solid #eadfd2',background:'#fff',color:'#4a3a2a'}}>Not now</button>
-        <button onClick={async () => { if (!deferred) return; deferred.prompt(); const { outcome } = await deferred.userChoice; setDeferred(null); setShow(false); }} style={{padding:'6px 10px',borderRadius:8,border:'none',background:'#ff7a00',color:'#fff'}}>Install</button>
+  <button onClick={async () => { if (!deferred) return; deferred.prompt(); const { outcome: _outcome } = await deferred.userChoice; setDeferred(null); setShow(false); }} style={{padding:'6px 10px',borderRadius:8,border:'none',background:'#ff7a00',color:'#fff'}}>Install</button>
       </div>
     </div>
   );
@@ -51,7 +51,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 );
 
 // Register service worker for PWA
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && !window.Cypress) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(async (reg) => {
       try {

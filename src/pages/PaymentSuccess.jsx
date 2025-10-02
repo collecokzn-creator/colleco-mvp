@@ -42,7 +42,7 @@ export default function PaymentSuccess() {
           </div>
         </div>
       )}
-      {status === 'error' && <p className="text-red-600">We couldn't find your session.</p>}
+  {status === 'error' && <p className="text-red-600">We couldn&apos;t find your session.</p>}
     </div>
   );
 }

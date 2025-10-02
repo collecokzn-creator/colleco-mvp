@@ -46,7 +46,7 @@ export default function RootLayout() {
     };
     ping();
     return () => { if (timer) clearTimeout(timer); };
-  }, []);
+  }, [hasBackend]);
 
   const scrollToTop = () => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

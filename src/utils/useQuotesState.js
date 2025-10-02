@@ -57,7 +57,7 @@ export function useQuotesState() {
     setQuotes(qs => qs.filter(q => q.id !== id));
   }, []);
 
-  const cloneQuote = useCallback((id) => {
+  const _cloneQuote = useCallback((id) => {
     setQuotes(qs => {
       const src = qs.find(q => q.id === id);
       if (!src) return qs;

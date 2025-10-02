@@ -1,5 +1,9 @@
 # Colleco MVP
 
+[![CI](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/ci.yml/badge.svg)](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/ci.yml)
+[![E2E Smoke](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/e2e-smoke.yml/badge.svg)](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/e2e-smoke.yml)
+[![Pages Deploy](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/deploy.yml/badge.svg)](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/deploy.yml)
+
 A React + Vite SPA with a minimal Express backend for collaboration and events aggregation. Includes location-aware product discovery, events from trusted providers with a demo fallback, and an admin Settings page with provider toggles and API status.
 
 ## Quick start
@@ -57,6 +61,16 @@ Open http://localhost:3000.
   ```
 Serve `dist/` with your preferred static host; run `npm run server` alongside for APIs.
 
+### Production environment (backend)
+For any internet-exposed deployment of the Express server, set these environment variables via your platform's secret manager (never commit secrets):
+
+- NODE_ENV=production
+- API_TOKEN=<strong-random-token>
+- ALLOWED_ORIGINS=https://your-domain.com,https://<user>.github.io/<repo>
+- AI_ANALYTICS=0 (set to 1 only if you need local analytics logs)
+
+See SECURITY.md for complete hardening guidance (headers, CORS, rate limits, auth).
+
 ### UI Layering (z-index) Policy
 - Header/nav: z-50
 - Sticky toolbars/panels: z-[45]
@@ -73,6 +87,33 @@ Always ensure sticky elements use `top: calc(var(--header-h) + var(--banner-h))`
 - Do NOT create `public/index.html` (it can cause raw JSX to be served). Keep the root `index.html` only.
 - Keep `public/manifest.webmanifest` at the root of the deployed site and reference it as `/manifest.webmanifest`.
 - For SPAs use hash routing in Pages (`VITE_USE_HASH=1`) to avoid deep-link 404s.
+
+### Local smoke tests (E2E)
+A minimal Cypress smoke test verifies the built app renders and the backend `/health` responds.
+
+- One command (build → start backend on 4010 → serve dist on 5174 → wait → run smoke):
+	```powershell
+	npm run smoke:all
+	```
+- Manual (step-by-step):
+	```powershell
+	# 1) Build
+	npm run build
+
+	# 2) Start backend and static preview (port 4010 and 5174)
+	npm run smoke:start:stack
+
+	# 3) In another terminal, run Cypress against the local API
+	$env:API_BASE='http://localhost:4010'; npm run cy:run
+	```
+- Interactive mode:
+	```powershell
+	$env:API_BASE='http://localhost:4010'; npm run cy:open
+	```
+
+Notes:
+- The backend may auto-fallback if the port is in use; `smoke:start:stack` pins it to 4010 to avoid conflicts.
+- If you run the backend manually, set `API_BASE` to match its URL before running Cypress.
 
 ## Troubleshooting
   - Ensure country/city or a search term ≥ 3 chars

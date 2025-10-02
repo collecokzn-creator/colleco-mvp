@@ -25,7 +25,7 @@ const getStatusClasses = (status) => {
 export default function Quotes() {
   // In a real app, this would likely come from props or a data fetching hook
   const [quotes] = React.useState(mockQuotes)
-  const [active, setActive] = React.useState(null)
+  const [_active, _setActive] = React.useState(null)
 
   return (
     <div>

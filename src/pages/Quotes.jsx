@@ -1,13 +1,11 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useQuotesState } from '../utils/useQuotesState';
 import { formatCurrency } from '../utils/currency';
 import { generateQuotePdf } from '../utils/pdfGenerators';
 
 export default function Quotes() {
-  const { quotes, computeTotals, deleteQuote } = useQuotesState();
-  // Lazy import clone via hook (already available) by destructuring again if needed
-  const { cloneQuote } = useQuotesState();
+  const { quotes, computeTotals, deleteQuote, cloneQuote } = useQuotesState();
   const navigate = useNavigate();
 
   return (
@@ -28,7 +26,7 @@ export default function Quotes() {
 
       <ul className="space-y-3">
         {quotes.map(q => {
-          const { subtotal, tax, total } = computeTotals(q);
+          const { subtotal: _subtotal, tax: _tax, total } = computeTotals(q);
           return (
             <li key={q.id} className="bg-cream rounded border border-cream-border p-4 flex flex-col md:flex-row md:items-center gap-4">
               <div className="flex-1 min-w-0">

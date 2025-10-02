@@ -5,11 +5,7 @@ import { motion } from "framer-motion";
 // TODO: Integrate real AI backend for natural language, auto-suggest, and learning.
 // TODO: Add progress badges, trip readiness meter, and upsell suggestions.
 
-const ROLES = [
-  { key: 'client', label: 'Client (Plan a Trip)' },
-  { key: 'partner', label: 'Partner (Sell/Manage)' },
-  { key: 'admin', label: 'Admin (Monitor)' },
-];
+// Note: role selection handled via free text; constants removed to reduce lint noise
 
 export default function AIAgent() {
   const [open, setOpen] = useState(false);

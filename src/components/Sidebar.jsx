@@ -21,7 +21,7 @@ export default function Sidebar() {
       const mobile = window.innerWidth < 640; // Tailwind 'sm'
       setIsMobile(mobile);
       // Close by default on mobile, open on desktop
-      setOpen(prev => (mobile ? false : true));
+  setOpen(_prev => (mobile ? false : true));
     };
     onResize();
     window.addEventListener('resize', onResize);
@@ -30,7 +30,7 @@ export default function Sidebar() {
 
   // Listen for global toggle events from Navbar
   useEffect(() => {
-    const handler = () => setOpen(v => !v);
+  const handler = () => setOpen(_v => !_v);
     window.addEventListener('toggle-sidebar', handler);
     return () => window.removeEventListener('toggle-sidebar', handler);
   }, []);
@@ -82,7 +82,7 @@ export default function Sidebar() {
 
     const focusables = getFocusable();
     const first = focusables[0];
-    const last = focusables[focusables.length - 1];
+  const _last = focusables[focusables.length - 1];
     if (first) first.focus();
 
     const onKeyDown = (e) => {

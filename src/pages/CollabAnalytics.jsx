@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { listThreads, computeAnalytics, ROLES } from "../utils/collabStore";
 
 export default function CollabAnalytics() {
@@ -19,7 +19,7 @@ export default function CollabAnalytics() {
     return threads.filter(t => `${t.ref} ${t.clientName} ${t.title}`.toLowerCase().includes(term));
   }, [threads, q]);
 
-  const isInRange = (ts) => {
+  const isInRange = useCallback((ts) => {
     if (!ts) return false;
     const d = new Date(ts);
     if (fromDate) {
@@ -31,7 +31,7 @@ export default function CollabAnalytics() {
       if (d > t) return false;
     }
     return true;
-  };
+  }, [fromDate, toDate]);
 
   const aggregate = useMemo(() => {
     const totals = {
@@ -107,7 +107,7 @@ export default function CollabAnalytics() {
     totals.bottlenecks.sort((x, y) => y.ageMin - x.ageMin);
 
     return totals;
-  }, [filtered]);
+  }, [filtered, isInRange]);
 
   const roleLabel = (r) => r === ROLES.agent ? "Agent" : r === ROLES.client ? "Client" : r === ROLES.productOwner ? "Product Owner" : r;
   const exportCsv = () => {
@@ -115,7 +115,7 @@ export default function CollabAnalytics() {
     const rows = [
       ["bookingId","ref","title","clientName","messagesInRange","attachmentsInRange","lastMsgAgeMin","awaiting","avgRespAgent","avgRespClient","avgRespPO","inapp","whatsapp","email","sms","call","note"],
     ];
-    const days = aggregate.dailyCounts; // not per thread but okay; we keep per-thread core metrics
+  const _days = aggregate.dailyCounts; // not per thread but okay; we keep per-thread core metrics
     for (const t of filtered) {
       const msgs = (t.messages || []).filter(m => isInRange(m.createdAt));
       const atts = (t.attachments || []).filter(a => isInRange(a.addedAt));
