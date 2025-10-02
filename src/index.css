@@ -9,16 +9,16 @@ html, body { color-scheme: light; }
 
 /* Header/banner/footer sizing variables to prevent overlap with fixed elements */
 :root {
-	--header-h: 4rem;        /* matches Navbar h-16 */
+	--header-h: 4rem;        /* matches Navbar h-16 on mobile */
 	--banner-h: 0px;         /* set dynamically when the top status bar is visible */
 	--footer-h: 4.5rem;      /* approximate fixed footer height */
 	--sticky-offset: calc(var(--header-h) + var(--banner-h));
 }
 @media (min-width: 640px) {
-	:root { --header-h: 4.5rem; }
+	:root { --header-h: 4.5rem; }  /* matches Navbar h-[4.5rem] on tablet+ */
 }
 @media (min-width: 1024px) {
-	:root { --header-h: 5rem; }
+	:root { --header-h: 4.5rem; }  /* keep consistent on desktop */
 }
 
 /* Reserve space for scrollbars to avoid overlay black lines on Windows */
