@@ -646,9 +646,9 @@ export default function PlanTrip() {
             </div>
             
             {/* Search Bar and Controls */}
-            <div className="flex items-center gap-2">
-              {/* Main search input */}
-              <div className="relative flex-1">
+            <div className="flex flex-col gap-3">
+              {/* Search input row */}
+              <div className="relative">
                 <input
                   ref={setSearchEl}
                   value={query}
@@ -660,7 +660,7 @@ export default function PlanTrip() {
                   }}
                   placeholder="Search products, destinations, activities…"
                   title="Press / to focus"
-                  className="text-sm pl-3 pr-10 py-2 border border-cream-border rounded-md bg-white flex-1 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
+                  className="w-full text-sm pl-3 pr-24 py-2.5 border border-cream-border rounded-md bg-white focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
                   aria-label="Search product catalog"
                     onKeyDown={(e)=>{
                       if(e.key==='Escape'){
@@ -683,43 +683,50 @@ export default function PlanTrip() {
                     aria-label="Apply smart filters suggestion"
                   >
                     <span>🔎</span>
-                    <span className="hidden sm:inline truncate max-w-[8rem]">{smartSuggestion.text}</span>
+                    <span className="hidden sm:inline truncate max-w-[6rem]">{smartSuggestion.text}</span>
                   </button>
                 )}
               </div>
               
-              {/* Action buttons */}
-              <div className="flex items-center gap-2">
-                {/* Near Me button */}
-                <button
-                  type="button"
-                  className="text-xs px-3 py-2 rounded-md border border-cream-border bg-white hover:bg-cream-hover flex items-center gap-1"
-                  title="Use my location"
-                  onClick={()=>{
-                    const loc = loadMyLocation();
-                    if(!loc || (!loc.city && !loc.province && !loc.country)){
-                      showToast('Set your location first', 'warn');
-                      return;
-                    }
-                    const params = new URLSearchParams(location.search);
-                    ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
-                    if(loc.city) params.set('city', loc.city); else if(loc.province) params.set('province', loc.province); else if(loc.country) params.set('country', loc.country);
-                    navigate({ search: `?${params.toString()}` }, { replace: false });
-                    showToast('Applied filters near your location', 'success');
-                  }}
-                >📍 Near me</button>
+              {/* Action buttons row */}
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  {/* Near Me button */}
+                  <button
+                    type="button"
+                    className="text-xs px-3 py-2 rounded-md border border-cream-border bg-white hover:bg-cream-hover flex items-center gap-1 whitespace-nowrap"
+                    title="Use my location"
+                    onClick={()=>{
+                      const loc = loadMyLocation();
+                      if(!loc || (!loc.city && !loc.province && !loc.country)){
+                        showToast('Set your location first', 'warn');
+                        return;
+                      }
+                      const params = new URLSearchParams(location.search);
+                      ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
+                      if(loc.city) params.set('city', loc.city); else if(loc.province) params.set('province', loc.province); else if(loc.country) params.set('country', loc.country);
+                      navigate({ search: `?${params.toString()}` }, { replace: false });
+                      showToast('Applied filters near your location', 'success');
+                    }}
+                  >📍 Near me</button>
+                  
+                  {/* Advanced toggle */}
+                  <button
+                    type="button"
+                    className="text-xs px-3 py-2 rounded-md border border-cream-border bg-white hover:bg-cream-hover flex items-center gap-1 whitespace-nowrap"
+                    title="More filters and tools"
+                    aria-expanded={showAdvanced}
+                    onClick={()=>{ const next=!showAdvanced; setShowAdvanced(next); try{ localStorage.setItem('planTrip:showAdvanced:v2', next?'1':'0'); }catch{} }}
+                  >
+                    <span>{showAdvanced ? '🔼' : '🔽'}</span>
+                    <span>{showAdvanced? 'Hide' : 'More'}</span>
+                  </button>
+                </div>
                 
-                {/* Advanced toggle */}
-                <button
-                  type="button"
-                  className="text-xs px-3 py-2 rounded-md border border-cream-border bg-white hover:bg-cream-hover flex items-center gap-1"
-                  title="More filters and tools"
-                  aria-expanded={showAdvanced}
-                  onClick={()=>{ const next=!showAdvanced; setShowAdvanced(next); try{ localStorage.setItem('planTrip:showAdvanced:v2', next?'1':'0'); }catch{} }}
-                >
-                  <span>{showAdvanced ? '🔼' : '🔽'}</span>
-                  <span>{showAdvanced? 'Hide' : 'More'}</span>
-                </button>
+                {/* Tip text */}
+                {!simpleMode && (
+                  <span className="text-xs text-brand-brown/60 italic">💡 Try &quot;Hotels in Durban&quot; or &quot;Safari in Kruger&quot;</span>
+                )}
               </div>
             </div>
             
