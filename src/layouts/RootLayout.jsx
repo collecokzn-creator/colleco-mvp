@@ -54,8 +54,8 @@ export default function RootLayout() {
   };
   return (
   <div className="min-h-screen bg-cream">
-      {/* Connectivity bar */}
-      {(offline || (hasBackend && !apiOk)) && (
+      {/* Connectivity bar - Hidden in development for better UX */}
+      {false && (offline || (hasBackend && !apiOk)) && (
         <div role="status" aria-live="polite" className="fixed top-0 left-0 right-0 z-[70] bg-red-50 text-red-700 border-b border-red-200 text-xs px-3 py-1.5 flex items-center justify-between"
              style={{ ['--banner-h']: '28px' }}>
           <span>{offline ? 'You appear to be offline.' : 'API unavailable. Some features may not work.'}</span>
