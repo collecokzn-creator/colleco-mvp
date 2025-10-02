@@ -622,16 +622,17 @@ export default function PlanTrip() {
           )}
           {(simpleMode || activeTab==='catalog') && (
           <>
-          <div className="flex flex-col gap-2 mb-3 sticky [top:calc(var(--header-h)+var(--banner-h))] z-[45] bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/60 px-2 py-2 rounded border border-cream-border shadow-sm">
-            <div className="flex items-center justify-between gap-2">
-              <h3 className="font-semibold text-lg">Product Catalog <span className="text-sm text-brand-brown/60">• {sortedFiltered.length}</span></h3>
-              <div className="flex items-center gap-2">
-                {/* Catalog sort control */}
-                <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
-                  <span className="hidden sm:inline">Sort</span>
+          <div className="flex flex-col gap-3 mb-3 sticky [top:calc(var(--header-h)+var(--banner-h))] z-[45] bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/60 px-3 py-3 rounded border border-cream-border shadow-sm">
+            {/* Product Catalog Heading */}
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-xl text-brand-brown">Product Catalog</h3>
+              <div className="flex items-center gap-2 text-sm text-brand-brown/60">
+                <span>{sortedFiltered.length} results</span>
+                {/* Hidden/collapsed sort control - only show on advanced mode */}
+                {showAdvanced && (
                   <select
                     aria-label="Sort catalog"
-                    className="text-[11px] px-2 py-1 border border-cream-border rounded bg-white"
+                    className="text-xs px-2 py-1 border border-cream-border rounded bg-white"
                     value={catalogSort}
                     onChange={(e)=> setCatalogSort(e.target.value)}
                   >
@@ -640,22 +641,27 @@ export default function PlanTrip() {
                     <option value="priceAsc">Price: Low to High</option>
                     <option value="priceDesc">Price: High to Low</option>
                   </select>
-                </label>
-                {/* Compact search */}
-                <div className="relative">
-                  <input
-                    ref={setSearchEl}
-                    value={query}
-                    onChange={e=>{
-                      setQuery(e.target.value);
-                      const params = new URLSearchParams(location.search);
-                      if(e.target.value) params.set('q', e.target.value); else params.delete('q');
-                      navigate({ search: params.toString() ? `?${params.toString()}` : '' }, { replace: true });
-                    }}
-                    placeholder="Search catalog…"
-                    title="Press / to focus"
-                    className="text-sm pl-2 pr-8 py-1 border border-cream-border rounded bg-white w-[14rem] max-w-[48vw]"
-                    aria-label="Search product catalog"
+                )}
+              </div>
+            </div>
+            
+            {/* Search Bar and Controls */}
+            <div className="flex items-center gap-2">
+              {/* Main search input */}
+              <div className="relative flex-1">
+                <input
+                  ref={setSearchEl}
+                  value={query}
+                  onChange={e=>{
+                    setQuery(e.target.value);
+                    const params = new URLSearchParams(location.search);
+                    if(e.target.value) params.set('q', e.target.value); else params.delete('q');
+                    navigate({ search: params.toString() ? `?${params.toString()}` : '' }, { replace: true });
+                  }}
+                  placeholder="Search products, destinations, activities…"
+                  title="Press / to focus"
+                  className="text-sm pl-3 pr-10 py-2 border border-cream-border rounded-md bg-white flex-1 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
+                  aria-label="Search product catalog"
                     onKeyDown={(e)=>{
                       if(e.key==='Escape'){
                         e.preventDefault();
@@ -669,22 +675,25 @@ export default function PlanTrip() {
                       }
                     }}
                   />
-                  {smartSuggestion && (
-                    <button
-                      type="button"
-                      onClick={applySmartSearch}
-                      className="absolute right-1 top-1/2 -translate-y-1/2 text-[11px] px-2 py-0.5 rounded bg-white border border-cream-border shadow-sm hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 inline-flex items-center gap-1"
-                      aria-label="Apply smart filters suggestion"
-                    >
-                      <span className="text-brand-brown/70">🔎</span>
-                      <span className="hidden md:inline truncate max-w-[10rem]">{smartSuggestion.text}</span>
-                    </button>
-                  )}
-                </div>
-                {/* Near Me + Advanced toggle */}
+                {smartSuggestion && (
+                  <button
+                    type="button"
+                    onClick={applySmartSearch}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-xs px-2 py-1 rounded bg-brand-orange text-white hover:bg-brand-brown focus:outline-none focus:ring-2 focus:ring-brand-orange/30 inline-flex items-center gap-1"
+                    aria-label="Apply smart filters suggestion"
+                  >
+                    <span>🔎</span>
+                    <span className="hidden sm:inline truncate max-w-[8rem]">{smartSuggestion.text}</span>
+                  </button>
+                )}
+              </div>
+              
+              {/* Action buttons */}
+              <div className="flex items-center gap-2">
+                {/* Near Me button */}
                 <button
                   type="button"
-                  className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                  className="text-xs px-3 py-2 rounded-md border border-cream-border bg-white hover:bg-cream-hover flex items-center gap-1"
                   title="Use my location"
                   onClick={()=>{
                     const loc = loadMyLocation();
@@ -698,16 +707,22 @@ export default function PlanTrip() {
                     navigate({ search: `?${params.toString()}` }, { replace: false });
                     showToast('Applied filters near your location', 'success');
                   }}
-                >Near me</button>
+                >📍 Near me</button>
+                
+                {/* Advanced toggle */}
                 <button
                   type="button"
-                  className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                  className="text-xs px-3 py-2 rounded-md border border-cream-border bg-white hover:bg-cream-hover flex items-center gap-1"
                   title="More filters and tools"
                   aria-expanded={showAdvanced}
                   onClick={()=>{ const next=!showAdvanced; setShowAdvanced(next); try{ localStorage.setItem('planTrip:showAdvanced:v2', next?'1':'0'); }catch{} }}
-                >{showAdvanced? 'Hide' : 'Advanced'}</button>
+                >
+                  <span>{showAdvanced ? '🔼' : '🔽'}</span>
+                  <span>{showAdvanced? 'Hide' : 'More'}</span>
+                </button>
               </div>
             </div>
+            
             {!simpleMode && (
               <span className="hidden md:block text-[11px] text-brand-brown/60">Tip: try “Hotels in Durban”, then press Enter</span>
             )}
