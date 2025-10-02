@@ -697,8 +697,8 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
   }
   // Focus trap when open (escape key is handled by useClickOutsideAndEscape hook)
   useEffect(()=>{
-    if(open){
-      const focusable = panelRef.current?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if(open && panelRef.current){
+      const focusable = panelRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
       const first = focusable?.[0];
       const last = focusable?.[focusable.length-1];
       first && first.focus();
@@ -711,7 +711,7 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
       document.addEventListener('keydown', onKey);
       return ()=> document.removeEventListener('keydown', onKey);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
   return (
     <div className="relative">

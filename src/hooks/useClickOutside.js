@@ -8,13 +8,19 @@ import { useEffect, useRef } from 'react';
  */
 export function useClickOutside(handler, isOpen = true) {
   const ref = useRef(null);
+  const handlerRef = useRef(handler);
+  
+  // Keep handler ref up to date
+  useEffect(() => {
+    handlerRef.current = handler;
+  }, [handler]);
 
   useEffect(() => {
     if (!isOpen) return;
 
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
-        handler();
+        handlerRef.current();
       }
     };
 
@@ -29,7 +35,7 @@ export function useClickOutside(handler, isOpen = true) {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [handler, isOpen]);
+  }, [isOpen]); // Removed handler from dependencies
 
   return ref;
 }
@@ -40,18 +46,25 @@ export function useClickOutside(handler, isOpen = true) {
  * @param {boolean} isOpen - Whether the element is currently open/visible
  */
 export function useEscapeKey(handler, isOpen = true) {
+  const handlerRef = useRef(handler);
+  
+  // Keep handler ref up to date
+  useEffect(() => {
+    handlerRef.current = handler;
+  }, [handler]);
+
   useEffect(() => {
     if (!isOpen) return;
 
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        handler();
+        handlerRef.current();
       }
     };
 
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [handler, isOpen]);
+  }, [isOpen]); // Removed handler from dependencies
 }
 
 /**
