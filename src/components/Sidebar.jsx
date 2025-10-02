@@ -11,9 +11,18 @@ export default function Sidebar() {
 
   const [open, setOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({});
   const location = useLocation();
   const asideRef = useRef(null);
   const prevFocusRef = useRef(null);
+
+  // Toggle section expansion
+  const toggleSection = (sectionName) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionName]: !prev[sectionName]
+    }));
+  };
 
   // Track responsive breakpoint and default sidebar state
   useEffect(() => {
@@ -165,80 +174,152 @@ export default function Sidebar() {
           </div>
         )}
 
-  <nav id={navId} role="navigation" aria-label="Explore" aria-labelledby="explore-title" className={`mt-3 space-y-3 text-center ${open ? "block" : "hidden"} group-hover:block focus-within:block`}>
+  <nav id={navId} role="navigation" aria-label="Explore" aria-labelledby="explore-title" className={`mt-3 space-y-2 ${open ? "block" : "hidden"} group-hover:block focus-within:block`}>
           
-          {/* Trip Planning Section */}
-          <div className="space-y-1">
-            <div className="text-brand-orange font-semibold text-[11px] uppercase tracking-wider mb-2">Trip Planning</div>
-            <NavLink to="/plan-trip" className={linkClass}>
-              Trip Planner
-            </NavLink>
-            <NavLink to="/ai" className={linkClass}>
-              Trip Assist
-            </NavLink>
-            <NavLink to="/quote/new" className={linkClass}>
-              New Quote
-            </NavLink>
-            <NavLink to="/quotes" className={linkClass}>
-              Quotes
-            </NavLink>
-            <NavLink to="/itinerary" className={linkClass}>
-              Itinerary
-            </NavLink>
-            <NavLink to="/bookings" className={linkClass}>
-              Bookings
-            </NavLink>
+          {/* Login/Register Section */}
+          <div className="border-b border-cream-border/50 pb-2">
+            <button
+              type="button"
+              onClick={() => toggleSection('login')}
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+            >
+              <span>Login/Register</span>
+              <span className={`transition-transform duration-200 ${expandedSections.login ? "rotate-180" : "rotate-0"}`}>▾</span>
+            </button>
+            {expandedSections.login && (
+              <div className="mt-2 space-y-1 pl-2">
+                <NavLink to="/login" className={linkClass}>
+                  Login / Register
+                </NavLink>
+                <NavLink to="/profile" className={linkClass}>
+                  Profile
+                </NavLink>
+              </div>
+            )}
+          </div>
+
+          {/* Trip Planner Section */}
+          <div className="border-b border-cream-border/50 pb-2">
+            <button
+              type="button"
+              onClick={() => toggleSection('tripPlanner')}
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+            >
+              <span>Trip Planner</span>
+              <span className={`transition-transform duration-200 ${expandedSections.tripPlanner ? "rotate-180" : "rotate-0"}`}>▾</span>
+            </button>
+            {expandedSections.tripPlanner && (
+              <div className="mt-2 space-y-1 pl-2">
+                <NavLink to="/plan-trip" className={linkClass}>
+                  Trip Planner
+                </NavLink>
+                <NavLink to="/ai" className={linkClass}>
+                  Trip Assist
+                </NavLink>
+                <NavLink to="/quote/new" className={linkClass}>
+                  New Quote
+                </NavLink>
+                <NavLink to="/quotes" className={linkClass}>
+                  Quotes
+                </NavLink>
+                <NavLink to="/itinerary" className={linkClass}>
+                  Itinerary
+                </NavLink>
+                <NavLink to="/bookings" className={linkClass}>
+                  Bookings
+                </NavLink>
+              </div>
+            )}
           </div>
 
           {/* Partner & Business Section */}
-          <div className="space-y-1">
-            <div className="text-brand-orange font-semibold text-[11px] uppercase tracking-wider mb-2">Partner & Business</div>
-            <NavLink to="/partner-dashboard" className={linkClass}>
-              Dashboard
-            </NavLink>
-            <NavLink to="/collaboration" className={linkClass}>
-              Collaboration
-            </NavLink>
-            <NavLink to="/collab-analytics" className={linkClass}>
-              Collab Analytics
-            </NavLink>
-            <NavLink to="/admin-console" className={linkClass}>
-              Admin Console
-            </NavLink>
+          <div className="border-b border-cream-border/50 pb-2">
+            <button
+              type="button"
+              onClick={() => toggleSection('partnerBusiness')}
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+            >
+              <span>Partner & Business</span>
+              <span className={`transition-transform duration-200 ${expandedSections.partnerBusiness ? "rotate-180" : "rotate-0"}`}>▾</span>
+            </button>
+            {expandedSections.partnerBusiness && (
+              <div className="mt-2 space-y-1 pl-2">
+                <NavLink to="/partner-dashboard" className={linkClass}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/collaboration" className={linkClass}>
+                  Collaboration
+                </NavLink>
+                <NavLink to="/collab-analytics" className={linkClass}>
+                  Collab Analytics
+                </NavLink>
+                <NavLink to="/admin-console" className={linkClass}>
+                  Admin Console
+                </NavLink>
+              </div>
+            )}
           </div>
 
-          {/* Account Section */}
-          <div className="space-y-1">
-            <div className="text-brand-orange font-semibold text-[11px] uppercase tracking-wider mb-2">Account</div>
-            <NavLink to="/profile" className={linkClass}>
-              Profile
-            </NavLink>
-            <NavLink to="/settings" className={linkClass}>
-              Settings
-            </NavLink>
-            <NavLink to="/login" className={linkClass}>
-              Login / Register
-            </NavLink>
+          {/* Accounts Section */}
+          <div className="border-b border-cream-border/50 pb-2">
+            <button
+              type="button"
+              onClick={() => toggleSection('accounts')}
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+            >
+              <span>Accounts</span>
+              <span className={`transition-transform duration-200 ${expandedSections.accounts ? "rotate-180" : "rotate-0"}`}>▾</span>
+            </button>
+            {expandedSections.accounts && (
+              <div className="mt-2 space-y-1 pl-2">
+                <NavLink to="/settings" className={linkClass}>
+                  Settings
+                </NavLink>
+                <NavLink to="/compliance" className={linkClass}>
+                  Compliance
+                </NavLink>
+                <NavLink to="/reports" className={linkClass}>
+                  Reports
+                </NavLink>
+                <NavLink to="/promotions" className={linkClass}>
+                  Promotions
+                </NavLink>
+                <NavLink to="/payouts" className={linkClass}>
+                  Payouts
+                </NavLink>
+              </div>
+            )}
           </div>
 
           {/* Information Section */}
-          <div className="space-y-1">
-            <div className="text-brand-orange font-semibold text-[11px] uppercase tracking-wider mb-2">Information</div>
-            <NavLink to="/" className={linkClass} end>
-              Home
-            </NavLink>
-            <NavLink to="/about" className={linkClass}>
-              About
-            </NavLink>
-            <NavLink to="/safety" className={linkClass}>
-              Safety Promise
-            </NavLink>
-            <NavLink to="/contact" className={linkClass}>
-              Contacts
-            </NavLink>
-            <NavLink to="/terms" className={linkClass} title="Terms & Conditions">
-              Terms & Conditions
-            </NavLink>
+          <div>
+            <button
+              type="button"
+              onClick={() => toggleSection('information')}
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-cream-hover transition-colors text-[14px] font-semibold text-brand-orange"
+            >
+              <span>Information</span>
+              <span className={`transition-transform duration-200 ${expandedSections.information ? "rotate-180" : "rotate-0"}`}>▾</span>
+            </button>
+            {expandedSections.information && (
+              <div className="mt-2 space-y-1 pl-2">
+                <NavLink to="/" className={linkClass} end>
+                  Home
+                </NavLink>
+                <NavLink to="/about" className={linkClass}>
+                  About
+                </NavLink>
+                <NavLink to="/safety" className={linkClass}>
+                  Safety Promise
+                </NavLink>
+                <NavLink to="/contact" className={linkClass}>
+                  Contacts
+                </NavLink>
+                <NavLink to="/terms" className={linkClass} title="Terms & Conditions">
+                  Terms & Conditions
+                </NavLink>
+              </div>
+            )}
           </div>
         </nav>
       </div>
