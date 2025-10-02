@@ -11,6 +11,7 @@ import { useBasketState } from "../utils/useBasketState";
 import { useLocalStorageState } from "../useLocalStorageState";
 import FeesBreakdown from "../components/payments/FeesBreakdown";
 import PaymentButton from "../components/payments/PaymentButton";
+import { useClickOutsideAndEscape } from "../hooks/useClickOutside";
 
 export default function Itinerary() {
   const [trip, setTrip] = useTripState();
@@ -675,8 +676,13 @@ export default function Itinerary() {
 // Lightweight in-file preferences dropdown to avoid extra files (can be extracted later)
 function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts, setEnableToasts, animationsEnabled, setAnimationsEnabled }){
   const [open, setOpen] = React.useState(false);
-  const panelRef = React.useRef(null);
   const triggerRef = React.useRef(null);
+  
+  // Combined click-outside and escape key handling
+  const panelRef = useClickOutsideAndEscape(() => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }, open);
   function resetPrefs(){
     try{
       localStorage.removeItem('itineraryHighContrastFocus:v1');
@@ -689,7 +695,7 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
       setAnimationsEnabled(true);
   }catch(_err){ /* ignore */ }
   }
-  // Focus trap when open
+  // Focus trap when open (escape key is handled by useClickOutsideAndEscape hook)
   useEffect(()=>{
     if(open){
       const focusable = panelRef.current?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
@@ -697,7 +703,6 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
       const last = focusable?.[focusable.length-1];
       first && first.focus();
       const onKey = (e) => {
-        if(e.key==='Escape'){ setOpen(false); triggerRef.current?.focus(); }
         if(e.key==='Tab' && focusable && focusable.length){
           if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
           else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
@@ -706,6 +711,7 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
       document.addEventListener('keydown', onKey);
       return ()=> document.removeEventListener('keydown', onKey);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps  
   }, [open]);
   return (
     <div className="relative">

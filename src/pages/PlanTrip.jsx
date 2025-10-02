@@ -11,6 +11,7 @@ import { sortEvents as sortEventsUtil, mergeAndSort } from "../utils/eventsSort"
 import { buildLocationMaps as buildLocMapsUtil, detectCategory, resolveLocationToken, longestLocationMatch, getSuggestion, loadMyLocation, persistMyLocation, loadSmartSettings } from "../utils/searchIntent";
 import MyLocationModal from "../components/MyLocationModal";
 import WeatherWidget from "../components/WeatherWidget";
+import { useClickOutsideAndEscape } from "../hooks/useClickOutside";
 
 export default function PlanTrip() {
   const [trip] = useTripState();
@@ -57,6 +58,14 @@ export default function PlanTrip() {
   const [showAdvanced, setShowAdvanced] = useState(() => {
     try { return localStorage.getItem('planTrip:showAdvanced:v2') === '1'; } catch { return false; }
   });
+  
+  // Click outside and escape to close advanced filters
+  const advancedFiltersRef = useClickOutsideAndEscape(() => {
+    if (showAdvanced) {
+      setShowAdvanced(false);
+      try { localStorage.setItem('planTrip:showAdvanced:v2', '0'); } catch {}
+    }
+  }, showAdvanced);
   useEffect(() => {
     function onStorage(e){ if(!e) return; if(e.key === 'showWeather'){ setShowWeather(e.newValue !== '0'); } }
     window.addEventListener('storage', onStorage);
@@ -889,7 +898,7 @@ export default function PlanTrip() {
           {/* Live region for announcing results count to assistive tech */}
           <div aria-live="polite" role="status" className="sr-only">{sortedFiltered.length} results in catalog</div>
           {showAdvanced && (
-          <div className="flex flex-wrap gap-2 sm:gap-2.5 md:gap-3 mb-3">
+          <div ref={advancedFiltersRef} className="flex flex-wrap gap-2 sm:gap-2.5 md:gap-3 mb-3">
             <select
               value={locFilters.continent}
               onChange={(e)=>updateLocationParam('continent', e.target.value)}
