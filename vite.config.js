@@ -6,6 +6,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const API_BASE = env.VITE_API_BASE || 'http://localhost:4000'
   const BASE_PATH = env.VITE_BASE_PATH || '/'
+  // Allow overriding dev server port via env; default to 5173
+  const DEV_PORT = Number(env.PORT || env.VITE_PORT || 5173)
 
   return {
     plugins: [react()],
@@ -19,12 +21,13 @@ export default defineConfig(({ mode }) => {
     // Locally this remains '/'
     base: BASE_PATH,
     server: {
-      port: 5173,
-      strictPort: true,
+      port: DEV_PORT,
+      // Relax strictPort so Vite can choose the next free port if needed
+      strictPort: false,
       open: true,
       hmr: {
         host: 'localhost',
-        clientPort: 5173,
+        clientPort: DEV_PORT,
       },
       proxy: {
         '/api': {
