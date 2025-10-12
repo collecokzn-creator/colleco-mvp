@@ -5,7 +5,7 @@ export default function Contact() {
     <div>
       <h2>Contact Us</h2>
       <p>Email: collecotravel@gmail.com</p>
-      <p>Phone: 073 399 4708</p>
+  <p>Phone: —</p>
     </div>
   );
 }

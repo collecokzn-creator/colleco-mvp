@@ -2,5 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 
-body { @apply bg-gradient-to-br from-cream-sand/30 via-white to-cream/50 text-brand-brown; }
+body { @apply bg-gradient-to-br from-cream-sand/30 via-white to-cream/50 text-brand-russty; }
 html, body, #root { height: 100%; }

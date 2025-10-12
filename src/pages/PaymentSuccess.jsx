@@ -5,16 +5,23 @@ import { Link } from 'react-router-dom';
 export default function PaymentSuccess() {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('sessionId');
+  const item = params.get('item');
+  const date = params.get('date');
   const [status, setStatus] = useState('processing');
   const [payment, setPayment] = useState(null);
 
   useEffect(() => {
-    if (!sessionId) { setStatus('error'); return; }
-    // Confirm and fetch details
-    const p = confirmMockPayment(sessionId) || getPayment(sessionId);
-    if (p) { setPayment(p); setStatus('ok'); }
-    else { setStatus('error'); }
-  }, [sessionId]);
+    if (sessionId) {
+      const p = confirmMockPayment(sessionId) || getPayment(sessionId);
+      if (p) { setPayment(p); setStatus('ok'); }
+      else { setStatus('error'); }
+    } else if (item && date) {
+      // Simple success for direct booking without a payment session
+      setStatus('direct-ok');
+    } else {
+      setStatus('error');
+    }
+  }, [sessionId, item, date]);
 
   const total = useMemo(() => payment?.amount?.toFixed(2), [payment]);
 
@@ -42,7 +49,17 @@ export default function PaymentSuccess() {
           </div>
         </div>
       )}
-  {status === 'error' && <p className="text-red-600">We couldn&apos;t find your session.</p>}
+      {status === 'direct-ok' && (
+        <div className="bg-cream-sand p-4 border border-cream-border rounded">
+          <div className="font-semibold mb-1">Thank you! Your booking is confirmed.</div>
+          <div className="text-sm text-brand-brown/80">Item: {item}</div>
+          <div className="text-sm text-brand-brown/80">Date: {date}</div>
+          <div className="mt-4">
+            <Link to="/bookings" className="px-3 py-2 bg-brand-orange text-white rounded">Back to Bookings</Link>
+          </div>
+        </div>
+      )}
+      {status === 'error' && <p className="text-red-600">We couldn&apos;t find your session.</p>}
     </div>
   );
 }

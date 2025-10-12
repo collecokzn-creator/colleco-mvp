@@ -2,7 +2,7 @@
 // Use this module for all frontend API calls. Easily swap endpoints for white-labeling or partner integrations.
 // Example: import { getQuotes } from '../api/client'
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://api.collecotravel.com/v1';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://api.travelcolleco.com/v1';
 
 export async function getQuotes() {
   // GET /quotes

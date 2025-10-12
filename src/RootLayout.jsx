@@ -16,7 +16,7 @@ export default function RootLayout(){
 					</main>
 				</div>
 			</div>
-			<footer className="fixed bottom-0 left-0 right-0 bg-brand-brown text-white text-center py-4 text-sm border-t border-cream-border font-semibold tracking-wide flex flex-col items-center gap-1 z-40">
+			<footer className="fixed bottom-0 left-0 right-0 bg-brand-russty text-white text-center py-4 text-sm border-t border-cream-border font-semibold tracking-wide flex flex-col items-center gap-1 z-40">
 				<span>© {new Date().getFullYear()} CollEco Travel</span>
 			</footer>
 		</div>

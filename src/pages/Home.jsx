@@ -4,6 +4,7 @@ import useInViewOnce from "../utils/useInViewOnce";
 import PromotionsSection from "../components/PromotionsSection";
 import FeaturedPackagesSection from "../components/FeaturedPackagesSection";
 import logo from "../assets/colleco-logo.png";
+import birdLogo from "../assets/Globeicon.png";
 
 export default function Home() {
   const [heroRef, heroIn] = useInViewOnce({ threshold: 0.3 });
@@ -14,69 +15,77 @@ export default function Home() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'CollEco Travel',
-    url: 'https://www.collecotravel.com',
-    logo: 'https://www.collecotravel.com/logo.png'
+  url: 'https://www.travelcolleco.com',
+  logo: 'https://www.travelcolleco.com/logo.png'
   };
 
   return (
-    <div className="text-brand-brown">
+  <div className="bg-white text-brand-brown">
       {/* SEO */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       {/* Hero */}
-      <section
-        ref={heroRef}
-        className={`relative overflow-hidden bg-gradient-to-b from-cream to-cream-sand/60 px-6 pt-10 pb-14 sm:pt-12 sm:pb-20 rounded-b-xl shadow-sm ${heroIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'} transition duration-700`}
-      >
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <section
+  ref={heroRef}
+  className={`relative overflow-hidden bg-white px-6 pt-10 pb-14 sm:pt-12 sm:pb-20 rounded-b-xl ${heroIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'} transition duration-700`}
+  >
+    <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative">
           <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-brand-brown">
-              Plan unforgettable group adventures
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-brand-orange">
+              Curated Adventure
             </h1>
+            <h2 className="mt-2 text-xl sm:text-2xl font-semibold text-brand-orange/90">
+              Business or Pleasure
+            </h2>
             <p className="mt-3 text-brand-brown/80 text-base sm:text-lg max-w-prose">
-              CollEco makes trip planning effortless—co-create itineraries, generate quotes, collect payments, and collaborate with partners, all in one place.
+              Making trip planning effortless for friends, teams, partners, and individuals who love to explore.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight">
+              <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-orange/90">
                 Start Planning
                 <span aria-hidden>→</span>
               </Link>
-              <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-brand-brown text-brand-brown bg-white/80 hover:bg-white">
+              <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-brand-orange/10">
                 Try Trip Assist
               </Link>
             </div>
-            <p className="mt-3 text-xs text-brand-brown/70">No credit card required · Free to get started</p>
+            <p className="mt-3 text-xs text-brand-orange/70">No credit card required · Free to get started</p>
           </div>
-          <div className="flex justify-center md:justify-end">
-            <div className="relative h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64 rounded-full bg-white/70 ring-1 ring-cream-border shadow flex items-center justify-center">
-              <img src={logo} alt="CollEco logo" className="h-32 w-32 sm:h-40 sm:w-40 object-contain" />
-            </div>
+          <div className="flex justify-center items-center">
+            <img src={logo} alt="CollEco Travel logo" className="w-32 h-32 object-contain" />
           </div>
+          {/* Bird logo positioned on the right of the hero */}
+          <img
+            src={birdLogo}
+            alt="CollEco bird icon"
+            className="absolute right-6 top-1/2 -translate-y-1/2 h-40 w-auto opacity-95"
+          />
         </div>
       </section>
+  {/* Feature Cards Section removed as requested */}
 
       {/* Trust badges */}
-      <section className="max-w-6xl mx-auto px-6 py-8">
+  <section className="max-w-6xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-          <div className="rounded-md border border-cream-border bg-cream p-4 text-center">
-            <div className="font-semibold">Secure Payments</div>
-            <div className="text-brand-brown/80">PCI-aware flows and trusted processors</div>
+          <div className="rounded-md border border-brand-gold bg-white p-4 text-center">
+            <div className="font-semibold text-brand-orange">Secure Payments</div>
+            <div className="text-brand-orange/80">PCI-aware flows and trusted processors</div>
           </div>
-          <div className="rounded-md border border-cream-border bg-cream p-4 text-center">
-            <div className="font-semibold">Reliable Platform</div>
-            <div className="text-brand-brown/80">Rate-limited APIs and safety guardrails</div>
+          <div className="rounded-md border border-brand-gold bg-white p-4 text-center">
+            <div className="font-semibold text-brand-orange">Reliable Platform</div>
+            <div className="text-brand-orange/80">Rate-limited APIs and safety guardrails</div>
           </div>
-          <div className="rounded-md border border-cream-border bg-cream p-4 text-center">
-            <div className="font-semibold">Human Support</div>
-            <div className="text-brand-brown/80">We’re here when you need us</div>
+          <div className="rounded-md border border-brand-gold bg-white p-4 text-center">
+            <div className="font-semibold text-brand-orange">Human Support</div>
+            <div className="text-brand-orange/80">We’re here when you need us</div>
           </div>
         </div>
       </section>
       {/* Trusted by */}
       <section className="max-w-6xl mx-auto px-6 py-6">
-        <div className="text-center text-xs uppercase tracking-wider text-brand-brown/60">Trusted by group organizers and partners</div>
+      <div className="text-center text-xs uppercase tracking-wider text-brand-brown/60">Trusted by group organizers and partners</div>
         <div className="mt-3 flex flex-wrap justify-center gap-3">
           {['SafariCo', 'CityTours', 'VoyagePlus', 'BeachLine', 'PeakGuides', 'NomadHub'].map((n) => (
-            <span key={n} className="px-3 py-1 rounded border border-cream-border bg-white/70 text-[11px] text-brand-brown/80">
+                <span key={n} className="px-3 py-1 rounded border border-cream-border bg-white text-[11px] text-brand-brown/70">
               {n}
             </span>
           ))}
@@ -98,8 +107,8 @@ export default function Home() {
             { title: 'Metrics & Insights', desc: 'Keep an eye on conversion, spend, and latency—optimize your flow.' },
             { title: 'Safe & Reliable', desc: 'Session history, rate limits, and guardrails so things stay smooth.' },
           ].map((f) => (
-            <div key={f.title} className="rounded-lg border border-cream-border bg-cream p-5 shadow-sm hover:shadow">
-              <h3 className="font-semibold text-lg">{f.title}</h3>
+            <div key={f.title} className="rounded-lg border border-cream-border bg-white p-5 shadow-sm hover:shadow">
+              <h3 className="font-semibold text-lg text-brand-orange">{f.title}</h3>
               <p className="text-sm text-brand-brown/80 mt-1">{f.desc}</p>
             </div>
           ))}
@@ -120,15 +129,15 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold">How it works</h2>
           <ol className="mt-6 grid sm:grid-cols-3 gap-5 list-decimal list-inside">
-            <li className="rounded-md bg-white/70 border border-cream-border p-4">
+            <li className="rounded-md bg-white border border-cream-border p-4">
               <div className="font-semibold">Plan</div>
               <p className="text-sm text-brand-brown/80">Describe your trip, group size, budget, and vibe.</p>
             </li>
-            <li className="rounded-md bg-white/70 border border-cream-border p-4">
+            <li className="rounded-md bg-white border border-cream-border p-4">
               <div className="font-semibold">Refine</div>
               <p className="text-sm text-brand-brown/80">Tailor the itinerary with AI assist and partner input.</p>
             </li>
-            <li className="rounded-md bg-white/70 border border-cream-border p-4">
+            <li className="rounded-md bg-white border border-cream-border p-4">
               <div className="font-semibold">Book</div>
               <p className="text-sm text-brand-brown/80">Share quotes, collect payments, and confirm.</p>
             </li>
@@ -157,8 +166,8 @@ export default function Home() {
               role: 'Group Leader'
             }
           ].map((t, i) => (
-            <blockquote key={i} className="rounded-lg border border-cream-border bg-cream p-5 shadow-sm hover:shadow transition">
-              <p className="text-sm text-brand-brown/90">“{t.quote}”</p>
+            <blockquote key={i} className="rounded-lg border border-cream-border bg-white p-5 shadow-sm hover:shadow transition">
+              <p className="text-sm text-brand-brown">“{t.quote}”</p>
               <footer className="mt-3 text-sm font-semibold text-brand-brown">{t.name} <span className="font-normal text-brand-brown/70">— {t.role}</span></footer>
             </blockquote>
           ))}
@@ -177,7 +186,7 @@ export default function Home() {
             { emoji: '🏝️', name: 'Mauritius', blurb: 'Resorts, reefs, and rum distilleries.' },
             { emoji: '🏙️', name: 'Johannesburg', blurb: 'Culture, cuisine, and vibrant neighborhoods.' },
           ].map((d) => (
-            <div key={d.name} className="rounded-lg border border-cream-border bg-cream p-5 shadow-sm hover:shadow transition flex gap-3">
+            <div key={d.name} className="rounded-lg border border-cream-border bg-white p-5 shadow-sm hover:shadow transition flex gap-3">
               <div className="text-2xl shrink-0" aria-hidden>{d.emoji}</div>
               <div className="flex-1">
                 <div className="font-semibold">{d.name}</div>
@@ -196,21 +205,30 @@ export default function Home() {
         ref={ctaRef}
         className={`max-w-5xl mx-auto px-6 py-12 sm:py-16 ${ctaIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'} transition duration-700`}
       >
-        <div className="rounded-xl bg-brand-brown text-white px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow">
+        <div className="rounded-xl bg-cream border border-brand-orange text-brand-brown px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow">
           <div>
             <h3 className="text-xl sm:text-2xl font-bold">Ready to explore?</h3>
-            <p className="text-sm text-white/90">Jump into the planner or let Trip Assist suggest a perfect first draft.</p>
+            <p className="text-sm text-brand-brown/80">Jump into the planner or let Trip Assist suggest a perfect first draft.</p>
           </div>
           <div className="flex gap-3">
-            <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-white text-brand-brown font-semibold hover:bg-cream">
+            <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold hover:bg-brand-orange/90">
               Plan a Trip
             </Link>
-            <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-white text-white hover:bg-white/10">
+            <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-brand-orange text-brand-orange hover:bg-brand-orange/10">
               Try Trip Assist
             </Link>
           </div>
         </div>
       </section>
+
+      {/* Rusty footer with white text */}
+      <footer className="bg-brand-russty text-white text-center py-6 mt-10">
+        <div className="mb-2 flex justify-center items-center gap-2">
+          <img src={birdLogo} alt="CollEco bird icon" className="w-6 h-6 inline-block" />
+          <span className="font-bold">© 2025 CollEco Travel — All rights reserved.</span>
+        </div>
+        <a href="https://www.collecotravel.com" className="underline text-white text-lg">www.collecotravel.com</a>
+      </footer>
     </div>
   );
 }

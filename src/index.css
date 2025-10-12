@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Align base with brand palette to avoid dark edges peeking through */
-body { @apply bg-cream text-brand-brown; }
+body { @apply bg-cream text-brand-russty; }
 html, body, #root { height: 100%; }
 html, body { color-scheme: light; }
 

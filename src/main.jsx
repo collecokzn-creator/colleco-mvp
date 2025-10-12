@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { worker } from "./mocks/browser";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
+import { UserProvider } from "./context/UserContext.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import "./index.css"; // Tailwind styles
 import appIconPng from "./assets/colleco-logo.png";
@@ -41,17 +43,36 @@ function InstallBanner() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-    <InstallBanner />
-  </React.StrictMode>
-);
+
+async function enableMocking() {
+  if (import.meta.env.DEV) {
+    await worker.start({
+      onUnhandledRequest: "bypass",
+    });
+  }
+}
+
+const mountApp = () => {
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+      <UserProvider>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+        <InstallBanner />
+      </UserProvider>
+    </React.StrictMode>
+  );
+};
+
+// Mount the app even if MSW fails to start (do not block the UI)
+enableMocking().then(mountApp).catch(() => {
+  try { mountApp(); } catch {}
+});
 
 // Register service worker for PWA
-if ('serviceWorker' in navigator && !window.Cypress) {
+// Only register service worker in production builds to avoid dev caching issues
+if ('serviceWorker' in navigator && !window.Cypress && import.meta.env.PROD) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(async (reg) => {
       try {

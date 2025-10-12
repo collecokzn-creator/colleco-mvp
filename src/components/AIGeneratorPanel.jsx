@@ -71,23 +71,14 @@ export default function AIGeneratorPanel() {
     try {
       const data = await generateItinerary(prompt.trim());
       setFullData(data);
-      setPhases({ parse: baseFrom(data), plan: { itinerary: data.itinerary }, pricing: { pricing: data.pricing }, done: true });
-    } catch (e) { setError(e.message || 'Failed'); }
-    finally { setLoading(false); }
-  }
-
-  function baseFrom(d) {
-    return {
-      original: d.original,
-      destinations: d.destinations,
-      startDate: d.startDate,
-      endDate: d.endDate,
-      nights: d.nights,
-      travelers: d.travelers,
-      budget: d.budget,
-      interests: d.interests,
-      meta: d.meta
-    };
+      const parsePhase = baseFrom(data);
+      setPhases({ parse: parsePhase, plan: { itinerary: data.itinerary }, pricing: { pricing: data.pricing }, done: true });
+      setActive(false);
+    } catch(e) {
+      setError(e.message || 'Generation failed');
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleStream() {
@@ -227,8 +218,8 @@ export default function AIGeneratorPanel() {
         const basePrompt = prompt.trim();
         refined = await refineItinerary(basePrompt, refineText.trim());
       }
-       setFullData(refined);
-       setPhases({ parse: baseFrom(refined), plan: { itinerary: refined.itinerary }, pricing: { pricing: refined.pricing }, done: true });
+  setFullData(refined);
+  setPhases({ parse: baseFrom(refined), plan: { itinerary: refined.itinerary }, pricing: { pricing: refined.pricing }, done: true });
        setRefineText('');
      } catch(e){ setError(e.message||'Refine failed'); }
      finally { setRefining(false); }
@@ -240,8 +231,8 @@ export default function AIGeneratorPanel() {
   const s = await startSession(prompt.trim());
       setSessionId(s.id);
       setSessionMode(true);
-      setFullData(s.data);
-      setPhases({ parse: baseFrom(s.data), plan: { itinerary: s.data.itinerary }, pricing: { pricing: s.data.pricing }, done: true });
+  setFullData(s.data);
+  setPhases({ parse: baseFrom(s.data), plan: { itinerary: s.data.itinerary }, pricing: { pricing: s.data.pricing }, done: true });
   setScoped(!!s.scoped);
       setHistory([{ type:'parse', data: s.data, at: Date.now() }]);
       if(liveRef.current){ liveRef.current.textContent = 'Session started'; setTimeout(()=>{ if(liveRef.current) liveRef.current.textContent=''; },1500); }
@@ -290,6 +281,16 @@ export default function AIGeneratorPanel() {
   }
 
   function formatCurrency(v, c) { return new Intl.NumberFormat(undefined, { style: 'currency', currency: c||'USD'}).format(v); }
+
+  // Normalize raw AI data to parse phase shape
+  function baseFrom(data) {
+    if (!data || typeof data !== 'object') return {};
+    const nights = data.nights ?? (Array.isArray(data.itinerary) ? data.itinerary.length : undefined);
+    const destinations = Array.isArray(data.destinations) ? data.destinations : Array.isArray(data.itinerary) ? data.itinerary.map(d => d.destination || d.title?.replace(/^.*-\s*/, '')).filter(Boolean) : [];
+    const interests = Array.isArray(data.interests) ? data.interests : [];
+    const budget = data.budget ?? (data.pricing && data.pricing.total ? { amount: data.pricing.total, currency: (data.pricing.currency || 'USD') } : undefined);
+    return { nights, destinations, interests, budget };
+  }
 
   const parse = phases.parse; const plan = phases.plan; const pricing = phases.pricing;
 

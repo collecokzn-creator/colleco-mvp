@@ -1,7 +1,7 @@
 // CollEco Travel Partner API (modular, scalable)
 // Use this module for partner-specific API calls and integrations.
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://api.collecotravel.com/v1';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://api.travelcolleco.com/v1';
 
 export async function getPartnerProducts(partnerId) {
   // GET /partners/:id/products
