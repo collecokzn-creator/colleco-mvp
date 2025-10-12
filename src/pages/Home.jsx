@@ -221,14 +221,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Rusty footer with white text */}
-      <footer className="bg-brand-russty text-white text-center py-6 mt-10">
-        <div className="mb-2 flex justify-center items-center gap-2">
-          <img src={birdLogo} alt="CollEco bird icon" className="w-6 h-6 inline-block" />
-          <span className="font-bold">© 2025 CollEco Travel — All rights reserved.</span>
-        </div>
-        <a href="https://www.collecotravel.com" className="underline text-white text-lg">www.collecotravel.com</a>
-      </footer>
+      {/* Footer is rendered globally by RootLayout; remove page-level footer to avoid duplication */}
     </div>
   );
 }
