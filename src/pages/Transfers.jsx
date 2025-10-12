@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
 export default function Transfers() {
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   const [date, setDate] = useState("");

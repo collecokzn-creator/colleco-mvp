@@ -14,6 +14,9 @@ import WeatherWidget from "../components/WeatherWidget";
 import { useClickOutsideAndEscape } from "../hooks/useClickOutside";
 
 export default function PlanTrip() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
   const location = useLocation();
   const navigate = useNavigate();
   const [directBookingOpen, setDirectBookingOpen] = useState(false);

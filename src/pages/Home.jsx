@@ -15,12 +15,16 @@ export default function Home() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'CollEco Travel',
-  url: 'https://www.travelcolleco.com',
-  logo: 'https://www.travelcolleco.com/logo.png'
+    url: 'https://www.travelcolleco.com',
+    logo: 'https://www.travelcolleco.com/logo.png'
   };
 
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
-  <div className="bg-white text-brand-brown">
+    <div className="bg-white text-brand-brown">
       {/* SEO */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       {/* Hero */}

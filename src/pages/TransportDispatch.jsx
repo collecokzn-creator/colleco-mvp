@@ -1,6 +1,9 @@
 import React from "react";
 
 export default function TransportDispatch() {
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
   // This will show a list of requests and allow assignment (stub for now)
   return (
     <div className="max-w-2xl mx-auto p-6">
