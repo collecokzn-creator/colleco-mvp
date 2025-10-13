@@ -101,10 +101,8 @@ export default function Sidebar() {
     }
     return () => { document.body.style.overflow = ''; };
   }, [open]);
-
-        {isAdmin && (
-          <>
-            <div className="mx-3 my-2 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand-russty/70 bg-cream-sand/50 rounded border border-cream-border">Admin Tools</div>
+  return (
+    <>
       {open && window.innerWidth < 640 && (
         <button
           type="button"
@@ -112,9 +110,9 @@ export default function Sidebar() {
           aria-label="Close sidebar"
           tabIndex={0}
           onClick={() => setOpen(false)}
-        {isPartner && (
-          <>
-            <div className="mx-3 my-2 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand-russty/70 bg-cream-sand/50 rounded border border-cream-border">Partner Tools</div>
+          style={{ cursor: 'pointer', border: 'none', background: 'rgba(0,0,0,0.2)', top: 'var(--header-h, 64px)' }}
+        />
+      )}
       {(open || window.innerWidth >= 640) && (
         <aside
           ref={asideRef}
@@ -122,9 +120,9 @@ export default function Sidebar() {
           style={{
             top: 'calc(var(--header-h, 64px) + 1rem)',
             bottom: 'calc(var(--footer-h, 48px) + 1rem)',
-        {isClient && (
-          <>
-            <div className="mx-3 my-2 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand-russty/70 bg-cream-sand/50 rounded border border-cream-border">Client Tools</div>
+            maxHeight: 'calc(100vh - var(--header-h, 64px) - var(--footer-h, 48px) - 2rem)',
+          }}
+          role="complementary" aria-label="Sidebar navigation" aria-hidden={!open && window.innerWidth < 640}
         >
           {/* Pinned brand header */}
           <div className="sticky top-0 z-10 bg-white p-6 border-b border-cream-border">
@@ -167,98 +165,98 @@ export default function Sidebar() {
               )}
               {/* Future: Add more quick actions here, AI-powered suggestions, etc. */}
             </div>
-          <div className="mb-4">
-            <div className="block text-xs text-brand-russty mb-1">Role Switcher:</div>
-            <div className="relative" ref={roleMenuRef}>
-              <button
-                type="button"
-                className="w-full px-3 py-2 rounded border border-cream-border text-brand-russty bg-white flex items-center justify-between hover:bg-cream-sand"
-                title="Select a role"
-                onClick={() => setRoleMenuOpen((v) => !v)}
-                aria-haspopup="true"
-                aria-expanded={roleMenuOpen}
-              >
-                <span className="font-semibold">Role: {role !== 'none' ? role.charAt(0).toUpperCase() + role.slice(1) : 'None'}</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-brand-russty"><path d="M7 10l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </button>
-              {/* Dropdown menu */}
-              {roleMenuOpen && (
-                <div className="absolute left-0 right-0 mt-1 bg-white border border-cream-border rounded-lg shadow z-50 overflow-hidden">
-                  <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('none')}>None</button>
-                  <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('admin')}>Admin</button>
-                  <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('partner')}>Partner</button>
-                  <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('client')}>Client</button>
-                </div>
-              )}
+            <div className="mb-4">
+              <div className="block text-xs text-brand-russty mb-1">Role Switcher:</div>
+              <div className="relative" ref={roleMenuRef}>
+                <button
+                  type="button"
+                  className="w-full px-3 py-2 rounded border border-cream-border text-brand-russty bg-white flex items-center justify-between hover:bg-cream-sand"
+                  title="Select a role"
+                  onClick={() => setRoleMenuOpen((v) => !v)}
+                  aria-haspopup="true"
+                  aria-expanded={roleMenuOpen}
+                >
+                  <span className="font-semibold">Role: {role !== 'none' ? role.charAt(0).toUpperCase() + role.slice(1) : 'None'}</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-brand-russty"><path d="M7 10l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
+                {/* Dropdown menu */}
+                {roleMenuOpen && (
+                  <div className="absolute left-0 right-0 mt-1 bg-white border border-cream-border rounded-lg shadow z-50 overflow-hidden">
+                    <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('none')}>None</button>
+                    <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('admin')}>Admin</button>
+                    <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('partner')}>Partner</button>
+                    <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('client')}>Client</button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        {user ? (
-          <div className="mb-6 border-b border-cream-border pb-3">
-            <p className="text-sm text-brand-russty">Welcome back,</p>
-            <p className="font-bold text-brand-orange flex items-center gap-2">
-              {user.name}
-              {/* Role badge */}
-              {isAdmin && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Admin</span>}
-              {isPartner && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Partner</span>}
-              {isClient && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Client</span>}
-            </p>
-            <p className="text-xs text-brand-russty">{user.email}</p>
-          </div>
-        ) : (
-          <p className="text-sm text-brand-russty mb-4">Not logged in</p>
-        )}
+            {user ? (
+              <div className="mb-6 border-b border-cream-border pb-3">
+                <p className="text-sm text-brand-russty">Welcome back,</p>
+                <p className="font-bold text-brand-orange flex items-center gap-2">
+                  {user.name}
+                  {/* Role badge */}
+                  {isAdmin && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Admin</span>}
+                  {isPartner && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Partner</span>}
+                  {isClient && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Client</span>}
+                </p>
+                <p className="text-xs text-brand-russty">{user.email}</p>
+              </div>
+            ) : (
+              <p className="text-sm text-brand-russty mb-4">Not logged in</p>
+            )}
 
-      {/* Navigation strictly aligned to role */}
-      <nav className="space-y-1">
-        {/* Dashboard always first */}
-        <NavLink to="/" onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/20 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>🏠 Dashboard</NavLink>
-        {/* Role-based tools rendered from config */}
-        {isAdmin && (
-          <>
-            <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
-                👑 Admin Tools
-              </span>
-            </div>
-            {TOOL_CONFIG.admin.map(tool => (
-              <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
-                {tool.label}
-              </NavLink>
-            ))}
-          </>
-        )}
-        {isPartner && (
-          <>
-            <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
-                🤝 Partner Tools
-              </span>
-            </div>
-            {TOOL_CONFIG.partner.map(tool => (
-              <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
-                {tool.label}
-              </NavLink>
-            ))}
-          </>
-        )}
-        {isClient && (
-          <>
-            <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
-                🧳 Client Tools
-              </span>
-            </div>
-            {TOOL_CONFIG.client.map(tool => (
-              <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
-                {tool.label}
-              </NavLink>
-            ))}
-          </>
-        )}
-      </nav>
-        {/* Remove inline Trip Assist from sidebar; floating icon will be global */}
-      </div>
-    </aside>
+            {/* Navigation strictly aligned to role */}
+            <nav className="space-y-1">
+              {/* Dashboard always first */}
+              <NavLink to="/" onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/20 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>🏠 Dashboard</NavLink>
+              {/* Role-based tools rendered from config */}
+              {isAdmin && (
+                <>
+                  <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
+                      👑 Admin Tools
+                    </span>
+                  </div>
+                  {TOOL_CONFIG.admin.map(tool => (
+                    <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
+                      {tool.label}
+                    </NavLink>
+                  ))}
+                </>
+              )}
+              {isPartner && (
+                <>
+                  <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
+                      🤝 Partner Tools
+                    </span>
+                  </div>
+                  {TOOL_CONFIG.partner.map(tool => (
+                    <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
+                      {tool.label}
+                    </NavLink>
+                  ))}
+                </>
+              )}
+              {isClient && (
+                <>
+                  <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
+                      🧳 Client Tools
+                    </span>
+                  </div>
+                  {TOOL_CONFIG.client.map(tool => (
+                    <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
+                      {tool.label}
+                    </NavLink>
+                  ))}
+                </>
+              )}
+            </nav>
+            {/* Remove inline Trip Assist from sidebar; floating icon will be global */}
+          </div>
+        </aside>
       )}
     </>
   );
