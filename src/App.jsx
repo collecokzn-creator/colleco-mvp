@@ -32,6 +32,7 @@ const Collaboration = lazy(() => import("./pages/Collaboration.jsx"));
 const CollabAnalytics = lazy(() => import("./pages/CollabAnalytics.jsx"));
 const Transfers = lazy(() => import("./pages/Transfers.jsx"));
 const TransportDispatch = lazy(() => import("./pages/TransportDispatch.jsx"));
+const Packages = lazy(() => import("./pages/Packages.jsx"));
 
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess.jsx"));
 const AIGeneratorPage = lazy(() => import("./pages/AIGeneratorPage.jsx"));
@@ -104,6 +105,7 @@ export default function App() {
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/ai" element={<AIGeneratorPage />} />
             <Route path="/ai/metrics" element={<AIMetricsPage />} />
+            <Route path="/packages" element={<Packages />} />
 
             {/* New menu routes */}
             <Route path="/analytics" element={<Analytics />} />

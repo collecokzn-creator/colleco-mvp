@@ -65,6 +65,20 @@ export default function AIAgent({ inline = false }) {
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const popupRef = useRef(null);
+  // Draggable position (persisted)
+  const [pos, setPos] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('aiAgentPos') || 'null');
+      if (saved && typeof saved.x === 'number' && typeof saved.y === 'number') return saved;
+    } catch {}
+    // default offset from bottom-right
+    return { x: 0, y: 0 };
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem('aiAgentPos', JSON.stringify(pos));
+    } catch {}
+  }, [pos]);
   const [role, setRole] = useState(null); // 'client' | 'partner' | 'admin'
   // Context-aware greeting with unique persona
   const persona = {
@@ -391,7 +405,19 @@ export default function AIAgent({ inline = false }) {
 
   if (!visible) return null;
   return (
-    <motion.div className="fixed bottom-6 right-6 z-50" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      <motion.div
+        className="fixed bottom-6 right-6 z-50"
+        initial={{ opacity: 0, x: pos.x, y: pos.y }}
+        animate={{ opacity: 1, x: pos.x, y: pos.y }}
+        transition={{ duration: 0.5 }}
+      drag
+      dragMomentum={false}
+      dragConstraints={{ top: -window.innerHeight + 80, left: -window.innerWidth + 80, right: 0, bottom: 0 }}
+      onDragEnd={(e, info) => {
+        // Update relative offset from default bottom-right position
+        setPos(prev => ({ x: prev.x + info.offset.x, y: prev.y + info.offset.y }));
+      }}
+    >
       {open ? (
         <motion.div className="w-80 bg-cream rounded-xl shadow-lg border border-cream-border" initial={{ scale: 0.98 }} animate={{ scale: 1 }} ref={popupRef}>
           <div className="bg-brand-russty text-white rounded-t-xl px-4 py-2 font-bold flex items-center gap-2">

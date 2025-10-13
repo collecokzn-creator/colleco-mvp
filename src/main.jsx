@@ -72,7 +72,10 @@ enableMocking().then(mountApp).catch(() => {
 
 // Register service worker for PWA
 // Only register service worker in production builds to avoid dev caching issues
-if ('serviceWorker' in navigator && !window.Cypress && import.meta.env.PROD) {
+// Allow bypassing SW via URL param ?nosw=1 to avoid stale caches on mobile preview
+const urlParams = new URLSearchParams(window.location.search);
+const disableSW = urlParams.has('nosw');
+if ('serviceWorker' in navigator && !window.Cypress && import.meta.env.PROD && !disableSW) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(async (reg) => {
       try {

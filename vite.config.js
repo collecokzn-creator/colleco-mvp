@@ -24,6 +24,8 @@ export default defineConfig(({ mode }) => {
       port: DEV_PORT,
       // Relax strictPort so Vite can choose the next free port if needed
       strictPort: false,
+      // Expose server on LAN for mobile testing
+      host: true,
       open: true,
       proxy: {
         '/api': {

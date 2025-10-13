@@ -72,13 +72,46 @@ For any internet-exposed deployment of the Express server, set these environment
 See SECURITY.md for complete hardening guidance (headers, CORS, rate limits, auth).
 
 ### UI Layering (z-index) Policy
-- Header/nav: z-50
-- Sticky toolbars/panels: z-[45]
-- Footer: z-40
-- Skip link: z-60
-- Status banner (offline/API): z-[70]
-- Dropdowns/menus/floating buttons: z-50
-- Modals: z-80; Toasts: z-90
+## Mobile Access (LAN)
+
+To open the app on your phone (same Wi-Fi network):
+
+1. **Start the app for LAN access:**
+	- Development (hot reload):
+	  ```powershell
+	  npm run dev:lan
+	  ```
+	- Preview (built static site):
+	  ```powershell
+	  npm run build
+	  npm run preview:lan
+	  ```
+
+2. **Find your PC’s LAN IP address:**
+	- In PowerShell:
+	  ```powershell
+	  ipconfig | Select-String IPv4
+	  ```
+	- Look for an address like `192.168.x.y`.
+
+3. **On your phone’s browser, open:**
+	- Dev: `http://192.168.x.y:5173`
+	- Preview: `http://192.168.x.y:5174`
+
+4. **Windows Firewall tips:**
+	- Allow Node.js or Vite through Windows Firewall when prompted.
+	- Or manually add a rule for TCP ports 5173 and 5174 in Windows Defender Firewall (Inbound Rules).
+
+5. **Troubleshooting:**
+	- Ensure both devices are on the same Wi-Fi network.
+	- Disable VPNs if they block LAN traffic.
+	- Some corporate Wi-Fi may block client-to-client connections; try a home/private network.
+	- If using the API, start it as well:
+	  ```powershell
+	  $env:PORT = 4010
+	  npm run server
+	  ```
+	- Frontend tests use localhost for API by default; for mobile, ensure API is reachable if needed.
 
 Always ensure sticky elements use `top: calc(var(--header-h) + var(--banner-h))` and pages add `padding-top` equal to the same to avoid overlap.
 

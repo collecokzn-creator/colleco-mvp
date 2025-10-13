@@ -30,6 +30,27 @@
 				"$tsc"
 			],
 			"group": "test"
+		},
+		{
+			"label": "Run mobile Cypress tests",
+			"type": "shell",
+			"command": "npm run mobile:all",
+			"args": [],
+			"problemMatcher": [
+				"$eslint - stylish"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Pre-push build & tests",
+			"type": "shell",
+			"command": "npm run build && npx vitest run",
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc",
+				"$eslint - stylish"
+			],
+			"group": "build"
 		}
 	]
 }

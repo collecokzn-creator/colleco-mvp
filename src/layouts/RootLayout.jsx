@@ -76,12 +76,12 @@ export default function RootLayout() {
   <Navbar />
 
       {/* Main content area: body scroll; reserve space for fixed header/footer */}
-      <div className="pb-24" style={{ paddingTop: 'calc(var(--header-h) + var(--banner-h))' }}>
+      <div className="pb-24" style={{ paddingTop: '4rem' }}>
         <div className="flex">
           <Sidebar />
-          <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0 ml-[19rem]" tabIndex="-1">
-            <section className="px-6 py-6">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-cream-border/50 p-6 min-h-screen">
+          <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0 ml-0 sm:ml-[19rem]" tabIndex="-1">
+            <section className="px-0 py-6 flex justify-start">
+              <div className="min-h-screen bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-cream-border/50 p-6 w-full max-w-4xl" style={{marginLeft: 0}}>
                 <Outlet />
               </div>
             </section>
