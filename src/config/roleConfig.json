@@ -1,0 +1,75 @@
+{
+  "admin": {
+    "menu": [
+      { "label": "Dashboard", "to": "/dashboard" },
+      { "label": "Partners", "to": "/partners" },
+      { "label": "Bookings", "to": "/bookings" },
+      { "label": "Users", "to": "/users" },
+      { "label": "Compliance", "to": "/compliance" },
+      { "label": "Payments", "to": "/payments" },
+      { "label": "Settings & Integrations", "to": "/settings" },
+      { "label": "Logs / Audit", "to": "/logs" }
+    ],
+    "quick": [
+      { "label": "New Partner", "action": "new-partner" },
+      { "label": "Sync Partner", "action": "sync-partner" },
+      { "label": "Manual Booking", "action": "manual-booking" },
+      { "label": "Generate Report", "action": "generate-report" },
+      { "label": "Emergency Pause", "action": "emergency-pause" }
+    ]
+  },
+  "partner": {
+    "menu": [
+      { "label": "My Listings", "to": "/inventory" },
+      { "label": "Bookings", "to": "/bookings" },
+      { "label": "Earnings / Payouts", "to": "/payouts" },
+      { "label": "Documents", "to": "/documents" },
+      { "label": "Sync / API Status", "to": "/sync" }
+    ],
+    "quick": [
+      { "label": "Upload Rates", "action": "upload-rates" },
+      { "label": "Request Mapping", "action": "request-mapping" },
+      { "label": "Add Listing", "action": "add-listing" }
+    ]
+  },
+  "agent": {
+    "menu": [
+      { "label": "Quote Builder", "to": "/quote-builder" },
+      { "label": "Bookings", "to": "/bookings" },
+      { "label": "Clients", "to": "/clients" },
+      { "label": "Tasks", "to": "/tasks" }
+    ],
+    "quick": [
+      { "label": "New Quote", "action": "new-quote" },
+      { "label": "Convert to Booking", "action": "convert-booking" },
+      { "label": "Send Payment Link", "action": "send-payment-link" }
+    ]
+  },
+  "client": {
+    "menu": [
+      { "label": "My Trips / Bookings", "to": "/trips" },
+      { "label": "Trip Assist", "to": "/ai" },
+      { "label": "Saved Itineraries / Wishlist", "to": "/wishlist" },
+      { "label": "Payments", "to": "/payments" },
+      { "label": "Support", "to": "/support" }
+    ],
+    "quick": [
+      { "label": "Book Now", "action": "book-now" },
+      { "label": "Request Quote", "action": "request-quote" },
+      { "label": "Cancel / Amend", "action": "cancel-amend" }
+    ]
+  },
+  "support": {
+    "menu": [
+      { "label": "Support Queue", "to": "/support-queue" },
+      { "label": "Bookings", "to": "/bookings" },
+      { "label": "Client Profiles", "to": "/clients" },
+      { "label": "Quick Responses / Templates", "to": "/templates" }
+    ],
+    "quick": [
+      { "label": "Open Ticket", "action": "open-ticket" },
+      { "label": "Escalate to Admin", "action": "escalate-admin" },
+      { "label": "Action for Booking", "action": "action-booking" }
+    ]
+  }
+}

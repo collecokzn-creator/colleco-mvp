@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar.jsx";
 import Sidebar from "../components/Sidebar.jsx";
 import { Outlet } from "react-router-dom";
 import globePng from "../assets/Globeicon.png";
+import AIAgent from "../components/AIAgent.jsx";
 
 export default function RootLayout() {
   // Feature flag: when deploying as a static site (GitHub Pages), there's no backend to ping.
@@ -69,7 +70,7 @@ export default function RootLayout() {
 
       {/* Main content area: body scroll; reserve space for fixed header/footer */}
       <div className="pb-24" style={{ paddingTop: 'calc(var(--header-h) + var(--banner-h))' }}>
-        <div className="flex">
+        <div className="flex flex-row-reverse">
           <Sidebar />
           <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0" tabIndex="-1">
             <section className="px-6 py-6">
@@ -79,7 +80,8 @@ export default function RootLayout() {
         </div>
       </div>
 
-      {/* Footer (fixed) */}
+    {/* Footer (fixed) */}
+    <AIAgent />
   <footer className="fixed bottom-0 left-0 right-0 bg-brand-brown text-white text-center py-4 text-sm border-t border-cream-border font-semibold tracking-wide flex flex-col items-center gap-1 z-40">
         <span>© {new Date().getFullYear()} CollEco Travel — All rights reserved.</span>
         <span className="flex items-center gap-2 text-white text-sm font-normal">
@@ -95,7 +97,7 @@ export default function RootLayout() {
         <button
           type="button"
           onClick={scrollToTop}
-          className="fixed bottom-[calc(var(--footer-h)+0.5rem)] right-4 z-50 px-3 py-2 rounded-full bg-brand-brown text-white shadow-lg border border-cream-border text-sm hover:bg-brand-brown/90 focus:outline-none focus:ring-2 focus:ring-brand-brown/40 focus:ring-offset-2 focus:ring-offset-cream"
+          className="hidden sm:inline-flex fixed bottom-[calc(var(--footer-h)+0.5rem)] right-4 z-50 px-3 py-2 rounded-full bg-brand-brown text-white shadow-lg border border-cream-border text-sm hover:bg-brand-brown/90 focus:outline-none focus:ring-2 focus:ring-brand-brown/40 focus:ring-offset-2 focus:ring-offset-cream"
           aria-label="Back to top"
         >
           ↑ Top

@@ -50,8 +50,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>
 );
 
-// Register service worker for PWA
-if ('serviceWorker' in navigator && !window.Cypress) {
+// Register service worker for PWA (disabled during local dev to avoid cache clashes)
+if ('serviceWorker' in navigator && import.meta.env.PROD && !window.Cypress) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(async (reg) => {
       try {

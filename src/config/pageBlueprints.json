@@ -1,0 +1,1224 @@
+{
+  "version": "0.1.0",
+  "generated": "2025-10-14",
+  "categories": {
+    "itinerariesQuotes": {
+      "categoryId": "itineraries_quotes",
+      "title": "Itineraries & Quotes",
+      "description": "Build, personalize, and distribute client-facing itineraries and quotes.",
+      "purpose": "Support end-to-end itinerary creation with collaboration and sharing flows.",
+      "defaultLayout": {
+        "header": true,
+        "breadcrumbs": true,
+        "sidebar": true,
+        "footer": false,
+        "toolPanel": true
+      },
+      "pages": [
+        {
+          "pageId": "create_quote",
+          "title": "Create Quote",
+          "category": "Itineraries & Quotes",
+          "route": "/itineraries/create",
+          "icon": "FilePlus",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "form-driven",
+            "sections": [
+              {
+                "id": "client_info",
+                "title": "Client Information",
+                "component": "FormSection",
+                "fields": [
+                  "name",
+                  "email",
+                  "phone",
+                  "travel_dates",
+                  "destination"
+                ]
+              },
+              {
+                "id": "trip_details",
+                "title": "Trip Details",
+                "component": "ProductSelectorGrid",
+                "fields": [
+                  "accommodation",
+                  "flights",
+                  "car_hire",
+                  "activities"
+                ]
+              },
+              {
+                "id": "pricing_summary",
+                "title": "Pricing Summary",
+                "component": "SummaryCardGrid",
+                "fields": [
+                  "net_total",
+                  "service_fee",
+                  "grand_total"
+                ]
+              },
+              {
+                "id": "actions",
+                "component": "ButtonGroup",
+                "buttons": [
+                  {
+                    "label": "Preview Itinerary",
+                    "action": "preview"
+                  },
+                  {
+                    "label": "Save Draft",
+                    "action": "save_draft"
+                  },
+                  {
+                    "label": "Send Quote",
+                    "action": "send_quote"
+                  }
+                ]
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator"
+          ],
+          "api": {
+            "post": "/api/quotes",
+            "get_products": "/api/products",
+            "calculate": "/api/quotes/calculate"
+          }
+        },
+        {
+          "pageId": "view_itinerary",
+          "title": "View Itinerary",
+          "category": "Itineraries & Quotes",
+          "route": "/itineraries/view/:id",
+          "icon": "MapPin",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": true,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "overview",
+                "title": "Trip Overview",
+                "component": "TimelineOverview"
+              },
+              {
+                "id": "daily_plan",
+                "title": "Day-by-Day Plan",
+                "component": "DayAccordion"
+              },
+              {
+                "id": "cost_breakdown",
+                "title": "Cost Breakdown",
+                "component": "PricingTable"
+              },
+              {
+                "id": "client_notes",
+                "title": "Client Notes & Chat",
+                "component": "CollaborationChat"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator",
+            "client"
+          ],
+          "api": {
+            "get": "/api/itineraries/:id"
+          }
+        },
+        {
+          "pageId": "edit_itinerary",
+          "title": "Edit Itinerary",
+          "category": "Itineraries & Quotes",
+          "route": "/itineraries/edit/:id",
+          "icon": "Edit3",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "form-driven",
+            "sections": [
+              {
+                "id": "itinerary_info",
+                "title": "Basic Info",
+                "component": "FormSection",
+                "fields": [
+                  "title",
+                  "travel_dates",
+                  "client_name"
+                ]
+              },
+              {
+                "id": "day_planner",
+                "title": "Itinerary Planner",
+                "component": "DynamicDayEditor"
+              },
+              {
+                "id": "product_links",
+                "title": "Linked Products",
+                "component": "LinkedProductList"
+              },
+              {
+                "id": "save_actions",
+                "component": "ButtonGroup",
+                "buttons": [
+                  {
+                    "label": "Save Changes",
+                    "action": "update"
+                  },
+                  {
+                    "label": "Discard Changes",
+                    "action": "cancel"
+                  }
+                ]
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator"
+          ],
+          "api": {
+            "get": "/api/itineraries/:id",
+            "put": "/api/itineraries/:id"
+          }
+        },
+        {
+          "pageId": "share_itinerary",
+          "title": "Share Itinerary",
+          "category": "Itineraries & Quotes",
+          "route": "/itineraries/share/:id",
+          "icon": "Share2",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": false,
+            "footer": false,
+            "toolPanel": false
+          },
+          "content": {
+            "type": "action-driven",
+            "sections": [
+              {
+                "id": "share_options",
+                "title": "Share Options",
+                "component": "ShareCardGrid",
+                "fields": [
+                  "email",
+                  "whatsapp",
+                  "pdf_download",
+                  "client_portal_link"
+                ]
+              },
+              {
+                "id": "preview",
+                "title": "Preview",
+                "component": "ItineraryPreview"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator"
+          ],
+          "api": {
+            "get": "/api/itineraries/:id",
+            "post": "/api/itineraries/share"
+          }
+        }
+      ]
+    },
+    "bookingsOperations": {
+      "categoryId": "bookings_operations",
+      "title": "Bookings & Operations",
+      "description": "Monitor and manage booking fulfillment across suppliers.",
+      "purpose": "Maintain visibility into operational status and resolve issues quickly.",
+      "defaultLayout": {
+        "header": true,
+        "breadcrumbs": true,
+        "sidebar": true,
+        "footer": false,
+        "toolPanel": true
+      },
+      "pages": [
+        {
+          "pageId": "booking_list",
+          "title": "Booking List",
+          "category": "Bookings & Operations",
+          "route": "/workspace/bookings",
+          "icon": "ClipboardList",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "filters",
+                "title": "Filters",
+                "component": "FilterPanel"
+              },
+              {
+                "id": "bookings_table",
+                "title": "Bookings",
+                "component": "DataTable"
+              },
+              {
+                "id": "insights",
+                "title": "Operational Insights",
+                "component": "InsightSummary"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator",
+            "support"
+          ],
+          "api": {
+            "get": "/api/bookings",
+            "post": null,
+            "put": null,
+            "delete": null
+          }
+        },
+        {
+          "pageId": "booking_details",
+          "title": "Booking Details",
+          "category": "Bookings & Operations",
+          "route": "/workspace/bookings/:id",
+          "icon": "ClipboardCheck",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "summary",
+                "title": "Booking Summary",
+                "component": "SummaryCardGrid"
+              },
+              {
+                "id": "traveller_info",
+                "title": "Traveller Info",
+                "component": "ProfileDetails"
+              },
+              {
+                "id": "itinerary",
+                "title": "Itinerary",
+                "component": "TimelineViewer"
+              },
+              {
+                "id": "operations",
+                "title": "Operations",
+                "component": "TaskChecklist"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator",
+            "support"
+          ],
+          "api": {
+            "get": "/api/bookings/:id",
+            "post": null,
+            "put": "/api/bookings/:id",
+            "delete": null
+          }
+        },
+        {
+          "pageId": "assign_product",
+          "title": "Assign Product",
+          "category": "Bookings & Operations",
+          "route": "/workspace/bookings/:id/assign",
+          "icon": "Layers",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "product_search",
+                "title": "Product Search",
+                "component": "ProductSearch"
+              },
+              {
+                "id": "availability",
+                "title": "Availability",
+                "component": "AvailabilityCalendar"
+              },
+              {
+                "id": "allocation",
+                "title": "Allocation",
+                "component": "AssignmentPanel"
+              },
+              {
+                "id": "confirmation",
+                "title": "Confirmation",
+                "component": "ConfirmAction"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator"
+          ],
+          "api": {
+            "get": "/api/bookings/:id/assign",
+            "post": "/api/bookings/:id/assign",
+            "put": null,
+            "delete": null
+          }
+        },
+        {
+          "pageId": "manage_status",
+          "title": "Manage Status",
+          "category": "Bookings & Operations",
+          "route": "/workspace/bookings/:id/status",
+          "icon": "RefreshCcw",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": false,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "status_timeline",
+                "title": "Status Timeline",
+                "component": "StatusStepper"
+              },
+              {
+                "id": "audit",
+                "title": "Audit Trail",
+                "component": "ActivityFeed"
+              },
+              {
+                "id": "actions",
+                "title": "Status Actions",
+                "component": "ButtonGroup"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator",
+            "support"
+          ],
+          "api": {
+            "get": "/api/bookings/:id/status",
+            "post": "/api/bookings/:id/status",
+            "put": "/api/bookings/:id/status",
+            "delete": null
+          }
+        }
+      ]
+    },
+    "financeEarnings": {
+      "categoryId": "finance_earnings",
+      "title": "Finance & Earnings",
+      "description": "Track monetary performance and manage remittances.",
+      "purpose": "Provide transparent commission, revenue, and payout oversight.",
+      "defaultLayout": {
+        "header": true,
+        "breadcrumbs": true,
+        "sidebar": true,
+        "footer": true,
+        "toolPanel": true
+      },
+      "pages": [
+        {
+          "pageId": "partner_earnings",
+          "title": "Partner Earnings",
+          "category": "Finance & Earnings",
+          "route": "/workspace/finance/partners",
+          "icon": "Wallet",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": true,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "earnings_summary",
+                "title": "Earnings Summary",
+                "component": "MetricTiles"
+              },
+              {
+                "id": "partner_table",
+                "title": "Partner Breakdown",
+                "component": "DataTable"
+              },
+              {
+                "id": "trend",
+                "title": "Trend",
+                "component": "LineChart"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "finance"
+          ],
+          "api": {
+            "get": "/api/finance/partners",
+            "post": null,
+            "put": null,
+            "delete": null
+          }
+        },
+        {
+          "pageId": "colleco_revenue",
+          "title": "CollEco Revenue",
+          "category": "Finance & Earnings",
+          "route": "/workspace/finance/revenue",
+          "icon": "BarChart3",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": true,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "revenue_overview",
+                "title": "Revenue Overview",
+                "component": "SummaryCardGrid"
+              },
+              {
+                "id": "channels",
+                "title": "Channels",
+                "component": "StackedBarChart"
+              },
+              {
+                "id": "forecast",
+                "title": "Forecast",
+                "component": "ForecastChart"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "finance"
+          ],
+          "api": {
+            "get": "/api/finance/revenue",
+            "post": null,
+            "put": null,
+            "delete": null
+          }
+        },
+        {
+          "pageId": "payout_requests",
+          "title": "Payout Requests",
+          "category": "Finance & Earnings",
+          "route": "/workspace/finance/payouts",
+          "icon": "Coins",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": true,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "queue",
+                "title": "Request Queue",
+                "component": "DataTable"
+              },
+              {
+                "id": "approval",
+                "title": "Approval Actions",
+                "component": "ApprovalChecklist"
+              },
+              {
+                "id": "history",
+                "title": "History",
+                "component": "ActivityFeed"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "finance"
+          ],
+          "api": {
+            "get": "/api/finance/payouts",
+            "post": "/api/finance/payouts",
+            "put": "/api/finance/payouts/:id",
+            "delete": null
+          }
+        },
+        {
+          "pageId": "invoices",
+          "title": "Invoices",
+          "category": "Finance & Earnings",
+          "route": "/workspace/finance/invoices",
+          "icon": "FileText",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": true,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "invoice_filters",
+                "title": "Filters",
+                "component": "FilterPanel"
+              },
+              {
+                "id": "invoice_table",
+                "title": "Invoices",
+                "component": "DataTable"
+              },
+              {
+                "id": "export",
+                "title": "Export",
+                "component": "ExportPanel"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "finance"
+          ],
+          "api": {
+            "get": "/api/finance/invoices",
+            "post": "/api/finance/invoices",
+            "put": "/api/finance/invoices/:id",
+            "delete": null
+          }
+        }
+      ]
+    },
+    "partnersProducts": {
+      "categoryId": "partners_products",
+      "title": "Partners & Products",
+      "description": "Manage supplier relationships and product catalogues.",
+      "purpose": "Keep partner data compliant and product content accurate.",
+      "defaultLayout": {
+        "header": true,
+        "breadcrumbs": true,
+        "sidebar": true,
+        "footer": false,
+        "toolPanel": true
+      },
+      "pages": [
+        {
+          "pageId": "product_dashboard",
+          "title": "Product Dashboard",
+          "category": "Partners & Products",
+          "route": "/workspace/products",
+          "icon": "Package",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "catalog_summary",
+                "title": "Catalog Summary",
+                "component": "MetricTiles"
+              },
+              {
+                "id": "product_table",
+                "title": "Products",
+                "component": "DataTable"
+              },
+              {
+                "id": "alerts",
+                "title": "Alerts",
+                "component": "StatusAlerts"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator",
+            "partner"
+          ],
+          "api": {
+            "get": "/api/products",
+            "post": null,
+            "put": null,
+            "delete": null
+          }
+        },
+        {
+          "pageId": "compliance_monitor",
+          "title": "Compliance Monitor",
+          "category": "Partners & Products",
+          "route": "/workspace/partners/compliance",
+          "icon": "ShieldCheck",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "compliance_summary",
+                "title": "Compliance Summary",
+                "component": "SummaryCardGrid"
+              },
+              {
+                "id": "documents",
+                "title": "Documents",
+                "component": "DocumentGallery"
+              },
+              {
+                "id": "actions",
+                "title": "Actions",
+                "component": "ButtonGroup"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "compliance",
+            "operator"
+          ],
+          "api": {
+            "get": "/api/partners/compliance",
+            "post": "/api/partners/compliance",
+            "put": "/api/partners/compliance/:id",
+            "delete": null
+          }
+        },
+        {
+          "pageId": "partner_documents",
+          "title": "Partner Documents",
+          "category": "Partners & Products",
+          "route": "/workspace/partners/:id/documents",
+          "icon": "FolderOpen",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": false,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "document_list",
+                "title": "Documents",
+                "component": "DocumentList"
+              },
+              {
+                "id": "upload",
+                "title": "Upload",
+                "component": "UploadPanel"
+              },
+              {
+                "id": "history",
+                "title": "History",
+                "component": "ActivityFeed"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "compliance",
+            "partner"
+          ],
+          "api": {
+            "get": "/api/partners/:id/documents",
+            "post": "/api/partners/:id/documents",
+            "put": null,
+            "delete": "/api/partners/:id/documents/:docId"
+          }
+        },
+        {
+          "pageId": "product_editor",
+          "title": "Product Editor",
+          "category": "Partners & Products",
+          "route": "/workspace/products/:id/edit",
+          "icon": "Edit",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "details",
+                "title": "Product Details",
+                "component": "DynamicForm"
+              },
+              {
+                "id": "media",
+                "title": "Media",
+                "component": "MediaManager"
+              },
+              {
+                "id": "pricing",
+                "title": "Pricing",
+                "component": "PricingBreakdown"
+              },
+              {
+                "id": "publishing",
+                "title": "Publishing",
+                "component": "PublishControls"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "operator",
+            "partner"
+          ],
+          "api": {
+            "get": "/api/products/:id",
+            "post": null,
+            "put": "/api/products/:id",
+            "delete": null
+          }
+        }
+      ]
+    },
+    "userRoles": {
+      "categoryId": "user_roles",
+      "title": "User & Roles Management",
+      "description": "Control user access and monitor account activity.",
+      "purpose": "Ensure secure role-based operations across the platform.",
+      "defaultLayout": {
+        "header": true,
+        "breadcrumbs": true,
+        "sidebar": true,
+        "footer": false,
+        "toolPanel": true
+      },
+      "pages": [
+        {
+          "pageId": "user_list",
+          "title": "User List",
+          "category": "User & Roles Management",
+          "route": "/workspace/admin/users",
+          "icon": "Users",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "filters",
+                "title": "Filters",
+                "component": "FilterPanel"
+              },
+              {
+                "id": "user_table",
+                "title": "Users",
+                "component": "DataTable"
+              },
+              {
+                "id": "stats",
+                "title": "Stats",
+                "component": "MetricTiles"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "support"
+          ],
+          "api": {
+            "get": "/api/admin/users",
+            "post": "/api/admin/users",
+            "put": "/api/admin/users/:id",
+            "delete": "/api/admin/users/:id"
+          }
+        },
+        {
+          "pageId": "role_permissions",
+          "title": "Role Permissions",
+          "category": "User & Roles Management",
+          "route": "/workspace/admin/roles",
+          "icon": "Shield",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "role_matrix",
+                "title": "Role Matrix",
+                "component": "PermissionMatrix"
+              },
+              {
+                "id": "role_details",
+                "title": "Role Details",
+                "component": "DynamicForm"
+              },
+              {
+                "id": "change_log",
+                "title": "Change Log",
+                "component": "ActivityFeed"
+              }
+            ]
+          },
+          "permissions": [
+            "admin"
+          ],
+          "api": {
+            "get": "/api/admin/roles",
+            "post": "/api/admin/roles",
+            "put": "/api/admin/roles/:id",
+            "delete": "/api/admin/roles/:id"
+          }
+        },
+        {
+          "pageId": "activity_logs",
+          "title": "Activity Logs",
+          "category": "User & Roles Management",
+          "route": "/workspace/admin/activity",
+          "icon": "Activity",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "log_filters",
+                "title": "Filters",
+                "component": "FilterPanel"
+              },
+              {
+                "id": "log_table",
+                "title": "Activity",
+                "component": "DataTable"
+              },
+              {
+                "id": "alerts",
+                "title": "Alerts",
+                "component": "StatusAlerts"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "support"
+          ],
+          "api": {
+            "get": "/api/admin/activity",
+            "post": null,
+            "put": null,
+            "delete": null
+          }
+        },
+        {
+          "pageId": "invite_user",
+          "title": "Invite User",
+          "category": "User & Roles Management",
+          "route": "/workspace/admin/users/invite",
+          "icon": "UserPlus",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": false,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "invite_form",
+                "title": "Invite Details",
+                "component": "DynamicForm"
+              },
+              {
+                "id": "role_assignment",
+                "title": "Role Assignment",
+                "component": "PermissionSelector"
+              },
+              {
+                "id": "preview",
+                "title": "Invite Preview",
+                "component": "SummaryCard"
+              }
+            ]
+          },
+          "permissions": [
+            "admin"
+          ],
+          "api": {
+            "get": null,
+            "post": "/api/admin/users/invite",
+            "put": null,
+            "delete": null
+          }
+        }
+      ]
+    },
+    "systemSettings": {
+      "categoryId": "system_settings",
+      "title": "System & Settings",
+      "description": "Tune core platform configuration and integrations.",
+      "purpose": "Enable admins to adapt CollEco to operational needs.",
+      "defaultLayout": {
+        "header": true,
+        "breadcrumbs": true,
+        "sidebar": true,
+        "footer": false,
+        "toolPanel": true
+      },
+      "pages": [
+        {
+          "pageId": "system_preferences",
+          "title": "System Preferences",
+          "category": "System & Settings",
+          "route": "/workspace/settings/system",
+          "icon": "SlidersHorizontal",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "general",
+                "title": "General",
+                "component": "DynamicForm"
+              },
+              {
+                "id": "security",
+                "title": "Security",
+                "component": "SecurityChecklist"
+              },
+              {
+                "id": "audit",
+                "title": "Audit",
+                "component": "ActivityFeed"
+              }
+            ]
+          },
+          "permissions": [
+            "admin"
+          ],
+          "api": {
+            "get": "/api/settings/system",
+            "post": "/api/settings/system",
+            "put": "/api/settings/system",
+            "delete": null
+          }
+        },
+        {
+          "pageId": "currency_setup",
+          "title": "Currency Setup",
+          "category": "System & Settings",
+          "route": "/workspace/settings/currency",
+          "icon": "Coins",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "rate_sources",
+                "title": "Rate Sources",
+                "component": "DataTable"
+              },
+              {
+                "id": "defaults",
+                "title": "Defaults",
+                "component": "DynamicForm"
+              },
+              {
+                "id": "audit",
+                "title": "Audit",
+                "component": "ActivityFeed"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "finance"
+          ],
+          "api": {
+            "get": "/api/settings/currency",
+            "post": "/api/settings/currency",
+            "put": "/api/settings/currency",
+            "delete": null
+          }
+        },
+        {
+          "pageId": "api_keys",
+          "title": "API Keys",
+          "category": "System & Settings",
+          "route": "/workspace/settings/api-keys",
+          "icon": "KeyRound",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": false,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "key_table",
+                "title": "Keys",
+                "component": "DataTable"
+              },
+              {
+                "id": "key_generation",
+                "title": "Generate",
+                "component": "DynamicForm"
+              },
+              {
+                "id": "usage",
+                "title": "Usage",
+                "component": "UsageMetrics"
+              }
+            ]
+          },
+          "permissions": [
+            "admin"
+          ],
+          "api": {
+            "get": "/api/settings/api-keys",
+            "post": "/api/settings/api-keys",
+            "put": "/api/settings/api-keys/:id",
+            "delete": "/api/settings/api-keys/:id"
+          }
+        },
+        {
+          "pageId": "notification_settings",
+          "title": "Notification Settings",
+          "category": "System & Settings",
+          "route": "/workspace/settings/notifications",
+          "icon": "Bell",
+          "layout": {
+            "header": true,
+            "breadcrumbs": true,
+            "sidebar": true,
+            "footer": false,
+            "toolPanel": true
+          },
+          "content": {
+            "type": "dynamic",
+            "sections": [
+              {
+                "id": "channels",
+                "title": "Channels",
+                "component": "ChannelMatrix"
+              },
+              {
+                "id": "templates",
+                "title": "Templates",
+                "component": "TemplateList"
+              },
+              {
+                "id": "subscriptions",
+                "title": "Subscriptions",
+                "component": "SubscriptionTable"
+              }
+            ]
+          },
+          "permissions": [
+            "admin",
+            "support"
+          ],
+          "api": {
+            "get": "/api/settings/notifications",
+            "post": "/api/settings/notifications",
+            "put": "/api/settings/notifications",
+            "delete": null
+          }
+        }
+      ]
+    }
+  }
+}
