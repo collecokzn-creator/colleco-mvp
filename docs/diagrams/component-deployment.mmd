@@ -1,0 +1,59 @@
+graph TB
+  subgraph Frontend
+    Web[Web App]
+    Mobile[Mobile App]
+  end
+
+  subgraph Edge
+    CDN[CDN]
+    APIGW[API Gateway]
+  end
+
+  subgraph Backend
+    Auth[Auth Service]
+    Quote[Quote Service]
+    Booking[Booking Service]
+    Partner[Partner Sync Service]
+    Payments[Payments Service]
+    Notifications[Notification Service]
+    Admin[Admin API]
+  end
+
+  subgraph Data
+    Postgres[(PostgreSQL)]
+    Redis[(Redis)]
+    S3[(Object Storage)]
+    Analytics[(Analytics)]
+  end
+
+  subgraph External
+    Providers[Providers]
+    PaymentGateway[Payment Gateway]
+    Twilio[Notifications]
+  end
+
+  Web --> CDN --> APIGW
+  Mobile --> APIGW
+  APIGW --> Auth
+  APIGW --> Quote
+  APIGW --> Booking
+  APIGW --> Partner
+  APIGW --> Payments
+  APIGW --> Notifications
+  APIGW --> Admin
+
+  Quote --> Postgres
+  Booking --> Postgres
+  Partner --> Postgres
+  Payments --> Postgres
+  Notifications --> Postgres
+  Redis <-->|cache| Quote
+  Redis <-->|cache| Booking
+  Redis <-->|cache| Partner
+
+  Partner --> Providers
+  Booking --> PaymentGateway
+  Payments --> PaymentGateway
+  Notifications --> Twilio
+  S3 --> Postgres
+  Analytics --> Postgres
