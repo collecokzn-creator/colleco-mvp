@@ -1,0 +1,173 @@
+{
+  "pageTemplate": {
+    "meta": {
+      "title": "Page Title",
+      "description": "Short description of what the page does",
+      "role": "admin",
+      "requiresAuth": true,
+      "showInSidebar": true,
+      "featureFlag": null
+    },
+    "layout": {
+      "header": {
+        "showBreadcrumbs": true,
+        "breadcrumbs": [
+          { "label": "Dashboard", "path": "/dashboard" },
+          { "label": "Current Page", "path": "/current" }
+        ],
+        "showActionBar": true,
+        "actionButtons": [
+          {
+            "label": "New",
+            "icon": "PlusCircle",
+            "actionType": "modal",
+            "target": "/create"
+          },
+          {
+            "label": "Export",
+            "icon": "Download",
+            "actionType": "export",
+            "target": "pdf"
+          }
+        ]
+      },
+      "main": {
+        "sections": [
+          {
+            "id": "overview-section",
+            "title": "Overview",
+            "component": "InfoCard",
+            "dataSource": "api/endpoint",
+            "layout": "grid",
+            "columns": 3,
+            "contentStyle": "card",
+            "theme": {
+              "background": "white",
+              "border": "sand",
+              "textColor": "brandBrown"
+            }
+          },
+          {
+            "id": "details-section",
+            "title": "Detailed View",
+            "component": "DataTable",
+            "dataSource": "api/endpoint",
+            "sortable": true,
+            "filterable": true,
+            "pagination": true
+          },
+          {
+            "id": "insights-section",
+            "title": "Insights or Summary",
+            "component": "ChartCard",
+            "chartType": "bar",
+            "dataSource": "api/metrics",
+            "visibleRoles": ["admin", "partner", "finance"]
+          }
+        ]
+      },
+      "sidebarTools": {
+        "collapsible": true,
+        "tools": [
+          {
+            "label": "Help Guide",
+            "icon": "BookOpen",
+            "actionType": "open",
+            "target": "/support/knowledge-base"
+          },
+          {
+            "label": "Chat Support",
+            "icon": "MessageCircle",
+            "actionType": "chat",
+            "target": "support-channel"
+          },
+          {
+            "label": "Feedback",
+            "icon": "MessageSquare",
+            "actionType": "modal",
+            "target": "/feedback"
+          }
+        ]
+      },
+      "footer": {
+        "show": true,
+        "content": "© CollEco Travel – The Odyssey of Adventure",
+        "links": [
+          { "label": "Privacy Policy", "path": "/legal/privacy" },
+          { "label": "Terms", "path": "/legal/terms" }
+        ]
+      }
+    },
+    "theme": {
+      "background": "cream",
+      "primaryText": "brandBrown",
+      "accent": "brandOrange",
+      "border": "sand",
+      "card": "white",
+      "fontFamily": "Inter, sans-serif",
+      "headingStyle": "bold",
+      "taglineStyle": "italic"
+    },
+    "accessibility": {
+      "contrastMode": "auto",
+      "keyboardNavigation": true,
+      "screenReaderSupport": true,
+      "focusHighlight": true
+    }
+  },
+  "examples": {
+    "partnerFinance": {
+      "extends": "pageTemplate",
+      "meta": {
+        "title": "Earnings & Payouts",
+        "description": "Track partner earnings, payouts, and transaction history",
+        "role": "partner"
+      },
+      "layout": {
+        "header": {
+          "breadcrumbs": [
+            { "label": "Partner Dashboard", "path": "/partner/dashboard" },
+            { "label": "Earnings & Payouts", "path": "/partner/finance" }
+          ],
+          "actionButtons": [
+            {
+              "label": "Request Payout",
+              "icon": "Wallet",
+              "actionType": "modal",
+              "target": "/partner/finance/request"
+            },
+            {
+              "label": "Export",
+              "icon": "Download",
+              "actionType": "export",
+              "target": "xlsx"
+            }
+          ]
+        },
+        "main": {
+          "sections": [
+            {
+              "id": "earnings-overview",
+              "title": "Earnings Summary",
+              "component": "InfoCard",
+              "dataSource": "api/partner/earnings"
+            },
+            {
+              "id": "payout-history",
+              "title": "Payout History",
+              "component": "DataTable",
+              "dataSource": "api/partner/payouts"
+            },
+            {
+              "id": "finance-insights",
+              "title": "Financial Insights",
+              "component": "ChartCard",
+              "chartType": "line",
+              "dataSource": "api/partner/finance-insights"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
