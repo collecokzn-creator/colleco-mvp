@@ -34,6 +34,30 @@ export default function Navbar() {
 		}
 	};
 
+	const BookMenu = () => (
+		<div className="relative inline-block text-left">
+			<button
+				type="button"
+				className="inline-flex items-center gap-2 px-3 py-2 rounded text-sm font-medium text-brand-brown hover:bg-cream-sand/50"
+				aria-haspopup="true"
+				aria-expanded={openMenu === 'book'}
+				onClick={() => setOpenMenu(openMenu === 'book' ? null : 'book')}
+			>
+				Book
+				<svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.06z" clipRule="evenodd"/></svg>
+			</button>
+			{openMenu === 'book' && (
+				<div ref={tripRef} className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+					<div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+						<Link to="/book/accommodation" className="block px-4 py-2 text-sm text-brand-brown hover:bg-cream-sand" role="menuitem" onClick={() => setOpenMenu(null)}>Accommodation</Link>
+						<Link to="/book/flight" className="block px-4 py-2 text-sm text-brand-brown hover:bg-cream-sand" role="menuitem" onClick={() => setOpenMenu(null)}>Flight</Link>
+						<Link to="/book/car" className="block px-4 py-2 text-sm text-brand-brown hover:bg-cream-sand" role="menuitem" onClick={() => setOpenMenu(null)}>Car Hire</Link>
+					</div>
+				</div>
+			)}
+		</div>
+	);
+
 	// Close menus on route change for cleanliness
 	useEffect(() => { 
 		setOpenMenu(null); 
@@ -124,32 +148,39 @@ export default function Navbar() {
 									<div className="w-64">
 										<SearchBar />
 									</div>
-									<button
-										type="button"
-										onClick={toggleSidebar}
-										className="inline-flex items-center justify-center h-11 w-11 rounded border-2 border-brand-orange bg-white text-brand-orange text-lg active:bg-brand-orange/10 transition-colors"
-										aria-label="Toggle Sidebar"
-										title="Toggle Sidebar"
-									>
-										<span className="flex flex-col gap-[2px]">
-											<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
-											<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
-											<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
-										</span>
-									</button>
+								<BookMenu />
+								<button
+									type="button"
+									onClick={toggleSidebar}
+									className="inline-flex items-center justify-center h-11 w-11 rounded border-2 border-brand-orange bg-white text-brand-orange text-lg active:bg-brand-orange/10 transition-colors"
+									aria-label="Toggle Sidebar"
+									title="Toggle Sidebar"
+								>
+									<span className="flex flex-col gap-[2px]">
+										<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+										<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+										<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+									</span>
+								</button>
 								</div>
 										{/* Mobile: search and hamburger buttons. The search button remains visible when sidebar is open. */}
 										<div className="sm:hidden absolute right-3 top-1/2 -translate-y-1/2 flex gap-2 z-60">
-											<button
-												type="button"
-												onClick={() => setShowMobileSearch(!showMobileSearch)}
-												className="inline-flex items-center justify-center h-11 w-11 rounded border border-brand-orange bg-white text-brand-orange text-lg active:bg-brand-orange/10 transition-colors"
-												aria-label={showMobileSearch ? "Close search" : "Open search"}
-												title="Search"
-											>
-												{showMobileSearch ? "×" : "🔍"}
-											</button>
-												<button
+										<button
+											type="button"
+											onClick={() => setShowMobileSearch(!showMobileSearch)}
+											className="inline-flex items-center justify-center h-11 w-11 rounded border border-brand-orange bg-white text-brand-orange text-lg active:bg-brand-orange/10 transition-colors"
+											aria-label={showMobileSearch ? "Close search" : "Open search"}
+											title="Search"
+										>
+											{showMobileSearch ? "×" : "🔍"}
+										</button>
+										{/* Mobile quick links for booking */}
+										<div className="flex items-center gap-2 ml-2">
+											<Link to="/book/accommodation" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Book Stay</Link>
+											<Link to="/book/flight" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Book Flight</Link>
+											<Link to="/book/car" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Car Hire</Link>
+										</div>
+													<button
 													type="button"
 													onClick={toggleSidebar}
 													className="inline-flex items-center justify-center h-11 w-11 rounded border-2 border-brand-orange bg-white text-brand-orange text-lg active:bg-brand-orange/10 transition-colors"
@@ -157,12 +188,12 @@ export default function Navbar() {
 													title="Toggle Sidebar"
 													style={{ zIndex: 70 }}
 												>
-										<span className="flex flex-col gap-[2px]">
-											<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
-											<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
-											<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
-										</span>
-									</button>
+											<span className="flex flex-col gap-[2px]">
+												<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+												<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+												<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+											</span>
+										</button>
 								</div>
 
 					</div>

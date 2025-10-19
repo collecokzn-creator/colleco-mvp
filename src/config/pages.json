@@ -26,6 +26,24 @@
               }
             },
             {
+              "path": "/book/accommodation",
+              "name": "Book Accommodation",
+              "component": "AccommodationBooking",
+              "meta": { "title": "Book Accommodation", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
+              "path": "/book/flight",
+              "name": "Book Flight",
+              "component": "FlightBooking",
+              "meta": { "title": "Book Flight", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
+              "path": "/book/car",
+              "name": "Hire a Car",
+              "component": "CarBooking",
+              "meta": { "title": "Car Hire", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
               "path": "/plan-trip",
               "name": "Plan a Trip",
               "component": "PlanTrip",
@@ -214,6 +232,17 @@
               "component": "AdminConsole",
               "meta": {
                 "title": "Admin Console",
+                "requiresAuth": true,
+                "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/accommodation",
+              "name": "Accommodation Inventory",
+              "component": "AdminAccommodation",
+              "meta": {
+                "title": "Accommodation Inventory",
                 "requiresAuth": true,
                 "roles": ["admin"],
                 "layout": "workspace"

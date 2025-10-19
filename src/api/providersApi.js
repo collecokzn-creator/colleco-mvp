@@ -10,7 +10,11 @@ function authHeaders() {
 export async function listProviders() {
 	const res = await fetch(`${BASE}/api/providers`, { headers: authHeaders() });
 	if (!res.ok) throw new Error('Failed to list providers');
-	return res.json();
+	const data = await res.json();
+	// server returns { ok: true, providers: [...] } — normalize to an array
+	if (Array.isArray(data)) return data;
+	if (data && Array.isArray(data.providers)) return data.providers;
+	return [];
 }
 
 export async function uploadDocument({ providerId, name, docType, fileName, fileSize, expiresAt }) {

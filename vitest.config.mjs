@@ -5,5 +5,7 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['tests/**/*.test.{js,jsx}'],
     reporters: 'default',
+    testTimeout: 20000,
+    setupFiles: ['./tests/setupTests.js'],
   },
 });

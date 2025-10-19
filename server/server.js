@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { parsePrompt, parseFlightRequest, parseIntent } = require('./aiParser');
 const crypto = require('crypto');
+const pricingEngine = require('./pricingEngine');
 // --- AI Enhancements: rate limiting, cache, analytics log, refine endpoint ---
 const AI_RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute window
 const AI_RATE_LIMIT_MAX = 20; // max requests per window per ip (sliding window)
@@ -273,6 +274,193 @@ function saveProviders() {
 const store = loadStore();
 const providers = loadProviders();
 
+// Simple in-memory accommodation inventory (persisted inside store._accomInventory)
+// Structure: store._accomInventory = { roomTypes: { [roomType]: { total: number, price: number } }, bookingsByDate: { 'YYYY-MM-DD': { [roomType]: bookedCount } } }
+store._accomInventory = store._accomInventory || { roomTypes: { 'standard': { total: 5, price: 800 }, 'deluxe': { total: 2, price: 1500 } }, bookingsByDate: {} };
+store._accomHolds = store._accomHolds || {}; // holdId -> { id, roomType, startDate, endDate, qty, expiresAt, consumed }
+
+// Helper: check availability for a roomType between dates (inclusive start, exclusive end)
+function checkAvailability(roomType, startDate, endDate, qty = 1){
+  const rt = (store._accomInventory && store._accomInventory.roomTypes && store._accomInventory.roomTypes[roomType]) ? store._accomInventory.roomTypes[roomType] : null;
+  if(!rt) return { ok: false, error: 'unknown_room_type' };
+  // iterate each date and ensure booked + holds < total
+  const total = Number(rt.total || 0);
+  const days = [];
+  try {
+    const s = new Date(startDate);
+    const e = new Date(endDate);
+    for(let d = new Date(s); d < e; d.setDate(d.getDate()+1)){
+      days.push(new Date(d).toISOString().slice(0,10));
+    }
+  } catch(e){ return { ok:false, error:'invalid_dates' }; }
+  for(const day of days){
+    const bookedOnDay = (store._accomInventory.bookingsByDate && store._accomInventory.bookingsByDate[day] && Number(store._accomInventory.bookingsByDate[day][roomType]||0)) || 0;
+    // Count active holds for this roomType and date
+    let holdsCount = 0;
+    for(const h of Object.values(store._accomHolds||{})){
+      if(h && !h.consumed && Number(h.qty||1) > 0 && h.roomType === roomType && h.startDate && h.endDate){
+        if(h.startDate <= day && day < h.endDate && h.expiresAt > Date.now()) holdsCount += Number(h.qty||1);
+      }
+    }
+    if(bookedOnDay + holdsCount + qty > total) return { ok:false, available: Math.max(0, total - bookedOnDay - holdsCount) };
+  }
+  return { ok:true, available: true };
+}
+
+// Helper: apply booking items to inventory counts (increment booked counts)
+function applyBookingToInventory(booking){
+  if(!booking || !Array.isArray(booking.items)) return;
+  store._accomInventory.bookingsByDate = store._accomInventory.bookingsByDate || {};
+  for(const it of booking.items){
+    if(!it || it.type !== 'accommodation') continue;
+    const roomType = it.roomType || 'standard';
+    const startDate = it.startDate; const endDate = it.endDate;
+    const qty = Number(it.qty || 1);
+    if(!startDate || !endDate) continue;
+    // iterate dates
+    const s = new Date(startDate); const e = new Date(endDate);
+    for(let d = new Date(s); d < e; d.setDate(d.getDate()+1)){
+      const day = new Date(d).toISOString().slice(0,10);
+      store._accomInventory.bookingsByDate[day] = store._accomInventory.bookingsByDate[day] || {};
+      store._accomInventory.bookingsByDate[day][roomType] = (Number(store._accomInventory.bookingsByDate[day][roomType]||0) + qty);
+    }
+  }
+  booking.inventoryApplied = true;
+  booking.inventoryAppliedAt = Date.now();
+  saveStore();
+}
+
+// Helper: release booking items from inventory counts (decrement booked counts)
+function releaseBookingFromInventory(booking){
+  if(!booking || !Array.isArray(booking.items)) return;
+  store._accomInventory.bookingsByDate = store._accomInventory.bookingsByDate || {};
+  for(const it of booking.items){
+    if(!it || it.type !== 'accommodation') continue;
+    const roomType = it.roomType || 'standard';
+    const startDate = it.startDate; const endDate = it.endDate;
+    const qty = Number(it.qty || 1);
+    if(!startDate || !endDate) continue;
+    const s = new Date(startDate); const e = new Date(endDate);
+    for(let d = new Date(s); d < e; d.setDate(d.getDate()+1)){
+      const day = new Date(d).toISOString().slice(0,10);
+      store._accomInventory.bookingsByDate[day] = store._accomInventory.bookingsByDate[day] || {};
+      store._accomInventory.bookingsByDate[day][roomType] = Math.max(0, Number(store._accomInventory.bookingsByDate[day][roomType]||0) - qty);
+    }
+  }
+  booking.inventoryApplied = false;
+  booking.inventoryReleasedAt = Date.now();
+  saveStore();
+}
+
+// Create a temporary hold for inventory (expires after holdMinutes)
+app.post('/api/accommodation/hold', authCheck, (req, res) => {
+  try {
+    const { roomType, startDate, endDate, qty = 1, holdMinutes = 10 } = req.body || {};
+    if(!roomType || !startDate || !endDate) return res.status(400).json({ error:'roomType,startDate,endDate required' });
+    const avail = checkAvailability(roomType, startDate, endDate, qty);
+    if(!avail.ok) return res.status(400).json({ error:'not_available', details: avail });
+    const id = cryptoRandom();
+    const expiresAt = Date.now() + (Number(holdMinutes||10) * 60 * 1000);
+    store._accomHolds[id] = { id, roomType, startDate, endDate, qty: Number(qty||1), expiresAt, createdAt: Date.now(), consumed: false };
+    saveStore();
+    return res.status(201).json({ ok:true, hold: store._accomHolds[id] });
+  } catch(e){ console.error('hold error', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+// Release a hold explicitly
+app.post('/api/accommodation/hold/:id/release', authCheck, (req, res) => {
+  const id = req.params.id;
+  const h = store._accomHolds && store._accomHolds[id];
+  if(!h) return res.status(404).json({ error:'hold_not_found' });
+  h.expiresAt = Date.now(); // mark expired
+  saveStore();
+  return res.json({ ok:true });
+});
+
+// Availability endpoint
+app.get('/api/accommodation/availability', (req, res) => {
+  const roomType = (req.query.roomType||'standard').toString();
+  const startDate = (req.query.startDate||'').toString();
+  const endDate = (req.query.endDate||'').toString();
+  if(!startDate || !endDate) return res.status(400).json({ error:'startDate and endDate required' });
+  const avail = checkAvailability(roomType, startDate, endDate, 1);
+  if(!avail.ok) return res.status(200).json({ ok:false, details: avail });
+  return res.json({ ok:true, available: true });
+});
+
+// Admin: get inventory, holds and per-day bookings (protected)
+app.get('/api/accommodation/admin', authCheck, (req, res) => {
+  const inventory = store._accomInventory || { roomTypes: {}, bookingsByDate: {} };
+  const holds = store._accomHolds || {};
+  res.json({ ok: true, inventory, holds });
+});
+
+// Admin: replace inventory roomTypes (body: { roomTypes: { name: { total:number, price:number } } })
+app.put('/api/accommodation/inventory', authCheck, (req, res) => {
+  try {
+    const body = req.body || {};
+    const roomTypes = body.roomTypes || {};
+    if (typeof roomTypes !== 'object') return res.status(400).json({ error: 'roomTypes object required' });
+    // validate entries
+    const normalized = {};
+    for (const [k,v] of Object.entries(roomTypes)){
+      const total = Number(v && v.total ? v.total : 0);
+      const price = Number(v && v.price ? v.price : 0);
+      if(!Number.isFinite(total) || total < 0) return res.status(400).json({ error: 'invalid_total', roomType: k });
+      if(!Number.isFinite(price) || price < 0) return res.status(400).json({ error: 'invalid_price', roomType: k });
+      normalized[String(k)] = { total: Math.max(0, Math.floor(total)), price: Math.round(price*100)/100 };
+    }
+  store._accomInventory = store._accomInventory || { roomTypes: {}, bookingsByDate: {} };
+  store._accomInventory.roomTypes = normalized;
+  // When replacing inventory in admin mode, allow tests to provide a fresh bookingsByDate
+  // or default to clearing existing per-day bookings to avoid stale state blocking availability.
+  store._accomInventory.bookingsByDate = body.bookingsByDate && typeof body.bookingsByDate === 'object' ? body.bookingsByDate : {};
+    saveStore();
+    return res.json({ ok:true, inventory: store._accomInventory });
+  } catch(e){ console.error('inventory update failed', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+// Admin: add or update single room type (body: { name, total, price })
+app.post('/api/accommodation/room-type', authCheck, (req, res) => {
+  try {
+    const { name, total = 0, price = 0 } = req.body || {};
+    if(!name) return res.status(400).json({ error: 'name required' });
+    const t = Number(total); const p = Number(price);
+    if(!Number.isFinite(t) || t < 0) return res.status(400).json({ error:'invalid_total' });
+    if(!Number.isFinite(p) || p < 0) return res.status(400).json({ error:'invalid_price' });
+    store._accomInventory = store._accomInventory || { roomTypes: {}, bookingsByDate: {} };
+    store._accomInventory.roomTypes[String(name)] = { total: Math.max(0, Math.floor(t)), price: Math.round(p*100)/100 };
+    saveStore();
+    return res.status(201).json({ ok:true, roomType: store._accomInventory.roomTypes[String(name)] });
+  } catch(e){ console.error('room-type add failed', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+// Admin: delete a room type
+app.delete('/api/accommodation/room-type/:name', authCheck, (req, res) => {
+  try {
+    const name = req.params.name;
+    store._accomInventory = store._accomInventory || { roomTypes: {}, bookingsByDate: {} };
+    if(!store._accomInventory.roomTypes[name]) return res.status(404).json({ error:'not_found' });
+    delete store._accomInventory.roomTypes[name];
+    saveStore();
+    return res.json({ ok:true });
+  } catch(e){ console.error('delete room type failed', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+// Periodic cleanup of expired holds
+setInterval(() => {
+  const now = Date.now();
+  let changed = false;
+  for(const [k,h] of Object.entries(store._accomHolds||{})){
+    if(!h) continue;
+    if(!h.consumed && h.expiresAt && h.expiresAt <= now){
+      // expire
+      delete store._accomHolds[k]; changed = true;
+    }
+  }
+  if(changed) saveStore();
+}, 60 * 1000).unref();
+
 const ROLES = { agent: 'agent', client: 'client', productOwner: 'productOwner', system: 'system' };
 
 function ensureThread(bookingId, seed = {}) {
@@ -366,6 +554,302 @@ app.post('/api/payments/checkout', authCheck, (req, res) => {
   res.json({ ok: true, sessionId, checkoutUrl, fees, metadata });
 });
 
+// --- Bookings API ---
+// Create a booking record and optionally return a checkout session when paid items exist
+app.post('/api/bookings', authCheck, (req, res) => {
+  try {
+    const { items = [], customer = {}, currency = 'USD', metadata = {} } = req.body || {};
+    const v = validateBookingData({ items, customer, currency });
+    if(!v.valid) return res.status(400).json({ error: 'validation_failed', details: v.errors });
+    const bookingId = cryptoRandom();
+    const hasPaid = items.some(i => (Number(i.amount || i.price || 0) || 0) > 0);
+    const booking = {
+      id: bookingId,
+      ref: `BKG-${Date.now().toString(36).slice(0,6)}`,
+      items,
+      customer,
+      metadata,
+      status: hasPaid ? 'PendingPayment' : 'Confirmed',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    store[bookingId] = booking;
+    // ensure collab thread exists for this booking
+    ensureThread(bookingId, { ref: booking.ref, title: booking.itineraryName || booking.ref, clientName: customer.name || 'Client' });
+    saveStore();
+
+    // If any paid items exist, compute pricing totals and create a mock payment session
+    if (hasPaid) {
+      // partnerBookingCount may be provided in metadata (fallback to 0)
+      const partnerBookingCount = (metadata && Number(metadata.partnerBookingCount)) || 0;
+      const totals = pricingEngine.computeTotals(items, partnerBookingCount, { currency });
+      // attach pricing info to booking for downstream visibility
+      booking.pricing = totals;
+      booking.fees = totals; // keep legacy key 'fees' for compatibility
+
+      const sessionId = cryptoRandom();
+      store._sessions = store._sessions || {};
+      // store session with amount to pay
+      store._sessions[sessionId] = { bookingId, status: 'pending', createdAt: Date.now(), amount: totals.total };
+      saveStore();
+      // For local/dev we return a local checkout simulation URL (client should open this)
+      const checkoutUrl = `/api/mock-checkout/${sessionId}`;
+      return res.json({ ok: true, booking, checkout: { sessionId, checkoutUrl }, fees: totals });
+    }
+
+    return res.json({ ok: true, booking });
+  } catch (e) {
+    console.error('create booking error', e);
+    return res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// Helper: create booking record from items/customer and return booking + optional checkout
+function createBookingInternal(items = [], customer = {}, currency = 'USD', metadata = {}){
+  const bookingId = cryptoRandom();
+  const hasPaid = items.some(i => (Number(i.amount || i.netRate || i.price || 0) || 0) > 0);
+  const booking = {
+    id: bookingId,
+    ref: `BKG-${Date.now().toString(36).slice(0,6)}`,
+    // ensure items are cloned and each has an id for tracking
+    items: Array.isArray(items) ? items.map(it => ({ id: it.id || cryptoRandom(), ...it })) : items,
+    customer,
+    metadata,
+    status: hasPaid ? 'PendingPayment' : 'Confirmed',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  };
+  store[bookingId] = booking;
+  // ensure collab thread exists
+  ensureThread(bookingId, { ref: booking.ref, title: booking.itineraryName || booking.ref, clientName: customer.name || 'Client' });
+  saveStore();
+
+  // If booking is confirmed (no payment needed) or hold was consumed, apply inventory immediately
+  try {
+    const needsInventory = booking.items.some(i => i && i.type === 'accommodation');
+    if(needsInventory && booking.status === 'Confirmed'){
+      applyBookingToInventory(booking);
+    }
+  } catch(e){ console.error('apply inventory error', e); }
+
+  if(hasPaid){
+    const partnerBookingCount = (metadata && Number(metadata.partnerBookingCount)) || 0;
+    const totals = pricingEngine.computeTotals(items, partnerBookingCount, { currency });
+    booking.pricing = totals;
+    booking.fees = totals;
+    const sessionId = cryptoRandom();
+    store._sessions = store._sessions || {};
+    store._sessions[sessionId] = { bookingId, status: 'pending', createdAt: Date.now(), amount: totals.total };
+    saveStore();
+    const checkoutUrl = `/api/mock-checkout/${sessionId}`;
+    return { booking, checkout: { sessionId, checkoutUrl }, fees: totals };
+  }
+  return { booking };
+}
+
+// Direct booking endpoints for single-item experiences
+app.post('/api/bookings/accommodation', authCheck, (req, res) => {
+  try {
+    const body = req.body || {};
+    const { hotelName, nights, unitPrice, currency = 'ZAR', customer = {}, metadata = {}, roomType, extras = [], startDate, endDate, holdId, qty = 1 } = body;
+    if (ajv && ajv.validateAccommodation) {
+      const ok = ajv.validateAccommodation(body);
+      if (!ok) return res.status(400).json({ error: 'validation_failed', details: errorsFromAjv(ajv.validateAccommodation.errors) });
+    } else {
+      if (!hotelName || !nights || (!Number.isFinite(Number(unitPrice)) && Number(unitPrice) !== 0)) return res.status(400).json({ error: 'hotelName, nights and unitPrice are required' });
+    }
+    const extrasTotal = Array.isArray(extras) ? extras.reduce((s,e)=>s + Number(e.price || 0), 0) : 0;
+    const base = Number(unitPrice) * Number(nights);
+    const totalAmount = Math.round((base + extrasTotal) * 100) / 100;
+    const item = { type: 'accommodation', title: hotelName, name: hotelName, roomType: roomType || null, nights: Number(nights), unitPrice: Number(unitPrice), extras: Array.isArray(extras) ? extras : [], amount: totalAmount, netRate: totalAmount, startDate: startDate || null, endDate: endDate || null };
+
+    // If a holdId is provided, validate the hold and mark it consumed
+    if (holdId) {
+      const hold = (store._accomHolds || {})[String(holdId)];
+      if (!hold) return res.status(400).json({ error: 'invalid_hold' });
+      // Ensure hold matches requested roomType and dates
+      if (hold.roomType !== item.roomType) return res.status(400).json({ error: 'hold_roomtype_mismatch' });
+      if (hold.startDate !== item.startDate || hold.endDate !== item.endDate) return res.status(400).json({ error: 'hold_dates_mismatch' });
+      if (hold.consumed) return res.status(400).json({ error: 'hold_already_used' });
+      // mark consumed so availability reflects booking
+      hold.consumed = true;
+      hold.consumedAt = Date.now();
+    } else {
+      // No hold provided: stricter validation
+      // If booking requires payment, require a hold to avoid holding inventory during external checkout
+      const willRequirePayment = (Number(item.amount || item.netRate || 0) || 0) > 0;
+      if (willRequirePayment) return res.status(400).json({ error: 'hold_required_for_paid_booking' });
+      // For non-paid bookings, check inventory availability immediately and reject if not available
+      const avail = checkAvailability(item.roomType || 'standard', item.startDate, item.endDate, Number(qty || 1));
+      if (!avail.ok) return res.status(409).json({ error: 'not_available', details: avail });
+    }
+
+    const result = createBookingInternal([item], customer, currency, metadata);
+    if (result.checkout) return res.status(200).json({ ok: true, booking: result.booking, checkout: result.checkout, fees: result.fees });
+    return res.status(200).json({ ok: true, booking: result.booking });
+  } catch (e) { console.error('accommodation booking error', e); return res.status(500).json({ error: 'server_error' }); }
+});
+
+app.post('/api/bookings/flight', authCheck, (req, res) => {
+  try {
+    const body = req.body || {};
+    const { from, to, date, price, currency = 'ZAR', customer = {}, metadata = {}, flightNumber, returnFlight } = body;
+    if (ajv && ajv.validateFlight) {
+      const ok = ajv.validateFlight(body);
+      if (!ok) return res.status(400).json({ error: 'validation_failed', details: errorsFromAjv(ajv.validateFlight.errors) });
+    } else {
+      if (!from || !to || (!Number.isFinite(Number(price)) && Number(price) !== 0)) return res.status(400).json({ error: 'from, to and price are required' });
+    }
+    const title = `Flight ${from}→${to} ${date?`on ${date}`:''}`;
+    const item = { type: 'flight', title, name: title, from, to, date: date || null, flightNumber: flightNumber || null, status: 'Scheduled', amount: Number(price), netRate: Number(price) };
+    const items = [item];
+    // optional return flight object for round-trip
+    if (returnFlight && typeof returnFlight === 'object'){
+      const rf = returnFlight;
+      const rtitle = `Return ${rf.from || to}→${rf.to || from} ${rf.date?`on ${rf.date}`:''}`;
+      const returnItem = { type: 'flight', title: rtitle, name: rtitle, from: rf.from || to, to: rf.to || from, date: rf.date || null, flightNumber: rf.flightNumber || null, status: 'Scheduled', amount: Number(rf.price || 0), netRate: Number(rf.price || 0), roundTripPair: true };
+      items.push(returnItem);
+    }
+    const result = createBookingInternal(items, customer, currency, metadata);
+    if (result.checkout) return res.status(200).json({ ok: true, booking: result.booking, checkout: result.checkout, fees: result.fees });
+    return res.status(200).json({ ok: true, booking: result.booking });
+  } catch (e) { console.error('flight booking error', e); return res.status(500).json({ error: 'server_error' }); }
+});
+
+app.post('/api/bookings/car', authCheck, (req, res) => {
+  try {
+    const body = req.body || {};
+    const { vehicleType, days = 1, pricePerDay, currency = 'ZAR', customer = {}, metadata = {}, pickupLocation, dropoffLocation, pickupTime, dropoffTime, extras = [], insurancePrice = 0 } = body;
+    if (ajv && ajv.validateCar) {
+      const ok = ajv.validateCar(body);
+      if (!ok) return res.status(400).json({ error: 'validation_failed', details: errorsFromAjv(ajv.validateCar.errors) });
+    } else {
+      if (!vehicleType || (!Number.isFinite(Number(pricePerDay)) && Number(pricePerDay) !== 0)) return res.status(400).json({ error: 'vehicleType and pricePerDay are required' });
+    }
+    const extrasTotal = Array.isArray(extras) ? extras.reduce((s,e)=>s + Number(e.price || 0), 0) : 0;
+    const base = Number(pricePerDay) * Number(days || 1);
+    const total = Math.round((base + extrasTotal + Number(insurancePrice || 0)) * 100) / 100;
+    const title = `${vehicleType} hire for ${days} day(s)`;
+    const item = { type: 'car', title, name: title, days: Number(days), pickupLocation: pickupLocation || null, dropoffLocation: dropoffLocation || null, pickupTime: pickupTime || null, dropoffTime: dropoffTime || null, extras: Array.isArray(extras) ? extras : [], insurancePrice: Number(insurancePrice || 0), amount: total, netRate: total };
+    const result = createBookingInternal([item], customer, currency, metadata);
+    if (result.checkout) return res.status(200).json({ ok: true, booking: result.booking, checkout: result.checkout, fees: result.fees });
+    return res.status(200).json({ ok: true, booking: result.booking });
+  } catch (e) { console.error('car booking error', e); return res.status(500).json({ error: 'server_error' }); }
+});
+
+// Flight monitoring: get flight item by id
+app.get('/api/flights/:itemId', authCheck, (req, res) => {
+  const itemId = req.params.itemId;
+  for (const [bid, b] of Object.entries(store)){
+    if (!b || !Array.isArray(b.items)) continue;
+    const it = b.items.find(x => x && x.id === itemId);
+    if (it) return res.json({ ok: true, bookingId: bid, item: it });
+  }
+  return res.status(404).json({ error: 'flight_not_found' });
+});
+
+// Manual status update for tests or admin
+app.post('/api/flights/:itemId/status', authCheck, (req, res) => {
+  const itemId = req.params.itemId;
+  const { status } = req.body || {};
+  if (!status) return res.status(400).json({ error: 'status_required' });
+  for (const [bid, b] of Object.entries(store)){
+    if (!b || !Array.isArray(b.items)) continue;
+    const it = b.items.find(x => x && x.id === itemId);
+    if (it){
+      it.status = String(status);
+      it.updatedAt = Date.now();
+      b.updatedAt = Date.now();
+      saveStore();
+      broadcast('flight.updated', { bookingId: bid, item: it }, 'agent-client');
+      return res.json({ ok: true, bookingId: bid, item: it });
+    }
+  }
+  return res.status(404).json({ error: 'flight_not_found' });
+});
+
+// Background simulator to advance flight statuses for demo/testing
+function simulateFlightStatusUpdates(){
+  const states = ['Scheduled','Boarding','Departed','In-Flight','Landed','Completed','Delayed','Cancelled'];
+  try {
+    for (const [bid, b] of Object.entries(store)){
+      if(!b || !Array.isArray(b.items)) continue;
+      for (const it of b.items.filter(x => x && x.type === 'flight')){
+        if (Math.random() < 0.12){
+          const cand = states.filter(s => s !== it.status);
+          const newStatus = cand[Math.floor(Math.random() * cand.length)];
+          it.status = newStatus;
+          it.updatedAt = Date.now();
+          b.updatedAt = Date.now();
+          saveStore();
+          broadcast('flight.updated', { bookingId: bid, item: it }, 'agent-client');
+        }
+      }
+    }
+  } catch (e){ console.error('flight simulator error', e); }
+}
+setInterval(simulateFlightStatusUpdates, 10_000).unref();
+
+// Read booking by id
+app.get('/api/bookings/:id', authCheck, (req, res) => {
+  const id = req.params.id;
+  const b = store[id];
+  if (!b) return res.status(404).json({ error: 'not_found' });
+  res.json({ ok: true, booking: b });
+});
+
+// Payment webhook (simulate provider callback). Accepts { sessionId?, bookingId?, status }
+app.post('/api/payments/webhook', (req, res) => {
+  try {
+    let { sessionId, bookingId, status } = req.body || {};
+    if (!bookingId && sessionId && store._sessions && store._sessions[sessionId]) {
+      bookingId = store._sessions[sessionId].bookingId;
+    }
+    if (!bookingId) return res.status(400).json({ error: 'missing_booking' });
+    const b = store[bookingId];
+    if (!b) return res.status(404).json({ error: 'booking_not_found' });
+    // Map common statuses to our canonical status
+    const normalized = (status || '').toString().toLowerCase();
+    if (normalized === 'paid' || normalized === 'completed' || normalized === 'success') b.status = 'Confirmed';
+    else if (normalized === 'failed' || normalized === 'cancelled') b.status = 'Cancelled';
+    else b.status = status || 'Pending';
+    b.updatedAt = Date.now();
+    // mark session if present
+    if (sessionId && store._sessions && store._sessions[sessionId]) store._sessions[sessionId].status = b.status;
+    saveStore();
+    // notify SSE listeners
+    // If booking moved to Confirmed, apply inventory (if not already applied)
+    try {
+      if (b.status === 'Confirmed' && !b.inventoryApplied) applyBookingToInventory(b);
+      if (b.status === 'Cancelled' && b.inventoryApplied) releaseBookingFromInventory(b);
+    } catch(e){ console.error('inventory update on webhook failed', e); }
+    broadcast('booking.updated', b, 'all');
+    return res.json({ ok: true, booking: b });
+  } catch (e) {
+    console.error('webhook error', e);
+    return res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// Simple mock checkout page that lets you simulate a payment (dev only)
+app.get('/api/mock-checkout/:sessionId', (req, res) => {
+  const sid = req.params.sessionId;
+  const s = (store._sessions || {})[sid];
+  if (!s) return res.status(404).send('Session not found');
+  const bookingId = s.bookingId;
+  // Render a tiny HTML page allowing simulation of success/failure
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(`
+    <html><body>
+      <h3>Mock Checkout</h3>
+      <p>Session: ${sid}</p>
+      <p>Booking: ${bookingId}</p>
+      <button onclick="fetch('/api/payments/webhook', {method:'POST',headers:{'content-type':'application/json'}, body: JSON.stringify({ sessionId: '${sid}', status: 'paid' })}).then(()=>{ alert('Simulated paid'); window.location='/payment-success?bookingId=${bookingId}'; })">Simulate success</button>
+      <button onclick="fetch('/api/payments/webhook', {method:'POST',headers:{'content-type':'application/json'}, body: JSON.stringify({ sessionId: '${sid}', status: 'failed' })}).then(()=>{ alert('Simulated failed'); window.location='/payment-success?bookingId=${bookingId}&status=failed'; })">Simulate failure</button>
+    </body></html>
+  `);
+});
+
 // --- SSE Broadcaster ---
 const sseClients = new Set(); // { res, role }
 function allowedRolesForVisibility(v) {
@@ -428,6 +912,189 @@ function filterThreadByRole(thread, role) {
   };
 }
 
+// --- Validation helpers (prefer AJV when available) ---
+let ajv = null, ajvValidateQuote = null, ajvValidateBooking = null;
+try {
+  const Ajv = require('ajv');
+  const addFormats = require('ajv-formats');
+  ajv = new Ajv({ allErrors: true, allowUnionTypes: true });
+  addFormats(ajv);
+
+  const quoteSchema = {
+    type: 'object',
+    properties: {
+      clientName: { type: 'string', minLength: 1, maxLength: 200 },
+      clientEmail: { type: 'string', format: 'email' },
+      currency: { type: 'string', pattern: '^[A-Z]{3}$' },
+      items: {
+        type: 'array',
+        maxItems: 500,
+        items: {
+          type: 'object',
+          properties: {
+            title: { type: 'string', minLength: 1, maxLength: 300 },
+            unitPrice: { type: 'number', minimum: 0 },
+            quantity: { type: 'number', minimum: 0 }
+          },
+          required: ['title']
+        }
+      },
+      taxRate: { type: 'number', minimum: 0, maximum: 100 },
+      discountRate: { type: 'number', minimum: 0, maximum: 100 }
+    },
+    required: ['clientName']
+  };
+
+  const bookingSchema = {
+    type: 'object',
+    properties: {
+      items: {
+        type: 'array',
+        minItems: 1,
+        items: {
+          type: 'object',
+          properties: {
+            amount: { type: 'number', minimum: 0 }
+          },
+          required: ['amount']
+        }
+      },
+      currency: { type: 'string', pattern: '^[A-Z]{3}$' },
+      customer: {
+        type: 'object',
+        properties: { email: { type: 'string', format: 'email' } }
+      }
+    },
+    required: ['items']
+  };
+
+  ajvValidateQuote = ajv.compile(quoteSchema);
+  ajvValidateBooking = ajv.compile(bookingSchema);
+  // Additional schemas for direct booking endpoints
+  const accommodationSchema = {
+    type: 'object',
+    properties: {
+      hotelName: { type: 'string', minLength: 1 },
+      roomType: { type: 'string' },
+      extras: { type: 'array', items: { type: 'object', properties: { name: { type: 'string' }, price: { type: 'number', minimum: 0 } } } },
+      nights: { type: 'integer', minimum: 1 },
+      unitPrice: { type: 'number', minimum: 0 },
+      currency: { type: 'string', pattern: '^[A-Z]{3}$' },
+      customer: { type: 'object' }
+    },
+    required: ['hotelName','nights','unitPrice']
+  };
+  const flightSchema = {
+    type: 'object',
+    properties: {
+      from: { type: 'string', minLength: 1 },
+      to: { type: 'string', minLength: 1 },
+      date: { type: ['string','null'] },
+      price: { type: 'number', minimum: 0 },
+      flightNumber: { type: 'string' },
+      returnFlight: {
+        type: ['object','null'],
+        properties: {
+          from: { type: 'string' },
+          to: { type: 'string' },
+          date: { type: ['string','null'] },
+          price: { type: 'number', minimum: 0 },
+          flightNumber: { type: 'string' }
+        }
+      },
+      currency: { type: 'string', pattern: '^[A-Z]{3}$' }
+    },
+    required: ['from','to','price']
+  };
+  const carSchema = {
+    type: 'object',
+    properties: {
+      vehicleType: { type: 'string', minLength: 1 },
+      pickupLocation: { type: 'string' },
+      dropoffLocation: { type: 'string' },
+      pickupTime: { type: ['string','null'] },
+      dropoffTime: { type: ['string','null'] },
+      extras: { type: 'array', items: { type: 'object', properties: { name: { type: 'string' }, price: { type: 'number' } } } },
+      insurancePrice: { type: 'number', minimum: 0 },
+      days: { type: 'integer', minimum: 1 },
+      pricePerDay: { type: 'number', minimum: 0 },
+      currency: { type: 'string', pattern: '^[A-Z]{3}$' }
+    },
+    required: ['vehicleType','pricePerDay']
+  };
+  // compile
+  ajv.validateAccommodation = ajv.compile(accommodationSchema);
+  ajv.validateFlight = ajv.compile(flightSchema);
+  ajv.validateCar = ajv.compile(carSchema);
+} catch (e) {
+  // AJV not available — will use fallback validators below
+}
+
+function isNonEmptyString(v, maxLen=1000){ return typeof v === 'string' && v.trim().length>0 && v.trim().length <= maxLen; }
+function isEmail(v){ return typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+function isCurrency(v){ return typeof v === 'string' && /^[A-Z]{3}$/.test((v||'').toUpperCase()); }
+
+function errorsFromAjv(errs){
+  if(!Array.isArray(errs)) return [];
+  return errs.map(e => ({ field: e.instancePath ? e.instancePath.replace(/^\//,'') : e.params && e.params.missingProperty ? e.params.missingProperty : e.keyword, message: e.message }));
+}
+
+function validateQuoteData(data = {}, opts = { partial: false }){
+  // Use AJV if available
+  if(ajvValidateQuote){
+    const ok = ajvValidateQuote(data);
+    if(ok) return { valid: true, errors: [] };
+    // If partial updates are allowed, filter errors about missing required properties
+    let errs = errorsFromAjv(ajvValidateQuote.errors);
+    if(opts.partial){ errs = errs.filter(e => !(e.field === 'clientName' && /must have required property/.test(e.message||''))); }
+    return { valid: errs.length === 0, errors: errs };
+  }
+  // Fallback lightweight validation
+  const errors = [];
+  const { partial } = opts;
+  if(!partial || Object.prototype.hasOwnProperty.call(data,'clientName')){
+    if(!isNonEmptyString(data.clientName, 200)) errors.push({ field: 'clientName', message: 'clientName is required and must be a non-empty string (max 200 chars)' });
+  }
+  if(Object.prototype.hasOwnProperty.call(data,'clientEmail') && data.clientEmail){ if(!isEmail(data.clientEmail)) errors.push({ field:'clientEmail', message: 'invalid email' }); }
+  if(Object.prototype.hasOwnProperty.call(data,'currency') && data.currency){ if(!isCurrency(data.currency)) errors.push({ field:'currency', message: 'currency must be 3-letter code' }); }
+  if(!partial || Object.prototype.hasOwnProperty.call(data,'items')){
+    if(!Array.isArray(data.items)) { errors.push({ field:'items', message: 'items must be an array' }); }
+    else {
+      if(data.items.length > 500) errors.push({ field:'items', message: 'too many items' });
+      data.items.forEach((it, idx) => {
+        if(!it) { errors.push({ field:`items[${idx}]`, message: 'item required' }); return; }
+        if(!isNonEmptyString(it.title||it.name||'',200)) errors.push({ field:`items[${idx}].title`, message: 'title required' });
+        const price = Number(it.unitPrice ?? it.price ?? it.amount ?? 0);
+        if(!Number.isFinite(price) || price < 0) errors.push({ field:`items[${idx}].unitPrice`, message: 'unitPrice must be a non-negative number' });
+        const qty = Number(it.quantity ?? it.qty ?? 1);
+        if(!Number.isFinite(qty) || qty <= 0) errors.push({ field:`items[${idx}].quantity`, message: 'quantity must be a positive number' });
+      });
+    }
+  }
+  if(Object.prototype.hasOwnProperty.call(data,'taxRate')){ const tr = Number(data.taxRate||0); if(isNaN(tr) || tr < 0 || tr > 100) errors.push({ field:'taxRate', message: 'taxRate must be between 0 and 100' }); }
+  if(Object.prototype.hasOwnProperty.call(data,'discountRate')){ const dr = Number(data.discountRate||0); if(isNaN(dr) || dr < 0 || dr > 100) errors.push({ field:'discountRate', message: 'discountRate must be between 0 and 100' }); }
+  return { valid: errors.length === 0, errors };
+}
+
+function validateBookingData(data = {}){
+  if(ajvValidateBooking){
+    const ok = ajvValidateBooking(data);
+    if(ok) return { valid: true, errors: [] };
+    return { valid: false, errors: errorsFromAjv(ajvValidateBooking.errors) };
+  }
+  const errors = [];
+  if(!Array.isArray(data.items) || data.items.length === 0) errors.push({ field:'items', message: 'items array required' });
+  if(Object.prototype.hasOwnProperty.call(data,'currency') && data.currency && !isCurrency(data.currency)) errors.push({ field:'currency', message: 'currency must be 3-letter code' });
+  if(Object.prototype.hasOwnProperty.call(data,'customer') && data.customer){ if(data.customer.email && !isEmail(data.customer.email)) errors.push({ field:'customer.email', message: 'invalid email' }); }
+  if(Array.isArray(data.items)){
+    data.items.forEach((it, idx)=>{
+      const amt = Number(it.amount ?? it.price ?? 0);
+      if(!Number.isFinite(amt) || amt < 0) errors.push({ field:`items[${idx}]`, message: 'amount/price required and must be >= 0' });
+    });
+  }
+  return { valid: errors.length === 0, errors };
+}
+
 // Post message
 app.post('/api/collab/:bookingId/message', authCheck, (req, res) => {
   const { authorRole, authorName, channel, content, visibility = 'all', mentions = [] } = req.body || {};
@@ -476,6 +1143,104 @@ app.put('/api/providers', authCheck, (req, res) => {
   providers.length = 0; list.forEach(p => providers.push({ name: String(p.name||'').toLowerCase(), enabled: !!p.enabled }));
   saveProviders();
   res.json({ ok: true, providers });
+});
+
+// --- Quotes API (simple persistence in server store) ---
+// GET /api/quotes -> list
+// POST /api/quotes -> create
+app.get('/api/quotes', authCheck, (req, res) => {
+  const q = Array.isArray(store._quotes) ? store._quotes : [];
+  res.json({ ok: true, quotes: q });
+});
+
+app.post('/api/quotes', authCheck, (req, res) => {
+  try {
+    const data = req.body || {};
+    const v = validateQuoteData(data, { partial: false });
+    if(!v.valid) return res.status(400).json({ error: 'validation_failed', details: v.errors });
+    const id = cryptoRandom();
+    const quote = {
+      id,
+      clientName: data.clientName || data.name || '',
+      clientEmail: data.clientEmail || '',
+      currency: data.currency || 'USD',
+      items: Array.isArray(data.items) ? data.items : [],
+      taxRate: Number(data.taxRate||0),
+      discountRate: Number(data.discountRate||0),
+      notes: data.notes || '',
+      status: data.status || 'Draft',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    store._quotes = Array.isArray(store._quotes) ? store._quotes : [];
+    store._quotes.unshift(quote);
+    saveStore();
+    res.status(201).json({ ok: true, quote });
+  } catch (e) {
+    console.error('create quote error', e);
+    res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// Update a quote
+app.put('/api/quotes/:id', authCheck, (req, res) => {
+  try {
+    const id = req.params.id;
+    const list = Array.isArray(store._quotes) ? store._quotes : [];
+    const idx = list.findIndex(q => q.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'not_found' });
+    const existing = list[idx];
+    const patch = req.body || {};
+    const v = validateQuoteData(patch, { partial: true });
+    if(!v.valid) return res.status(400).json({ error: 'validation_failed', details: v.errors });
+    const updated = { ...existing, ...patch, updatedAt: Date.now() };
+    list[idx] = updated;
+    store._quotes = list;
+    saveStore();
+    res.json({ ok: true, quote: updated });
+  } catch (e) {
+    console.error('update quote error', e);
+    res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// PATCH for partial updates
+app.patch('/api/quotes/:id', authCheck, (req, res) => {
+  try {
+    const id = req.params.id;
+    const list = Array.isArray(store._quotes) ? store._quotes : [];
+    const idx = list.findIndex(q => q.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'not_found' });
+    const existing = list[idx];
+    const patch = req.body || {};
+    const v = validateQuoteData(patch, { partial: true });
+    if(!v.valid) return res.status(400).json({ error: 'validation_failed', details: v.errors });
+    const updated = { ...existing, ...patch, updatedAt: Date.now() };
+    list[idx] = updated;
+    store._quotes = list;
+    saveStore();
+    res.json({ ok: true, quote: updated });
+  } catch (e) {
+    console.error('patch quote error', e);
+    res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// Delete a quote
+app.delete('/api/quotes/:id', authCheck, (req, res) => {
+  try {
+    const id = req.params.id;
+    const list = Array.isArray(store._quotes) ? store._quotes : [];
+    const idx = list.findIndex(q => q.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'not_found' });
+    list.splice(idx, 1);
+    store._quotes = list;
+    saveStore();
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('delete quote error', e);
+    res.status(500).json({ error: 'server_error' });
+  }
 });
 
 // --- Events Aggregator (Ticketmaster, SeatGeek) ---

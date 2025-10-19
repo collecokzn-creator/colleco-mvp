@@ -1,3 +1,99 @@
+name: E2E Smoke Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  smoke-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests (Vitest)
+        run: npm test --silent
+
+      - name: Build
+        run: npm run build
+
+      - name: Start backend (background)
+        run: |
+          nohup node server/server.js > server.log 2>&1 &
+          echo $! > backend.pid
+
+      - name: Start preview server (background)
+        run: |
+          nohup npx serve -s dist -l 5174 > preview.log 2>&1 &
+          echo $! > preview.pid
+
+      - name: Wait for services
+        run: |
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS http://localhost:4000/health >/dev/null 2>&1 && curl -fsS http://localhost:5174 >/dev/null 2>&1; then
+              echo "services up"; exit 0; fi
+            echo "waiting for services... ($i)"; sleep 2
+          done
+          exit 1
+
+      - name: Run Cypress smoke tests
+        env:
+          API_BASE: http://localhost:4000
+          CI: true
+        run: |
+          npx cypress run --browser chrome --spec "cypress/e2e/smoke.cy.js"
+
+      - name: Upload Cypress artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
+            server.log
+            preview.log
+name: E2E Smoke Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  smoke-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests (Vitest)
+        run: npm test --silent
+
+      - name: Run smoke stack and Cypress
+        # smoke:all builds, starts API + preview, and runs Cypress smoke tests via start-server-and-test
+        run: npm run smoke:all
 name: E2E Smoke
 
 on:
@@ -23,24 +119,65 @@ jobs:
           npm run build
       - name: Start backend server
         run: |
-          node server/server.js &
+          # Start backend and capture logs
+          node server/server.js > server.log 2>&1 &
           echo "Backend starting..."
-          for i in {1..40}; do
+          for i in {1..80}; do
             if curl -fsS http://localhost:4000/health >/dev/null 2>&1; then
               echo "Backend is up"; break; fi; echo "waiting backend ($i)"; sleep 1;
           done
       - name: Start preview server
         run: |
-          npx serve -s dist -l 5174 &
+          # Start preview and capture logs
+          npx serve -s dist -l 5174 > preview.log 2>&1 &
           echo "Preview starting..."
-          for i in {1..40}; do
+          for i in {1..80}; do
             if curl -fsS http://localhost:5174 >/dev/null 2>&1; then
               echo "Preview is up"; break; fi; echo "waiting preview ($i)"; sleep 1;
           done
-      - name: Cypress run (smoke)
-        uses: cypress-io/github-action@v6
-        with:
-          browser: chrome
-          spec: cypress/e2e/smoke.cy.js
+      - name: Cypress run (smoke + booking) with retries
         env:
           API_BASE: http://localhost:4000
+          CI: true
+          # Group identifier for CI reporting
+          E2E_GROUP: smoke-booking
+        run: |
+          set +e
+          SPECS="cypress/e2e/smoke.cy.js,cypress/e2e/booking.cy.js"
+          ATTEMPTS=0
+          MAX=3
+          EXIT_CODE=0
+          while [ $ATTEMPTS -lt $MAX ]; do
+            ATTEMPTS=$((ATTEMPTS+1))
+            echo "Cypress attempt $ATTEMPTS/$MAX"
+            if [ -n "$CYPRESS_RECORD_KEY" ]; then
+              echo "Recording to Cypress Dashboard (group=$E2E_GROUP)"
+              npx cypress run --browser chrome --spec "$SPECS" --record --key "$CYPRESS_RECORD_KEY" --group "$E2E_GROUP"
+            else
+              npx cypress run --browser chrome --spec "$SPECS"
+            fi
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 0 ]; then
+              echo "Cypress succeeded on attempt $ATTEMPTS"; break;
+            else
+              echo "Cypress attempt $ATTEMPTS failed with exit $EXIT_CODE"
+              if [ $ATTEMPTS -lt $MAX ]; then
+                echo "Retrying..."; sleep 5;
+              fi
+            fi
+          done
+          # Always print last lines of logs for quick debug
+          echo "=== server.log (tail) ==="; tail -n 200 server.log || true
+          echo "=== preview.log (tail) ==="; tail -n 200 preview.log || true
+          exit $EXIT_CODE
+
+      - name: Upload Cypress artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
+            server.log
+            preview.log

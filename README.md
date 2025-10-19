@@ -115,6 +115,18 @@ Notes:
 - The backend may auto-fallback if the port is in use; `smoke:start:stack` pins it to 4010 to avoid conflicts.
 - If you run the backend manually, set `API_BASE` to match its URL before running Cypress.
 
+## Cypress Dashboard (optional)
+
+You can record Cypress runs to the Cypress Dashboard for richer test insights and retries. To enable recordings in CI:
+
+- Create a Cypress project and obtain a record key from the Dashboard (https://dashboard.cypress.io).
+- Add the key to your repository secrets as `CYPRESS_RECORD_KEY`.
+- The CI workflow (`.github/workflows/e2e-smoke.yml`) will automatically record runs when `CYPRESS_RECORD_KEY` is present and set the run group to `smoke-booking`.
+
+Notes:
+- Recording requires a Cypress account and may be subject to plan limits.
+- You can view per-run artifacts, video, and retry analytics in the Dashboard.
+
 ## Troubleshooting
   - Ensure country/city or a search term ≥ 3 chars
   - Enable demo mode in Settings

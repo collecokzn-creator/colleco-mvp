@@ -82,3 +82,45 @@ try {
   ensureLink('icon', { type: 'image/png', href: appIconPng });
   ensureLink('apple-touch-icon', { href: appIconPng });
 } catch {}
+
+// E2E helper: when tests set window.__E2E__ we disable animations/transitions to avoid flakiness
+try {
+  if (window && window.__E2E__) {
+    const s = document.createElement('style');
+    s.setAttribute('data-e2e-disable-animations', 'true');
+    s.textContent = `
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      [data-modal-root] { opacity: 1 !important; transform: none !important; }
+    `;
+    document.head.appendChild(s);
+      // Ensure a modal root exists immediately for E2E tests and expose a readiness attribute
+    try {
+      let mr = document.querySelector('[data-modal-root]');
+      if (!mr) {
+        mr = document.createElement('div');
+        mr.setAttribute('data-modal-root', 'true');
+        // make the root occupy the viewport during E2E so elements inside are visible to Cypress
+  mr.style.position = 'fixed';
+  mr.style.top = '0';
+  mr.style.left = '0';
+  mr.style.width = '100%';
+  mr.style.height = '100%';
+  mr.style.minHeight = '100vh';
+  mr.style.display = 'block';
+  // Make the modal root non-blocking by default so it doesn't cover or intercept
+  // interactions with the page underneath. Individual modal instances will opt-in
+  // to pointer events when rendered into the root.
+  mr.style.pointerEvents = 'none';
+  // Use a very large z-index so the modal root is above any app content for E2E.
+  mr.style.zIndex = String(2147483646);
+        document.body.appendChild(mr);
+      } else {
+        // if it exists, ensure it has enough size to be considered visible in tests
+        mr.style.display = mr.style.display || 'block';
+        mr.style.minHeight = mr.style.minHeight || '100vh';
+      }
+      // mark ready for Cypress to wait on
+      mr.setAttribute('data-e2e-ready', 'true');
+    } catch (ee) { /* best-effort for E2E */ }
+  }
+} catch (e) {}

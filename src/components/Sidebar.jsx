@@ -33,27 +33,13 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import collecoLogo from "../assets/colleco-logo.png";
 import { useLocalStorageState } from "../useLocalStorageState";
 
-// Try to load an external JSON config if present. Keep the in-file SIDEBAR_CONFIG as a fallback.
-let EXTERNAL_SIDEBAR_CONFIG = null;
-try {
-  // Prefer a JS module config if present. It's safer during active editing.
-  // @ts-ignore
-  EXTERNAL_SIDEBAR_CONFIG = require("../config/sidebar.config.js");
-} catch (e) {
-  try {
-    // Try the primary JSON config file.
-    // @ts-ignore
-    EXTERNAL_SIDEBAR_CONFIG = require("../config/sidebar.config.json");
-  } catch (e1) {
-    try {
-      // Fallback to .bak (useful during editing if the primary file is temporarily corrupted).
-      // @ts-ignore
-      EXTERNAL_SIDEBAR_CONFIG = require("../config/sidebar.config.json.bak");
-    } catch (e2) {
-      EXTERNAL_SIDEBAR_CONFIG = null;
-    }
-  }
-}
+// Load external sidebar config (programmatic .js is authoritative).
+// The config file in the repo is a CommonJS module (module.exports). When imported from ESM
+// we may not get a `default` export. Import the module namespace and normalize to either
+// `module.default` (if present) or the module itself so downstream code can use the
+// same EXTERNAL_SIDEBAR_CONFIG shape regardless of module system.
+import * as EXTERNAL_SIDEBAR_MODULE from "../config/sidebar.config.js";
+const EXTERNAL_SIDEBAR_CONFIG = (EXTERNAL_SIDEBAR_MODULE && (EXTERNAL_SIDEBAR_MODULE.default ?? EXTERNAL_SIDEBAR_MODULE)) || null;
 
 const SIDEBAR_CONFIG = {
   roles: {
