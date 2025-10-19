@@ -27,3 +27,19 @@ CI tuning
 - Cache `~/.npm` (already configured) for faster installs.
 
 If you'd like, I can add automatic reruns for flaky tests or a separate job that uploads artifacts to an S3 bucket for long-term storage.
+
+Test robustness notes
+
+- Prefer host-agnostic network intercepts in Cypress tests (for example: `cy.intercept('POST', '**/api/ai/itinerary')`) so tests do not break when the dev server or API runs on a different host or port in CI. This reduces brittle assumptions about API_BASE values.
+- When debugging CI failures locally, start the API and dev server and run Cypress headless to reproduce: set `VITE_API_BASE` when starting the dev server if needed and poll http://127.0.0.1:5173 until it's ready before running `npx cypress run`.
+
+Local troubleshooting snippet (PowerShell):
+
+```powershell
+# start API on 4001 and Vite bound to 127.0.0.1
+$env:PORT='4001'; Start-Process node -ArgumentList 'server/server.js' -WorkingDirectory (Get-Location) -NoNewWindow
+$env:VITE_API_BASE='http://127.0.0.1:4001'; npm run dev
+# in a new terminal, wait for vite then run Cypress
+for ($i=0; $i -lt 60; $i++) { try { Invoke-WebRequest -Uri 'http://127.0.0.1:5173' -UseBasicParsing -TimeoutSec 2; break } catch { Start-Sleep -Seconds 1 } }
+npx cypress run --config video=false
+```
