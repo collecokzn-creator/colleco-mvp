@@ -1,6 +1,5 @@
 describe('AI Generator E2E', () => {
   it('generates an itinerary and uploads draft', () => {
-    const apiBase = Cypress.env('API_BASE') || 'http://localhost:4000';
   cy.visit('/ai', { failOnStatusCode: false, onBeforeLoad(win) { try { win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin')); } catch(e){} } });
   // Wait for the AI panel heading so the component is rendered
   cy.get('#aiGenHeading', { timeout: 60000 }).should('be.visible');
