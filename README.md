@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/ci.yml/badge.svg)](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/ci.yml)
 [![E2E Smoke](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/e2e-smoke.yml/badge.svg)](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/e2e-smoke.yml)
+[![E2E Full](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/e2e.yml/badge.svg)](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/e2e.yml)
 [![Pages Deploy](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/deploy.yml/badge.svg)](https://github.com/collecokzn-creator/colleco-mvp/actions/workflows/deploy.yml)
 
 A React + Vite SPA with a minimal Express backend for collaboration and events aggregation. Includes location-aware product discovery, events from trusted providers with a demo fallback, and an admin Settings page with provider toggles and API status.

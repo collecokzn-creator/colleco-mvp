@@ -9,6 +9,10 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18]
+        browser: [electron, chrome]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,13 +20,18 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: ${{ matrix.node }}
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node }}-
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Build assets
-        run: npm run build
 
       - name: Start API server
         run: |
@@ -30,21 +39,19 @@ jobs:
         env:
           NODE_ENV: test
 
-      - name: Start Vite (preview)
+      - name: Start Vite dev server
         run: |
-          # Use vite preview to serve the built assets for a deterministic E2E run
-          npx concurrently -k -s first "cross-env VITE_API_BASE=http://localhost:4001 npm run preview" &
+          cross-env VITE_API_BASE=http://localhost:4001 npm run dev &
 
-      - name: Wait for servers
+      - name: Wait for dev server
         run: |
-          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 || [ $n -ge 30 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
+          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 || [ $n -ge 60 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
 
       - name: Run Cypress
         uses: cypress-io/github-action@v5
         with:
           record: false
-          start: ""
-          browser: electron
+          browser: ${{ matrix.browser }}
           config: video=false
 
       - name: Upload Cypress artifacts
