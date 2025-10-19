@@ -8,9 +8,9 @@ describe('AI Generator E2E', () => {
   // set prompt (specific textarea inside the AI generator panel)
   cy.get('#aiGenHeading').parent().find('textarea').first().clear().type('Family trip to Cape Town for 3 nights, beach and food');
 
-    // choose single mode and intercept generation request
-    cy.get('input[name="aimode"][value="single"]').check({ force: true });
-    cy.intercept('POST', `${apiBase}/api/ai/itinerary`).as('generate');
+  // choose single mode and intercept generation request (match any host/port)
+  cy.get('input[name="aimode"][value="single"]').check({ force: true });
+  cy.intercept('POST', '**/api/ai/itinerary').as('generate');
     cy.contains('Generate').click();
     cy.wait('@generate', { timeout: 20000 }).its('response.statusCode').should('eq', 200);
 
@@ -20,7 +20,7 @@ describe('AI Generator E2E', () => {
     cy.contains('Total:', { timeout: 20000 }).should('be.visible');
 
     // Upload draft
-    cy.intercept('POST', `${apiBase}/api/ai/draft`).as('upload');
+  cy.intercept('POST', '**/api/ai/draft').as('upload');
     cy.contains('Upload Draft').click();
     cy.wait('@upload', { timeout: 20000 }).its('response.statusCode').should('eq', 201);
 
