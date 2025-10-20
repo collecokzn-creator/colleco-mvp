@@ -20,21 +20,25 @@ jobs:
         run: npm ci
 
       - name: Start API server
-        run: node server/server.js &
+        run: |
+          nohup node server/server.js > server.log 2>&1 &
+          echo $! > backend.pid
 
       - name: Start Vite dev server
         # Force Vite to bind to 127.0.0.1 (CI runners may resolve localhost differently)
-        run: cross-env VITE_API_BASE=http://127.0.0.1:4001 npm run dev -- --host 127.0.0.1 &
-
-      - name: Wait for dev server
         run: |
-          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 || [ $n -ge 80 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
+          nohup bash -lc "cross-env VITE_API_BASE=http://127.0.0.1:4001 npm run dev -- --host 127.0.0.1" > vite.log 2>&1 &
+          echo $! > vite.pid
+
+      - name: Wait for dev server and API
+        run: |
+          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
 
       - name: Run quick smoke E2E
         run: npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js"
 
-      - name: Upload artifacts on failure
-        if: failure()
+      - name: Upload artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: cypress-smoke-artifacts
@@ -42,3 +46,7 @@ jobs:
             cypress/screenshots
             cypress/videos
             cypress/logs
+            server.log
+            vite.log
+            backend.pid
+            vite.pid
