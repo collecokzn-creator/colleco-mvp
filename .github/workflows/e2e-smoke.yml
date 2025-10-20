@@ -27,7 +27,8 @@ jobs:
 
       - name: Start backend server
         run: |
-          nohup node server/server.js > server.log 2>&1 &
+          # start the demo backend on port 4001 so the workflow health check matches
+          PORT=4001 nohup node server/server.js > server.log 2>&1 &
           echo $! > backend.pid
 
       - name: Start preview server
