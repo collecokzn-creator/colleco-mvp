@@ -1,12 +1,12 @@
 name: disabled
 
 on:
-	workflow_dispatch: {}
+  workflow_dispatch: {}
 
 # Intentionally a minimal no-op job so the workflow file stays valid while remaining disabled.
 jobs:
-	noop:
-		runs-on: ubuntu-latest
-		steps:
-			- name: No-op
-				run: echo "This workflow is intentionally disabled."
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: No-op
+        run: echo "This workflow is intentionally disabled."
