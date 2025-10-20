@@ -39,7 +39,7 @@ jobs:
         run: |
           set -e
           for i in $(seq 1 80); do
-            if curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 && curl -fsS http://127.0.0.1:5174 >/dev/null 2>&1; then
+            if curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1 && curl -fsS http://127.0.0.1:5174 >/dev/null 2>&1; then
               echo "services up"; exit 0
             fi
             echo "waiting for services... ($i)"; sleep 1
@@ -48,7 +48,7 @@ jobs:
 
       - name: Cypress run (smoke)
         env:
-          API_BASE: http://127.0.0.1:4000
+          API_BASE: http://127.0.0.1:4001
           CI: true
         run: |
           SPECS="cypress/e2e/smoke.cy.js"
