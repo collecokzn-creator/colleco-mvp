@@ -13,5 +13,24 @@ export default defineConfig({
   // Previously set to 0 which causes an immediate timeout; set to 60s to be safe.
   pageLoadTimeout: 60000,
     defaultCommandTimeout: 8000,
+    // Register Node-side event handlers/tasks so specs can surface browser console messages
+    setupNodeEvents(on, config) {
+      on('task', {
+        // Print messages from the browser (or tests) to the Node runner logs.
+        log(message) {
+          // support both string and arrays
+          if (Array.isArray(message)) {
+            message = message.join('\n')
+          }
+          /* eslint-disable no-console */
+          console.log('[cy.task.log] ' + String(message))
+          /* eslint-enable no-console */
+          return null
+        }
+      })
+
+      // return the updated config
+      return config
+    },
   },
 })

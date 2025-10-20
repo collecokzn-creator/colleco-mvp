@@ -212,6 +212,10 @@ const SIDEBAR_CONFIG = {
           items: [
             { name: "Bookings", icon: "CalendarCheck", route: "/client/bookings" },
             { name: "Payment", icon: "Wallet", route: "/client/payment" },
+            // Quick booking links moved from Navbar
+            { name: "Book Stay", icon: "Briefcase", route: "/book/accommodation" },
+            { name: "Book Flight", icon: "BarChart3", route: "/book/flight" },
+            { name: "Car Hire", icon: "Map", route: "/book/car" },
           ],
         },
         {

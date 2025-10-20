@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import * as RDP from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-
-const DateRangeComp = RDP.DateRange || RDP.DateRangePicker || (RDP.default && (RDP.default.DateRange || RDP.default.DateRangePicker)) || null;
 
 export default function DateRangePicker({ startDate, endDate, onStartChange, onEndChange }) {
   const [range, setRange] = useState(undefined);
+  const [DateRangeComp, setDateRangeComp] = useState(null);
 
   useEffect(() => {
     if (startDate || endDate) {
@@ -14,6 +12,25 @@ export default function DateRangePicker({ startDate, endDate, onStartChange, onE
       setRange(undefined);
     }
   }, [startDate, endDate]);
+
+  // Lazy-load the day picker component at runtime to avoid build-time ESM export
+  // resolution issues across react-day-picker versions. If the package doesn't
+  // expose the expected component, fall back to the simple date inputs below.
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const mod = await import('react-day-picker');
+        if (!mounted) return;
+        const Comp = mod.DateRange || mod.DateRangePicker || (mod.default && (mod.default.DateRange || mod.default.DateRangePicker)) || null;
+        setDateRangeComp(() => Comp);
+      } catch (e) {
+        // If dynamic import fails, leave DateRangeComp null to use fallback UI.
+        if (mounted) setDateRangeComp(null);
+      }
+    })();
+    return () => { mounted = false };
+  }, []);
 
   const handleSelect = (r) => {
     setRange(r);
