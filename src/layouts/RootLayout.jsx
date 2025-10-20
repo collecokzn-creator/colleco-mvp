@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useUser } from "../context/UserContext.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Sidebar from "../components/Sidebar.jsx";
-import AIAgent from "../components/AIAgent.jsx";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import globePng from "../assets/Globeicon.png";
+import AIAgent from "../components/AIAgent.jsx";
 
 export default function RootLayout() {
-  const { user } = useUser();
-  // Scroll to top on route change
-  const location = useLocation();
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-  }, [location.pathname]);
   // Feature flag: when deploying as a static site (GitHub Pages), there's no backend to ping.
   // Set VITE_HAS_BACKEND=1 to enable API health polling in environments with a server.
   const hasBackend = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_HAS_BACKEND === '1');
@@ -71,38 +64,31 @@ export default function RootLayout() {
         </div>
       )}
       {/* Skip to content (accessibility) */}
-  <a href="#main-content" className="sr-only focus:not-sr-only fixed top-2 left-2 z-[60] px-3 py-2 bg-white border border-cream-border shadow text-brand-russty rounded">Skip to content</a>
+      <a href="#main-content" className="sr-only focus:not-sr-only fixed top-2 left-2 z-[60] px-3 py-2 bg-white border border-cream-border shadow text-brand-brown rounded">Skip to content</a>
       {/* Top Navbar (fixed) */}
   <Navbar />
 
       {/* Main content area: body scroll; reserve space for fixed header/footer */}
-      <div className="pb-24" style={{ paddingTop: '4rem' }}>
-        <div className="flex">
+      <div className="pb-24" style={{ paddingTop: 'calc(var(--header-h) + var(--banner-h))' }}>
+        <div className="flex flex-row-reverse">
           <Sidebar />
-          <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0 ml-0 sm:ml-[19rem]" tabIndex="-1">
-            <section className="px-0 py-6 flex justify-start">
-              <div className="min-h-screen bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-cream-border/50 p-6 w-full max-w-4xl" style={{marginLeft: 0}}>
-                <Outlet />
-              </div>
+          <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0" tabIndex="-1">
+            <section className="px-6 py-6">
+              <Outlet />
             </section>
           </main>
         </div>
       </div>
 
-      {/* Render floating AI Agent globally */}
-      <AIAgent />
-
-      {/* Footer (fixed) */}
-    <footer className="fixed bottom-0 left-0 right-0 bg-brand-russty text-white text-center py-3 text-sm border-t border-cream-border font-semibold tracking-wide flex flex-col items-center gap-1 z-[var(--z-footer,40)]">
+    {/* Footer (fixed) */}
+    <AIAgent />
+  <footer className="fixed bottom-0 left-0 right-0 bg-brand-brown text-white text-center py-4 text-sm border-t border-cream-border font-semibold tracking-wide flex flex-col items-center gap-1 z-40">
         <span>© {new Date().getFullYear()} CollEco Travel — All rights reserved.</span>
-        {user && (
-          <span className="mt-1 text-xs text-white/80">Logged in as {user.name} (<span className="text-brand-orange">{user.email}</span>)</span>
-        )}
         <span className="flex items-center gap-2 text-white text-sm font-normal">
           <span className="inline-flex h-5 w-5 rounded-full overflow-hidden mr-1 align-text-bottom ring-[0.5px] ring-white/40 shrink-0 bg-white/10">
             <img src={globePng} alt="CollEco globe" className="h-full w-full object-cover object-center rounded-full" width="20" height="20" />
           </span>
-  <a href="https://www.travelcolleco.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-orange">www.travelcolleco.com</a>
+          <a href="https://www.collecotravel.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-highlight">www.collecotravel.com</a>
         </span>
       </footer>
 
@@ -111,13 +97,12 @@ export default function RootLayout() {
         <button
           type="button"
           onClick={scrollToTop}
-          className="fixed bottom-[calc(var(--footer-h)+0.5rem)] right-4 z-50 px-3 py-2 rounded-full bg-brand-russty text-white shadow-lg border border-cream-border text-sm hover:bg-brand-russty/90 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 focus:ring-offset-2 focus:ring-offset-cream"
+          className="hidden sm:inline-flex fixed bottom-[calc(var(--footer-h)+0.5rem)] right-4 z-50 px-3 py-2 rounded-full bg-brand-brown text-white shadow-lg border border-cream-border text-sm hover:bg-brand-brown/90 focus:outline-none focus:ring-2 focus:ring-brand-brown/40 focus:ring-offset-2 focus:ring-offset-cream"
           aria-label="Back to top"
         >
           ↑ Top
         </button>
       )}
-  {/* Removed AIAgent from RootLayout. Now in Sidebar. */}
-  </div>
+    </div>
   );
 }

@@ -1,263 +1,922 @@
-// Tool icon imports (replace with actual icon imports as needed)
-export const TOOL_CONFIG = {
-  admin: [
-    { label: '⚙️ Admin Console', to: '/admin-console' },
-    { label: '📊 Analytics', to: '/analytics' },
-    { label: '🤝 Partner Management', to: '/partners' },
-    { label: '📦 Packages', to: '/admin/packages' },
-    { label: '📈 Reports', to: '/reports' },
-    { label: '🛡️ Compliance', to: '/compliance' },
-    { label: '💬 Support', to: '/support' },
-  ],
-  partner: [
-    { label: '📔 My Bookings', to: '/bookings' },
-    { label: '💰 Earnings', to: '/payouts' },
-    { label: '📦 Packages', to: '/packages' },
-    { label: '💬 Support', to: '/support' },
-  ],
-  client: [
-    { label: '🧳 My Trips', to: '/trips' },
-    { label: '🧭 Plan Trip', to: '/plan-trip' },
-    { label: '📦 Packages', to: '/packages' },
-    { label: '💬 Support', to: '/support' },
-  ],
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import {
+  BarChart3,
+  Briefcase,
+  CalendarCheck,
+  Camera,
+  ChevronLeft,
+  ChevronRight,
+  Clock3,
+  FileText,
+  Globe2,
+  Gift,
+  HelpCircle,
+  LayoutDashboard,
+  Map,
+  MapPin,
+  Megaphone,
+  MessageSquare,
+  Home,
+  Settings,
+  Shield,
+  ShieldCheck,
+  Sparkles,
+  Tag,
+  TrendingUp,
+  Users,
+  Users2,
+  Video,
+  Wallet,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import collecoLogo from "../assets/colleco-logo.png";
+import { useLocalStorageState } from "../useLocalStorageState";
+
+// Load external sidebar config (programmatic .js is authoritative).
+// The config file in the repo is a CommonJS module (module.exports). When imported from ESM
+// we may not get a `default` export. Import the module namespace and normalize to either
+// `module.default` (if present) or the module itself so downstream code can use the
+// same EXTERNAL_SIDEBAR_CONFIG shape regardless of module system.
+import * as EXTERNAL_SIDEBAR_MODULE from "../config/sidebar.config.js";
+const EXTERNAL_SIDEBAR_CONFIG = (EXTERNAL_SIDEBAR_MODULE && (EXTERNAL_SIDEBAR_MODULE.default ?? EXTERNAL_SIDEBAR_MODULE)) || null;
+
+const SIDEBAR_CONFIG = {
+  roles: {
+    admin: {
+      label: "Admin (CollEco)",
+      sections: [
+        {
+          title: "Dashboard & Analytics",
+          items: [
+            { name: "Dashboard", icon: "LayoutDashboard", route: "/admin/dashboard" },
+            { name: "Reports", icon: "BarChart3", route: "/admin/reports" },
+            { name: "Analytics", icon: "TrendingUp", route: "/admin/analytics" },
+          ],
+        },
+        {
+          title: "Partner Management",
+          items: [
+            { name: "Partners", icon: "Users2", route: "/admin/partners" },
+            { name: "Approval & Documents", icon: "FileText", route: "/admin/partner-approval" },
+            { name: "Profiles", icon: "MapPin", route: "/admin/partner-profiles" },
+          ],
+        },
+        {
+          title: "Client Management",
+          items: [
+            { name: "Clients", icon: "Users", route: "/admin/clients" },
+            { name: "Bookings Oversight", icon: "CalendarCheck", route: "/admin/bookings" },
+            { name: "Refunds & Adjustments", icon: "Wallet", route: "/admin/refunds" },
+          ],
+        },
+        {
+          title: "Finance & Revenue",
+          items: [
+            { name: "Service Fees", icon: "Wallet", route: "/admin/fees" },
+            { name: "Payouts & Commissions", icon: "Gift", route: "/admin/payouts" },
+            { name: "Revenue Tracking", icon: "BarChart3", route: "/admin/revenue" },
+          ],
+        },
+        {
+          title: "Marketing & Promotions",
+          items: [
+            { name: "Promotions", icon: "Tag", route: "/admin/promotions" },
+            { name: "Visibility Control", icon: "Sparkles", route: "/admin/visibility" },
+          ],
+        },
+        {
+          title: "Compliance & Safety",
+          items: [
+            { name: "Compliance Monitoring", icon: "ShieldCheck", route: "/admin/compliance" },
+            { name: "Safety Monitoring", icon: "Shield", route: "/admin/safety" },
+          ],
+        },
+        {
+          title: "System Settings & API",
+          items: [
+            { name: "Settings", icon: "Settings", route: "/admin/settings" },
+            { name: "API Integration", icon: "Megaphone", route: "/admin/api" },
+          ],
+        },
+      ],
+    },
+    partner: {
+      label: "Partner (Supplier)",
+      sections: [
+        {
+          title: "Dashboard & Performance",
+          items: [
+            { name: "Dashboard", icon: "LayoutDashboard", route: "/partner/dashboard" },
+            { name: "Sales & Earnings", icon: "BarChart3", route: "/partner/sales" },
+            { name: "Performance Trends", icon: "TrendingUp", route: "/partner/performance" },
+          ],
+        },
+        {
+          title: "Product Listings",
+          items: [
+            { name: "Hotels", icon: "Briefcase", route: "/partner/hotels" },
+            { name: "Tours", icon: "Map", route: "/partner/tours" },
+            { name: "Cars", icon: "Car", route: "/partner/cars" },
+            { name: "Packages", icon: "Gift", route: "/partner/packages" },
+            { name: "Activities", icon: "Sparkles", route: "/partner/activities" },
+          ],
+        },
+        {
+          title: "Availability & Rates",
+          items: [
+            { name: "Calendar", icon: "CalendarCheck", route: "/partner/calendar" },
+            { name: "Pricing", icon: "Tag", route: "/partner/pricing" },
+            { name: "Allotments", icon: "Clock3", route: "/partner/allotments" },
+          ],
+        },
+        {
+          title: "Booking Management",
+          items: [
+            { name: "Bookings", icon: "CalendarCheck", route: "/partner/bookings" },
+            { name: "Confirm/Modify/Cancel", icon: "ShieldCheck", route: "/partner/booking-actions" },
+          ],
+        },
+        {
+          title: "Finance",
+          items: [
+            { name: "Payouts", icon: "Wallet", route: "/partner/payouts" },
+            { name: "Commissions", icon: "Gift", route: "/partner/commissions" },
+            { name: "Invoices", icon: "FileText", route: "/partner/invoices" },
+          ],
+        },
+        {
+          title: "Marketing Tools",
+          items: [
+            { name: "Promotions", icon: "Tag", route: "/partner/promotions" },
+            { name: "Featured Listings", icon: "Sparkles", route: "/partner/featured" },
+            { name: "Packages", icon: "Gift", route: "/partner/packages" },
+          ],
+        },
+        {
+          title: "Communication & Collaboration",
+          items: [
+            { name: "Chat", icon: "MessageSquare", route: "/partner/chat" },
+            { name: "Collaboration", icon: "Users", route: "/partner/collaboration" },
+          ],
+        },
+        {
+          title: "Compliance",
+          items: [
+            { name: "Document Uploads", icon: "FileText", route: "/partner/documents" },
+            { name: "Verification", icon: "ShieldCheck", route: "/partner/verification" },
+            { name: "Safety Details", icon: "Shield", route: "/partner/safety" },
+          ],
+        },
+        {
+          title: "Analytics",
+          items: [
+            { name: "Views", icon: "BarChart3", route: "/partner/views" },
+            { name: "Bookings", icon: "CalendarCheck", route: "/partner/bookings-analytics" },
+            { name: "Performance Trends", icon: "TrendingUp", route: "/partner/performance" },
+          ],
+        },
+      ],
+    },
+    client: {
+      label: "Client (Traveler)",
+      sections: [
+        {
+          title: "Dashboard",
+          items: [
+            { name: "Upcoming Trips", icon: "CalendarCheck", route: "/client/upcoming" },
+            { name: "Past Trips", icon: "Clock3", route: "/client/past" },
+            { name: "Saved Itineraries", icon: "Map", route: "/client/saved" },
+          ],
+        },
+        {
+          title: "Search & Discovery",
+          items: [
+            { name: "Destinations", icon: "Globe2", route: "/client/destinations" },
+            { name: "Packages", icon: "Gift", route: "/client/packages" },
+            { name: "Flights", icon: "Plane", route: "/client/flights" },
+            { name: "Stays", icon: "Briefcase", route: "/client/stays" },
+            { name: "Cars", icon: "Car", route: "/client/cars" },
+            { name: "Tours", icon: "Map", route: "/client/tours" },
+          ],
+        },
+        {
+          title: "Quote & Itinerary",
+          items: [
+            { name: "Quote Builder", icon: "FileText", route: "/client/quotes" },
+            { name: "Itinerary Viewer", icon: "Map", route: "/client/itinerary" },
+          ],
+        },
+        {
+          title: "Booking & Payment",
+          items: [
+            { name: "Bookings", icon: "CalendarCheck", route: "/client/bookings" },
+            { name: "Payment", icon: "Wallet", route: "/client/payment" },
+          ],
+        },
+        {
+          title: "Notifications & Reminders",
+          items: [
+            { name: "Notifications", icon: "Megaphone", route: "/client/notifications" },
+            { name: "Trip Reminders", icon: "Clock3", route: "/client/reminders" },
+          ],
+        },
+        {
+          title: "Collaboration",
+          items: [
+            { name: "Chat with Agents", icon: "MessageSquare", route: "/client/chat" },
+            { name: "Partner Chat", icon: "Users2", route: "/client/partner-chat" },
+          ],
+        },
+        {
+          title: "Travel Documents",
+          items: [
+            { name: "Vouchers", icon: "FileText", route: "/client/vouchers" },
+            { name: "Invoices", icon: "FileText", route: "/client/invoices" },
+            { name: "Confirmations", icon: "ShieldCheck", route: "/client/confirmations" },
+          ],
+        },
+        {
+          title: "Reviews & Feedback",
+          items: [
+            { name: "Reviews", icon: "Star", route: "/client/reviews" },
+            { name: "Feedback", icon: "MessageSquare", route: "/client/feedback" },
+          ],
+        },
+        {
+          title: "Safety & Emergency",
+          items: [
+            { name: "Safety & Emergency Support", icon: "Shield", route: "/client/safety" },
+          ],
+        },
+      ],
+    },
+  },
 };
 
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useUser } from "../context/UserContext.jsx";
-import { NavLink } from "react-router-dom";
-import logoPng from "../assets/colleco-logo.png";
+const ICON_COMPONENTS = {
+  LayoutDashboard,
+  BarChart3,
+  Users,
+  Users2,
+  MapPin,
+  Wallet,
+  ShieldCheck,
+  Settings,
+  Tag,
+  Camera,
+  TrendingUp,
+  CalendarCheck,
+  Briefcase,
+  FileText,
+  Map,
+  HelpCircle,
+  Gift,
+  Video,
+  MessageSquare,
+  Shield,
+  Megaphone,
+};
 
+const ROLE_OPTIONS = Object.entries((EXTERNAL_SIDEBAR_CONFIG || SIDEBAR_CONFIG).roles).map(
+  ([value, config]) => ({
+    value,
+    label: config.label,
+  })
+);
+
+const MENU_TRANSITION = { duration: 0.45, ease: [0.4, 0, 0.2, 1] };
+const DESKTOP_SIDEBAR_DEFAULT_WIDTH = 320;
+const POINTER_SCROLL_SENSITIVITY = 1.35;
+const POINTER_SCROLL_DEADBAND = 2;
 
 export default function Sidebar() {
-  // Mobile sidebar toggle
-  const [open, setOpen] = useState(false);
   const location = useLocation();
-  useEffect(() => {
-    const handler = () => setOpen((v) => !v);
-    window.addEventListener('toggle-sidebar', handler);
-    return () => window.removeEventListener('toggle-sidebar', handler);
-  }, []);
-  const { user, setUser, isAdmin, isPartner, isClient } = useUser();
-  const [role, setRole] = useState(user?.role || "none");
   const navigate = useNavigate();
-  const asideRef = useRef(null);
-
-  // Note: legacy role change handler removed (unused)
-
-  // Dropdown state for role switcher
+  const [role, setRole] = useLocalStorageState("colleco.sidebar.role", "admin");
+  const [isMobile, setIsMobile] = useState(false);
+  const [open, setOpen] = useState(false);
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
-  const roleMenuRef = React.useRef(null);
-  // Direct role setter for modern menu
-  const setRoleByValue = (newRole) => {
-    setRole(newRole);
-    if (user) {
-      setUser({ ...user, role: newRole });
-    } else {
-      setUser({ name: "Dev User", email: "dev@colleco.com", role: newRole });
+  const [language, setLanguage] = useState("en");
+  const [lastSync, setLastSync] = useState(() => new Date());
+  const [expandedSections, setExpandedSections] = useState(new Set());
+  const [sidebarWidth, setSidebarWidth] = useState(DESKTOP_SIDEBAR_DEFAULT_WIDTH);
+  const [isPinned, setIsPinned] = useState(false);
+  const asideRef = useRef(null);
+  const roleMenuRef = useRef(null);
+  const hoverTimeoutRef = useRef(null);
+  const pointerInsideRef = useRef(false);
+  const lastPointerYRef = useRef(null);
+
+  const activeRoleConfig = useMemo(() => {
+    const cfg = EXTERNAL_SIDEBAR_CONFIG || SIDEBAR_CONFIG;
+    if (cfg.roles[role]) return cfg.roles[role];
+    setRole("admin");
+    return cfg.roles.admin;
+  }, [role, setRole]);
+
+  const roleSections = useMemo(() => activeRoleConfig.sections ?? [], [activeRoleConfig]);
+  const firstExpandableSection = useMemo(() => {
+    for (const section of roleSections) {
+      const sectionItems = (section.items || []).filter(
+        (item) => !item.roles || item.roles.includes(role)
+      );
+      if (sectionItems.length > 0) return section.title;
     }
-    setRoleMenuOpen(false); // close after selection
-  };
-  // Close menu on outside click
+    return undefined;
+  }, [roleSections, role]);
+
   useEffect(() => {
-    if (!roleMenuOpen) return;
-    const handleClick = (e) => {
-      if (roleMenuRef.current && !roleMenuRef.current.contains(e.target)) {
+    if (!firstExpandableSection) {
+      setExpandedSections(new Set());
+      return;
+    }
+    setExpandedSections(new Set([firstExpandableSection]));
+  }, [firstExpandableSection]);
+
+  useEffect(() => () => {
+    if (hoverTimeoutRef.current && typeof window !== "undefined") {
+      window.clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    pointerInsideRef.current = false;
+    lastPointerYRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    if (!asideRef.current) return undefined;
+    const updateWidth = () => {
+      if (asideRef.current) setSidebarWidth(asideRef.current.offsetWidth);
+    };
+    updateWidth();
+    let resizeObserver;
+    if (typeof ResizeObserver === "function") {
+      resizeObserver = new ResizeObserver(updateWidth);
+      resizeObserver.observe(asideRef.current);
+    } else if (typeof window !== "undefined") {
+      window.addEventListener("resize", updateWidth);
+    }
+    return () => {
+      if (resizeObserver) resizeObserver.disconnect();
+      else if (typeof window !== "undefined") window.removeEventListener("resize", updateWidth);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const query = window.matchMedia("(max-width: 1023px)");
+    const update = () => setIsMobile(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    // Sidebar is closed by default on mobile, open by default on desktop
+    setOpen(!isMobile ? true : false);
+    setIsPinned(false);
+  }, [isMobile]);
+
+  useEffect(() => {
+    const handler = () => {
+      if (hoverTimeoutRef.current && typeof window !== "undefined") {
+        window.clearTimeout(hoverTimeoutRef.current);
+        hoverTimeoutRef.current = null;
+      }
+      pointerInsideRef.current = false;
+      lastPointerYRef.current = null;
+      setOpen((prev) => !prev);
+      setIsPinned(false);
+    };
+    window.addEventListener("toggle-sidebar", handler);
+    // Also respond to explicit open/close events from Navbar
+    const onOpen = () => { setOpen(true); setIsPinned(false); };
+    const onClose = () => { setOpen(false); setIsPinned(false); };
+    window.addEventListener("open-sidebar", onOpen);
+    window.addEventListener("close-sidebar", onClose);
+    return () => window.removeEventListener("toggle-sidebar", handler);
+  }, []);
+
+  // Swipe to close on mobile (detect horizontal swipe to right)
+  useEffect(() => {
+    if (!isMobile) return undefined;
+    let startX = null;
+    const onTouchStart = (e) => { startX = e.touches ? e.touches[0].clientX : e.clientX; };
+    const onTouchMove = (e) => {
+      if (startX === null) return;
+      const currentX = e.touches ? e.touches[0].clientX : e.clientX;
+      const delta = currentX - startX;
+      // If user swipes right by > 60px, close the sidebar
+      if (delta > 60 && open) {
+        startX = null;
+        pointerInsideRef.current = false;
+        lastPointerYRef.current = null;
+        setIsPinned(false);
+        setOpen(false);
+      }
+    };
+    const onTouchEnd = () => { startX = null; };
+    document.addEventListener('touchstart', onTouchStart, { passive: true });
+    document.addEventListener('touchmove', onTouchMove, { passive: true });
+    document.addEventListener('touchend', onTouchEnd);
+    return () => {
+      document.removeEventListener('touchstart', onTouchStart);
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [isMobile, open]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const handleOutside = (event) => {
+      const target = event.target;
+      const asideNode = asideRef.current;
+      if (!asideNode) return;
+      if (asideNode.contains(target)) return;
+      if (roleMenuRef.current && roleMenuRef.current.contains(target)) return;
+      pointerInsideRef.current = false;
+      lastPointerYRef.current = null;
+      setIsPinned(false);
+      setOpen(false);
+    };
+    document.addEventListener("mousedown", handleOutside);
+    document.addEventListener("touchstart", handleOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("touchstart", handleOutside);
+    };
+  }, [open]);
+
+  // Inform other parts of the app when the sidebar open state changes
+  useEffect(() => {
+    try {
+      window.sidebarOpen = !!open;
+      window.dispatchEvent(new CustomEvent('sidebar-open', { detail: { open: !!open } }));
+    } catch (e) {}
+  }, [open]);
+
+  useEffect(() => {
+    if (!roleMenuOpen) return undefined;
+    const handler = (event) => {
+      if (roleMenuRef.current && !roleMenuRef.current.contains(event.target)) {
         setRoleMenuOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClick);
-    document.addEventListener('touchstart', handleClick);
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler);
     return () => {
-      document.removeEventListener('mousedown', handleClick);
-      document.removeEventListener('touchstart', handleClick);
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
     };
   }, [roleMenuOpen]);
 
-  // Responsive sidebar: hidden on mobile unless open
-  // Outside-close handled by overlay button to avoid conflicts with hamburger clicks
-  // Close on Escape
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') setOpen(false);
+    if (isMobile) {
+      pointerInsideRef.current = false;
+      lastPointerYRef.current = null;
+      setIsPinned(false);
+      setOpen(false);
+    }
+    setRoleMenuOpen(false);
+  }, [isMobile, location.pathname]);
+
+  useEffect(() => {
+    if (!open) setRoleMenuOpen(false);
+  }, [open]);
+
+  useEffect(() => {
+    const onKey = (event) => {
+      if (event.key !== "Escape") return;
+      if (roleMenuOpen) {
+        setRoleMenuOpen(false);
+      } else if (isMobile && open) {
+        pointerInsideRef.current = false;
+        lastPointerYRef.current = null;
+        setIsPinned(false);
+        setOpen(false);
+      }
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isMobile, open, roleMenuOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const timer = window.setInterval(() => {
+      setLastSync(new Date());
+    }, 60 * 1000);
+    return () => window.clearInterval(timer);
   }, []);
 
-  // Close on route change
-  useEffect(() => {
-    setOpen(false);
-  }, [location.pathname]);
+  const containerClass = [
+    "sidebar-scroll overflow-y-auto backdrop-blur-xl bg-white/95 border-l border-cream-border text-brand-brown",
+    "px-4 py-6 sm:px-5 lg:px-6 transition-transform duration-300 ease-out will-change-transform",
+    `fixed top-[calc(var(--header-h)+var(--banner-h))] right-0 bottom-[calc(var(--footer-h)+0.75rem)] z-40 shadow-xl`,
+    isMobile
+      ? `w-full max-w-xs ${open ? "translate-x-0" : "translate-x-full"} sm:w-80`
+      : `w-80 xl:w-[22rem] ${open ? "translate-x-0" : "translate-x-full"}`,
+  ].join(" ");
 
-  // Lock body scroll when sidebar open on mobile
-  useEffect(() => {
-    const isMobile = window.innerWidth < 640;
-    if (isMobile && open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+  const linkClass = ({ isActive }) => [
+    "flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+    isActive
+      ? "bg-cream-sand border border-brand-orange/60 text-brand-brown shadow-[0_0_0_1px_rgba(243,148,72,0.25)]"
+      : "text-brand-brown/85 hover:bg-cream-hover focus-visible:bg-cream-hover focus-visible:outline-none",
+  ].join(" ");
+
+  const toggleSection = (id) => {
+    setExpandedSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const clearHoverTimeout = () => {
+    if (!hoverTimeoutRef.current || typeof window === "undefined") return;
+    window.clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = null;
+  };
+
+  const handleSidebarMouseEnter = () => {
+    if (isMobile) return;
+    clearHoverTimeout();
+    pointerInsideRef.current = true;
+    lastPointerYRef.current = null;
+    if (!open) {
+      setIsPinned(false);
+      setOpen(true);
     }
-    return () => { document.body.style.overflow = ''; };
-  }, [open]);
+  };
+
+  const handleSidebarMouseLeave = (event) => {
+    if (isMobile || roleMenuOpen || isPinned) return;
+    const nextTarget = event?.relatedTarget;
+    if (nextTarget && asideRef.current && asideRef.current.contains(nextTarget)) return;
+    clearHoverTimeout();
+    pointerInsideRef.current = false;
+    lastPointerYRef.current = null;
+    if (!open) return;
+    if (typeof window === "undefined") {
+      setOpen(false);
+      setIsPinned(false);
+      return;
+    }
+    hoverTimeoutRef.current = window.setTimeout(() => {
+      setOpen(false);
+      setIsPinned(false);
+    }, 220);
+  };
+
+  const handleSidebarMouseMove = (event) => {
+    if (isMobile || !pointerInsideRef.current || !open) return;
+    const container = asideRef.current;
+    if (!container) return;
+    const currentY = event.clientY;
+    if (lastPointerYRef.current !== null) {
+      const delta = currentY - lastPointerYRef.current;
+      if (Math.abs(delta) > POINTER_SCROLL_DEADBAND) {
+        container.scrollBy({ top: delta * POINTER_SCROLL_SENSITIVITY, behavior: "auto" });
+      }
+    }
+    lastPointerYRef.current = currentY;
+  };
+
+  const handleToggleMouseEnter = () => {
+    if (isMobile) return;
+    clearHoverTimeout();
+    pointerInsideRef.current = false;
+    lastPointerYRef.current = null;
+    if (!open) {
+      setIsPinned(false);
+      setOpen(true);
+    }
+  };
+
+  const handleToggleMouseLeave = () => {
+    if (isMobile || roleMenuOpen || isPinned) return;
+    clearHoverTimeout();
+    pointerInsideRef.current = false;
+    lastPointerYRef.current = null;
+    if (!open) return;
+    if (typeof window === "undefined") {
+      setOpen(false);
+      setIsPinned(false);
+      return;
+    }
+    hoverTimeoutRef.current = window.setTimeout(() => {
+      setOpen(false);
+      setIsPinned(false);
+    }, 220);
+  };
+
+  const handleLogout = () => {
+    try {
+      window.localStorage.removeItem("authToken");
+      window.localStorage.removeItem("user");
+    } catch {}
+    navigate("/login");
+    pointerInsideRef.current = false;
+    lastPointerYRef.current = null;
+    setIsPinned(false);
+    setOpen(false);
+  };
+
+  const handleManualSync = () => setLastSync(new Date());
+  const cycleLanguage = () => setLanguage((prev) => (prev === "en" ? "fr" : "en"));
+  const handleGoHome = () => {
+    navigate("/");
+    if (isMobile || !isPinned) {
+      pointerInsideRef.current = false;
+      lastPointerYRef.current = null;
+      setIsPinned(false);
+      setOpen(false);
+    }
+  };
+
+  const humanisedSync = useMemo(() => {
+    const diffMs = Date.now() - lastSync.getTime();
+    const diffMinutes = Math.max(0, Math.round(diffMs / 60000));
+    if (diffMinutes === 0) return "Just synced";
+    if (diffMinutes === 1) return "Synced a minute ago";
+    return `Synced ${diffMinutes} min ago`;
+  }, [lastSync]);
+
+  const activeRoleLabel = activeRoleConfig.label;
+
+  const languageLabel = language === "en" ? "English" : "Français";
+  const togglePositionStyle = isMobile
+    ? undefined
+    : { right: `${Math.max(12, open ? sidebarWidth - 24 : 12)}px` };
+
   return (
     <>
-      {open && window.innerWidth < 640 && (
+      {/* Mobile overlay for sidebar */}
+      {isMobile && open && (
         <button
           type="button"
-          className="sidebar-overlay fixed left-0 right-0 bottom-0 z-[40] bg-black/20 sm:hidden"
           aria-label="Close sidebar"
-          tabIndex={0}
-          onClick={() => setOpen(false)}
-          style={{ cursor: 'pointer', border: 'none', background: 'rgba(0,0,0,0.2)', top: 'var(--header-h, 64px)' }}
+          onClick={() => {
+            pointerInsideRef.current = false;
+            lastPointerYRef.current = null;
+            setIsPinned(false);
+            setOpen(false);
+          }}
+          className="fixed inset-0 z-30 bg-black/35 backdrop-blur-sm lg:hidden"
         />
       )}
-      {(open || window.innerWidth >= 640) && (
-        <aside
-          ref={asideRef}
-          className={`w-64 flex flex-col bg-white text-brand-russty fixed right-0 sm:right-4 z-[70] rounded-2xl shadow-xl overflow-y-auto border border-white transition-transform duration-300 ${open ? 'translate-x-0' : 'sm:translate-x-0 translate-x-[110%]'} sm:block`}
-          style={{
-            top: 'calc(var(--header-h, 64px) + 1rem)',
-            bottom: 'calc(var(--footer-h, 48px) + 1rem)',
-            maxHeight: 'calc(100vh - var(--header-h, 64px) - var(--footer-h, 48px) - 2rem)',
-          }}
-          role="complementary" aria-label="Sidebar navigation" aria-hidden={!open && window.innerWidth < 640}
-        >
-          {/* Pinned brand header */}
-          <div className="sticky top-0 z-10 bg-white p-6 border-b border-cream-border">
-            <div className="flex flex-col items-center mb-2">
-              <img src={logoPng} alt="CollEco Logo" className="h-10 w-10 mb-1" />
-              <span className="text-lg font-bold text-brand-orange tracking-tight" style={{ marginTop: '-2px', letterSpacing: '-0.5px' }}>CollEco Travel</span>
-            </div>
-          </div>
-          <div className="flex-1 p-6 sidebar-scroll divide-y divide-cream-border space-y-4" style={{ overscrollBehavior: 'contain' }}>
-            {/* AI-aware Quick Actions Strip */}
-            <div className="flex flex-wrap gap-2 justify-center mb-6 pt-4">
-              {/* New Quote (visible to admin, partner, client) */}
-              {(isAdmin || isPartner || isClient) && (
-                <>
-                  <button
-                    className="px-3 py-1 rounded bg-brand-orange text-white text-xs font-semibold shadow hover:bg-brand-orange/90 transition"
-                    title="Create new quote"
-                    onClick={() => navigate('/quote/new')}
-                  >
-                    + New Quote
-                  </button>
-                  <button
-                    className="px-3 py-1 rounded bg-brand-orange text-white text-xs font-semibold shadow hover:bg-brand-orange/90 transition"
-                    title="Create new booking"
-                    onClick={() => navigate('/direct-booking')}
-                  >
-                    + Booking
-                  </button>
-                </>
-              )}
-              {/* New Partner Lead (visible to admin) */}
-              {isAdmin && (
-                <button
-                  className="px-3 py-1 rounded bg-brand-orange text-white text-xs font-semibold shadow hover:bg-brand-orange/90 transition"
-                  title="Add new partner lead"
-                  onClick={() => navigate('/partners')}
-                >
-                  + Partner Lead
-                </button>
-              )}
-              {/* Future: Add more quick actions here, AI-powered suggestions, etc. */}
-            </div>
-            <div className="mb-4">
-              <div className="block text-xs text-brand-russty mb-1">Role Switcher:</div>
-              <div className="relative" ref={roleMenuRef}>
+      <aside
+        className={containerClass}
+        role={isMobile ? "dialog" : "complementary"}
+        aria-modal={isMobile ? "true" : undefined}
+        aria-label="Primary navigation"
+        ref={asideRef}
+        onMouseEnter={handleSidebarMouseEnter}
+        onMouseLeave={handleSidebarMouseLeave}
+        onMouseMove={handleSidebarMouseMove}
+        onFocus={() => {
+          if (!isMobile) {
+            clearHoverTimeout();
+            setOpen(true);
+          }
+        }}
+        tabIndex={open ? -1 : 0}
+        style={isMobile ? { maxWidth: '100vw', width: open ? '100vw' : '0' } : undefined}
+      >
+        <div className="flex h-full flex-col gap-6">
+          <motion.header
+            className="rounded-xl border border-cream-border bg-white/80 p-4 shadow-sm"
+            initial={{ opacity: 0, y: -18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={MENU_TRANSITION}
+          >
+            <div className="flex items-center gap-3">
+              <img
+                src={collecoLogo}
+                alt="CollEco"
+                className="h-11 w-11 rounded-full border border-cream-border shadow-sm"
+              />
+              <div className="flex flex-col">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-brand-brown/70">
+                  CollEco Console
+                </span>
+                <span className="text-lg font-bold leading-snug text-brand-brown">
+                  Navigation Control
+                </span>
+              </div>
+              <div className="ml-auto flex items-center gap-2">
                 <button
                   type="button"
-                  className="w-full px-3 py-2 rounded border border-cream-border text-brand-russty bg-white flex items-center justify-between hover:bg-cream-sand"
-                  title="Select a role"
-                  onClick={() => setRoleMenuOpen((v) => !v)}
-                  aria-haspopup="true"
-                  aria-expanded={roleMenuOpen}
+                  onClick={handleGoHome}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-cream-border text-brand-brown transition-colors hover:bg-cream-hover"
+                  aria-label="Go to home page"
                 >
-                  <span className="font-semibold">Role: {role !== 'none' ? role.charAt(0).toUpperCase() + role.slice(1) : 'None'}</span>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-brand-russty"><path d="M7 10l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <Home className="h-4 w-4" aria-hidden="true" />
                 </button>
-                {/* Dropdown menu */}
-                {roleMenuOpen && (
-                  <div className="absolute left-0 right-0 mt-1 bg-white border border-cream-border rounded-lg shadow z-50 overflow-hidden">
-                    <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('none')}>None</button>
-                    <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('admin')}>Admin</button>
-                    <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('partner')}>Partner</button>
-                    <button className="w-full text-left px-3 py-2 text-brand-russty hover:bg-brand-orange/10" onClick={() => setRoleByValue('client')}>Client</button>
-                  </div>
-                )}
               </div>
             </div>
-            {user ? (
-              <div className="mb-6 border-b border-cream-border pb-3">
-                <p className="text-sm text-brand-russty">Welcome back,</p>
-                <p className="font-bold text-brand-orange flex items-center gap-2">
-                  {user.name}
-                  {/* Role badge */}
-                  {isAdmin && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Admin</span>}
-                  {isPartner && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Partner</span>}
-                  {isClient && <span className="text-xs px-2 py-0.5 rounded bg-brand-orange text-white">Client</span>}
-                </p>
-                <p className="text-xs text-brand-russty">{user.email}</p>
-              </div>
-            ) : (
-              <p className="text-sm text-brand-russty mb-4">Not logged in</p>
-            )}
+            <div
+              className="relative mt-4 rounded-lg border border-cream-border bg-cream-hover/60 px-3 py-2"
+              ref={roleMenuRef}
+            >
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-brand-brown/70">
+                Active role
+              </span>
+              <button
+                type="button"
+                className="mt-2 inline-flex w-full items-center gap-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-brand-brown shadow-sm hover:bg-cream-hover"
+                onClick={() => setRoleMenuOpen((prev) => !prev)}
+                aria-haspopup="listbox"
+                aria-expanded={roleMenuOpen}
+                aria-controls="sidebar-role-menu"
+              >
+                <Sparkles className="h-4 w-4 text-brand-orange" aria-hidden="true" />
+                <span>{activeRoleLabel}</span>
+                <motion.span
+                  animate={{ rotate: roleMenuOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="ml-auto text-brand-brown/70"
+                >
+                  ▾
+                </motion.span>
+              </button>
+              {roleMenuOpen && (
+                <motion.ul
+                  id="sidebar-role-menu"
+                  className="absolute left-0 right-0 top-full z-40 mt-2 w-full overflow-hidden rounded-lg border border-cream-border bg-white shadow-lg"
+                  role="listbox"
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={MENU_TRANSITION}
+                >
+                  {ROLE_OPTIONS.map((option) => (
+                    <li key={option.value}>
+                      <button
+                        type="button"
+                        className="flex w-full items-center gap-2 px-3 py-2 text-sm text-brand-brown hover:bg-brand-orange/10"
+                        onClick={() => {
+                          setRole(option.value);
+                          setRoleMenuOpen(false);
+                        }}
+                        role="option"
+                        aria-selected={role === option.value}
+                      >
+                        <Users2 className="h-4 w-4 text-brand-orange" aria-hidden="true" />
+                        <span>{option.label}</span>
+                        {role === option.value && (
+                          <span className="ml-auto text-[11px] font-semibold uppercase text-brand-orange">Active</span>
+                        )}
+                      </button>
+                    </li>
+                  ))}
+                </motion.ul>
+              )}
+            </div>
+          </motion.header>
 
-            {/* Navigation strictly aligned to role */}
-            <nav className="space-y-1">
-              {/* Dashboard always first */}
-              <NavLink to="/" onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/20 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>🏠 Dashboard</NavLink>
-              {/* Role-based tools rendered from config */}
-              {isAdmin && (
-                <>
-                  <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
-                      👑 Admin Tools
+          <nav className="space-y-4" role="navigation" aria-label="Sidebar sections">
+            {roleSections.map((section) => {
+              const sectionId = section.title;
+              const sectionItems = (section.items || []).filter(
+                (item) => !item.roles || item.roles.includes(role)
+              );
+              if (sectionItems.length === 0) return null;
+              const isExpanded = expandedSections.has(sectionId);
+              const SectionIcon =
+                ICON_COMPONENTS[section.icon] || ICON_COMPONENTS[sectionItems[0]?.icon] || LayoutDashboard;
+              return (
+                <motion.section
+                  key={sectionId}
+                  className="overflow-hidden rounded-xl border border-cream-border/80 bg-white/80 shadow-sm"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={MENU_TRANSITION}
+                >
+                  <button
+                    type="button"
+                    className="flex w-full items-start gap-3 px-4 py-3 text-left"
+                    onClick={() => toggleSection(sectionId)}
+                    aria-expanded={isExpanded}
+                  >
+                    <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-cream-hover text-brand-orange">
+                      <SectionIcon className="h-4 w-4" aria-hidden="true" />
                     </span>
-                  </div>
-                  {TOOL_CONFIG.admin.map(tool => (
-                    <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
-                      {tool.label}
-                    </NavLink>
-                  ))}
-                </>
-              )}
-              {isPartner && (
-                <>
-                  <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
-                      🤝 Partner Tools
-                    </span>
-                  </div>
-                  {TOOL_CONFIG.partner.map(tool => (
-                    <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
-                      {tool.label}
-                    </NavLink>
-                  ))}
-                </>
-              )}
-              {isClient && (
-                <>
-                  <div className="px-3 py-1 text-xs font-semibold text-brand-russty/80 uppercase tracking-wide">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-cream-sand/60 text-brand-russty">
-                      🧳 Client Tools
-                    </span>
-                  </div>
-                  {TOOL_CONFIG.client.map(tool => (
-                    <NavLink key={tool.to} to={tool.to} onClick={() => setOpen(false)} className={({ isActive }) => `block px-3 py-2 rounded font-semibold ${isActive ? 'bg-brand-orange/10 text-brand-orange shadow' : 'hover:bg-brand-orange/10 hover:text-brand-orange'}`}>
-                      {tool.label}
-                    </NavLink>
-                  ))}
-                </>
-              )}
-            </nav>
-            {/* Remove inline Trip Assist from sidebar; floating icon will be global */}
-          </div>
-        </aside>
-      )}
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-brand-brown">{section.title}</p>
+                      {section.description ? (
+                        <p className="text-xs text-brand-brown/70">{section.description}</p>
+                      ) : null}
+                    </div>
+                    <motion.span
+                      className="mt-1 text-brand-brown/60"
+                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      ▾
+                    </motion.span>
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: isExpanded ? "auto" : 0, opacity: isExpanded ? 1 : 0 }}
+                    transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <ul className="space-y-1 px-4 pb-4">
+                      {sectionItems.map((item) => {
+                        const ItemIcon = ICON_COMPONENTS[item.icon] || LayoutDashboard;
+                        return (
+                          <li key={item.route}>
+                            <NavLink
+                              to={item.route}
+                              className={linkClass}
+                              onClick={() => {
+                                if (isMobile || !isPinned) {
+                                  pointerInsideRef.current = false;
+                                  lastPointerYRef.current = null;
+                                  setIsPinned(false);
+                                  setOpen(false);
+                                }
+                              }}
+                            >
+                              {ItemIcon && (
+                                <ItemIcon className="h-4 w-4 text-brand-orange" aria-hidden="true" />
+                              )}
+                              <span>{item.name}</span>
+                            </NavLink>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </motion.div>
+                </motion.section>
+              );
+            })}
+          </nav>
+
+          <motion.footer
+            className="mt-auto space-y-4 rounded-xl border border-cream-border bg-white/75 p-4 shadow-sm"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={MENU_TRANSITION}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={cycleLanguage}
+                className="inline-flex items-center gap-2 rounded-md border border-cream-border bg-white px-3 py-2 text-xs font-semibold uppercase tracking-wide text-brand-brown hover:bg-cream-hover"
+              >
+                <Globe2 className="h-4 w-4 text-brand-orange" aria-hidden="true" />
+                <span>{languageLabel}</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleManualSync}
+                className="inline-flex items-center gap-2 rounded-md border border-brand-orange/20 bg-brand-orange/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-brand-brown hover:bg-brand-orange/15"
+              >
+                <Clock3 className="h-4 w-4 text-brand-orange" aria-hidden="true" />
+                <span>Sync now</span>
+              </button>
+            </div>
+            <div className="flex items-center justify-between text-xs text-brand-brown/70">
+              <span>{humanisedSync}</span>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex items-center gap-2 rounded-md px-2 py-1 text-xs font-semibold text-brand-orange hover:bg-brand-orange/10"
+              >
+                <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Sign out</span>
+              </button>
+            </div>
+          </motion.footer>
+        </div>
+      </aside>
+      {/* Sidebar toggle button for mobile and desktop */}
+      {/* Only render the desktop toggle control here. The mobile app uses the Navbar hamburger only. */}
+      <button
+        type="button"
+        aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
+        onClick={() => {
+          clearHoverTimeout();
+          pointerInsideRef.current = false;
+          lastPointerYRef.current = null;
+          setOpen((prev) => {
+            const next = !prev;
+            setIsPinned(next);
+            return next;
+          });
+        }}
+        onMouseEnter={handleToggleMouseEnter}
+        onMouseLeave={handleToggleMouseLeave}
+        className="fixed top-[calc(var(--header-h)+var(--banner-h)+1.5rem)] z-30 inline-flex h-8 w-8 items-center justify-center rounded-full border border-cream-border bg-white text-brand-brown shadow-sm transition-all duration-200 hover:bg-cream-hover"
+        style={togglePositionStyle}
+      >
+        {open ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+      </button>
     </>
   );
 }

@@ -1,151 +1,211 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext.jsx";
-import logoPng from "../assets/colleco-logo.png";
-import SearchBar from "./SearchBar.jsx";
+	/* eslint-disable no-mixed-spaces-and-tabs */
+	import { Link, useLocation } from "react-router-dom";
+	import { useEffect, useRef, useState } from "react";
+	import logoPng from "../assets/colleco-logo.png";
+	import SearchBar from "./SearchBar.jsx";
 
-function Navbar() {
+export default function Navbar() {
 	const location = useLocation();
-	const navigate = useNavigate();
-	const { user, setUser } = useUser();
+	const [openMenu, setOpenMenu] = useState(null); // 'trip' | 'partner' | null
 	const [showMobileSearch, setShowMobileSearch] = useState(false);
+	const tripRef = useRef(null);
+	const partnerRef = useRef(null);
 	const mobileSearchRef = useRef(null);
-	const [showDropdown, setShowDropdown] = useState(false);
-	const dropdownRef = useRef(null);
+
+
+
+
+	// NOTE: do not auto-close the mobile search when the sidebar opens — the
+	// product requires the search button remain visible. Instead, make the
+	// search overlay close on outside taps and ensure the hamburger sits above it.
 
 	const toggleSidebar = () => {
-		window.dispatchEvent(new Event("toggle-sidebar"));
+		// Dispatch explicit open/close events so the Navbar can reliably close the
+		// sidebar even if there are overlapping elements on mobile.
+		try {
+			if (window && window.sidebarOpen) {
+				window.dispatchEvent(new CustomEvent("close-sidebar"));
+			} else {
+				window.dispatchEvent(new CustomEvent("open-sidebar"));
+			}
+		} catch (e) {
+			// Fallback to toggle if CustomEvent fails for any reason
+			window.dispatchEvent(new Event("toggle-sidebar"));
+		}
 	};
 
-	// Close search on route change
-	useEffect(() => {
-		setShowMobileSearch(false);
-	}, [location.pathname]);
-
-	// Close search on Esc
-	useEffect(() => {
-		const onKey = (e) => {
-			if (e.key === "Escape") setShowMobileSearch(false);
-		};
-		window.addEventListener("keydown", onKey);
-		return () => window.removeEventListener("keydown", onKey);
-	}, []);
-
-	// Close dropdown and mobile search on outside click
-	useEffect(() => {
-		if (!showMobileSearch && !showDropdown) return;
-		const handleClickOutside = (event) => {
-			if (
-				showMobileSearch &&
-				mobileSearchRef.current &&
-				!mobileSearchRef.current.contains(event.target)
-			) {
-				const searchButton = event.target.closest('button[title="Search"]');
-				if (!searchButton) setShowMobileSearch(false);
-			}
-			if (showDropdown && dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-				setShowDropdown(false);
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		document.addEventListener("touchstart", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-			document.removeEventListener("touchstart", handleClickOutside);
-		};
-	}, [showMobileSearch, showDropdown]);
-
-	return (
-		<nav className="bg-white text-brand-russty shadow-none border-b-0 fixed top-0 left-0 right-0 z-50">
-			<div className="container mx-auto flex items-center px-4 sm:px-6 h-16 min-w-0">
-				{/* Left side - Login/User */}
-				<div className="flex items-center justify-start gap-4 flex-none">
-					{user ? (
-						<div className="relative" ref={dropdownRef}>
-							<button
-								className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-brand-orange text-brand-russty font-semibold hover:bg-brand-orange/10"
-								onClick={() => setShowDropdown((v) => !v)}
-								aria-label="User menu"
-							>
-								<span className="inline-flex h-8 w-8 rounded-full bg-brand-orange text-white font-bold items-center justify-center text-lg mr-1">
-									{user?.name ? user.name[0].toUpperCase() : "U"}
-								</span>
-								<span className="hidden sm:inline truncate max-w-[12rem]">Welcome, {user?.name ?? "User"}</span>
-								<span className="inline sm:hidden truncate max-w-[8rem]">{user?.name ?? "User"}</span>
-								<svg width="16" height="16" fill="none" viewBox="0 0 16 16" className="ml-1"><path d="M4 6l4 4 4-4" stroke="#a85a00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-							</button>
-							{showDropdown && (
-								<div className="absolute left-0 mt-2 w-44 bg-white border border-brand-orange rounded shadow-lg z-50">
-									<div className="px-4 py-2 text-brand-russty text-sm font-semibold border-b border-brand-orange">{user.email}</div>
-									<button
-										className="w-full text-left px-4 py-2 text-brand-russty hover:bg-brand-orange/10 font-semibold"
-										onClick={() => {
-											setUser(null);
-											setShowDropdown(false);
-											navigate("/login");
-										}}
-									>Logout</button>
-								</div>
-							)}
-						</div>
-					) : (
-						<Link to="/login" className="px-3 py-2 rounded-lg bg-brand-orange text-white font-semibold hover:bg-brand-orange/90">Login</Link>
-					)}
-				</div>
-
-				{/* Center - Logo */}
-				<div className="flex-1 flex items-center justify-center gap-2 min-w-0">
-					<Link to="/" className="flex items-center gap-1">
-						<img
-							src={logoPng}
-							alt="CollEco Logo"
-							className="h-9 w-9 object-contain shrink-0"
-							width="36"
-							height="36"
-						/>
-					</Link>
-				</div>
-
-				{/* Right side - Search + Hamburger */}
-				<div className="flex items-center justify-end gap-4 flex-none">
-					{/* Desktop search bar */}
-					<div className="hidden sm:block w-64">
-						<SearchBar />
-					</div>
-					{/* Mobile search button */}
-					<button
-						type="button"
-						onClick={() => setShowMobileSearch(!showMobileSearch)}
-						className="sm:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg border border-brand-orange bg-white text-brand-russty text-lg hover:bg-brand-orange/10 active:bg-brand-orange/20 transition-colors"
-						aria-label={showMobileSearch ? "Close search" : "Open search"}
-						title="Search"
-					>
-						🔍
-					</button>
-					{/* Hamburger moved to right */}
-					<button
-						type="button"
-						onClick={toggleSidebar}
-						className="inline-flex items-center justify-center h-10 w-10 rounded-lg border border-brand-gold bg-white text-brand-russty text-lg hover:bg-brand-gold/10 active:bg-brand-gold/20 transition-colors"
-						aria-label="Toggle Explore Menu"
-						title="Menu"
-					>
-						☰
-					</button>
-				</div>
-			</div>
-
-			{/* Mobile search overlay */}
-			{showMobileSearch && (
-				<div ref={mobileSearchRef} className="sm:hidden absolute top-full left-0 right-0 bg-white border-b border-brand-orange shadow-md z-40">
-					<div className="container mx-auto px-4 py-3">
-						<SearchBar />
+	const BookMenu = () => (
+		<div className="relative inline-block text-left">
+			<button
+				type="button"
+				className="inline-flex items-center gap-2 px-3 py-2 rounded text-sm font-medium text-brand-brown hover:bg-cream-sand/50"
+				aria-haspopup="true"
+				aria-expanded={openMenu === 'book'}
+				onClick={() => setOpenMenu(openMenu === 'book' ? null : 'book')}
+			>
+				Book
+				<svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.06z" clipRule="evenodd"/></svg>
+			</button>
+			{openMenu === 'book' && (
+				<div ref={tripRef} className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+					<div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+						<Link to="/book/accommodation" className="block px-4 py-2 text-sm text-brand-brown hover:bg-cream-sand" role="menuitem" onClick={() => setOpenMenu(null)}>Accommodation</Link>
+						<Link to="/book/flight" className="block px-4 py-2 text-sm text-brand-brown hover:bg-cream-sand" role="menuitem" onClick={() => setOpenMenu(null)}>Flight</Link>
+						<Link to="/book/car" className="block px-4 py-2 text-sm text-brand-brown hover:bg-cream-sand" role="menuitem" onClick={() => setOpenMenu(null)}>Car Hire</Link>
 					</div>
 				</div>
 			)}
-			{/* Mobile quick link below search removed; Packages now in sidebar */}
-		</nav>
+		</div>
 	);
-}
 
-export default Navbar;
+	// Close menus on route change for cleanliness
+	useEffect(() => { 
+		setOpenMenu(null); 
+		setShowMobileSearch(false);
+	}, [location.pathname]);
+
+	// Close menus on outside click
+	useEffect(() => {
+		const onClick = (e) => {
+			const t = tripRef.current;
+			const p = partnerRef.current;
+			if (openMenu && t && !t.contains(e.target) && p && !p.contains(e.target)) {
+				setOpenMenu(null);
+			}
+		};
+		document.addEventListener('mousedown', onClick);
+		return () => document.removeEventListener('mousedown', onClick);
+	}, [openMenu]);
+
+	// Close on Esc
+	useEffect(() => {
+		const onKey = (e) => { 
+			if (e.key === 'Escape') {
+				setOpenMenu(null);
+				setShowMobileSearch(false);
+			}
+		};
+		window.addEventListener('keydown', onKey);
+		return () => window.removeEventListener('keydown', onKey);
+	}, []);
+
+	// Close mobile search on outside click/tap
+	useEffect(() => {
+		if (!showMobileSearch) return undefined;
+		const onDown = (e) => {
+			const node = mobileSearchRef.current;
+			if (!node) return;
+			if (!node.contains(e.target)) setShowMobileSearch(false);
+		};
+		document.addEventListener('mousedown', onDown);
+		document.addEventListener('touchstart', onDown, { passive: true });
+		return () => {
+			document.removeEventListener('mousedown', onDown);
+			document.removeEventListener('touchstart', onDown);
+		};
+	}, [showMobileSearch]);
+
+			return (
+				<nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-cream to-cream-sand/60 text-brand-brown shadow-md border-b border-cream-border">
+							<div className="w-full flex items-center px-3 sm:px-6 h-16 sm:h-[4.5rem] relative">
+								{/* Mobile: Start Living far left, logo center, hamburger far right */}
+								   <div className="flex w-full items-center justify-between">
+									   {/* Start Living button: visible on both mobile and desktop */}
+									   <div className="flex-none">
+										   <Link
+											   to="/login"
+											   className="h-11 w-11 rounded border border-brand-orange bg-brand-orange text-white font-semibold hover:bg-brand-highlight active:bg-brand-orange/90 transition flex flex-col items-center justify-center text-center p-0"
+											   style={{ minWidth: '2.75rem', minHeight: '2.75rem' }}
+										   >
+											   <span className="leading-tight text-[13px] font-semibold">
+												   <span>Start</span><br />
+												   <span>Living</span>
+											   </span>
+										   </Link>
+									   </div>
+
+									   {/* Centered logo and branding for desktop and mobile */}
+									   <div className="flex-1 flex justify-center">
+										   <Link to="/" className="flex items-center gap-0 min-w-0" style={{ pointerEvents: 'auto' }}>
+											   <img
+												   src={logoPng}
+												   alt="CollEco Logo"
+												   className="h-10 w-10 sm:h-12 sm:w-12 object-contain shrink-0"
+												   width="48"
+												   height="48"
+											   />
+											   <span className="flex flex-col justify-center items-center leading-tight min-w-0">
+												   <span className="hidden sm:block text-lg font-bold tracking-tight text-brand-orange leading-[1.05] w-full text-center truncate">CollEco Travel</span>
+												   <span className="hidden sm:block text-[11px] font-light italic text-brand-orange mt-px tracking-wide leading-[1.1] w-full text-center truncate" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>
+													   The Odyssey of Adventure
+												   </span>
+											   </span>
+										   </Link>
+									   </div>
+								   </div>
+								{/* Desktop: SearchBar and hamburger button at far right */}
+								<div className="hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 items-center gap-3">
+									<div className="w-64">
+										<SearchBar />
+									</div>
+								<BookMenu />
+								<button
+									type="button"
+									onClick={toggleSidebar}
+									className="inline-flex items-center justify-center h-11 w-11 rounded border-2 border-brand-orange bg-white text-brand-orange text-lg active:bg-brand-orange/10 transition-colors"
+									aria-label="Toggle Sidebar"
+									title="Toggle Sidebar"
+								>
+									<span className="flex flex-col gap-[2px]">
+										<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+										<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+										<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+									</span>
+								</button>
+								</div>
+										{/* Mobile: search and hamburger buttons. The search button remains visible when sidebar is open. */}
+										<div className="sm:hidden absolute right-3 top-1/2 -translate-y-1/2 flex gap-2 z-60">
+										<button
+											type="button"
+											onClick={() => setShowMobileSearch(!showMobileSearch)}
+											className="inline-flex items-center justify-center h-11 w-11 rounded border border-brand-orange bg-white text-brand-orange text-lg active:bg-brand-orange/10 transition-colors"
+											aria-label={showMobileSearch ? "Close search" : "Open search"}
+											title="Search"
+										>
+											{showMobileSearch ? "×" : "🔍"}
+										</button>
+										{/* Mobile quick links for booking */}
+										<div className="flex items-center gap-2 ml-2">
+											<Link to="/book/accommodation" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Book Stay</Link>
+											<Link to="/book/flight" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Book Flight</Link>
+											<Link to="/book/car" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Car Hire</Link>
+										</div>
+													<button
+													type="button"
+													onClick={toggleSidebar}
+													className="inline-flex items-center justify-center h-11 w-11 rounded border-2 border-brand-orange bg-white text-brand-orange text-lg active:bg-brand-orange/10 transition-colors"
+													aria-label="Toggle Sidebar"
+													title="Toggle Sidebar"
+													style={{ zIndex: 70 }}
+												>
+											<span className="flex flex-col gap-[2px]">
+												<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+												<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+												<span className="block w-6 h-[1.5px] rounded bg-brand-orange"></span>
+											</span>
+										</button>
+								</div>
+
+					</div>
+
+				{/* Mobile search overlay */}
+						{showMobileSearch && (
+							<div id="mobile-searchbar" ref={mobileSearchRef} className="sm:hidden absolute top-full left-0 right-0 bg-white border-b border-cream-border shadow-md z-50">
+								<div className="container mx-auto px-3 py-3">
+									<SearchBar whiteBackground={true} />
+								</div>
+							</div>
+						)}
+			</nav>
+		);
+}

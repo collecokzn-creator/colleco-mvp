@@ -1,0 +1,822 @@
+{
+  "layout": {
+    "header": {
+      "component": "MainHeader",
+      "props": {
+        "showLogo": true,
+        "showNavLinks": true,
+        "showUserMenu": true,
+        "sticky": true
+      }
+    },
+    "main": {
+      "categories": [
+        {
+          "group": "Public",
+          "routes": [
+            {
+              "path": "/",
+              "name": "Home",
+              "component": "Home",
+              "meta": {
+                "title": "CollEco Travel | Home",
+                "description": "Discover collaborative travel experiences and curated escapes.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/book/accommodation",
+              "name": "Book Accommodation",
+              "component": "AccommodationBooking",
+              "meta": { "title": "Book Accommodation", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
+              "path": "/book/flight",
+              "name": "Book Flight",
+              "component": "FlightBooking",
+              "meta": { "title": "Book Flight", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
+              "path": "/book/car",
+              "name": "Hire a Car",
+              "component": "CarBooking",
+              "meta": { "title": "Car Hire", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
+              "path": "/plan-trip",
+              "name": "Plan a Trip",
+              "component": "PlanTrip",
+              "meta": {
+                "title": "Plan Your Trip",
+                "description": "Build an itinerary with our travel experts and partner network.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/about",
+              "name": "About Us",
+              "component": "About",
+              "meta": {
+                "title": "About CollEco Travel",
+                "description": "Learn how CollEco powers collaborative travel planning.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/safety",
+              "name": "Safety Promise",
+              "component": "Safety",
+              "meta": {
+                "title": "Safety & Trust",
+                "description": "Our commitment to safe, trusted travel experiences.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/contact",
+              "name": "Contact Us",
+              "component": "Contact",
+              "meta": {
+                "title": "Get in Touch",
+                "description": "Reach our concierge team for support or partnerships.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/login",
+              "name": "Sign In",
+              "component": "Login",
+              "meta": {
+                "title": "Access CollEco",
+                "description": "Securely sign in to your CollEco workspace.",
+                "requiresAuth": false,
+                "layout": "auth"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Legal",
+          "routes": [
+            {
+              "path": "/terms",
+              "name": "Terms & Conditions",
+              "component": "Terms",
+              "meta": {
+                "title": "Terms and Conditions",
+                "description": "Understand the agreements that govern CollEco services.",
+                "requiresAuth": false,
+                "layout": "legal"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Shared Workspace",
+          "routes": [
+            {
+              "path": "/quotes",
+              "name": "Quote Builder",
+              "component": "Quotes",
+              "meta": {
+                "title": "Collaborative Quote Builder",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/quote/new",
+              "name": "Create Quote",
+              "component": "NewQuote",
+              "meta": {
+                "title": "Create New Quote",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/itinerary",
+              "name": "Itinerary Builder",
+              "component": "Itinerary",
+              "meta": {
+                "title": "Design Trip Itineraries",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent", "client"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/bookings",
+              "name": "Bookings",
+              "component": "Bookings",
+              "meta": {
+                "title": "Manage Bookings",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent", "client"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/collaboration",
+              "name": "Collaboration Hub",
+              "component": "Collaboration",
+              "meta": {
+                "title": "Collaboration Hub",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/collab-analytics",
+              "name": "Collab Analytics",
+              "component": "CollabAnalytics",
+              "meta": {
+                "title": "Collaboration Analytics",
+                "requiresAuth": true,
+                "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/profile",
+              "name": "Profile",
+              "component": "Profile",
+              "meta": {
+                "title": "Your Profile",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/settings",
+              "name": "Account Settings",
+              "component": "Settings",
+              "meta": {
+                "title": "Account Settings",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/payment-success",
+              "name": "Payment Success",
+              "component": "PaymentSuccess",
+              "meta": {
+                "title": "Payment Success",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/partner-dashboard",
+              "name": "Partner Dashboard",
+              "component": "PartnerDashboard",
+              "meta": {
+                "title": "Partner Dashboard",
+                "requiresAuth": true,
+                "roles": ["partner"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin-console",
+              "name": "Admin Console",
+              "component": "AdminConsole",
+              "meta": {
+                "title": "Admin Console",
+                "requiresAuth": true,
+                "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/accommodation",
+              "name": "Accommodation Inventory",
+              "component": "AdminAccommodation",
+              "meta": {
+                "title": "Accommodation Inventory",
+                "requiresAuth": true,
+                "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/compliance",
+              "name": "Compliance Overview",
+              "component": "Compliance",
+              "meta": {
+                "title": "Compliance Overview",
+                "requiresAuth": true,
+                "roles": ["admin", "partner"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/reports",
+              "name": "Reports",
+              "component": "Reports",
+              "meta": {
+                "title": "Business Intelligence Reports",
+                "requiresAuth": true,
+                "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/promotions",
+              "name": "Promotions",
+              "component": "Promotions",
+              "meta": {
+                "title": "Promotions",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/payouts",
+              "name": "Payouts",
+              "component": "Payouts",
+              "meta": {
+                "title": "Payouts",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "finance"],
+                "layout": "workspace"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Client",
+          "routes": [
+            {
+              "path": "/client/dashboard",
+              "name": "Client Dashboard",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Your Travel Hub",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/quotes",
+              "name": "My Quotes",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "View & Manage Quotes",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/bookings",
+              "name": "My Bookings",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Track Your Bookings",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/itineraries",
+              "name": "My Itineraries",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Trip Itineraries",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/messages",
+              "name": "Messages & Support",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Get Assistance",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/safety",
+              "name": "Safety & Help",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Travel Safety",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Partner",
+          "routes": [
+            {
+              "path": "/partner/dashboard",
+              "name": "Partner Dashboard",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Partner Overview",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/performance",
+              "name": "Performance Insights",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Performance Analytics",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/bookings",
+              "name": "Bookings & Availability",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Booking Management",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/products",
+              "name": "Products & Packages",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Manage Listings",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/rates",
+              "name": "Rates & Availability",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Yield Management",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/leads",
+              "name": "Lead Manager",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Lead Pipeline",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/quotes",
+              "name": "Quote Requests",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Incoming Quotes",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/itineraries",
+              "name": "Itinerary Builder",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Design Itineraries",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/finance",
+              "name": "Finance & Payouts",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Earnings & Payouts",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/help",
+              "name": "Partner Support",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Help & Assistance",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/compliance",
+              "name": "Compliance & Documents",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Verify & Upload Documents",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Agent",
+          "routes": [
+            {
+              "path": "/agent/dashboard",
+              "name": "Agent Dashboard",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Agency Overview",
+                "role": "agent",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/agent/clients",
+              "name": "My Clients",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Client Profiles",
+                "role": "agent",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/agent/quotes",
+              "name": "Quotes Builder",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Manage Quotes",
+                "role": "agent",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/agent/itineraries",
+              "name": "Itineraries",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Build Itineraries",
+                "role": "agent",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/agent/bookings",
+              "name": "Bookings",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Bookings Pipeline",
+                "role": "agent",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/agent/promotions",
+              "name": "Promotions",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Campaigns & Offers",
+                "role": "agent",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/agent/offers",
+              "name": "Partner Offers",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Exclusive Offers",
+                "role": "agent",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Influencer",
+          "routes": [
+            {
+              "path": "/influencer/dashboard",
+              "name": "Influencer Dashboard",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Campaign Overview",
+                "role": "influencer",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/influencer/content",
+              "name": "Content Library",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Manage Content",
+                "role": "influencer",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/influencer/campaigns",
+              "name": "Campaigns",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Campaign Management",
+                "role": "influencer",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/influencer/performance",
+              "name": "Performance",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Performance Analytics",
+                "role": "influencer",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Admin",
+          "routes": [
+            {
+              "path": "/admin/dashboard",
+              "name": "Admin Dashboard",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "System Overview",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/reports",
+              "name": "Reports & Analytics",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Operational Reports",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/users",
+              "name": "User Management",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Manage Users & Roles",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/partners",
+              "name": "Partner Management",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Approve or Review Partners",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/listings",
+              "name": "Listings",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Marketplace Listings",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/finance",
+              "name": "Finance Reports",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Revenue & Transactions",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/compliance",
+              "name": "Compliance",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Compliance & Oversight",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/settings",
+              "name": "System Settings",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Configuration",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/promotions",
+              "name": "Promotions",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Marketing Campaigns",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/content",
+              "name": "Content Hub",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Content Library",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            }
+          ]
+        },
+        {
+          "group": "Growth AI",
+          "routes": [
+            {
+              "path": "/ai",
+              "name": "AI Content Studio",
+              "component": "AIGeneratorPage",
+              "meta": {
+                "title": "AI Content Generator",
+                "requiresAuth": true,
+                "roles": [
+                  "admin",
+                  "partner",
+                  "agent"
+                ],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/ai/metrics",
+              "name": "AI Metrics",
+              "component": "AIMetricsPage",
+              "meta": {
+                "title": "AI Metrics Dashboard",
+                "requiresAuth": true,
+                "roles": [
+                  "admin"
+                ],
+                "layout": "workspace"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "component": "MainFooter",
+      "props": {
+        "showNewsletterSignup": true,
+        "showSocialLinks": true,
+        "showContactInfo": true
+      },
+      "optionalInnerFooter": {
+        "enabled": true,
+        "component": "SubFooter",
+        "props": {
+          "contextualInfo": true,
+          "partnerBranding": false,
+          "systemVersion": "v1.0.0-beta"
+        }
+      }
+    }
+  },
+  "globalSettings": {
+    "theme": "light",
+    "languageSupport": [
+      "en",
+      "fr",
+      "sw",
+      "zu"
+    ],
+    "currencySupport": [
+      "ZAR",
+      "USD",
+      "EUR",
+      "GBP"
+    ],
+    "notifications": {
+      "enablePush": true,
+      "enableEmail": true
+    },
+    "security": {
+      "authenticationFlow": "OID-based",
+      "roleAccess": [
+        "client",
+        "partner",
+        "agent",
+        "influencer",
+        "admin"
+      ]
+    }
+  }
+}

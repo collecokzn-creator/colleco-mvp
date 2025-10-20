@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { worker } from "./mocks/browser";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import { UserProvider } from "./context/UserContext.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import "./index.css"; // Tailwind styles
 import appIconPng from "./assets/colleco-logo.png";
@@ -43,39 +41,17 @@ function InstallBanner() {
   );
 }
 
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+    <InstallBanner />
+  </React.StrictMode>
+);
 
-async function enableMocking() {
-  if (import.meta.env.DEV) {
-    await worker.start({
-      onUnhandledRequest: "bypass",
-    });
-  }
-}
-
-const mountApp = () => {
-  ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-      <UserProvider>
-        <ErrorBoundary>
-          <App />
-        </ErrorBoundary>
-        <InstallBanner />
-      </UserProvider>
-    </React.StrictMode>
-  );
-};
-
-// Mount the app even if MSW fails to start (do not block the UI)
-enableMocking().then(mountApp).catch(() => {
-  try { mountApp(); } catch {}
-});
-
-// Register service worker for PWA
-// Only register service worker in production builds to avoid dev caching issues
-// Allow bypassing SW via URL param ?nosw=1 to avoid stale caches on mobile preview
-const urlParams = new URLSearchParams(window.location.search);
-const disableSW = urlParams.has('nosw');
-if ('serviceWorker' in navigator && !window.Cypress && import.meta.env.PROD && !disableSW) {
+// Register service worker for PWA (disabled during local dev to avoid cache clashes)
+if ('serviceWorker' in navigator && import.meta.env.PROD && !window.Cypress) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(async (reg) => {
       try {
@@ -106,3 +82,45 @@ try {
   ensureLink('icon', { type: 'image/png', href: appIconPng });
   ensureLink('apple-touch-icon', { href: appIconPng });
 } catch {}
+
+// E2E helper: when tests set window.__E2E__ we disable animations/transitions to avoid flakiness
+try {
+  if (window && window.__E2E__) {
+    const s = document.createElement('style');
+    s.setAttribute('data-e2e-disable-animations', 'true');
+    s.textContent = `
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      [data-modal-root] { opacity: 1 !important; transform: none !important; }
+    `;
+    document.head.appendChild(s);
+      // Ensure a modal root exists immediately for E2E tests and expose a readiness attribute
+    try {
+      let mr = document.querySelector('[data-modal-root]');
+      if (!mr) {
+        mr = document.createElement('div');
+        mr.setAttribute('data-modal-root', 'true');
+        // make the root occupy the viewport during E2E so elements inside are visible to Cypress
+  mr.style.position = 'fixed';
+  mr.style.top = '0';
+  mr.style.left = '0';
+  mr.style.width = '100%';
+  mr.style.height = '100%';
+  mr.style.minHeight = '100vh';
+  mr.style.display = 'block';
+  // Make the modal root non-blocking by default so it doesn't cover or intercept
+  // interactions with the page underneath. Individual modal instances will opt-in
+  // to pointer events when rendered into the root.
+  mr.style.pointerEvents = 'none';
+  // Use a very large z-index so the modal root is above any app content for E2E.
+  mr.style.zIndex = String(2147483646);
+        document.body.appendChild(mr);
+      } else {
+        // if it exists, ensure it has enough size to be considered visible in tests
+        mr.style.display = mr.style.display || 'block';
+        mr.style.minHeight = mr.style.minHeight || '100vh';
+      }
+      // mark ready for Cypress to wait on
+      mr.setAttribute('data-e2e-ready', 'true');
+    } catch (ee) { /* best-effort for E2E */ }
+  }
+} catch (e) {}

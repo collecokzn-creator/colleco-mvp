@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;</script>
+
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CollEco Travel</title>
+    <meta name="description" content="Discover and plan trips with smart, location-aware search across continents, provinces, cities, and areas. Live weather, filters, and one‑click intents." />
+    <meta name="theme-color" content="#0ea5e9" />
+    <link rel="canonical" href="https://www.travelcolleco.com/" />
+    <!-- Performance: early DNS/TLS to likely origins (Open‑Meteo, static) -->
+    <link rel="preconnect" href="https://api.open-meteo.com" crossorigin />
+    <link rel="preconnect" href="https://geocoding-api.open-meteo.com" crossorigin />
+    <!-- Icons (PNG only) cache-busted v=14 -->
+    <link rel="icon" href="/assets/colleco-logo.png?v=14" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/colleco-logo.png?v=14" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+    <script>
+      // Recover SPA deep-links after GitHub Pages 404 redirect
+      (function(){
+        try {
+          const redirected = sessionStorage.getItem('gh:redirect');
+          if (redirected) {
+            sessionStorage.removeItem('gh:redirect');
+            // Use history API to avoid a full reload if possible
+            if (location.pathname !== '/') {
+              history.replaceState(null, '', redirected);
+            } else {
+              history.pushState(null, '', redirected);
+            }
+          }
+        } catch(_) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <strong>This app requires JavaScript to run correctly. Please enable JavaScript.</strong>
+    </noscript>
+    <div id="root"></div>
+    <!-- Vite will transform this to the built JS in /assets at build time -->
+    <script>
+      // Hint for app code to detect Cypress even when bundled
+      if (typeof window !== 'undefined' && window.Cypress) {
+        window.__E2E__ = true;
+      }
+    </script>
+    <script type="module" src="/src/main.jsx?t=1760725455339"></script>
+  </body>
+</html>

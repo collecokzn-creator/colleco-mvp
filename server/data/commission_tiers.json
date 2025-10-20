@@ -1,0 +1,6 @@
+[
+  { "name": "Bronze", "minBookings": 0, "maxBookings": 9, "commission": 0.15, "notes": "Entry tier; eligible for promotion after 10+ bookings" },
+  { "name": "Silver", "minBookings": 10, "maxBookings": 24, "commission": 0.12, "notes": "Access to mid-tier perks" },
+  { "name": "Gold", "minBookings": 25, "maxBookings": 49, "commission": 0.10, "notes": "Eligible for Featured Partner exposure" },
+  { "name": "Platinum", "minBookings": 50, "maxBookings": 999999, "commission": 0.08, "notes": "Premium exposure" }
+]
