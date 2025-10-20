@@ -40,13 +40,37 @@ jobs:
       - name: Wait for services
         run: |
           set -e
-          for i in $(seq 1 80); do
-            # tolerate backend on 4001 or 4000 (some runs start default port)
-            if (curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1 || curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1) && curl -fsS http://127.0.0.1:5173 >/dev/null 2>&1; then
+          # more verbose wait loop: report per-attempt which endpoint responds
+          BACKEND_OK=0
+          PREVIEW_OK=0
+          for i in $(seq 1 120); do
+            echo "try=$i: checking backend:4001 backend:4000 preview:5173"
+            if curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1; then
+              echo "backend 4001 OK"; BACKEND_OK=1
+            elif curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1; then
+              echo "backend 4000 OK"; BACKEND_OK=1
+            else
+              echo "backend not ready"
+            fi
+
+            if curl -fsS http://127.0.0.1:5173 >/dev/null 2>&1; then
+              echo "preview 5173 OK"; PREVIEW_OK=1
+            else
+              echo "preview not ready"
+            fi
+
+            if [ "$BACKEND_OK" -eq 1 ] && [ "$PREVIEW_OK" -eq 1 ]; then
               echo "services up"; exit 0
             fi
+
             echo "waiting for services... ($i)"; sleep 1
           done
+
+          echo "ERROR: services did not become ready after timeout. Last 200 lines of server.log and preview.log follow:" >&2
+          echo "--- server.log ---" >&2
+          tail -n 200 server.log || true
+          echo "--- preview.log ---" >&2
+          tail -n 200 preview.log || true
           exit 1
 
       - name: Cypress run (smoke)
