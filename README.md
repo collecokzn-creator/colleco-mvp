@@ -730,3 +730,4 @@ Useful for dynamically shaping UI (e.g., showing burst allowance or hybrid indic
  v31 (Unreleased): AI Itinerary Generator MVP — heuristic parser + streaming & single-shot UI panel.
 
 
+\n# CI retrigger 2025-10-20T08:01:13.0098947+02:00
