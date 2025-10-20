@@ -534,6 +534,44 @@ app.get('/health', (req, res) => {
   res.json({ ok: true, service: 'collab-api', time: new Date().toISOString() });
 });
 
+// --- Admin Console Mock Endpoints ---
+const ADMIN_MOCK = {
+  stats: { bookings: 42, partners: 12, pendingApprovals: 3, revenue: "R36,420" },
+  partners: [
+    { id: "p-01", name: "Beekman Holidays", tier: "Gold", status: "active", lastVerified: "2025-09-10" },
+    { id: "p-02", name: "Margate Retreats", tier: "Bronze", status: "pending", lastVerified: null },
+  ],
+  bookings: [
+    { id: "b-1001", guest: "Thabo N", property: "Ballito Beach House", status: "confirmed", total: "R3,400", checkin: "2025-11-05" },
+    { id: "b-1002", guest: "Sihle K", property: "Durban City Stay", status: "pending", total: "R1,200", checkin: "2025-10-12" },
+  ],
+  compliance: [
+    { partnerId: "p-02", name: "Margate Retreats", issue: "Missing COI", severity: "high", expires: null },
+  ],
+};
+
+app.get('/api/admin/stats', (req, res) => {
+  res.json(ADMIN_MOCK.stats);
+});
+app.get('/api/admin/partners', (req, res) => {
+  res.json(ADMIN_MOCK.partners);
+});
+app.get('/api/admin/bookings', (req, res) => {
+  res.json(ADMIN_MOCK.bookings);
+});
+app.get('/api/admin/compliance', (req, res) => {
+  res.json(ADMIN_MOCK.compliance);
+});
+
+app.post('/api/admin/partners/:id/approve', (req, res) => {
+  // Simulate approval
+  res.json({ ok: true, id: req.params.id, status: "active" });
+});
+app.post('/api/admin/bookings/:id/confirm', (req, res) => {
+  // Simulate booking confirmation
+  res.json({ ok: true, id: req.params.id, status: "confirmed" });
+});
+
 // --- Payments stub ---
 // Compute transparent fees and return a mock checkout URL
 function computeFees(items = [], opts = {}) {

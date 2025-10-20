@@ -184,7 +184,7 @@ export default function SearchBar({ className = '' }){
   return (
     <div ref={wrapRef} className={`relative ${className}`}>
       <div className="flex items-center gap-2 border border-cream-border bg-white rounded-md px-2 py-1.5 shadow-sm focus-within:ring-2 focus-within:ring-brand-orange/30">
-        <span aria-hidden className="text-brand-brown/60">🔎</span>
+  <span aria-hidden className="text-brand-russty/60">🔎</span>
         <input
           value={q}
           onChange={e=>{ setQ(e.target.value); setOpen(true); setActiveIdx(0); }}
@@ -199,14 +199,14 @@ export default function SearchBar({ className = '' }){
             else if(e.key==='Escape'){ setOpen(false); }
           }}
           placeholder="Search products and services…"
-          className="w-64 sm:w-72 md:w-80 outline-none text-sm bg-transparent placeholder:text-brand-brown/50"
+          className="w-64 sm:w-72 md:w-80 outline-none text-sm bg-transparent placeholder:text-brand-russty/50"
           aria-label="Global search"
         />
       </div>
       {open && (
         <div className="absolute left-0 mt-1 w-[min(20rem,85vw)] bg-cream border border-cream-border rounded-md shadow-lg z-50 max-h-64 overflow-auto">
           {q.trim().length >= 3 && events && events.length > 0 && (
-            <div className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-cream/80 bg-cream/90 border-b border-cream-border px-3 py-1 text-[11px] text-brand-brown/70">
+            <div className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-cream/80 bg-cream/90 border-b border-cream-border px-3 py-1 text-[11px] text-brand-russty/70">
               <span className="mr-1">Sources:</span>
               {Array.from(new Set(events.map(e => e.source || 'Unknown'))).map(src => (
                 <span key={src} className="inline-flex items-center gap-1 mr-1">
@@ -216,7 +216,7 @@ export default function SearchBar({ className = '' }){
             </div>
           )}
           {filtered.length===0 && (
-            <div className="px-3 py-2 text-sm text-brand-brown/70">No matches</div>
+            <div className="px-3 py-2 text-sm text-brand-russty/70">No matches</div>
           )}
           {filtered.length>0 && (
             <ul className="py-1 text-sm">
@@ -228,10 +228,10 @@ export default function SearchBar({ className = '' }){
                     className={`w-full text-left px-3 py-2 flex items-center justify-between ${idx===activeIdx? 'bg-cream-sand' : 'hover:bg-cream-hover'}`}
                   >
                     <span className="flex items-center gap-2 min-w-0">
-                      <span aria-hidden className="text-brand-brown/60">{groupIcon[s.group]||'•'}</span>
+                      <span aria-hidden className="text-brand-russty/60">{groupIcon[s.group]||'•'}</span>
                       <span className="truncate">{highlight(s.label, q.trim())}</span>
                     </span>
-                    <span className="text-[10px] text-brand-brown/60 ml-2 whitespace-nowrap">
+                    <span className="text-[10px] text-brand-russty/60 ml-2 whitespace-nowrap">
                       {s.group}
                       {s.provider ? <> • <span className="px-1 py-0.5 rounded bg-cream-sand border border-cream-border">{s.provider}{s.isDemo ? ' (Demo)' : ''}</span></> : null}
                       {s.meta? <> • {highlight(s.meta, q.trim())}</> : ''}
