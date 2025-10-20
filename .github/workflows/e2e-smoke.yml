@@ -44,11 +44,9 @@ jobs:
           BACKEND_OK=0
           PREVIEW_OK=0
           for i in $(seq 1 120); do
-            echo "try=$i: checking backend:4001 backend:4000 preview:5173"
+            echo "try=$i: checking backend:4001 preview:5173"
             if curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1; then
               echo "backend 4001 OK"; BACKEND_OK=1
-            elif curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1; then
-              echo "backend 4000 OK"; BACKEND_OK=1
             else
               echo "backend not ready"
             fi
