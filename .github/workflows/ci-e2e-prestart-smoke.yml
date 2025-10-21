@@ -25,3 +25,30 @@ jobs:
         run: |
           Write-Host "Running smoke test script"
           pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\ci-e2e-prestart-smoke.ps1 -TestPort 5173
+
+  full-ci-e2e-windows:
+    name: Run full E2E orchestration (Windows)
+    runs-on: windows-latest
+    needs: smoke-windows
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run full CI E2E orchestration
+        shell: pwsh
+        env:
+          # Ensure Cypress sees API_BASE if scripts depend on it; the orchestration sets envs itself,
+          # but setting a default here is harmless.
+          API_BASE: "http://127.0.0.1:4002"
+        run: |
+          Write-Host "Starting full CI E2E orchestration (this may take a while)"
+          pwsh -NoProfile -ExecutionPolicy Bypass -Command "npm run ci-e2e"
