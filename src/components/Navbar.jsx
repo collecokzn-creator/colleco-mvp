@@ -151,12 +151,7 @@ export default function Navbar() {
 										>
 											{showMobileSearch ? "×" : "🔍"}
 										</button>
-										{/* Mobile quick links for booking */}
-										<div className="flex items-center gap-2 ml-2">
-											<Link to="/book/accommodation" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Book Stay</Link>
-											<Link to="/book/flight" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Book Flight</Link>
-											<Link to="/book/car" className="text-sm text-brand-brown px-2 py-1 rounded hover:bg-cream-sand">Car Hire</Link>
-										</div>
+										{/* Mobile booking removed from navbar per request */}
 													<button
 													type="button"
 													onClick={toggleSidebar}

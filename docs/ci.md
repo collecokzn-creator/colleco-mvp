@@ -6,7 +6,7 @@ Workflows
 
 1. `E2E PR Smoke` (.github/workflows/e2e-pr-smoke.yml)
    - Trigger: `pull_request` against `main`.
-   - Purpose: fast feedback for PRs. Runs a lightweight smoke E2E spec (`cypress/e2e/smoke.cy.js`) against the dev server.
+   - Purpose: fast feedback for PRs. Runs a lightweight smoke E2E spec (`cypress/e2e/smoke.cy.js`) and a small navbar regression spec (`cypress/e2e/nav_mobile.cy.js`) against the dev server.
    - When to use: default for PRs; helps catch obvious regressions quickly.
 
 2. `E2E Cypress Tests (full)` (.github/workflows/e2e.yml)

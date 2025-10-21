@@ -66,3 +66,8 @@ html { overflow-y: scroll; }
 
 /* Defensive: ensure sidebar border or shadow doesn't create a visible seam on scroll */
 .sidebar-scroll { border-left-color: transparent; box-shadow: none; }
+
+/* Defensive: ensure footer text remains readable on brand brown backgrounds */
+footer.bg-brand-brown, footer[class*="bg-brand-brown"] {
+	color: white !important;
+}
