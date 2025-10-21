@@ -26,6 +26,22 @@ jobs:
           Write-Host "Running smoke test script"
           pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\ci-e2e-prestart-smoke.ps1 -TestPort 5173
 
+      - name: List coleco ci logs (smoke)
+        if: always()
+        shell: pwsh
+        run: |
+          $logs = Join-Path $env:TEMP 'colleco-ci-logs'
+          Write-Host "Looking for logs in: $logs"
+          if (Test-Path $logs) { Get-ChildItem -Recurse $logs | ForEach-Object { Write-Host $_.FullName } } else { Write-Host "No logs found at $logs" }
+
+      - name: Upload coleco ci logs (smoke)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/colleco-ci-logs
+          if-no-files-found: warn
+
   full-ci-e2e-windows:
     name: Run full E2E orchestration (Windows)
     runs-on: windows-latest
@@ -52,3 +68,19 @@ jobs:
         run: |
           Write-Host "Starting full CI E2E orchestration (this may take a while)"
           pwsh -NoProfile -ExecutionPolicy Bypass -Command "npm run ci-e2e"
+
+      - name: List colleco ci logs (full)
+        if: always()
+        shell: pwsh
+        run: |
+          $logs = Join-Path $env:TEMP 'colleco-ci-logs'
+          Write-Host "Looking for logs in: $logs"
+          if (Test-Path $logs) { Get-ChildItem -Recurse $logs | ForEach-Object { Write-Host $_.FullName } } else { Write-Host "No logs found at $logs" }
+
+      - name: Upload colleco ci logs (full)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-e2e-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/colleco-ci-logs
+          if-no-files-found: warn
