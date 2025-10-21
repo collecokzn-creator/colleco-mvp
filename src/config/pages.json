@@ -55,12 +55,34 @@
               }
             },
             {
+              "path": "/packages",
+              "name": "Our Packages",
+              "component": "Packages",
+              "meta": {
+                "title": "Our Packages",
+                "description": "Explore curated travel packages.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
               "path": "/about",
               "name": "About Us",
               "component": "About",
               "meta": {
                 "title": "About CollEco Travel",
                 "description": "Learn how CollEco powers collaborative travel planning.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/support",
+              "name": "Support",
+              "component": "Support",
+              "meta": {
+                "title": "Support",
+                "description": "Reach our concierge team for support or partnerships.",
                 "requiresAuth": false,
                 "layout": "marketing"
               }

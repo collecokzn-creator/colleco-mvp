@@ -10,13 +10,17 @@ describe('Mobile Support responsiveness', () => {
   ];
   viewports.forEach(({ device, width, height }) => {
     it(`renders without horizontal scroll on ${device}`, () => {
-      cy.visit('/support', {
-        timeout: 120000,
-        failOnStatusCode: false,
-        onBeforeLoad(win) {
-          setTimeout(() => win.dispatchEvent(new win.Event('load')), 500);
-        }
-      });
+            cy.visit('/support', {
+              timeout: 120000,
+              failOnStatusCode: false,
+              onBeforeLoad(win) {
+                // ensure client role present before boot
+                try { win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('client')); win.localStorage.setItem('user', JSON.stringify({ email: 'client@example.com', name: 'Auto client', role: 'client' })); } catch (e) {}
+                setTimeout(() => {
+                  try { win.dispatchEvent(new Event('load')) } catch {}
+                }, 1500);
+              },
+            });
       cy.viewport(width, height);
       cy.get('#root', { timeout: 20000 }).should('exist');
       cy.contains(/Support/i, { timeout: 20000 }).should('exist');

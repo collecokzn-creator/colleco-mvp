@@ -23,7 +23,7 @@ export default defineConfig({
             message = message.join('\n')
           }
           /* eslint-disable no-console */
-          console.log('[cy.task.log] ' + String(message))
+            console.log('[cy.task.log] ' + String(message)) // eslint-disable-line no-console
           /* eslint-enable no-console */
           return null
         }
