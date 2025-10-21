@@ -2,8 +2,17 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const host = process.env.HOST || '127.0.0.1';
-const port = process.env.PORT || 5173;
+// Accept host/port from env or CLI args. CLI args (--host, --port) override env.
+const argv = require('process').argv.slice(2);
+function parseArg(name) {
+  const idx = argv.findIndex(a => a === `--${name}` || a === `-${name}`);
+  if (idx >= 0 && idx + 1 < argv.length) return argv[idx + 1];
+  const kv = argv.find(a => a.startsWith(`--${name}=`));
+  if (kv) return kv.split('=')[1];
+  return undefined;
+}
+const host = parseArg('host') || process.env.HOST || '127.0.0.1';
+const port = Number(parseArg('port') || process.env.PORT || 5173);
 const distDir = path.join(__dirname, '..', 'dist');
 
 const mime = {
@@ -21,12 +30,31 @@ const mime = {
 function sendFile(res, filePath, status = 200) {
   const ext = path.extname(filePath).toLowerCase();
   const type = mime[ext] || 'application/octet-stream';
-  res.writeHead(status, { 'Content-Type': type });
   const stream = fs.createReadStream(filePath);
-  stream.on('error', () => {
-    res.writeHead(500);
-    res.end('Server error');
+
+  // If the stream errors, log and respond only if headers haven't been sent yet.
+  stream.on('error', (err) => {
+    console.error('Error streaming file', filePath, err && err.stack);
+    if (!res.headersSent) {
+      try {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Server error');
+      } catch (e) {
+        // best-effort - nothing more we can do
+      }
+    } else {
+      // If headers already sent, just ensure the response is ended.
+      try { res.end(); } catch (e) {}
+    }
   });
+
+  // If client closes the connection, destroy the file stream to avoid leaks.
+  res.on('close', () => {
+    try { stream.destroy(); } catch (e) {}
+  });
+
+  // Send headers and pipe the file stream to the response.
+  res.writeHead(status, { 'Content-Type': type });
   stream.pipe(res);
 }
 

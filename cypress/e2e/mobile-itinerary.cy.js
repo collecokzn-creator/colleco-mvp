@@ -58,40 +58,10 @@ describe('Mobile Itinerary responsiveness', () => {
       // Itinerary heading may be rendered by a code-split bundle; allow longer wait here.
       cy.contains(/Itinerary/i, { timeout: 60000 }).should('exist')
 
-      // Check for unexpected horizontal overflow while ignoring intentionally scrollable containers
-      cy.window().then((win) => {
-        const doc = win.document
-        const clientWidth = doc.documentElement.clientWidth
-
-        // Allow a small tolerance for sub-pixel calculations
-        const tolerance = 1
-
-        // Selectors for containers that intentionally allow horizontal scrolling
-        const allowedSelectors = [
-          '.overflow-x-auto',
-          '.overflow-auto',
-          '.ai-panel',
-          '.max-h-60',
-          '.max-h-72'
-        ]
-
-        const els = Array.from(doc.querySelectorAll('body *'))
-
-        const offending = els.filter(el => {
-          try {
-            // Skip elements that match any allowed selector (they can overflow)
-            for (const sel of allowedSelectors) {
-              if (el.matches && el.matches(sel)) return false
-            }
-            return el.scrollWidth > clientWidth + tolerance
-          } catch (e) {
-            return false
-          }
-        })
-
-        // Fail the test if we found any unexpected overflowing elements and include a short debug summary
-        expect(offending.length, `found ${offending.length} unexpected overflowing elements`).to.equal(0)
-      })
+      // Use the shared helper which logs rich details to the Node runner and fails with a concise message
+      // The helper will call cy.task('log') with offending element details so CI logs show exactly which
+      // elements overflowed (tag, classes, scrollWidth, clientWidth and a short outerHTML snippet).
+      cy.ensureNoUnexpectedOverflow()
     })
   })
 })

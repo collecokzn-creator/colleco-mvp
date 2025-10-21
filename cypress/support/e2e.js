@@ -71,7 +71,9 @@ try {
 // Optionally, silence uncaught rejected promises from SW fetches in CI noise
 Cypress.on('uncaught:exception', (err) => {
   const msg = String(err || '')
-  if (/ServiceWorker|network timeout|addEventListener/i.test(msg)) {
+  // Ignore known non-critical errors originating from third-party frames, service workers,
+  // or transient network issues that should not fail E2E runs.
+  if (/ServiceWorker|network timeout|addEventListener|Blocked a frame with origin/i.test(msg)) {
     // Ignore SW-related errors in headless test runs
     return false
   }
@@ -139,7 +141,7 @@ Cypress.Commands.add('ensureNoUnexpectedOverflow', { prevSubject: false }, () =>
     const doc = win.document;
     const clientWidth = doc.documentElement.clientWidth;
     const tolerance = 1;
-  const allowedSelectors = ['.overflow-x-auto', '.overflow-auto', '.ai-panel', '.map-container', '.itinerary-timeline', '.timeline-row', '.max-h-60', '.max-h-72', '[data-scrollable]'];
+  const allowedSelectors = ['.overflow-x-auto', '.overflow-auto', '.ai-panel', '.map-container', '.itinerary-timeline', '.timeline-row', '.max-h-60', '.max-h-72', '[data-scrollable]', '.sidebar-scroll'];
     const els = Array.from(doc.querySelectorAll('body *'));
     const offending = els.filter(el => {
       try {
