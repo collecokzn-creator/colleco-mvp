@@ -1,5 +1,5 @@
 param(
-  [int]$ApiPort = 4002,
+  [int]$ApiPort = 4000,
   [int]$PreviewPort = 5173,
   [int]$WaitSeconds = 60
 )
@@ -47,15 +47,27 @@ function Save-Artifacts() {
     # Write a manifest of what we saved
     try { Get-ChildItem -Recurse $logsDir | Select-Object FullName,Length | Out-File -FilePath (Join-Path $logsDir 'artifact-manifest.txt') -Encoding utf8 -Force } catch {}
 
-    # Create a compressed zip of the collected artifacts to reduce upload size
+    # Create a compressed zip of the collected artifacts to reduce upload size. Use a staging copy
+    # to avoid reading files that are still being written by running processes.
     try {
       $zipName = "colleco-ci-logs-$(Get-Date -Format 'yyyyMMddHHmmss').zip"
       $zipPath = Join-Path $env:TEMP $zipName
       if (Test-Path $zipPath) { Remove-Item -Force $zipPath -ErrorAction SilentlyContinue }
-      Write-Host "Creating artifact zip: $zipPath"
-      Compress-Archive -Path (Join-Path $logsDir '*') -DestinationPath $zipPath -Force -ErrorAction SilentlyContinue
+
+      $staging = Join-Path $env:TEMP ("colleco-ci-logs-staging-" + (Get-Date -Format 'yyyyMMddHHmmssfff'))
+      if (Test-Path $staging) { Remove-Item -Recurse -Force $staging -ErrorAction SilentlyContinue }
+      New-Item -ItemType Directory -Path $staging | Out-Null
+
+      # Copy files into staging first (ignore files that can't be copied)
+      try { Copy-Item -Path (Join-Path $logsDir '*') -Destination $staging -Recurse -Force -ErrorAction SilentlyContinue } catch {}
+
+      Write-Host "Creating artifact zip from staging: $zipPath"
+      Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $zipPath -Force -ErrorAction SilentlyContinue
       # Copy the zip into the logs dir so the workflow artifact upload that targets $logsDir will pick it up too
       try { Copy-Item -Path $zipPath -Destination (Join-Path $logsDir $zipName) -Force -ErrorAction SilentlyContinue } catch {}
+
+      # Clean up staging
+      try { Remove-Item -Recurse -Force $staging -ErrorAction SilentlyContinue } catch {}
     } catch { Write-Host "Failed to create artifact zip: $_" }
   } catch { Write-Host "Save-Artifacts encountered an error: $_" }
 }
