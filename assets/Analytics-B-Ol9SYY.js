@@ -1,0 +1,1 @@
+import{j as e}from"./index-BCXrhMbA.js";function s(){return e.jsxs("div",{className:"p-8 text-center text-brand-orange",children:[e.jsx("h1",{className:"text-2xl font-bold mb-2",children:"Analytics"}),e.jsx("p",{children:"This is a placeholder for the Analytics page."})]})}export{s as default};

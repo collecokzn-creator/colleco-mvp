@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# If you add a sitemap later, update this URL
+# Sitemap: https://www.travelcolleco.com/sitemap.xml

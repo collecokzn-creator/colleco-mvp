@@ -1,0 +1,63 @@
+name: E2E Cypress Tests (full)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18]
+        browser: [electron, chrome]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node }}-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start API server
+        run: |
+          node server/server.js &
+        env:
+          NODE_ENV: test
+
+      - name: Start Vite dev server
+        run: |
+          cross-env VITE_API_BASE=http://localhost:4001 npm run dev &
+
+      - name: Wait for dev server
+        run: |
+          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 || [ $n -ge 60 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
+
+      - name: Run Cypress
+        uses: cypress-io/github-action@v5
+        with:
+          record: false
+          browser: ${{ matrix.browser }}
+          config: video=false
+
+      - name: Upload Cypress artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
+            cypress/logs

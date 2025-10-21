@@ -1,0 +1,19 @@
+name: Diagnostic - Actions smoke
+
+on:
+  push:
+    branches: [ copilot/vscode1760699576156 ]
+  workflow_dispatch:
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Echo
+        run: |
+          echo "Diagnostic workflow started"
+          echo "GITHUB_RUN_ID=$GITHUB_RUN_ID"
+          echo "GITHUB_RUN_NUMBER=$GITHUB_RUN_NUMBER"
+          echo "Done"

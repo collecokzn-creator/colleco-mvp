@@ -1,0 +1,1 @@
+import{j as a}from"./index-BCXrhMbA.js";function n(){return a.jsxs("div",{children:[a.jsx("h2",{children:"Admin Package Form"}),a.jsx("p",{children:"Here admins can create and manage packages."})]})}export{n as default};

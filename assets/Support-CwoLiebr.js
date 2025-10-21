@@ -1,0 +1,1 @@
+import{R as t,j as e}from"./index-BCXrhMbA.js";function r(){return t.useEffect(()=>{window.scrollTo({top:0,behavior:"smooth"})},[]),e.jsxs("div",{className:"p-8 text-center text-brand-orange",children:[e.jsx("h1",{className:"text-2xl font-bold mb-2",children:"Support"}),e.jsx("p",{children:"This is a placeholder for the Support page."})]})}export{r as default};

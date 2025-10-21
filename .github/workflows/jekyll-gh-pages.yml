@@ -1,0 +1,13 @@
+name: disabled-jekyll
+
+on:
+  workflow_dispatch:
+
+# Minimal no-op job so the workflow file stays valid while remaining disabled.
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: No-op
+        run: |
+          echo "This workflow is intentionally disabled."
