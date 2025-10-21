@@ -9,10 +9,11 @@ describe('Production navbar check', () => {
     // Ensure page loaded
     cy.get('body', { timeout: 10000 }).should('be.visible');
 
-    // Check that no visible elements contain the 'Book Now' text
-    cy.contains('Book Now').should('not.exist');
+  // Scope checks to the navbar only: we only intend to ensure the navbar doesn't show Book Now
+  cy.get('nav').should('be.visible');
+  cy.get('nav').contains('Book Now').should('not.exist');
 
-    // Check that there are no anchors linking to /book
-    cy.get('a[href*="/book"]').should('not.exist');
+  // Ensure navbar has no quick /book anchors
+  cy.get('nav').find('a[href*="/book"]').should('not.exist');
   });
 });
