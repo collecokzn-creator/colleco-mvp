@@ -140,10 +140,20 @@ export default function App() {
     });
   }, []);
 
-  const useHash =
-    typeof import.meta !== "undefined" &&
-    import.meta.env &&
-    import.meta.env.VITE_USE_HASH === "1";
+  // Prefer HashRouter when explicitly requested via VITE_USE_HASH, or when
+  // the app is served from a non-root base (BASE_URL) which can cause
+  // 404s on deep links on static hosts. Hash routing avoids server-side
+  // fallback requirements and is safer for GitHub Pages or subpath hosts.
+  const useHash = (() => {
+    try {
+      const env = import.meta.env || {};
+      if (env.VITE_USE_HASH === "1") return true;
+      const baseUrl = env.BASE_URL || env.VITE_BASE_PATH || '/';
+      // If the base is not root, prefer hash routing by default
+      if (typeof baseUrl === 'string' && baseUrl !== '/' && baseUrl !== '') return true;
+    } catch (e) {}
+    return false;
+  })();
   const RouterComponent = useHash ? HashRouter : BrowserRouter;
   const basename =
     !useHash &&

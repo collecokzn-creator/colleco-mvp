@@ -17,9 +17,14 @@ export default defineConfig(({ mode }) => {
     optimizeDeps: {
       include: ['react', 'react-dom']
     },
-    // Support GitHub Pages repo subpaths by allowing a base from env in CI
-    // Locally this remains '/'
-    base: BASE_PATH,
+  // Support GitHub Pages repo subpaths by allowing a base from env in CI
+  // Locally this remains '/'. For production builds served from a subpath
+  // we preserve BASE_PATH. When BASE_PATH is the root '/', emit relative
+  // asset links (./assets/...) so the site still works when hosted from
+  // a non-root location (GitHub Pages or other static hosts that serve
+  // index.html from a subdirectory). This avoids hard-coded absolute '/'
+  // paths that break when the site is not at the domain root.
+  base: (mode === 'production' && BASE_PATH === '/') ? './' : BASE_PATH,
     server: {
       port: DEV_PORT,
       // Relax strictPort so Vite can choose the next free port if needed
