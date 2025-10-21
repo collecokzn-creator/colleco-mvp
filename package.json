@@ -10,6 +10,7 @@
     "prebuild": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs",
     "build": "vite build",
     "preview": "vite preview",
+  "smoke:preview": "npx serve -s dist -l 5174",
     "lint": "eslint . --ext .js,.jsx",
     "server": "node server/server.js",
     "test": "vitest run --reporter=default",
