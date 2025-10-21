@@ -51,7 +51,12 @@ try {
   if ($found) {
     Write-Host "Port $TestPort still in use after cleanup. Smoke test FAILED."; exit 2
   } else {
-    Write-Host "Port $TestPort is free. Smoke test PASSED."; exit 0
+    Write-Host "Port $TestPort is free. Smoke test PASSED."
+    # Ensure smoke log is available for artifact collection
+    try {
+      if (Test-Path $smokeLog) { Copy-Item -Path $smokeLog -Destination $logsDir -Force -ErrorAction SilentlyContinue }
+    } catch { }
+    exit 0
   }
 } catch {
   Write-Host "Verification failed: $_"; exit 3

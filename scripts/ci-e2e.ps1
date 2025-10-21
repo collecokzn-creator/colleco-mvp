@@ -21,6 +21,34 @@ foreach ($f in @($demoLog, $previewLog)) {
   }
 }
 
+# Ensure important artifacts are copied into the $logsDir so the workflow can upload them.
+function Save-Artifacts() {
+  try {
+    if (!(Test-Path $logsDir)) { New-Item -ItemType Directory -Path $logsDir | Out-Null }
+    Write-Host "Collecting artifacts into: $logsDir"
+
+    # Ensure the demo and preview logs are present in the logs dir (Start-NodeProcess may have chosen alternate names)
+    try { if ($demoLog -and (Test-Path $demoLog)) { Copy-Item -Path $demoLog -Destination $logsDir -Force -ErrorAction SilentlyContinue } } catch {}
+    try { if ($previewLog -and (Test-Path $previewLog)) { Copy-Item -Path $previewLog -Destination $logsDir -Force -ErrorAction SilentlyContinue } } catch {}
+
+    # Copy Cypress artifacts if they exist
+    $cypressVideos = Join-Path (Get-Location) 'cypress' | Join-Path -ChildPath 'videos'
+    if (Test-Path $cypressVideos) { Copy-Item -Path $cypressVideos -Destination (Join-Path $logsDir 'cypress-videos') -Recurse -Force -ErrorAction SilentlyContinue }
+    $cypressScreens = Join-Path (Get-Location) 'cypress' | Join-Path -ChildPath 'screenshots'
+    if (Test-Path $cypressScreens) { Copy-Item -Path $cypressScreens -Destination (Join-Path $logsDir 'cypress-screenshots') -Recurse -Force -ErrorAction SilentlyContinue }
+    $cypressReports = Join-Path (Get-Location) 'cypress' | Join-Path -ChildPath 'results'
+    if (Test-Path $cypressReports) { Copy-Item -Path $cypressReports -Destination (Join-Path $logsDir 'cypress-results') -Recurse -Force -ErrorAction SilentlyContinue }
+
+    # Also copy any test output files at repo root that Cypress might emit
+    foreach ($pat in @('cypress-report.html','mochawesome-report','test-results.xml')) {
+      if (Test-Path $pat) { Copy-Item -Path $pat -Destination $logsDir -Force -ErrorAction SilentlyContinue }
+    }
+
+    # Write a manifest of what we saved
+    try { Get-ChildItem -Recurse $logsDir | Select-Object FullName,Length | Out-File -FilePath (Join-Path $logsDir 'artifact-manifest.txt') -Encoding utf8 -Force } catch {}
+  } catch { Write-Host "Save-Artifacts encountered an error: $_" }
+}
+
 Write-Host "Starting demo API on port $ApiPort (logs -> $demoLog)"
 function Start-NodeProcess($scriptPathOrArgs, $logPath, $envHash = $null) {
   $workDir = (Get-Location)
@@ -258,6 +286,7 @@ try {
   $previewLog = $previewStart.log
 } catch {
   Write-Host ("Failed to start preview server: {0}" -f $_)
+  Save-Artifacts
   exit 22
 }
 
@@ -324,6 +353,7 @@ Write-Host "Waiting for demo API health..."
 if (-not (Wait-ForPort $ApiPort $WaitSeconds)) {
   Write-Host "Demo API process did not bind to port $ApiPort within $WaitSeconds seconds. Dumping logs..."
   Get-Content $demoLog -Tail 200 -ErrorAction SilentlyContinue | Write-Host
+  Save-Artifacts
   exit 20
 }
 
@@ -331,6 +361,7 @@ Write-Host "Demo API port bound; waiting for HTTP health endpoint..."
 if (-not (Wait-ForUrl "http://127.0.0.1:$ApiPort/health" $WaitSeconds)) {
   Write-Host "Demo API did not become ready within $WaitSeconds seconds. Dumping last 200 lines of $demoLog"
   Get-Content $demoLog -Tail 200 -ErrorAction SilentlyContinue | Write-Host
+  Save-Artifacts
   exit 20
 }
 
@@ -338,6 +369,7 @@ Write-Host "Waiting for preview server root..."
 if (-not (Wait-ForPort $PreviewPort $WaitSeconds)) {
   Write-Host "Preview server process did not bind to port $PreviewPort within $WaitSeconds seconds. Dumping logs..."
   Get-Content $previewLog -Tail 200 -ErrorAction SilentlyContinue | Write-Host
+  Save-Artifacts
   exit 21
 }
 
@@ -345,10 +377,14 @@ Write-Host "Preview server port bound; waiting for HTTP root..."
 if (-not (Wait-ForUrl "http://127.0.0.1:$PreviewPort/" $WaitSeconds)) {
   Write-Host "Preview server did not become ready within $WaitSeconds seconds. Dumping last 200 lines of $previewLog"
   Get-Content $previewLog -Tail 200 -ErrorAction SilentlyContinue | Write-Host
+  Save-Artifacts
   exit 21
 }
 
 Write-Host "Both services are ready. Running Cypress..."
+
+  # Ensure artifacts are saved before exiting
+  Save-Artifacts
 
 $env:API_BASE = "http://127.0.0.1:$ApiPort"
 $cyCmd = "npx cypress run --e2e --config baseUrl=http://127.0.0.1:$PreviewPort"
