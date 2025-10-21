@@ -132,7 +132,9 @@
       }
     </style>
     
-    <div id="root"></div>
+  <div id="root"></div>
+  <!-- Modal root for E2E and portal rendering; kept pointer-events:none until activated by modal -->
+  <div data-modal-root="true" style="pointer-events: none; position: fixed; inset: 0; z-index: 2147483646;"></div>
     <!-- Vite will transform this to the built JS in /assets at build time -->
     <script>
       // Hint for app code to detect Cypress even when bundled

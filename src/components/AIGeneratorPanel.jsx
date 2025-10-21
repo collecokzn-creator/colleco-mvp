@@ -69,9 +69,12 @@ export default function AIGeneratorPanel() {
     if (!prompt.trim()) { setError('Prompt required'); return; }
     setLoading(true);
     try {
+  console.log('[AIGEN] handleSingle: sending generate request', { prompt: prompt && prompt.slice(0,80) });
       const data = await generateItinerary(prompt.trim());
+  console.log('[AIGEN] handleSingle: received data', data);
       setFullData(data);
       const parsePhase = baseFrom(data);
+  console.log('[AIGEN] handleSingle: parsePhase', parsePhase);
       setPhases({ parse: parsePhase, plan: { itinerary: data.itinerary }, pricing: { pricing: data.pricing }, done: true });
       setActive(false);
     } catch(e) {
@@ -493,7 +496,11 @@ export default function AIGeneratorPanel() {
             <div className="text-xs space-y-1">
               <div><span className="font-semibold">Destinations:</span> {parse.destinations.join(', ')||'—'}</div>
               <div><span className="font-semibold">Dates:</span> {parse.startDate||'?' } → {parse.endDate||'?'} ({parse.nights} nights)</div>
-              <div><span className="font-semibold">Travelers:</span> {parse.travelers.adults} adults {parse.travelers.children? `, ${parse.travelers.children} children`:''}</div>
+              <div>
+                <span className="font-semibold">Travelers:</span>
+                {parse.travelers?.adults != null ? `${parse.travelers.adults} adults` : '—'}
+                {parse.travelers?.children ? `, ${parse.travelers.children} children` : ''}
+              </div>
               <div><span className="font-semibold">Budget:</span> {parse.budget.amount? formatCurrency(parse.budget.amount, parse.budget.currency): 'n/a'} {parse.budget.perPerson? '(per person)':''}</div>
               <div><span className="font-semibold">Interests:</span> {parse.interests.join(', ')||'—'}</div>
             </div>

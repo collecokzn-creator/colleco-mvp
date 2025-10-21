@@ -2,11 +2,15 @@
   "name": "collecotravel-frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs && node scripts/dev-detect-api.mjs && vite",
     "prebuild": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs",
     "build": "vite build",
     "preview": "vite preview",
+  "smoke:preview": "npx serve -s dist -l 5174",
     "lint": "eslint . --ext .js,.jsx",
     "server": "node server/server.js",
     "test": "vitest run --reporter=default",
@@ -15,7 +19,12 @@
     "smoke:build": "npm run build",
     "smoke:start:stack": "concurrently -k -s first -n api,web -c blue,green \"cross-env PORT=4010 node server/server.js\" \"npx serve -s dist -l 5174\"",
     "smoke:run": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js",
-    "smoke:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:run\""
+    "smoke:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:run\"",
+    "ci-e2e": "powershell -File scripts/ci-e2e.ps1",
+    "ci-e2e:local": "cross-env API_BASE=http://127.0.0.1:4002 npx cypress run --e2e --config baseUrl=http://127.0.0.1:5173"
+  },
+  "husky": {
+    "hooks": {}
   },
   "dependencies": {
     "ajv": "^8.17.1",

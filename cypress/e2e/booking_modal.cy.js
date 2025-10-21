@@ -1,3 +1,29 @@
+describe('Booking modal (programmatic open)', () => {
+  it('opens the booking modal via the app test hook and shows dialog controls', () => {
+    // visit the app root — CI and local preview should set baseUrl in Cypress config or via CLI
+    cy.visit('/');
+
+    // Give the app a moment to register test hooks
+    cy.window({ timeout: 10000 }).should('have.property', '__openBooking').then(() => {
+      // Call the function inside the application's window context
+      cy.window().then((win) => {
+        if (typeof win.__forceOpenBooking === 'function') {
+          win.__forceOpenBooking();
+        } else if (typeof win.__openBooking === 'function') {
+          win.__openBooking();
+        } else {
+          // fallback: try clicking any booking buttons if present
+          cy.get('a[href*="/book"], button[data-e2e="open-booking"]').first().click();
+        }
+      });
+    });
+
+    // Assert the booking modal dialog is present
+    cy.get('#booking-modal-title', { timeout: 10000 }).should('be.visible');
+    cy.get('[data-e2e-close], [data-e2e="booking-close"]', { timeout: 10000 }).should('exist');
+    cy.get('[role="dialog"]', { timeout: 10000 }).should('be.visible');
+  });
+});
 describe('Booking Modal', () => {
   beforeEach(() => {
     // ensure the app knows we're in E2E so Home exposes helpers (set before scripts run)

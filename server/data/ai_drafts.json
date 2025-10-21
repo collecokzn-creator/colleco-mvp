@@ -1044,5 +1044,725 @@
       }
     },
     "createdAt": 1760911860645
+  },
+  "sszbi6f3asnmgyc5xzk": {
+    "id": "sszbi6f3asnmgyc5xzk",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760916410193
+  },
+  "4a9ix1csb1kmgyc8xib": {
+    "id": "4a9ix1csb1kmgyc8xib",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760916549539
+  },
+  "51zecls0c1umgyckgs0": {
+    "id": "51zecls0c1umgyckgs0",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760917087728
+  },
+  "xrqq8zvdvvamgyrr1x9": {
+    "id": "xrqq8zvdvvamgyrr1x9",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760942589309
+  },
+  "ksatom84m1mgyuv16w": {
+    "id": "ksatom84m1mgyuv16w",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760947813832
+  },
+  "gvdg5qq62domgyuxe58": {
+    "id": "gvdg5qq62domgyuxe58",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760947923932
+  },
+  "e14qn3f4d5mgyxqvqn": {
+    "id": "e14qn3f4d5mgyxqvqn",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760952658991
+  },
+  "xwrwlka6m6mgyy9gb0": {
+    "id": "xwrwlka6m6mgyy9gb0",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760953525452
+  },
+  "jrmxezf1hmmgz0v2ks": {
+    "id": "jrmxezf1hmmgz0v2ks",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760957893324
+  },
+  "o3r78oj3mopmgz2klep": {
+    "id": "o3r78oj3mopmgz2klep",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760960763745
   }
 }

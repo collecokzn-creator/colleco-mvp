@@ -3,7 +3,19 @@
 //  - generateItinerary(prompt): single shot POST returning parsed data
 //  - streamItinerary(prompt, { onEvent, onError, onDone, signal }) : SSE phased stream
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
+// Prefer build-time env, but allow a runtime override during E2E tests.
+const BUILD_API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
+function getApiBase() {
+  try {
+    if (typeof window !== 'undefined' && window.__E2E__) {
+      // If the test harness provided an explicit API base, use it. Otherwise
+      // use same-origin to route requests through the preview server ("/api/...").
+      return window.__E2E_API_BASE != null ? window.__E2E_API_BASE : '';
+    }
+  } catch (e) {}
+  return BUILD_API_BASE;
+}
+const API_BASE = getApiBase();
 const API_TOKEN = import.meta.env.VITE_API_TOKEN || '';
 function withAuth(headers = {}){
   const h = { ...headers };

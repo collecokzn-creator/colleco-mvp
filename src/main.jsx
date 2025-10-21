@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import { UserProvider } from "./context/UserContext.jsx";
 import "./index.css"; // Tailwind styles
 import appIconPng from "./assets/colleco-logo.png";
 
@@ -43,10 +44,12 @@ function InstallBanner() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-    <InstallBanner />
+    <UserProvider>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+      <InstallBanner />
+    </UserProvider>
   </React.StrictMode>
 );
 

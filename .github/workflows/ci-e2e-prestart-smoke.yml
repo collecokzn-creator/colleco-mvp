@@ -1,0 +1,112 @@
+name: E2E Prestart Smoke (Windows)
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  smoke-windows:
+    name: Run pre-start cleanup smoke test on Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run pre-start cleanup smoke test
+        shell: pwsh
+        run: |
+          Write-Host "Running smoke test script"
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\ci-e2e-prestart-smoke.ps1 -TestPort 5173
+
+      - name: List coleco ci logs (smoke)
+        if: always()
+        shell: pwsh
+        run: |
+          $logs = Join-Path $env:TEMP 'colleco-ci-logs'
+          Write-Host "Looking for logs in: $logs"
+          if (Test-Path $logs) { Get-ChildItem -Recurse $logs | ForEach-Object { Write-Host $_.FullName } } else { Write-Host "No logs found at $logs" }
+
+      - name: Upload coleco ci logs (smoke)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/colleco-ci-logs
+          if-no-files-found: warn
+
+  full-ci-e2e-windows:
+    name: Run full E2E orchestration (Windows)
+    runs-on: windows-latest
+    needs: smoke-windows
+    # Only run the full, heavy orchestration when the PR has the label 'run-full-e2e'
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'run-full-e2e') }}
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run full CI E2E orchestration
+        shell: pwsh
+        env:
+          # Ensure Cypress sees API_BASE if scripts depend on it; the orchestration sets envs itself,
+          # but setting a default here is harmless.
+          API_BASE: "http://127.0.0.1:4002"
+        run: |
+          Write-Host "Starting full CI E2E orchestration (this may take a while)"
+          pwsh -NoProfile -ExecutionPolicy Bypass -Command "npm run ci-e2e"
+
+      - name: List colleco ci logs (full)
+        if: always()
+        shell: pwsh
+        run: |
+          $logs = Join-Path $env:TEMP 'colleco-ci-logs'
+          Write-Host "Looking for logs in: $logs"
+          if (Test-Path $logs) { Get-ChildItem -Recurse $logs | ForEach-Object { Write-Host $_.FullName } } else { Write-Host "No logs found at $logs" }
+
+      - name: Upload colleco ci logs (full)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-e2e-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/colleco-ci-logs
+          if-no-files-found: warn
+
+      - name: Upload zipped colleco artifacts (full)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-e2e-zip-${{ github.run_id }}
+          path: ${{ runner.temp }}/colleco-ci-logs/*.zip
+          if-no-files-found: warn
+
+      - name: Upload Cypress videos (full)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos-${{ github.run_id }}
+          path: cypress/videos
+          if-no-files-found: warn
+
+      - name: Upload Cypress screenshots (full)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots-${{ github.run_id }}
+          path: cypress/screenshots
+          if-no-files-found: warn
