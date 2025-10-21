@@ -46,6 +46,17 @@ function Save-Artifacts() {
 
     # Write a manifest of what we saved
     try { Get-ChildItem -Recurse $logsDir | Select-Object FullName,Length | Out-File -FilePath (Join-Path $logsDir 'artifact-manifest.txt') -Encoding utf8 -Force } catch {}
+
+    # Create a compressed zip of the collected artifacts to reduce upload size
+    try {
+      $zipName = "colleco-ci-logs-$(Get-Date -Format 'yyyyMMddHHmmss').zip"
+      $zipPath = Join-Path $env:TEMP $zipName
+      if (Test-Path $zipPath) { Remove-Item -Force $zipPath -ErrorAction SilentlyContinue }
+      Write-Host "Creating artifact zip: $zipPath"
+      Compress-Archive -Path (Join-Path $logsDir '*') -DestinationPath $zipPath -Force -ErrorAction SilentlyContinue
+      # Copy the zip into the logs dir so the workflow artifact upload that targets $logsDir will pick it up too
+      try { Copy-Item -Path $zipPath -Destination (Join-Path $logsDir $zipName) -Force -ErrorAction SilentlyContinue } catch {}
+    } catch { Write-Host "Failed to create artifact zip: $_" }
   } catch { Write-Host "Save-Artifacts encountered an error: $_" }
 }
 

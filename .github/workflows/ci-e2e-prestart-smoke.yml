@@ -46,6 +46,8 @@ jobs:
     name: Run full E2E orchestration (Windows)
     runs-on: windows-latest
     needs: smoke-windows
+    # Only run the full, heavy orchestration when the PR has the label 'run-full-e2e'
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'run-full-e2e') }}
     timeout-minutes: 45
     steps:
       - name: Checkout
@@ -83,4 +85,28 @@ jobs:
         with:
           name: full-e2e-logs-${{ github.run_id }}
           path: ${{ runner.temp }}/colleco-ci-logs
+          if-no-files-found: warn
+
+      - name: Upload zipped colleco artifacts (full)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-e2e-zip-${{ github.run_id }}
+          path: ${{ runner.temp }}/colleco-ci-logs/*.zip
+          if-no-files-found: warn
+
+      - name: Upload Cypress videos (full)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos-${{ github.run_id }}
+          path: cypress/videos
+          if-no-files-found: warn
+
+      - name: Upload Cypress screenshots (full)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots-${{ github.run_id }}
+          path: cypress/screenshots
           if-no-files-found: warn
