@@ -1064,6 +1064,60 @@
       "status": "Confirmed",
       "createdAt": 1760993584698,
       "amount": 216
+    },
+    "mbw4hp7stbgmh07wvkr": {
+      "bookingId": "z9nxhqquqrsmh07wvkj",
+      "status": "Confirmed",
+      "createdAt": 1761030201051,
+      "amount": 216
+    },
+    "0d71vtbhczhmmh096vtf": {
+      "bookingId": "45z1jr8u50vmh096vt6",
+      "status": "Confirmed",
+      "createdAt": 1761032347539,
+      "amount": 216
+    },
+    "cegla9zkfrmh09fhhu": {
+      "bookingId": "gh3oxjriolmmh09fhhk",
+      "status": "Confirmed",
+      "createdAt": 1761032748882,
+      "amount": 216
+    },
+    "4zv2glh4vs3mh09wq5g": {
+      "bookingId": "k55ax37r4zjmh09wq5a",
+      "status": "Confirmed",
+      "createdAt": 1761033553252,
+      "amount": 216
+    },
+    "665ge8iprvqmh0a5p6j": {
+      "bookingId": "1t9gi4o5q8nmh0a5p68",
+      "status": "Confirmed",
+      "createdAt": 1761033971899,
+      "amount": 216
+    },
+    "apkywlrxfokmh0apm8h": {
+      "bookingId": "8nd9iry01t9mh0apm72",
+      "status": "Confirmed",
+      "createdAt": 1761034901201,
+      "amount": 216
+    },
+    "rhxcw5s3k2bmh0b1q4b": {
+      "bookingId": "ksy564atxcmh0b1q42",
+      "status": "Confirmed",
+      "createdAt": 1761035466107,
+      "amount": 216
+    },
+    "iv57bruyz0omh0d9myu": {
+      "bookingId": "ed2is62j5ctmh0d9myi",
+      "status": "Confirmed",
+      "createdAt": 1761039194502,
+      "amount": 216
+    },
+    "0h07oih56vg8mh0dk8js": {
+      "bookingId": "7d8jnhi4u5pmh0dk8jd",
+      "status": "Confirmed",
+      "createdAt": 1761039689032,
+      "amount": 216
     }
   },
   "6wik2k2bedkmgut0fss": {
@@ -4103,8 +4157,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Boarding",
-        "updatedAt": 1761040918229
+        "status": "Scheduled",
+        "updatedAt": 1761041455930
       }
     ],
     "customer": {
@@ -4113,7 +4167,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760711305741,
-    "updatedAt": 1761040918229,
+    "updatedAt": 1761041455930,
     "pricing": {
       "items": [
         {
@@ -4438,8 +4492,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Delayed",
-        "updatedAt": 1761040988337
+        "status": "In-Flight",
+        "updatedAt": 1761041445926
       }
     ],
     "customer": {
@@ -4448,7 +4502,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760711931534,
-    "updatedAt": 1761040988337,
+    "updatedAt": 1761041445926,
     "pricing": {
       "items": [
         {
@@ -4710,8 +4764,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Delayed",
-        "updatedAt": 1761040928241
+        "status": "Completed",
+        "updatedAt": 1761041331004
       }
     ],
     "customer": {
@@ -4720,7 +4774,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760713094915,
-    "updatedAt": 1761040928241,
+    "updatedAt": 1761041331004,
     "pricing": {
       "items": [
         {
@@ -4982,8 +5036,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Scheduled",
-        "updatedAt": 1761040928245
+        "status": "Landed",
+        "updatedAt": 1761041431927
       }
     ],
     "customer": {
@@ -4992,7 +5046,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760713376729,
-    "updatedAt": 1761040928245,
+    "updatedAt": 1761041431927,
     "pricing": {
       "items": [
         {
@@ -5192,7 +5246,7 @@
         "amount": 2500,
         "netRate": 2500,
         "status": "Landed",
-        "updatedAt": 1761040758052
+        "updatedAt": 1761041455962
       }
     ],
     "customer": {
@@ -5201,7 +5255,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760713442547,
-    "updatedAt": 1761040758052,
+    "updatedAt": 1761041455962,
     "pricing": {
       "items": [
         {
@@ -5463,8 +5517,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Landed",
-        "updatedAt": 1761040978323
+        "status": "Cancelled",
+        "updatedAt": 1761041160778
       }
     ],
     "customer": {
@@ -5473,7 +5527,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760714275729,
-    "updatedAt": 1761040978323,
+    "updatedAt": 1761041160778,
     "pricing": {
       "items": [
         {
@@ -5735,8 +5789,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Delayed",
-        "updatedAt": 1761040958270
+        "status": "In-Flight",
+        "updatedAt": 1761041220845
       }
     ],
     "customer": {
@@ -5745,7 +5799,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760714554641,
-    "updatedAt": 1761040958270,
+    "updatedAt": 1761041220845,
     "pricing": {
       "items": [
         {
@@ -6007,8 +6061,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Scheduled",
-        "updatedAt": 1761040888200
+        "status": "Landed",
+        "updatedAt": 1761041371109
       }
     ],
     "customer": {
@@ -6017,7 +6071,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760714648764,
-    "updatedAt": 1761040888200,
+    "updatedAt": 1761041371109,
     "pricing": {
       "items": [
         {
@@ -6279,8 +6333,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Scheduled",
-        "updatedAt": 1761040998356
+        "status": "Completed",
+        "updatedAt": 1761041473956
       }
     ],
     "customer": {
@@ -6289,7 +6343,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760715109005,
-    "updatedAt": 1761040998356,
+    "updatedAt": 1761041473956,
     "pricing": {
       "items": [
         {
@@ -6551,8 +6605,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Landed",
-        "updatedAt": 1761040998377
+        "status": "In-Flight",
+        "updatedAt": 1761041371122
       }
     ],
     "customer": {
@@ -6561,7 +6615,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760715476522,
-    "updatedAt": 1761040998377,
+    "updatedAt": 1761041371122,
     "pricing": {
       "items": [
         {
@@ -6823,8 +6877,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Delayed",
-        "updatedAt": 1761040998411
+        "status": "Completed",
+        "updatedAt": 1761041473966
       }
     ],
     "customer": {
@@ -6833,7 +6887,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760715675802,
-    "updatedAt": 1761040998411,
+    "updatedAt": 1761041473966,
     "pricing": {
       "items": [
         {
@@ -7095,8 +7149,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "In-Flight",
-        "updatedAt": 1761040948254
+        "status": "Completed",
+        "updatedAt": 1761041456029
       }
     ],
     "customer": {
@@ -7105,7 +7159,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760715944305,
-    "updatedAt": 1761040948254,
+    "updatedAt": 1761041456029,
     "pricing": {
       "items": [
         {
@@ -7367,8 +7421,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Scheduled",
-        "updatedAt": 1761040888204
+        "status": "In-Flight",
+        "updatedAt": 1761041411135
       }
     ],
     "customer": {
@@ -7377,7 +7431,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760716141870,
-    "updatedAt": 1761040888204,
+    "updatedAt": 1761041411135,
     "pricing": {
       "items": [
         {
@@ -7639,8 +7693,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "In-Flight",
-        "updatedAt": 1761040968280
+        "status": "Boarding",
+        "updatedAt": 1761041411141
       }
     ],
     "customer": {
@@ -7649,7 +7703,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760716713952,
-    "updatedAt": 1761040968280,
+    "updatedAt": 1761041411141,
     "pricing": {
       "items": [
         {
@@ -7911,8 +7965,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Boarding",
-        "updatedAt": 1761040988349
+        "status": "Scheduled",
+        "updatedAt": 1761041331041
       }
     ],
     "customer": {
@@ -7921,7 +7975,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760717004592,
-    "updatedAt": 1761040988349,
+    "updatedAt": 1761041331041,
     "pricing": {
       "items": [
         {
@@ -8183,8 +8237,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Scheduled",
-        "updatedAt": 1761040868156
+        "status": "Boarding",
+        "updatedAt": 1761041401135
       }
     ],
     "customer": {
@@ -8193,7 +8247,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760717485091,
-    "updatedAt": 1761040868156,
+    "updatedAt": 1761041401135,
     "pricing": {
       "items": [
         {
@@ -8478,8 +8532,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Boarding",
-        "updatedAt": 1761040888212
+        "status": "Landed",
+        "updatedAt": 1761041445938
       }
     ],
     "customer": {
@@ -8488,7 +8542,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760719419645,
-    "updatedAt": 1761040888212,
+    "updatedAt": 1761041445938,
     "pricing": {
       "items": [
         {
@@ -8750,8 +8804,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "In-Flight",
-        "updatedAt": 1761040988356
+        "status": "Delayed",
+        "updatedAt": 1761041240871
       }
     ],
     "customer": {
@@ -8760,7 +8814,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760722411880,
-    "updatedAt": 1761040988356,
+    "updatedAt": 1761041240871,
     "pricing": {
       "items": [
         {
@@ -9022,8 +9076,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Delayed",
-        "updatedAt": 1761040918238
+        "status": "Boarding",
+        "updatedAt": 1761041473974
       }
     ],
     "customer": {
@@ -9032,7 +9086,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760722636677,
-    "updatedAt": 1761040918238,
+    "updatedAt": 1761041473974,
     "pricing": {
       "items": [
         {
@@ -9231,8 +9285,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Departed",
-        "updatedAt": 1761040988361
+        "status": "Delayed",
+        "updatedAt": 1761041445949
       }
     ],
     "customer": {
@@ -9241,7 +9295,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760722788198,
-    "updatedAt": 1761040988361,
+    "updatedAt": 1761041445949,
     "pricing": {
       "items": [
         {
@@ -9503,8 +9557,8 @@
         "date": "2025-11-01",
         "amount": 2500,
         "netRate": 2500,
-        "status": "Completed",
-        "updatedAt": 1761040938258
+        "status": "Scheduled",
+        "updatedAt": 1761041446003
       }
     ],
     "customer": {
@@ -9513,7 +9567,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760723706638,
-    "updatedAt": 1761040938258,
+    "updatedAt": 1761041446003,
     "pricing": {
       "items": [
         {
@@ -9953,10 +10007,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Delayed",
+        "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040998420
+        "updatedAt": 1761041456038
       }
     ],
     "customer": {
@@ -9965,7 +10019,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760734521882,
-    "updatedAt": 1761040998420,
+    "updatedAt": 1761041456038,
     "pricing": {
       "items": [
         {
@@ -10266,10 +10320,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Boarding",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040908215
+        "updatedAt": 1761041446014
       }
     ],
     "customer": {
@@ -10278,7 +10332,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760734813295,
-    "updatedAt": 1761040908215,
+    "updatedAt": 1761041446014,
     "pricing": {
       "items": [
         {
@@ -10432,10 +10486,10 @@
       }
     },
     "bookingsByDate": {
-      "2025-10-23": {
+      "2025-10-24": {
         "testroom": 1
       },
-      "2025-10-24": {
+      "2025-10-25": {
         "testroom": 1
       }
     }
@@ -10660,6 +10714,105 @@
       "createdAt": 1760993584580,
       "consumed": true,
       "consumedAt": 1760993584651
+    },
+    "deoqlsi93fdmh07wvhz": {
+      "id": "deoqlsi93fdmh07wvhz",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761030500951,
+      "createdAt": 1761030200951,
+      "consumed": true,
+      "consumedAt": 1761030201042
+    },
+    "gk8iu61q0iumh096vry": {
+      "id": "gk8iu61q0iumh096vry",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761032647486,
+      "createdAt": 1761032347486,
+      "consumed": true,
+      "consumedAt": 1761032347530
+    },
+    "1ln7o645798mh09fhgh": {
+      "id": "1ln7o645798mh09fhgh",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761033048833,
+      "createdAt": 1761032748833,
+      "consumed": true,
+      "consumedAt": 1761032748872
+    },
+    "gr73cvsxrtmh09wq4i": {
+      "id": "gr73cvsxrtmh09wq4i",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761033853218,
+      "createdAt": 1761033553218,
+      "consumed": true,
+      "consumedAt": 1761033553245
+    },
+    "2py3gbh6fxnmh0a5p4o": {
+      "id": "2py3gbh6fxnmh0a5p4o",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761034271832,
+      "createdAt": 1761033971832,
+      "consumed": true,
+      "consumedAt": 1761033971888
+    },
+    "6a8ak6qi2gemh0apm3r": {
+      "id": "6a8ak6qi2gemh0apm3r",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761035201031,
+      "createdAt": 1761034901042,
+      "consumed": true,
+      "consumedAt": 1761034901148
+    },
+    "fl2hxreb7cmh0b1q33": {
+      "id": "fl2hxreb7cmh0b1q33",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761035766063,
+      "createdAt": 1761035466064,
+      "consumed": true,
+      "consumedAt": 1761035466097
+    },
+    "6qboz7w5wt8mh0d9mxk": {
+      "id": "6qboz7w5wt8mh0d9mxk",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761039494456,
+      "createdAt": 1761039194456,
+      "consumed": true,
+      "consumedAt": 1761039194490
+    },
+    "y6l5kocb4rmmh0dk8g8": {
+      "id": "y6l5kocb4rmmh0dk8g8",
+      "roomType": "testroom",
+      "startDate": "2025-10-24",
+      "endDate": "2025-10-26",
+      "qty": 1,
+      "expiresAt": 1761039988904,
+      "createdAt": 1761039688905,
+      "consumed": true,
+      "consumedAt": 1761039689017
     }
   },
   "0blnf7evk60umgvemjx0": {
@@ -10675,10 +10828,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040978476
+        "updatedAt": 1761041446019
       }
     ],
     "customer": {
@@ -10687,7 +10840,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760739145812,
-    "updatedAt": 1761040978476,
+    "updatedAt": 1761041446019,
     "pricing": {
       "items": [
         {
@@ -10933,10 +11086,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "In-Flight",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040968302
+        "updatedAt": 1761041230878
       }
     ],
     "customer": {
@@ -10945,7 +11098,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760739408226,
-    "updatedAt": 1761040968302,
+    "updatedAt": 1761041230878,
     "pricing": {
       "items": [
         {
@@ -11191,10 +11344,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Cancelled",
+        "status": "Landed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040988366
+        "updatedAt": 1761041391125
       }
     ],
     "customer": {
@@ -11203,7 +11356,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760740339769,
-    "updatedAt": 1761040988366,
+    "updatedAt": 1761041391125,
     "pricing": {
       "items": [
         {
@@ -11362,10 +11515,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040878201
+        "updatedAt": 1761041446554
       }
     ],
     "customer": {
@@ -11374,7 +11527,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760740599237,
-    "updatedAt": 1761040878201,
+    "updatedAt": 1761041446554,
     "pricing": {
       "items": [
         {
@@ -11881,10 +12034,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Completed",
+        "status": "Landed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040908231
+        "updatedAt": 1761041351025
       }
     ],
     "customer": {
@@ -11893,7 +12046,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760907627408,
-    "updatedAt": 1761040908231,
+    "updatedAt": 1761041351025,
     "pricing": {
       "items": [
         {
@@ -12142,7 +12295,7 @@
         "status": "Delayed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040788109
+        "updatedAt": 1761041421199
       }
     ],
     "customer": {
@@ -12151,7 +12304,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760910325430,
-    "updatedAt": 1761040788109,
+    "updatedAt": 1761041421199,
     "pricing": {
       "items": [
         {
@@ -12309,10 +12462,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Completed",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040978482
+        "updatedAt": 1761041474058
       }
     ],
     "customer": {
@@ -12321,7 +12474,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760910488291,
-    "updatedAt": 1761040978482,
+    "updatedAt": 1761041474058,
     "pricing": {
       "items": [
         {
@@ -12567,10 +12720,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Delayed",
+        "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040968307
+        "updatedAt": 1761041362740
       }
     ],
     "customer": {
@@ -12579,7 +12732,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760910900572,
-    "updatedAt": 1761040968307,
+    "updatedAt": 1761041362740,
     "pricing": {
       "items": [
         {
@@ -12825,10 +12978,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Departed",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040918306
+        "updatedAt": 1761041474280
       }
     ],
     "customer": {
@@ -12837,7 +12990,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760911897362,
-    "updatedAt": 1761040918306,
+    "updatedAt": 1761041474280,
     "pricing": {
       "items": [
         {
@@ -12999,7 +13152,7 @@
         "status": "Landed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040938263
+        "updatedAt": 1761041391319
       }
     ],
     "customer": {
@@ -13008,7 +13161,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760916271170,
-    "updatedAt": 1761040938263,
+    "updatedAt": 1761041391319,
     "pricing": {
       "items": [
         {
@@ -13170,7 +13323,7 @@
         "status": "Boarding",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040878206
+        "updatedAt": 1761041260990
       }
     ],
     "customer": {
@@ -13179,7 +13332,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760916588504,
-    "updatedAt": 1761040878206,
+    "updatedAt": 1761041260990,
     "pricing": {
       "items": [
         {
@@ -13338,10 +13491,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "In-Flight",
+        "status": "Landed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040958275
+        "updatedAt": 1761041474287
       }
     ],
     "customer": {
@@ -13350,7 +13503,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760917130541,
-    "updatedAt": 1761040958275,
+    "updatedAt": 1761041474287,
     "pricing": {
       "items": [
         {
@@ -13509,10 +13662,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "In-Flight",
+        "status": "Completed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040748046
+        "updatedAt": 1761041401144
       }
     ],
     "customer": {
@@ -13521,7 +13674,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760947848326,
-    "updatedAt": 1761040748046,
+    "updatedAt": 1761041401144,
     "pricing": {
       "items": [
         {
@@ -13680,10 +13833,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "In-Flight",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761040728039
+        "updatedAt": 1761041421217
       }
     ],
     "customer": {
@@ -13692,7 +13845,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1760947959856,
-    "updatedAt": 1761040728039,
+    "updatedAt": 1761041421217,
     "pricing": {
       "items": [
         {
@@ -14707,5 +14860,788 @@
     },
     "inventoryApplied": true,
     "inventoryAppliedAt": 1760993584803
+  },
+  "z9nxhqquqrsmh07wvkj": {
+    "id": "z9nxhqquqrsmh07wvkj",
+    "ref": "BKG-mh07wv",
+    "items": [
+      {
+        "id": "hjxka6z44kmh07wvkj",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761030201043,
+    "updatedAt": 1761030201110,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761030201116
+  },
+  "45z1jr8u50vmh096vt6": {
+    "id": "45z1jr8u50vmh096vt6",
+    "ref": "BKG-mh096v",
+    "items": [
+      {
+        "id": "werqeuifqamh096vt6",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761032347530,
+    "updatedAt": 1761032347576,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761032347583
+  },
+  "gh3oxjriolmmh09fhhk": {
+    "id": "gh3oxjriolmmh09fhhk",
+    "ref": "BKG-mh09fh",
+    "items": [
+      {
+        "id": "ahbxeaq5ieqmh09fhhk",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761032748872,
+    "updatedAt": 1761032748927,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761032748933
+  },
+  "k55ax37r4zjmh09wq5a": {
+    "id": "k55ax37r4zjmh09wq5a",
+    "ref": "BKG-mh09wq",
+    "items": [
+      {
+        "id": "f9pqg716reqmh09wq5a",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761033553246,
+    "updatedAt": 1761033553278,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761033553282
+  },
+  "1t9gi4o5q8nmh0a5p68": {
+    "id": "1t9gi4o5q8nmh0a5p68",
+    "ref": "BKG-mh0a5p",
+    "items": [
+      {
+        "id": "huln6n3djgimh0a5p69",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761033971889,
+    "updatedAt": 1761033971937,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761033971944
+  },
+  "8nd9iry01t9mh0apm72": {
+    "id": "8nd9iry01t9mh0apm72",
+    "ref": "BKG-mh0apm",
+    "items": [
+      {
+        "id": "00je78em9sajfmh0apm7f",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761034901163,
+    "updatedAt": 1761034901318,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761034901328
+  },
+  "ksy564atxcmh0b1q42": {
+    "id": "ksy564atxcmh0b1q42",
+    "ref": "BKG-mh0b1q",
+    "items": [
+      {
+        "id": "4ws7l1ikf4nmh0b1q42",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761035466098,
+    "updatedAt": 1761035466132,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761035466141
+  },
+  "ed2is62j5ctmh0d9myi": {
+    "id": "ed2is62j5ctmh0d9myi",
+    "ref": "BKG-mh0d9m",
+    "items": [
+      {
+        "id": "vw35bq7d7vmh0d9myj",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761039194491,
+    "updatedAt": 1761039194535,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761039194542
+  },
+  "7d8jnhi4u5pmh0dk8jd": {
+    "id": "7d8jnhi4u5pmh0dk8jd",
+    "ref": "BKG-mh0dk8",
+    "items": [
+      {
+        "id": "5yzv1ucxqqvmh0dk8je",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": "testroom",
+        "nights": 2,
+        "unitPrice": 100,
+        "extras": [],
+        "amount": 200,
+        "netRate": 200,
+        "startDate": "2025-10-24",
+        "endDate": "2025-10-26"
+      }
+    ],
+    "customer": {
+      "name": "E2E Test"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1761039689018,
+    "updatedAt": 1761039689140,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "title": "Test Hotel",
+          "name": "Test Hotel",
+          "roomType": "testroom",
+          "nights": 2,
+          "unitPrice": 100,
+          "extras": [],
+          "amount": 200,
+          "netRate": 200,
+          "startDate": "2025-10-24",
+          "endDate": "2025-10-26",
+          "net": 200,
+          "serviceFee": 16,
+          "totalWithFee": 216,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 200,
+      "totalServiceFees": 16,
+      "commission": 30,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 46,
+      "partnerReceives": 170,
+      "total": 216
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1761039689149
   }
 }
