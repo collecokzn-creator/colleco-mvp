@@ -1,0 +1,27 @@
+name: E2E Prestart Smoke (Windows)
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  smoke-windows:
+    name: Run pre-start cleanup smoke test on Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run pre-start cleanup smoke test
+        shell: pwsh
+        run: |
+          Write-Host "Running smoke test script"
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\ci-e2e-prestart-smoke.ps1 -TestPort 5173
