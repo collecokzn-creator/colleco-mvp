@@ -71,3 +71,69 @@ html { overflow-y: scroll; }
 footer.bg-brand-brown, footer[class*="bg-brand-brown"] {
 	color: white !important;
 }
+
+/*
+	Global 'rusty' text overrides (low-risk):
+	- Many components use `text-brand-brown` and occasionally `text-black`.
+	- To make the site use a warmer "rusty" tone app-wide without changing dozens of classnames,
+		we map those text classes to the `brand.russty` color defined in Tailwind config.
+	- These selectors are intentionally specific but minimal; they won't affect components that
+		explicitly set `text-white` or other color utilities. This keeps the change safe and
+		reversible by removing this block.
+*/
+
+:root {
+	--color-rusty: #B3541E; /* keep in sync with tailwind.config.js brand.russty */
+}
+
+/* Tailwind-generated classes like .text-brand-brown map to CSS variables via Tailwind,
+	 but this global override ensures any direct `color: #000` or generic `text-black`
+	 usage is softened to the rusty tone. */
+
+/* Override commonly used utility classes */
+.text-black,
+.text-brand-brown,
+.text-brand-brown\/60,
+.text-brand-brown\/70,
+.text-brand-brown\/80,
+.text-brand-brown\/85,
+.text-brand-brown\/90,
+.text-brand-brown\/50,
+body,
+/* Catch inline style attributes that set color to black or brown */
+[style*="color:#000"],
+[style*="color:#000000"],
+[style*="color: black"],
+[style*="color:black"],
+[style*="color:rgb(0,0,0)"],
+[style*="color:#3a2a20"],
+[style*="color:#000;"],
+[style*="color:#000000;"],
+[style*="color:black;"],
+[style*="color: brown"],
+[style*="color:brown"],
+[style*="color:#5c3b21"],
+{
+	color: var(--color-rusty) !important;
+}
+
+/* More specific overrides for fractional opacity utilities (Tailwind emits complex classnames)
+	 We'll use attribute selectors to catch classnames that include text-brand-brown with a slash. */
+[class*="text-brand-brown/"] {
+	color: var(--color-rusty) !important;
+}
+
+/* Ensure headings and strong text remain darker but still rusty */
+/* Headings and strong text: slightly darker rusty for contrast */
+h1, h2, h3, h4, h5, h6, strong, b {
+	color: #8B3A12 !important; /* darker rusty tone */
+}
+
+/* Footer: use rusty background and ensure text remains white */
+footer {
+	background-color: var(--color-rusty) !important;
+	color: white !important;
+}
+footer * {
+	color: white !important;
+}
