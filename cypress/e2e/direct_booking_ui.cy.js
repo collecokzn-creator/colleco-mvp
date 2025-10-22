@@ -3,7 +3,7 @@ describe('Direct booking UI flows', () => {
 
   it('accommodation flow: book -> checkout -> success', () => {
     // Visit and set E2E flags so guarded UI renders reliably
-    cy.visit('/book/accommodation', { failOnStatusCode: false, onBeforeLoad(win){ try{ win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin')); }catch(e){} setTimeout(()=>{ try{ win.dispatchEvent(new Event('load')); }catch(e){} },800); } });
+  cy.visit('/#/book/accommodation', { failOnStatusCode: false, onBeforeLoad(win){ try{ win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin')); }catch(e){} setTimeout(()=>{ try{ win.dispatchEvent(new Event('load')); }catch(e){} },800); } });
     cy.get('#root', { timeout: 60000 }).should('exist');
     // Fill the form by scoping to the form element and using index-based inputs
     cy.get('form').within(() => {
@@ -14,12 +14,12 @@ describe('Direct booking UI flows', () => {
     // Use shared booking stub helper to keep tests DRY and deterministic
     cy.stubBooking({ id: 'test-bkg-1', items: [ { name: 'Test Hotel', amount: 240 } ], pricing: { currency: 'USD', subtotal: 240, total: 240 } });
     cy.get('form').within(() => cy.get('button[type="submit"]').click());
-    cy.visit('/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
-    cy.contains('Payment success', { timeout: 10000 }).should('be.visible');
+  cy.visit('/#/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
+  cy.contains('Payment success', { timeout: 10000 }).should('be.visible');
   });
 
   it('flight flow: book -> checkout', () => {
-    cy.visit('/book/flight', { failOnStatusCode: false, onBeforeLoad(win){ try{ win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin')); }catch(e){} setTimeout(()=>{ try{ win.dispatchEvent(new Event('load')); }catch(e){} },800); } });
+  cy.visit('/#/book/flight', { failOnStatusCode: false, onBeforeLoad(win){ try{ win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin')); }catch(e){} setTimeout(()=>{ try{ win.dispatchEvent(new Event('load')); }catch(e){} },800); } });
     cy.get('#root', { timeout: 60000 }).should('exist');
     // Fill flight form inside its form container
     cy.get('form').within(() => {
@@ -32,12 +32,12 @@ describe('Direct booking UI flows', () => {
   cy.get('form').within(() => cy.get('button[type="submit"]').click());
   // give the app a moment to handle the mocked checkout navigation and dynamic imports
   cy.wait(300);
-  cy.visit('/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
+  cy.visit('/#/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
   cy.contains('Payment success', { timeout: 10000 }).should('be.visible');
   });
 
   it('car flow: hire -> checkout', () => {
-    cy.visit('/book/car', { failOnStatusCode: false, onBeforeLoad(win){ try{ win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin')); }catch(e){} setTimeout(()=>{ try{ win.dispatchEvent(new Event('load')); }catch(e){} },800); } });
+  cy.visit('/#/book/car', { failOnStatusCode: false, onBeforeLoad(win){ try{ win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin')); }catch(e){} setTimeout(()=>{ try{ win.dispatchEvent(new Event('load')); }catch(e){} },800); } });
     cy.get('#root', { timeout: 60000 }).should('exist');
     cy.get('form').within(() => {
       cy.get('input').eq(0).clear().type('SUV'); // Vehicle Type
@@ -46,7 +46,7 @@ describe('Direct booking UI flows', () => {
     });
     cy.stubBooking({ id: 'test-bkg-1', items: [ { name: 'SUV hire', amount: 1500 } ], pricing: { currency: 'USD', subtotal: 1500, total: 1500 }, checkout: { sessionId: 'mock-session-3', checkoutUrl: `/api/mock-checkout/mock-session-3` } });
   cy.get('form').within(() => cy.get('button[type="submit"]').click());
-  cy.visit('/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
+  cy.visit('/#/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
   cy.contains('Payment success', { timeout: 10000 }).should('be.visible');
   });
 });

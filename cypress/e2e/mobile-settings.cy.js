@@ -1,5 +1,22 @@
 /// <reference types="cypress" />
 
+function e2eVisit(path) {
+  const hashPath = path.startsWith('#') || path.startsWith('/#') ? path : `/#${path === '/' ? '' : path}`
+  return cy.visit(hashPath, {
+    timeout: 120000,
+    failOnStatusCode: false,
+    onBeforeLoad(win) {
+      try { win.__E2E__ = true } catch {}
+      setTimeout(() => { try { win.dispatchEvent(new win.Event('load')) } catch {} }, 500)
+    }
+  }).then(() => {
+    cy.get('[data-e2e-ready="true"]', { timeout: 45000 }).should('exist')
+    cy.get('#root', { timeout: 30000 }).should(($r) => {
+      expect($r.children().length, 'app rendered into #root').to.be.greaterThan(0)
+    })
+  })
+}
+
 describe('Mobile Settings responsiveness', () => {
   const viewports = [
     { device: 'iphone-12', width: 390, height: 844 },
@@ -10,14 +27,14 @@ describe('Mobile Settings responsiveness', () => {
   ];
   viewports.forEach(({ device, width, height }) => {
     it(`renders without horizontal scroll on ${device}`, () => {
-      cy.visit('/settings', {
-        timeout: 120000,
-        failOnStatusCode: false,
+      // pre-set an authenticated user so settings route is accessible
+      cy.visit('/', {
         onBeforeLoad(win) {
-          setTimeout(() => win.dispatchEvent(new win.Event('load')), 500);
+          try { win.__E2E__ = true; win.localStorage.setItem('user', JSON.stringify({ email: 'test@example.com', name: 'E2E Tester' })); } catch (e) {}
         }
-      });
+      })
       cy.viewport(width, height);
+      e2eVisit('/settings')
       cy.get('#root', { timeout: 20000 }).should('exist');
       cy.contains(/Settings/i, { timeout: 20000 }).should('exist');
       cy.document().then(doc => {

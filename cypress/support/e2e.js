@@ -14,6 +14,11 @@ Cypress.on('window:before:load', (win) => {
   // routes render correctly in tests. Infer role from the current spec file name.
   try {
     try { win.__E2E__ = true } catch (e) {}
+    // Allow runtime override of API base for E2E runs (so built app can use test API)
+    try {
+      const apiBase = (typeof Cypress !== 'undefined' && Cypress.env && Cypress.env('API_BASE')) ? Cypress.env('API_BASE') : null;
+      if (apiBase) win.__E2E_API_BASE = apiBase;
+    } catch (e) {}
     // Infer role from spec name when available (ensures it runs prior to app init)
     let role = 'client';
     try {
@@ -124,16 +129,26 @@ const defaultBookingFixture = (overrides = {}) => ({
 Cypress.Commands.add('stubBooking', (fixtureOverrides = {}) => {
   const fixture = defaultBookingFixture(fixtureOverrides);
   // stub POST /api/bookings* (accommodation/flight/car or generic)
-  cy.intercept('POST', '**/api/bookings*', (req) => {
+  // register two intercepts to cover both '/api/bookings*' and '/bookings*' shapes
+  // Use RegExp matchers to robustly match both '/api/bookings...' and '/bookings...'
+  const postBookingsRe = /\/(?:api\/)?bookings(?:\b|\W)/;
+  cy.intercept({ method: 'POST', url: postBookingsRe }, (req) => {
+    // optional debug for flaky runs
+    try { cy.task('log', { type: 'intercept', method: req.method, url: req.url, note: 'stubbed createBooking' }); } catch (e) {}
     req.reply({ statusCode: 200, body: fixture });
   }).as('createBooking');
-  // stub GET /api/bookings/:id
-  cy.intercept('GET', '**/api/bookings/*', (req) => {
+
+  const getBookingsRe = /\/(?:api\/)?bookings\//;
+  cy.intercept({ method: 'GET', url: getBookingsRe }, (req) => {
+    try { cy.task('log', { type: 'intercept', method: req.method, url: req.url, note: 'stubbed getBooking' }); } catch (e) {}
     req.reply({ statusCode: 200, body: { ok: true, booking: fixture.booking } });
   }).as('getBooking');
   // Optionally set E2E flags on the application window for guarded routes
   cy.window({ log: false }).then((win) => {
-    try { win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin')); } catch (e) {}
+    try { win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('admin'));
+      // Expose booking fixture to the app for E2E rendering if needed
+      try { win.__E2E_BOOKING = fixture.booking; } catch (e) {}
+    } catch (e) {}
   });
   return cy.wrap(fixture, { log: false });
 });
@@ -194,6 +209,17 @@ Cypress.Commands.add('ensureNoUnexpectedOverflow', { prevSubject: false }, () =>
 // Attempt to infer a sensible role from the spec file name to reduce per-spec setup.
 // Specs with 'admin' or 'reports' or 'compliance' -> admin; 'partner' -> partner; default -> client
 beforeEach(() => {
+  // Passive logging intercepts for booking-related requests to help triage flaky runs.
+  try {
+    cy.intercept('POST', '**/bookings*', (req) => {
+      try { cy.task('log', { type: 'booking-request', method: req.method, url: req.url, body: req.body || null }); } catch (e) {}
+      req.continue();
+    }).as('logPostBooking');
+    cy.intercept('GET', '**/bookings/*', (req) => {
+      try { cy.task('log', { type: 'booking-request', method: req.method, url: req.url }); } catch (e) {}
+      req.continue();
+    }).as('logGetBooking');
+  } catch (e) {}
   try {
     const spec = Cypress && Cypress.spec && Cypress.spec.name ? Cypress.spec.name.toLowerCase() : '';
     if (/admin|reports|compliance|settings/.test(spec)) {

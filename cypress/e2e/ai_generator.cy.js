@@ -32,7 +32,7 @@ describe('AI Generator E2E', () => {
   // Ensure admin role/user so the workspace AIGeneratorPage is accessible
   cy.setRole('admin', { email: 'admin@example.com', name: 'Auto admin', role: 'admin' });
 
-  cy.visit('/ai', {
+  cy.visit('/#/ai', {
     failOnStatusCode: false,
     onBeforeLoad(win) {
       // Mark E2E mode and capture browser console lines for debugging
