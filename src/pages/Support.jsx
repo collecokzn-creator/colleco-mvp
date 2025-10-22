@@ -1,7 +1,9 @@
 import React from "react";
 export default function Support() {
   React.useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, []);
   return (
     <div className="p-8 text-center text-brand-orange">

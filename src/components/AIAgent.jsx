@@ -8,6 +8,45 @@ import logoPng from "../assets/colleco-logo.png";
 
 // Note: role selection handled via free text; constants removed to reduce lint noise
 
+// Helper functions exported for unit tests. These are lightweight and deterministic
+// to keep tests fast and avoid coupling to the UI internals.
+export function parseBookingIntent(text) {
+  // Very small parser used by tests: extract location, date, nights and guests.
+  // Capture the location after "in" but stop before common delimiters like
+  // "from", "for", "," or end-of-string to avoid including trailing words.
+  const locationMatch = text.match(/in\s+([A-Za-z ]+?)(?:\sfrom|\sfor|,|$)/i);
+  const dateMatch = text.match(/(20\d{2}-\d{2}-\d{2})/);
+  const nightsMatch = text.match(/(\d+)\s+nights?/i);
+  const guestsMatch = text.match(/(\d+)\s+guests?/i);
+  const type = /hotel|flight|car|stay/.test(text) ? 'hotel' : 'unknown';
+  return {
+    location: locationMatch ? locationMatch[1].trim() : undefined,
+    startDate: dateMatch ? dateMatch[1] : undefined,
+    nights: nightsMatch ? Number(nightsMatch[1]) : undefined,
+    guests: guestsMatch ? Number(guestsMatch[1]) : undefined,
+    type,
+  };
+}
+
+export function clarifyMissingIntent(obj) {
+  const parts = [];
+  if (!obj.type) parts.push('hotel or flight');
+  if (!obj.location) parts.push('destination');
+  if (!obj.startDate) parts.push('start date');
+  if (!obj.guests) parts.push('guests');
+  return `I need details: ${parts.join(', ')}`;
+}
+
+export function applyTone(role, text) {
+  if (role === 'client') return `I’ve got you covered — ${text}`;
+  if (role === 'admin') return `I’ll handle this efficiently — ${text}`;
+  return text;
+}
+
+export function detectConcise(text) {
+  return /(tl;dr|summary|straightforward|be straight)/i.test(text);
+}
+
 export default function AIAgent() {
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState(null); // 'client' | 'partner' | 'admin'

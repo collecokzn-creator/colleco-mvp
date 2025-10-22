@@ -129,11 +129,21 @@ h1, h2, h3, h4, h5, h6, strong, b {
 	color: #8B3A12 !important; /* darker rusty tone */
 }
 
-/* Footer: use rusty background and ensure text remains white */
-footer {
+/* Target only the site-level footer (pages often use bg-brand-brown for the bottom bar).
+	 Keep any footers inside components (like the Sidebar) unaffected so they can remain white. */
+footer.bg-brand-brown,
+footer[class*="bg-brand-brown"] {
 	background-color: var(--color-rusty) !important;
 	color: white !important;
 }
-footer * {
-	color: white !important;
+
+/* Ensure any footer elements inside the Sidebar keep their white background (user requested)
+	 and allow text there to follow the global rusty mapping. */
+aside footer {
+	background-color: #ffffff !important;
+	/* let text inside the sidebar footer follow the global rusty text override */
+	color: var(--color-rusty) !important;
+}
+aside footer * {
+	color: var(--color-rusty) !important;
 }
