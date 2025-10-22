@@ -30,10 +30,14 @@ describe('Login/Register smoke', () => {
     });
   // Wait for the app to signal readiness (injected in main.jsx for E2E)
   cy.get('[data-e2e-ready="true"]', { timeout: 45000 }).should('exist');
-  // If the login form isn't present after readiness, force the hash to #/login and wait
+  // After readiness accept either the login form OR a welcome view (injected user path).
+  // Only try forcing the route if neither appears — that avoids a hard timeout when
+  // the app bootstraps already-logged-in due to pre-injected user state.
   cy.document().then((doc) => {
-    if (!doc.querySelector('[data-e2e="login-form"]')) {
-      cy.log('login form not found after ready, forcing #/login route and waiting');
+    const hasForm = !!doc.querySelector('[data-e2e="login-form"]');
+    const hasWelcome = !!doc.querySelector('h2') && /Welcome,/.test(doc.querySelector('h2')?.textContent || '');
+    if (!hasForm && !hasWelcome) {
+      cy.log('Neither login form nor welcome found after ready; forcing #/login route and waiting');
       cy.window().then((w) => { try { w.location.hash = '#/login'; } catch (e) {} });
       cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
     }
