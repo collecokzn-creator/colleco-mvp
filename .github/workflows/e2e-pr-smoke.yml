@@ -27,7 +27,7 @@ jobs:
       - name: Start Vite dev server
         # Force Vite to bind to 127.0.0.1 (CI runners may resolve localhost differently)
         run: |
-          nohup bash -lc "npx cross-env VITE_API_BASE=http://127.0.0.1:4001 npm run dev -- --host 127.0.0.1 --port 5173" > vite.log 2>&1 &
+          nohup bash -lc "npx cross-env VITE_API_BASE=http://127.0.0.1:4000 npm run dev -- --host 127.0.0.1 --port 5173" > vite.log 2>&1 &
           echo $! > vite.pid
 
       - name: Wait for dev server and API
