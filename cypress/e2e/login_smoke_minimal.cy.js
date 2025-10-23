@@ -5,6 +5,9 @@ describe('Login minimal smoke', () => {
         try {
           win.localStorage && win.localStorage.clear && win.localStorage.clear();
           win.sessionStorage && win.sessionStorage.clear && win.sessionStorage.clear();
+          // Support both HashRouter and BrowserRouter: prefer history.replaceState
+          try { win.history && win.history.replaceState && win.history.replaceState(null, '', '/login'); } catch (e) {}
+          // still set hash as a fallback for hash-based routing environments
           win.location.hash = '#/login';
           win.__E2E__ = true;
           win.Cypress = win.Cypress || {};
@@ -19,9 +22,20 @@ describe('Login minimal smoke', () => {
       const hasForm = !!doc.querySelector('[data-e2e="login-form"]');
       const hasWelcome = !!doc.querySelector('h2') && /Welcome,/.test(doc.querySelector('h2')?.textContent || '');
       if (!hasForm && !hasWelcome) {
-        cy.log('Neither login form nor welcome found after ready; forcing #/login and waiting');
-        cy.window().then((w) => { try { w.location.hash = '#/login'; } catch (e) {} });
-        cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
+        cy.log('Neither login form nor welcome found after ready; trying header login link then forcing route if needed');
+        // Try clicking the header login link first (works with BrowserRouter and HashRouter)
+        cy.get('a[href="/login"]', { timeout: 5000 }).then(($a) => {
+          if ($a && $a.length) {
+            cy.wrap($a[0]).click({ force: true });
+          }
+        }).catch(() => {});
+        // Still ensure the login form appears; fall back to forcing the hash route if necessary
+        cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist')
+          .catch(() => {
+            cy.log('Header click did not bring up login form; forcing #/login now');
+            cy.window().then((w) => { try { w.location.hash = '#/login'; } catch (e) {} });
+            cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
+          });
       }
     });
     // Accept either login-form (UI) or welcome (injected user) as a valid landing.
