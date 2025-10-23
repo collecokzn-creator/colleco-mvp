@@ -32,7 +32,7 @@ jobs:
 
       - name: Wait for dev server and API
         run: |
-          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
+          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
 
       - name: Run quick smoke E2E (smoke + navbar + booking modal + login smoke)
         run: |
