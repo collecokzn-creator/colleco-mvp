@@ -38,6 +38,22 @@ jobs:
         run: |
           npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js"
 
+      - name: Collect diagnostics
+        run: |
+          # Ensure cypress logs dir exists so upload-artifact has something
+          mkdir -p cypress/logs || true
+          echo "Workspace file list:" > cypress/logs/ci_files.txt
+          ls -la >> cypress/logs/ci_files.txt || true
+          echo "Top-level files:" > cypress/logs/top_files.txt
+          ls -la . | head -n 200 >> cypress/logs/top_files.txt || true
+          echo "Cypress tree:" > cypress/logs/cypress_tree.txt
+          ls -la cypress || true >> cypress/logs/cypress_tree.txt
+          echo "Cypress logs tree:" > cypress/logs/cypress_logs_tree.txt
+          ls -la cypress/logs || true >> cypress/logs/cypress_logs_tree.txt
+          echo "Server and Vite logs (last 200 lines):" > cypress/logs/server_vite_tail.txt
+          if [ -f server.log ]; then echo "--- server.log ---" >> cypress/logs/server_vite_tail.txt; tail -n 200 server.log >> cypress/logs/server_vite_tail.txt; else echo "server.log missing" >> cypress/logs/server_vite_tail.txt; fi
+          if [ -f vite.log ]; then echo "--- vite.log ---" >> cypress/logs/server_vite_tail.txt; tail -n 200 vite.log >> cypress/logs/server_vite_tail.txt; else echo "vite.log missing" >> cypress/logs/server_vite_tail.txt; fi
+
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
