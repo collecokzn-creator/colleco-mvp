@@ -18,6 +18,11 @@ describe('Login minimal smoke', () => {
     // Wait for app readiness and the login form to be present. If it isn't
     // present after ready, force the route and wait again to handle timing races.
     cy.get('[data-e2e-ready="true"]', { timeout: 30000 }).should('exist');
+    cy.window({ timeout: 30000 }).should((win) => {
+      if (win.__E2E__) {
+        expect(win.__E2E_MOUNTED__).to.equal(true);
+      }
+    });
     cy.document().then((doc) => {
       const hasForm = !!doc.querySelector('[data-e2e="login-form"]');
       const hasWelcome = !!doc.querySelector('h2') && /Welcome,/.test(doc.querySelector('h2')?.textContent || '');

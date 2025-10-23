@@ -33,6 +33,13 @@ describe('Login/Register smoke', () => {
     });
   // Wait for the app to signal readiness (injected in main.jsx for E2E)
   cy.get('[data-e2e-ready="true"]', { timeout: 45000 }).should('exist');
+  // Also wait for an explicit mounted flag set by the app in E2E mode to avoid
+  // snapshots taken before React has finished mounting.
+  cy.window({ timeout: 45000 }).should((win) => {
+    if (win.__E2E__) {
+      expect(win.__E2E_MOUNTED__).to.equal(true);
+    }
+  });
   // After readiness accept either the login form OR a welcome view (injected user path).
   // Only try forcing the route if neither appears — that avoids a hard timeout when
   // the app bootstraps already-logged-in due to pre-injected user state.
