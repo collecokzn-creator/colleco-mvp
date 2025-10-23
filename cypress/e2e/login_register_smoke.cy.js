@@ -46,14 +46,16 @@ describe('Login/Register smoke', () => {
         if ($a && $a.length) {
           cy.wrap($a[0]).click({ force: true });
         }
-      }).catch(() => {});
-      // Still ensure the login form appears; fall back to forcing the hash route if necessary
-      cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist')
-        .catch(() => {
+      });
+      // Briefly wait for navigation to take effect then check if the form is present.
+      cy.wait(500);
+      cy.document().then((d) => {
+        if (!d.querySelector('[data-e2e="login-form"]')) {
           cy.log('Header click did not bring up login form; forcing #/login now');
           cy.window().then((w) => { try { w.location.hash = '#/login'; } catch (e) {} });
           cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
-        });
+        }
+      });
     }
   });
   // diagnostic snapshot to help debugging if the form isn't present
