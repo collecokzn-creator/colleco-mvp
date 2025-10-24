@@ -42,10 +42,49 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build and start stack
+      - name: Build
         run: |
           npm run smoke:build
-          npx start-server-and-test "npm run smoke:start:stack" http://localhost:4010/health "echo Stack ready"
+
+      - name: Start API (background)
+        run: |
+          mkdir -p tmp/logs
+          nohup sh -c "npx cross-env PORT=4010 node server/server.js" > tmp/logs/api.log 2>&1 &
+          echo $! > tmp/api.pid
+
+      - name: Wait for API health
+        run: |
+          for i in {1..60}; do
+            if curl -sSf http://localhost:4010/health >/dev/null; then
+              echo "API health OK"; break
+            fi
+            echo "waiting for API... $i"
+            sleep 1
+          done
+          if ! curl -sSf http://localhost:4010/health >/dev/null; then
+            echo "Timeout waiting for API"; cat tmp/logs/api.log || true; exit 1
+          fi
+
+      - name: Start preview server (background)
+        run: |
+          nohup sh -c "npx serve -s dist -l 5174" > tmp/logs/preview.log 2>&1 &
+          echo $! > tmp/preview.pid
+
+      - name: Wait for preview
+        run: |
+          for i in {1..60}; do
+            if curl -sSf http://localhost:5174/ >/dev/null; then
+              echo "Preview OK"; break
+            fi
+            echo "waiting for preview... $i"
+            sleep 1
+          done
+          if ! curl -sSf http://localhost:5174/ >/dev/null; then
+            echo "Timeout waiting for preview"; cat tmp/logs/preview.log || true; exit 1
+          fi
+
+      - name: Set SPEC_BASENAME
+        run: echo "SPEC_BASENAME=$(basename '${{ matrix.spec }}')" >> $GITHUB_ENV
 
       - name: Run spec ${{ matrix.spec }}
         run: |
@@ -57,7 +96,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-screenshots-${{ matrix.spec }}
+          name: cypress-screenshots-${{ env.SPEC_BASENAME }}
           path: cypress/screenshots
           if-no-files-found: ignore
 
@@ -65,6 +104,14 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-videos-${{ matrix.spec }}
+          name: cypress-videos-${{ env.SPEC_BASENAME }}
           path: cypress/videos
+          if-no-files-found: ignore
+
+      - name: Upload server logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-server-logs-${{ env.SPEC_BASENAME }}
+          path: tmp/logs
           if-no-files-found: ignore

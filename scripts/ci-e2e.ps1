@@ -176,7 +176,8 @@ function Dump-PortOwner([int]$port){
   } catch { Write-Host "Dump-PortOwner failed: $_" }
 }
 
-$demoStart = Start-NodeProcess "server/server.js" $demoLog
+$envForDemo = @{ PORT = $ApiPort.ToString(); HOST = '127.0.0.1'; DEMO_NO_FALLBACK = '1' }
+$demoStart = Start-NodeProcess @("server/server.js") $demoLog $envForDemo
 $demoProc = $demoStart.proc
 $demoLog = $demoStart.log
 
