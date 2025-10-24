@@ -49,7 +49,7 @@ jobs:
       - name: Start API (background)
         run: |
           mkdir -p tmp/logs
-          nohup sh -c "cross-env PORT=4010 node server/server.js" > tmp/logs/api.log 2>&1 &
+          nohup sh -c "npx cross-env PORT=4010 node server/server.js" > tmp/logs/api.log 2>&1 &
           echo $! > tmp/api.pid
 
       - name: Wait for API health
@@ -83,6 +83,9 @@ jobs:
             echo "Timeout waiting for preview"; cat tmp/logs/preview.log || true; exit 1
           fi
 
+      - name: Set SPEC_BASENAME
+        run: echo "SPEC_BASENAME=$(basename '${{ matrix.spec }}')" >> $GITHUB_ENV
+
       - name: Run spec ${{ matrix.spec }}
         run: |
           npx cypress run --browser chrome --e2e --spec ${{ matrix.spec }} --config video=true,screenshotsFolder=cypress/screenshots,videoCompression=32
@@ -93,7 +96,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-screenshots-${{ matrix.spec }}
+          name: cypress-screenshots-${{ env.SPEC_BASENAME }}
           path: cypress/screenshots
           if-no-files-found: ignore
 
@@ -101,7 +104,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-videos-${{ matrix.spec }}
+          name: cypress-videos-${{ env.SPEC_BASENAME }}
           path: cypress/videos
           if-no-files-found: ignore
 
@@ -109,6 +112,6 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-server-logs-${{ matrix.spec }}
+          name: cypress-server-logs-${{ env.SPEC_BASENAME }}
           path: tmp/logs
           if-no-files-found: ignore
