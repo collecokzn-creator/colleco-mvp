@@ -1778,7 +1778,11 @@ function listenWithFallback(startPort, maxTries = 5) {
       console.log(`[collab-api] listening on http://localhost:${port}`);
     });
     server.on('error', (err) => {
-      if (err && err.code === 'EADDRINUSE' && attempt < maxTries - 1) {
+      // If the caller requested no-fallback behavior (useful in CI to
+      // avoid noisy port-scanning logs), honor the DEMO_NO_FALLBACK env var
+      // and fail fast when the port is in use.
+      const noFallback = process.env.DEMO_NO_FALLBACK === '1' || process.env.DEMO_NO_FALLBACK === 'true';
+      if (err && err.code === 'EADDRINUSE' && attempt < maxTries - 1 && !noFallback) {
         const next = port + 1;
         attempt += 1;
         if (attempt === 1) {
@@ -1787,6 +1791,9 @@ function listenWithFallback(startPort, maxTries = 5) {
           console.warn(`[collab-api] Port ${port} in use. Trying ${next}...`);
         }
         tryListen(next);
+      } else if (err && err.code === 'EADDRINUSE' && noFallback) {
+        console.error(`[collab-api] Port ${port} in use and DEMO_NO_FALLBACK set; failing fast.`);
+        process.exit(1);
       } else {
         console.error('[collab-api] Failed to start server:', err && err.message ? err.message : err);
         process.exit(1);
