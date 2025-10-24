@@ -89,3 +89,4 @@ jobs:
             cypress/screenshots
             server.log
             preview.log
+          if-no-files-found: ignore
