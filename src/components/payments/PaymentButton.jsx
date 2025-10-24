@@ -26,7 +26,9 @@ export default function PaymentButton({ items = [], currency = "USD" }) {
     setBookingInfo(null);
     setCopied(false);
     try {
-      const apiBase = import.meta.env.VITE_API_BASE || '';
+  // Prefer runtime E2E override when present (set by Cypress support on onBeforeLoad)
+  const runtimeApi = (typeof window !== 'undefined' && window.__E2E_API_BASE) ? window.__E2E_API_BASE : null;
+  const apiBase = runtimeApi || import.meta.env.VITE_API_BASE || '';
       // If API base is configured, create booking on server which will return checkout info
       if (apiBase) {
         const payload = { items, customer: {}, currency, metadata: { source: 'itinerary' } };

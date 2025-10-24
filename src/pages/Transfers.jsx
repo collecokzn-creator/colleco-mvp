@@ -2,7 +2,9 @@ import React, { useState } from "react";
 
 export default function Transfers() {
   React.useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, []);
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");

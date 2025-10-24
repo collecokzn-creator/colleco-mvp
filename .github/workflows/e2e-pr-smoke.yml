@@ -11,10 +11,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js
+      - name: Use Node.js (explicit)
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20.19.0'
 
       - name: Install dependencies
         run: npm ci
@@ -27,15 +27,32 @@ jobs:
       - name: Start Vite dev server
         # Force Vite to bind to 127.0.0.1 (CI runners may resolve localhost differently)
         run: |
-          nohup bash -lc "cross-env VITE_API_BASE=http://127.0.0.1:4001 npm run dev -- --host 127.0.0.1" > vite.log 2>&1 &
+          nohup bash -lc "npx cross-env VITE_API_BASE=http://127.0.0.1:4000 npm run dev -- --host 127.0.0.1 --port 5173" > vite.log 2>&1 &
           echo $! > vite.pid
 
       - name: Wait for dev server and API
         run: |
-          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
+          n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
 
-      - name: Run quick smoke E2E (smoke + navbar + booking modal)
-        run: npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js"
+      - name: Run quick smoke E2E (smoke + navbar + booking modal + login smoke)
+        run: |
+          npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js"
+
+      - name: Collect diagnostics
+        run: |
+          # Ensure cypress logs dir exists so upload-artifact has something
+          mkdir -p cypress/logs || true
+          echo "Workspace file list:" > cypress/logs/ci_files.txt
+          ls -la >> cypress/logs/ci_files.txt || true
+          echo "Top-level files:" > cypress/logs/top_files.txt
+          ls -la . | head -n 200 >> cypress/logs/top_files.txt || true
+          echo "Cypress tree:" > cypress/logs/cypress_tree.txt
+          ls -la cypress || true >> cypress/logs/cypress_tree.txt
+          echo "Cypress logs tree:" > cypress/logs/cypress_logs_tree.txt
+          ls -la cypress/logs || true >> cypress/logs/cypress_logs_tree.txt
+          echo "Server and Vite logs (last 200 lines):" > cypress/logs/server_vite_tail.txt
+          if [ -f server.log ]; then echo "--- server.log ---" >> cypress/logs/server_vite_tail.txt; tail -n 200 server.log >> cypress/logs/server_vite_tail.txt; else echo "server.log missing" >> cypress/logs/server_vite_tail.txt; fi
+          if [ -f vite.log ]; then echo "--- vite.log ---" >> cypress/logs/server_vite_tail.txt; tail -n 200 vite.log >> cypress/logs/server_vite_tail.txt; else echo "vite.log missing" >> cypress/logs/server_vite_tail.txt; fi
 
       - name: Upload artifacts
         if: always()

@@ -10,15 +10,30 @@ describe('Mobile PlanTrip responsiveness', () => {
   ];
   viewports.forEach(({ device, width, height }) => {
     it(`renders without horizontal scroll on ${device}`, () => {
-      cy.visit('/plan-trip', {
-        timeout: 120000,
-        failOnStatusCode: false,
+      // Prepopulate localStorage and then use e2eVisit so readiness waits run
+      cy.visit('/', {
         onBeforeLoad(win) {
-          // ensure a client role is present before app init
           try { win.__E2E__ = true; win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('client')); win.localStorage.setItem('user', JSON.stringify({ email: 'client@example.com', name: 'Auto client', role: 'client' })); } catch (e) {}
-          setTimeout(() => win.dispatchEvent(new win.Event('load')), 500);
         }
-      });
+      })
+      function e2eVisit(path) {
+        const hashPath = path.startsWith('#') || path.startsWith('/#') ? path : `/#${path === '/' ? '' : path}`
+        return cy.visit(hashPath, {
+          timeout: 120000,
+          failOnStatusCode: false,
+          onBeforeLoad(win) {
+            try { win.__E2E__ = true } catch {}
+            setTimeout(() => { try { win.dispatchEvent(new Event('load')) } catch {} }, 500)
+          }
+        }).then(() => {
+          cy.get('[data-e2e-ready="true"]', { timeout: 45000 }).should('exist')
+          cy.get('#root', { timeout: 30000 }).should(($r) => {
+            expect($r.children().length, 'app rendered into #root').to.be.greaterThan(0)
+          })
+        })
+      }
+
+      e2eVisit('/plan-trip')
 
       // Capture early DOM and headings for debugging when the heading doesn't appear
       cy.task('log', ['VISIT_DOM_START']);

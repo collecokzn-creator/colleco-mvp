@@ -5,6 +5,34 @@ import { expect as vitestExpect } from 'vitest';
 global.expect = vitestExpect;
 await import('@testing-library/jest-dom');
 
+// Polyfill missing browser APIs in jsdom used by components/tests.
+// jsdom doesn't implement matchMedia or scrollTo by default which causes
+// tests to throw. Provide minimal, safe implementations used by the app.
+// Ensure a `window` global exists and attach polyfills. Some runtimes place the
+// DOM globals on `globalThis`, others on `global.window`. Make both point to
+// the same object so consumers can safely access `window.*`.
+const G = globalThis || global || {};
+if (!G.window) G.window = G;
+if (!G.document) G.document = G.window.document;
+if (typeof G.window.matchMedia !== 'function') {
+  G.window.matchMedia = (query) => ({
+    matches: false,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    onchange: null,
+  });
+}
+// Replace scrollTo aggressively because jsdom may provide a stub that throws
+try {
+  Object.defineProperty(G.window, 'scrollTo', { value: () => {}, configurable: true });
+  G.window.scrollTo = () => {};
+} catch (e) {
+  try { G.window.scrollTo = () => {}; } catch (e) {}
+}
+
 // Provide a global fetch mock if needed in tests
 if (!global.fetch) {
   global.fetch = () => Promise.resolve({ ok: true, json: () => ({}) });

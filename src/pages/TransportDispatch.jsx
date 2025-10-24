@@ -2,7 +2,9 @@ import React from "react";
 
 export default function TransportDispatch() {
   React.useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, []);
   // This will show a list of requests and allow assignment (stub for now)
   return (

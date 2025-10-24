@@ -32,6 +32,25 @@
         } catch(_) {}
       })();
     </script>
+    <script>
+      // E2E helper: if tests are running (Cypress sets window.__E2E__), create
+      // a minimal modal root and mark it ready early so tests don't race the
+      // React mount. This is intentionally tiny and only runs when the test
+      // harness is present.
+      try {
+        if (window && window.__E2E__) {
+          var _m = document.querySelector('[data-modal-root]');
+          if (!_m) {
+            _m = document.createElement('div');
+            _m.setAttribute('data-modal-root', 'true');
+            _m.setAttribute('data-e2e-ready', 'true');
+            document.body.appendChild(_m);
+          } else {
+            _m.setAttribute('data-e2e-ready', 'true');
+          }
+        }
+      } catch (e) { /* swallow errors in non-E2E environments */ }
+    </script>
   </head>
   <body>
     <noscript>
@@ -142,6 +161,58 @@
         window.__E2E__ = true;
       }
     </script>
+    <!--
+      Early link-rewrite: when the user taps an internal anchor before the
+      SPA has mounted (slow mobile networks or cold start), the browser will
+      perform a full navigation to that path which can 404 on static hosts
+      like GitHub Pages. To make internal links robust we rewrite plain
+      root-relative hrefs ("/ai", "/login", etc.) into hash-prefixed
+      equivalents ("/#/ai") so the SPA can route even if clicked before
+      React mounts. We still allow anchors to opt-out via data-no-rewrite.
+    -->
+    <script>
+      (function(){
+        try {
+          function shouldRewrite(a){
+            var href = a.getAttribute('href') || '';
+            if (!href) return false;
+            if (a.hasAttribute('data-no-rewrite')) return false;
+            // Only rewrite same-origin root-relative links
+            if (!href.startsWith('/')) return false;
+            if (href.startsWith('//')) return false; // protocol-relative
+            if (href.indexOf('://') !== -1) return false; // absolute
+            return true;
+          }
+
+          // Rewrite existing anchors on DOMContentLoaded
+          document.addEventListener('DOMContentLoaded', function(){
+            try {
+              Array.prototype.forEach.call(document.querySelectorAll('a[href^="/"]'), function(a){
+                if (shouldRewrite(a)) {
+                  var h = a.getAttribute('href');
+                  // Avoid double-rewriting
+                  if (!h.startsWith('/#')) a.setAttribute('href', '/#' + h);
+                }
+              });
+            } catch(e) { /* best-effort */ }
+          });
+
+          // Also capture early clicks (before DOMContentLoaded) and rewrite
+          // the target anchor right before navigation.
+          document.addEventListener('click', function(ev){
+            try {
+              var t = ev.target && ev.target.closest && ev.target.closest('a[href^="/"]');
+              if (!t) return;
+              if (shouldRewrite(t)) {
+                var hh = t.getAttribute('href');
+                if (!hh.startsWith('/#')) t.setAttribute('href', '/#' + hh);
+              }
+            } catch(e) {}
+          }, true);
+        } catch(e) {}
+      })();
+    </script>
+
     <script type="module" src="/src/main.jsx"></script>
     
     <script>

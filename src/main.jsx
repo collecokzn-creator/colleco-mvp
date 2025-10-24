@@ -53,6 +53,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>
 );
 
+// E2E mounted signal: when tests are running, expose a simple flag that
+// indicates React has completed the initial render. Tests can wait on this
+// to avoid mount races where DOM snapshots are taken before React mounts.
+try {
+  if (window && window.__E2E__) {
+    try { window.__E2E_MOUNTED__ = true; } catch (e) {}
+  }
+} catch (e) {}
+
 // Register service worker for PWA (disabled during local dev to avoid cache clashes)
 if ('serviceWorker' in navigator && import.meta.env.PROD && !window.Cypress) {
   window.addEventListener('load', () => {

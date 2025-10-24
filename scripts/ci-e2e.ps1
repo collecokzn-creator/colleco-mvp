@@ -1,7 +1,9 @@
 param(
   [int]$ApiPort = 4000,
   [int]$PreviewPort = 5173,
-  [int]$WaitSeconds = 60
+  [int]$WaitSeconds = 60,
+  [switch]$SkipZip,
+  [string]$Spec = ''
 )
 
 Set-StrictMode -Version Latest
@@ -50,24 +52,28 @@ function Save-Artifacts() {
     # Create a compressed zip of the collected artifacts to reduce upload size. Use a staging copy
     # to avoid reading files that are still being written by running processes.
     try {
-      $zipName = "colleco-ci-logs-$(Get-Date -Format 'yyyyMMddHHmmss').zip"
-      $zipPath = Join-Path $env:TEMP $zipName
-      if (Test-Path $zipPath) { Remove-Item -Force $zipPath -ErrorAction SilentlyContinue }
+      if ($SkipZip) {
+        Write-Host "SkipZip requested - skipping artifact zip creation"
+      } else {
+        $zipName = "colleco-ci-logs-$(Get-Date -Format 'yyyyMMddHHmmss').zip"
+        $zipPath = Join-Path $env:TEMP $zipName
+        if (Test-Path $zipPath) { Remove-Item -Force $zipPath -ErrorAction SilentlyContinue }
 
-      $staging = Join-Path $env:TEMP ("colleco-ci-logs-staging-" + (Get-Date -Format 'yyyyMMddHHmmssfff'))
-      if (Test-Path $staging) { Remove-Item -Recurse -Force $staging -ErrorAction SilentlyContinue }
-      New-Item -ItemType Directory -Path $staging | Out-Null
+        $staging = Join-Path $env:TEMP ("colleco-ci-logs-staging-" + (Get-Date -Format 'yyyyMMddHHmmssfff'))
+        if (Test-Path $staging) { Remove-Item -Recurse -Force $staging -ErrorAction SilentlyContinue }
+        New-Item -ItemType Directory -Path $staging | Out-Null
 
-      # Copy files into staging first (ignore files that can't be copied)
-      try { Copy-Item -Path (Join-Path $logsDir '*') -Destination $staging -Recurse -Force -ErrorAction SilentlyContinue } catch {}
+        # Copy files into staging first (ignore files that can't be copied)
+        try { Copy-Item -Path (Join-Path $logsDir '*') -Destination $staging -Recurse -Force -ErrorAction SilentlyContinue } catch {}
 
-      Write-Host "Creating artifact zip from staging: $zipPath"
-      Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $zipPath -Force -ErrorAction SilentlyContinue
-      # Copy the zip into the logs dir so the workflow artifact upload that targets $logsDir will pick it up too
-      try { Copy-Item -Path $zipPath -Destination (Join-Path $logsDir $zipName) -Force -ErrorAction SilentlyContinue } catch {}
+        Write-Host "Creating artifact zip from staging: $zipPath"
+        Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $zipPath -Force -ErrorAction SilentlyContinue
+        # Copy the zip into the logs dir so the workflow artifact upload that targets $logsDir will pick it up too
+        try { Copy-Item -Path $zipPath -Destination (Join-Path $logsDir $zipName) -Force -ErrorAction SilentlyContinue } catch {}
 
-      # Clean up staging
-      try { Remove-Item -Recurse -Force $staging -ErrorAction SilentlyContinue } catch {}
+        # Clean up staging
+        try { Remove-Item -Recurse -Force $staging -ErrorAction SilentlyContinue } catch {}
+      }
     } catch { Write-Host "Failed to create artifact zip: $_" }
   } catch { Write-Host "Save-Artifacts encountered an error: $_" }
 }
@@ -411,6 +417,13 @@ Write-Host "Both services are ready. Running Cypress..."
 
 $env:API_BASE = "http://127.0.0.1:$ApiPort"
 $cyCmd = "npx cypress run --e2e --config baseUrl=http://127.0.0.1:$PreviewPort"
+if ($Spec -and $Spec.Trim() -ne '') {
+  # Ensure spec path is properly quoted for cmd.exe
+  $escaped = $Spec.Replace('"','\"')
+  # Use single-quoted PowerShell string to avoid nested double-quote issues when building cmd.exe argument
+  $cyCmd = $cyCmd + ' --spec "' + $escaped + '"'
+  Write-Host ("Running only spec: {0}" -f $Spec)
+}
 Write-Host "Executing: $cyCmd"
 $cyProc = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $cyCmd -NoNewWindow -Wait -PassThru
 $exit = $cyProc.ExitCode
