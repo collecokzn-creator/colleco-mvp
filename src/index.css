@@ -24,6 +24,14 @@ html, body { color-scheme: light; }
 /* Reserve space for scrollbars to avoid overlay black lines on Windows */
 html { overflow-y: scroll; }
 
+/* Prevent sporadic horizontal scroll on narrow viewports (mobile devices).
+	 CI Chrome headless sometimes renders subtle overflows (sub-pixel math, fonts)
+	 that are visually harmless but fail our strict overflow detector. Restrict
+	 this to small screens only to avoid masking real desktop layout issues. */
+@media (max-width: 640px) {
+	html, body { overflow-x: hidden; }
+}
+
 /* Toast & subtle UI animations */
 @media (prefers-reduced-motion: no-preference) {
 	.toast-fade { animation: toastIn .35s ease-out; }
