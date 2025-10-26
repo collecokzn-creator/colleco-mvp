@@ -62,25 +62,48 @@ jobs:
             sleep 1
           done
           if ! curl -sSf http://localhost:4010/health >/dev/null; then
-            echo "Timeout waiting for API"; cat tmp/logs/api.log || true; exit 1
+            echo "Timeout waiting for API"
+            echo "--- ps aux (process list) ---"; ps aux || true
+            echo "--- listening sockets (ss -ltnp) ---"; ss -ltnp || netstat -tlnp || true
+            echo "--- tmp/logs contents ---"; ls -la tmp/logs || true
+            echo "--- api.log (tail 200) ---"; cat tmp/logs/api.log || true
+            echo "--- preview.log (tail 200) ---"; cat tmp/logs/preview.log || true
+            # write diagnostics file for artifact upload
+            echo "PS AUX" > tmp/logs/ci-diagnostics.txt || true
+            ps aux >> tmp/logs/ci-diagnostics.txt 2>&1 || true
+            ss -ltnp >> tmp/logs/ci-diagnostics.txt 2>&1 || (netstat -tlnp >> tmp/logs/ci-diagnostics.txt 2>&1 || true)
+            cat tmp/logs/api.log >> tmp/logs/ci-diagnostics.txt 2>&1 || true
+            cat tmp/logs/preview.log >> tmp/logs/ci-diagnostics.txt 2>&1 || true
+            exit 1
           fi
 
       - name: Start preview server (background)
         run: |
-          nohup sh -c "npx serve -s dist -l 5174" > tmp/logs/preview.log 2>&1 &
+          # Start the static preview on the same port Cypress expects (5173)
+          nohup sh -c "npx serve -s dist -l 5173" > tmp/logs/preview.log 2>&1 &
           echo $! > tmp/preview.pid
 
       - name: Wait for preview
         run: |
           for i in {1..60}; do
-            if curl -sSf http://localhost:5174/ >/dev/null; then
+            if curl -sSf http://localhost:5173/ >/dev/null; then
               echo "Preview OK"; break
             fi
             echo "waiting for preview... $i"
             sleep 1
           done
-          if ! curl -sSf http://localhost:5174/ >/dev/null; then
-            echo "Timeout waiting for preview"; cat tmp/logs/preview.log || true; exit 1
+          if ! curl -sSf http://localhost:5173/ >/dev/null; then
+            echo "Timeout waiting for preview"
+            echo "--- ps aux (process list) ---"; ps aux || true
+            echo "--- listening sockets (ss -ltnp) ---"; ss -ltnp || netstat -tlnp || true
+            echo "--- tmp/logs contents ---"; ls -la tmp/logs || true
+            echo "--- preview.log (tail 200) ---"; cat tmp/logs/preview.log || true
+            echo "--- api.log (tail 200) ---"; cat tmp/logs/api.log || true
+            # append to diagnostics file for artifact upload
+            echo "PREVIEW DIAG" >> tmp/logs/ci-diagnostics.txt || true
+            ss -ltnp >> tmp/logs/ci-diagnostics.txt 2>&1 || (netstat -tlnp >> tmp/logs/ci-diagnostics.txt 2>&1 || true)
+            cat tmp/logs/preview.log >> tmp/logs/ci-diagnostics.txt 2>&1 || true
+            exit 1
           fi
 
       - name: Set SPEC_BASENAME
