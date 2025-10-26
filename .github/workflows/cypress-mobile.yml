@@ -63,17 +63,7 @@ jobs:
           done
           if ! curl -sSf http://localhost:4010/health >/dev/null; then
             echo "Timeout waiting for API"
-            echo "--- ps aux (process list) ---"; ps aux || true
-            echo "--- listening sockets (ss -ltnp) ---"; ss -ltnp || netstat -tlnp || true
-            echo "--- tmp/logs contents ---"; ls -la tmp/logs || true
-            echo "--- api.log (tail 200) ---"; cat tmp/logs/api.log || true
-            echo "--- preview.log (tail 200) ---"; cat tmp/logs/preview.log || true
-            # write diagnostics file for artifact upload
-            echo "PS AUX" > tmp/logs/ci-diagnostics.txt || true
-            ps aux >> tmp/logs/ci-diagnostics.txt 2>&1 || true
-            ss -ltnp >> tmp/logs/ci-diagnostics.txt 2>&1 || (netstat -tlnp >> tmp/logs/ci-diagnostics.txt 2>&1 || true)
-            cat tmp/logs/api.log >> tmp/logs/ci-diagnostics.txt 2>&1 || true
-            cat tmp/logs/preview.log >> tmp/logs/ci-diagnostics.txt 2>&1 || true
+            # Diagnostic blocks removed (kept minimal to reduce noise).
             exit 1
           fi
 
@@ -94,15 +84,7 @@ jobs:
           done
           if ! curl -sSf http://localhost:5173/ >/dev/null; then
             echo "Timeout waiting for preview"
-            echo "--- ps aux (process list) ---"; ps aux || true
-            echo "--- listening sockets (ss -ltnp) ---"; ss -ltnp || netstat -tlnp || true
-            echo "--- tmp/logs contents ---"; ls -la tmp/logs || true
-            echo "--- preview.log (tail 200) ---"; cat tmp/logs/preview.log || true
-            echo "--- api.log (tail 200) ---"; cat tmp/logs/api.log || true
-            # append to diagnostics file for artifact upload
-            echo "PREVIEW DIAG" >> tmp/logs/ci-diagnostics.txt || true
-            ss -ltnp >> tmp/logs/ci-diagnostics.txt 2>&1 || (netstat -tlnp >> tmp/logs/ci-diagnostics.txt 2>&1 || true)
-            cat tmp/logs/preview.log >> tmp/logs/ci-diagnostics.txt 2>&1 || true
+            # Diagnostic blocks removed (kept minimal to reduce noise).
             exit 1
           fi
 
