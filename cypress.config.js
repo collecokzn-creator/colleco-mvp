@@ -6,7 +6,8 @@ export default defineConfig({
     API_BASE: process.env.API_BASE || 'http://localhost:4000',
   },
   e2e: {
-    baseUrl: 'http://localhost:5173',
+  // The smoke preview server runs at port 5174 via npm smoke scripts; keep this in sync.
+  baseUrl: 'http://localhost:5174',
     supportFile: 'cypress/support/e2e.js',
     video: false,
   // Allow a reasonable wait for the browser 'load' event during CI/local runs.
