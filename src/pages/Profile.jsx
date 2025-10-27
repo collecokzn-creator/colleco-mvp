@@ -21,7 +21,7 @@ export default function Profile() {
       }
     } catch (e) {}
     // No cleanup necessary — tests read this marker and continue.
-  }, []);
+  }, [user]);
 
   return (
     <div className="p-6 max-w-3xl" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>

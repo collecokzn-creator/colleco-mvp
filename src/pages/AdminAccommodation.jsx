@@ -7,13 +7,16 @@ export default function AdminAccommodation(){
   const [editing, setEditing] = useState({});
   const nav = useNavigate();
 
-  async function load(){
-    const res = await fetch('/api/accommodation/admin');
-    if(!res.ok){ if(res.status===401) return nav('/login'); const txt = await res.text(); throw new Error(txt); }
-    const j = await res.json(); setInventory(j.inventory); setHolds(j.holds || {});
-  }
-
-  useEffect(()=>{ load().catch(e=>console.error(e)); }, []);
+  useEffect(()=>{
+    async function doLoad(){
+      try{
+        const res = await fetch('/api/accommodation/admin');
+        if(!res.ok){ if(res.status===401) return nav('/login'); const txt = await res.text(); throw new Error(txt); }
+        const j = await res.json(); setInventory(j.inventory); setHolds(j.holds || {});
+      }catch(e){ console.error(e); }
+    }
+    doLoad();
+  }, [nav]);
 
   async function saveRoomTypes(){
     const body = { roomTypes: editing };
