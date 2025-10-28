@@ -69,20 +69,20 @@ jobs:
 
       - name: Start preview server (background)
         run: |
-          # Start the static preview on the same port Cypress expects (5173)
-          nohup sh -c "npx serve -s dist -l 5173" > tmp/logs/preview.log 2>&1 &
+          # Start the static preview on the same port Cypress expects (5174)
+          nohup sh -c "npx serve -s dist -l 5174" > tmp/logs/preview.log 2>&1 &
           echo $! > tmp/preview.pid
 
       - name: Wait for preview
         run: |
           for i in {1..60}; do
-            if curl -sSf http://localhost:5173/ >/dev/null; then
+            if curl -sSf http://localhost:5174/ >/dev/null; then
               echo "Preview OK"; break
             fi
             echo "waiting for preview... $i"
             sleep 1
           done
-          if ! curl -sSf http://localhost:5173/ >/dev/null; then
+          if ! curl -sSf http://localhost:5174/ >/dev/null; then
             echo "Timeout waiting for preview"
             # Diagnostic blocks removed (kept minimal to reduce noise).
             exit 1
