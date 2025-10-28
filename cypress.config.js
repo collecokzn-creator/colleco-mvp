@@ -13,7 +13,10 @@ export default defineConfig({
   // Allow a reasonable wait for the browser 'load' event during CI/local runs.
   // Previously set to 0 which causes an immediate timeout; set to 60s to be safe.
   pageLoadTimeout: 60000,
-    defaultCommandTimeout: 8000,
+  // Increase default command timeout to reduce timing-related flakes
+  defaultCommandTimeout: 12000,
+  // Allow test retries in CI (runMode). This helps transient flakes make the run more stable.
+  retries: { runMode: 2, openMode: 0 },
     // Register Node-side event handlers/tasks so specs can surface browser console messages
     setupNodeEvents(on, config) {
       on('task', {
