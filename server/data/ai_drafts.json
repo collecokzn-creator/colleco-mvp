@@ -1881,5 +1881,32 @@
       "itinerary": []
     },
     "createdAt": 1761117612275
+  },
+  "8la7y387g5amh8zu0vh": {
+    "id": "8la7y387g5amh8zu0vh",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761560826605
+  },
+  "ql76psts0umh90y2qw": {
+    "id": "ql76psts0umh90y2qw",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761562695272
+  },
+  "6gv42ktyvbtmh91q84s": {
+    "id": "6gv42ktyvbtmh91q84s",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761564008620
   }
 }

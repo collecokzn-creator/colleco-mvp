@@ -153,6 +153,61 @@ Cypress.Commands.add('stubBooking', (fixtureOverrides = {}) => {
   return cy.wrap(fixture, { log: false });
 });
 
+// Deterministic stubs for commonly contacted external services to avoid
+// network flakiness in CI (open-meteo, geocoding, map tiles, analytics).
+Cypress.Commands.add('stubExternalApis', () => {
+  // Stub open-meteo weather API
+  try {
+    cy.intercept({ hostname: /api.open-meteo.com/, method: 'GET', url: /.*forecast.*/ }, (req) => {
+      req.reply({ statusCode: 200, body: { hourly: {}, daily: {}, latitude: 0, longitude: 0 } });
+    }).as('weather');
+  } catch (e) {}
+
+  // Stub geocoding
+  try {
+    cy.intercept({ hostname: /geocoding-api.open-meteo.com/, method: 'GET', url: /.*search.*/ }, (req) => {
+      req.reply({ statusCode: 200, body: { results: [] } });
+    }).as('geocode');
+  } catch (e) {}
+
+  // Stub map tile or third-party map endpoints (best-effort)
+  try {
+    cy.intercept({ method: 'GET', url: /.*tile.*|.*mapbox.com.*/ }, (req) => {
+      req.reply({ statusCode: 200, body: '' });
+    }).as('tiles');
+  } catch (e) {}
+
+  // Silence analytics/beacon calls so they don't slow tests or cause CORS noise
+  try {
+    cy.intercept({ method: 'POST', url: /.*analytics|.*collect|.*beacon.*/i }, (req) => req.reply({ statusCode: 204, body: '' })).as('analytics');
+  } catch (e) {}
+
+  return cy.wrap(true, { log: false });
+});
+
+// Wait for network idle approximately: ensure no outstanding XHRs from app
+// This is a best-effort helper that polls window.__E2E_ACTIVE_XHR or falls
+// back to a short pause when the app doesn't expose internals.
+Cypress.Commands.add('waitForAppIdle', (timeout = 5000) => {
+  const start = Date.now();
+  function check() {
+    return cy.window({ log: false }).then((win) => {
+      try {
+        // If the app exposes an active-xhr counter, wait for it to reach 0
+        if (typeof win.__E2E_ACTIVE_XHR !== 'undefined') {
+          if (win.__E2E_ACTIVE_XHR === 0) return true;
+        }
+      } catch (e) {}
+      // fallback: if timeout hasn't elapsed, retry after a small delay
+      if (Date.now() - start < timeout) {
+        return cy.wait(150).then(check);
+      }
+      return true;
+    });
+  }
+  return check();
+});
+
 // Export helper for tests that import support file programmatically
 export { defaultBookingFixture };
 

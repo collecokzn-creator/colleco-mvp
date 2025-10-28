@@ -15,6 +15,11 @@ describe('Login minimal smoke', () => {
       },
     });
 
+    // Force the hash-based login route early to avoid router timing/race issues
+    // (works for HashRouter and is harmless for BrowserRouter where it will
+    // simply lead to the same route).
+    cy.visit('/#/login', { failOnStatusCode: false });
+
     // Wait for app readiness and the login form to be present. If it isn't
     // present after ready, force the route and wait again to handle timing races.
     cy.get('[data-e2e-ready="true"]', { timeout: 30000 }).should('exist');
@@ -27,21 +32,9 @@ describe('Login minimal smoke', () => {
       const hasForm = !!doc.querySelector('[data-e2e="login-form"]');
       const hasWelcome = !!doc.querySelector('h2') && /Welcome,/.test(doc.querySelector('h2')?.textContent || '');
       if (!hasForm && !hasWelcome) {
-        cy.log('Neither login form nor welcome found after ready; trying header login link then forcing route if needed');
-        // Try clicking the header login link first (works with BrowserRouter and HashRouter)
-        cy.get('a[href="/login"]', { timeout: 5000 }).then(($a) => {
-          if ($a && $a.length) {
-            cy.wrap($a[0]).click({ force: true });
-          }
-        });
-        cy.wait(500);
-        cy.document().then((d) => {
-          if (!d.querySelector('[data-e2e="login-form"]')) {
-            cy.log('Header click did not bring up login form; forcing #/login now');
-            cy.window().then((w) => { try { w.location.hash = '#/login'; } catch (e) {} });
-            cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
-          }
-        });
+          cy.log('Neither login form nor welcome found after ready; forcing #/login to mount the login form');
+          cy.visit('/#/login', { failOnStatusCode: false });
+          cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
       }
     });
     // Accept either login-form (UI) or welcome (injected user) as a valid landing.
