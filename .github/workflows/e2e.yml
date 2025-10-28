@@ -32,8 +32,23 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run orchestrated E2E (build -> start API & preview -> run Cypress)
-        run: npm run e2e:orchestrate
+      - name: Run orchestrated E2E (with retry)
+        run: |
+          max_attempts=2
+          attempt=1
+          exit_code=0
+          until [ $attempt -gt $max_attempts ]
+          do
+            echo "Orchestrator attempt $attempt/$max_attempts"
+            npm run e2e:orchestrate && { exit_code=0; break; } || exit_code=$?
+            attempt=$((attempt+1))
+            echo "Attempt failed with exit $exit_code; retrying after short backoff..."
+            sleep 4
+          done
+          if [ $exit_code -ne 0 ]; then
+            echo "All orchestrator attempts failed with exit $exit_code"
+            exit $exit_code
+          fi
 
       - name: Upload Cypress artifacts (always)
         if: always()

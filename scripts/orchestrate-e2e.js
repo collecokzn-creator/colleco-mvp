@@ -14,8 +14,17 @@ const PREVIEW_PORT = parseInt(process.env.PREVIEW_PORT || '5174', 10);
 const HEALTH_PATH = '/health';
 const PID_DIR = path.join(process.cwd(), 'scripts', '.pids');
 if (!fs.existsSync(PID_DIR)) try { fs.mkdirSync(PID_DIR, { recursive: true }); } catch (e) {}
+const LOG_DIR = path.join(process.cwd(), 'cypress-logs');
+if (!fs.existsSync(LOG_DIR)) try { fs.mkdirSync(LOG_DIR, { recursive: true }); } catch (e) {}
 
 function log(...args) { console.log('[orchestrator]', ...args); }
+
+function logToFile(...args) {
+  try {
+    const line = `[${new Date().toISOString()}] ${args.join(' ')}\n`;
+    fs.appendFileSync(path.join(LOG_DIR, 'orchestrator.log'), line, 'utf8');
+  } catch (e) {}
+}
 
 async function checkHealthHosts(port, timeoutMs = 30000) {
   const hosts = ['127.0.0.1', 'localhost', '::1'];
@@ -112,9 +121,16 @@ async function main() {
     await ensurePortFree(PREVIEW_PORT);
 
     log('3) Starting API (server/server.js) on port', API_PORT);
-    // Start API with explicit env. Use shell true to make Windows env handling consistent.
-    apiProc = spawn('node', ['server/server.js'], { env: { ...process.env, PORT: String(API_PORT) }, stdio: 'inherit', shell: true });
+    logToFile('3) Starting API on port', API_PORT);
+    // Start API with explicit env. Capture stdout/stderr to files for CI artifacts.
+    apiProc = spawn('node', ['server/server.js'], { env: { ...process.env, PORT: String(API_PORT) }, stdio: ['ignore','pipe','pipe'], shell: true });
     writePid('api', apiProc.pid || 0);
+    try {
+      const apiOut = fs.createWriteStream(path.join(LOG_DIR, 'api.stdout.log'));
+      const apiErr = fs.createWriteStream(path.join(LOG_DIR, 'api.stderr.log'));
+      if (apiProc.stdout) apiProc.stdout.pipe(apiOut);
+      if (apiProc.stderr) apiProc.stderr.pipe(apiErr);
+    } catch (e) { log('failed to create api log streams', e && e.message); }
 
     log('waiting for API /health');
     const apiOk = await checkHealthHosts(API_PORT, 30000);
@@ -126,8 +142,15 @@ async function main() {
     }
 
     log('4) Starting stable preview on port', PREVIEW_PORT);
-    previewProc = spawn('node', ['scripts/express-preview-server.js', '--port', String(PREVIEW_PORT)], { stdio: 'inherit', shell: true });
+    logToFile('4) Starting stable preview on port', PREVIEW_PORT);
+    previewProc = spawn('node', ['scripts/express-preview-server.js', '--port', String(PREVIEW_PORT)], { stdio: ['ignore','pipe','pipe'], shell: true });
     writePid('preview', previewProc.pid || 0);
+    try {
+      const prevOut = fs.createWriteStream(path.join(LOG_DIR, 'preview.stdout.log'));
+      const prevErr = fs.createWriteStream(path.join(LOG_DIR, 'preview.stderr.log'));
+      if (previewProc.stdout) previewProc.stdout.pipe(prevOut);
+      if (previewProc.stderr) previewProc.stderr.pipe(prevErr);
+    } catch (e) { log('failed to create preview log streams', e && e.message); }
 
     log('waiting for preview /health');
     const previewOk = await checkHealthHosts(PREVIEW_PORT, 30000);
@@ -140,7 +163,13 @@ async function main() {
     }
 
     log('5) Running Cypress full suite');
-    const cy = spawnSync('npx', ['cypress', 'run', '--e2e'], { stdio: 'inherit', shell: true });
+    logToFile('5) Running Cypress full suite');
+    // Run Cypress and capture stdout/stderr to a file for CI artifact upload
+    const cy = spawnSync('npx', ['cypress', 'run', '--e2e'], { stdio: 'pipe', shell: true, encoding: 'utf8' });
+    try {
+      fs.writeFileSync(path.join(LOG_DIR, 'cypress.stdout.log'), cy.stdout || '', 'utf8');
+      fs.writeFileSync(path.join(LOG_DIR, 'cypress.stderr.log'), cy.stderr || '', 'utf8');
+    } catch (e) { log('failed to write cypress logs', e && e.message); }
 
     log('6) Cleaning up processes');
     try { if (previewProc) previewProc.kill(); } catch (e) {}
