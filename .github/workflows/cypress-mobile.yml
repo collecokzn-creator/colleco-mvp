@@ -45,9 +45,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Clean server data (CI)
-        run: npm run clean:server-data
-
       - name: Build
         run: |
           npm run smoke:build

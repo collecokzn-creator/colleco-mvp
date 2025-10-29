@@ -110,14 +110,6 @@ async function main() {
   let previewProc = null;
   let mockProc = null;
   try {
-    // Ensure runtime/generated server data is cleaned before builds/tests run
-    try {
-      log('0) Cleaning server data (automatic)');
-      spawnSync('node', ['scripts/clean-server-data.js'], { stdio: 'inherit', shell: true });
-    } catch (e) {
-      log('clean-server-data failed (non-fatal):', e && e.message);
-    }
-
     log('1) Running build');
     const build = spawnSync('npm', ['run', 'build'], { stdio: 'inherit', shell: true });
     if (build.status !== 0) {
