@@ -674,10 +674,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761769520644
+        "updatedAt": 1761769722144
       }
     ],
     "customer": {
@@ -686,7 +686,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1761562683348,
-    "updatedAt": 1761769520644,
+    "updatedAt": 1761769722144,
     "pricing": {
       "items": [
         {
@@ -942,7 +942,7 @@
         "status": "In-Flight",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761769610733
+        "updatedAt": 1761769802180
       }
     ],
     "customer": {
@@ -951,7 +951,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1761564000298,
-    "updatedAt": 1761769610733,
+    "updatedAt": 1761769802180,
     "pricing": {
       "items": [
         {
@@ -1204,10 +1204,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Departed",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761769600751
+        "updatedAt": 1761769701042
       }
     ],
     "customer": {
@@ -1216,7 +1216,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1761764479157,
-    "updatedAt": 1761769600751,
+    "updatedAt": 1761769701042,
     "pricing": {
       "items": [
         {
@@ -1469,10 +1469,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1761769620734
+        "updatedAt": 1761769680996
       }
     ],
     "customer": {
@@ -1481,7 +1481,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1761764806617,
-    "updatedAt": 1761769620734,
+    "updatedAt": 1761769680996,
     "pricing": {
       "items": [
         {

@@ -27,6 +27,7 @@
     "watch:triage": "node scripts/watch-triage.js",
     "triage:overflow": "node scripts/auto-triage-overflow.js"
     ,
+    "clean:server-data": "node scripts/clean-server-data.js",
     "mock:siteminder": "node scripts/mock-siteminder-server.js"
   },
   "husky": {
