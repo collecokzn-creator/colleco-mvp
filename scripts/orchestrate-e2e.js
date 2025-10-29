@@ -108,6 +108,7 @@ function removePid(name) {
 async function main() {
   let apiProc = null;
   let previewProc = null;
+  let mockProc = null;
   try {
     log('1) Running build');
     const build = spawnSync('npm', ['run', 'build'], { stdio: 'inherit', shell: true });
@@ -162,19 +163,57 @@ async function main() {
       process.exit(3);
     }
 
+    // Optionally start local Siteminder mock server when using mock mode
+    const useSiteminderMock = process.env.SITEMINDER_USE_MOCK === '1';
+    const SITEMINDER_MOCK_PORT = parseInt(process.env.SITEMINDER_MOCK_PORT || '4015', 10);
+    if (useSiteminderMock) {
+      log('6) Starting local Siteminder mock on port', SITEMINDER_MOCK_PORT);
+      await ensurePortFree(SITEMINDER_MOCK_PORT);
+      mockProc = spawn('node', ['scripts/mock-siteminder-server.js'], { env: { ...process.env, SITEMINDER_MOCK_PORT: String(SITEMINDER_MOCK_PORT) }, stdio: ['ignore','pipe','pipe'], shell: true });
+      writePid('siteminder-mock', mockProc.pid || 0);
+      try {
+        const mockOut = fs.createWriteStream(path.join(LOG_DIR, 'siteminder-mock.stdout.log'));
+        const mockErr = fs.createWriteStream(path.join(LOG_DIR, 'siteminder-mock.stderr.log'));
+        if (mockProc.stdout) mockProc.stdout.pipe(mockOut);
+        if (mockProc.stderr) mockProc.stderr.pipe(mockErr);
+      } catch (e) { log('failed to create siteminder mock log streams', e && e.message); }
+
+      log('waiting for siteminder mock /health');
+      const mockOk = await checkHealthHosts(SITEMINDER_MOCK_PORT, 15000);
+      if (!mockOk) {
+        log('siteminder mock did not respond in time; killing mock and aborting');
+        try { if (mockProc) mockProc.kill(); } catch (e) {}
+        removePid('siteminder-mock');
+        process.exit(4);
+      }
+    }
+
     log('5) Running Cypress full suite');
     logToFile('5) Running Cypress full suite');
     // Run Cypress and capture stdout/stderr to a file for CI artifact upload
-    const cy = spawnSync('npx', ['cypress', 'run', '--e2e'], { stdio: 'pipe', shell: true, encoding: 'utf8' });
+    // Ensure Cypress receives API_BASE pointing to the mock (if used) and baseUrl to preview
+    const cypressEnv = Object.assign({}, process.env);
+    if (useSiteminderMock) {
+      cypressEnv.API_BASE = `http://127.0.0.1:${SITEMINDER_MOCK_PORT}`;
+      log(`CYPRESS env: API_BASE=${cypressEnv.API_BASE}`);
+    } else if (!cypressEnv.API_BASE) {
+      cypressEnv.API_BASE = `http://127.0.0.1:${API_PORT}`;
+    }
+    cypressEnv.PREVIEW_PORT = String(PREVIEW_PORT);
+
+    // Provide baseUrl to Cypress explicitly (preview server)
+    const cyArgs = ['cypress', 'run', '--e2e', '--config', `baseUrl=http://127.0.0.1:${PREVIEW_PORT}`];
+    const cy = spawnSync('npx', cyArgs, { stdio: 'pipe', shell: true, encoding: 'utf8', env: cypressEnv });
     try {
       fs.writeFileSync(path.join(LOG_DIR, 'cypress.stdout.log'), cy.stdout || '', 'utf8');
       fs.writeFileSync(path.join(LOG_DIR, 'cypress.stderr.log'), cy.stderr || '', 'utf8');
     } catch (e) { log('failed to write cypress logs', e && e.message); }
 
-    log('6) Cleaning up processes');
-    try { if (previewProc) previewProc.kill(); } catch (e) {}
-    try { if (apiProc) apiProc.kill(); } catch (e) {}
-    removePid('preview'); removePid('api');
+  log('7) Cleaning up processes');
+  try { if (previewProc) previewProc.kill(); } catch (e) {}
+  try { if (apiProc) apiProc.kill(); } catch (e) {}
+  try { if (mockProc) mockProc.kill(); } catch (e) {}
+  removePid('preview'); removePid('api'); removePid('siteminder-mock');
 
     process.exit(cy.status || 0);
   } catch (err) {

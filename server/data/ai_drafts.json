@@ -1908,5 +1908,23 @@
       "itinerary": []
     },
     "createdAt": 1761564008620
+  },
+  "rrnyrns3x8mhcd3mq9": {
+    "id": "rrnyrns3x8mhcd3mq9",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761764508369
+  },
+  "cg997rpvksmhcda9d5": {
+    "id": "cg997rpvksmhcda9d5",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761764817641
   }
 }

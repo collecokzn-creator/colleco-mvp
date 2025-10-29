@@ -8,6 +8,9 @@ on:
 jobs:
   e2e-mobile:
     runs-on: ubuntu-latest
+    env:
+      SITEMINDER_USE_MOCK: '1'
+      SITEMINDER_MOCK_PORT: '4015'
     strategy:
       fail-fast: false
       matrix:

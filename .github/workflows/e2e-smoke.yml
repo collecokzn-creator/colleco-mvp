@@ -10,6 +10,9 @@ on:
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    env:
+      SITEMINDER_USE_MOCK: '1'
+      SITEMINDER_MOCK_PORT: '4015'
     steps:
       - name: Checkout
         uses: actions/checkout@v4

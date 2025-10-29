@@ -9,6 +9,9 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      SITEMINDER_USE_MOCK: '1'
+      SITEMINDER_MOCK_PORT: '4015'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
