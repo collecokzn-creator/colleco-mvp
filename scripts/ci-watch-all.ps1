@@ -32,7 +32,9 @@ while((Get-Date) -lt $end) {
       $id = $r.databaseId
       # Save run metadata (URL, branch, etc.) for triage
       $meta = @{ id = $id; workflow = $r.workflowName; url = $r.url; headBranch = $r.headBranch; headSha = $r.headSha; createdAt = $r.createdAt }
-      $outDir = "artifacts/triage/run-$id"
+      # Write per-run timestamped output directory so uploads can target a single folder
+      $timestamp = (Get-Date).ToString('yyyyMMdd-HHmmss')
+      $outDir = "artifacts/triage/run-$id-$timestamp"
       if (-Not (Test-Path $outDir)) {
         New-Item -ItemType Directory -Path $outDir -Force | Out-Null
         Write-Host "Found failing run $id ($($r.workflowName)). Downloading logs..."
@@ -40,6 +42,8 @@ while((Get-Date) -lt $end) {
         gh run download $id --repo $repo --dir $outDir > "$outDir/download.log" 2>&1
         # Save run metadata for easy triage
         $meta | ConvertTo-Json | Out-File -FilePath "$outDir/meta.json"
+        # update a pointer file so runners and workflows can find the most recent run folder
+        "$outDir" | Out-File -FilePath "artifacts/triage/last-run.txt" -Encoding UTF8
         # Optionally create a GitHub issue pointing to the saved artifacts (opt-in only)
         if ($CreateIssues) {
           try {
@@ -53,7 +57,8 @@ while((Get-Date) -lt $end) {
             gh issue create --repo $repo --title "$issueTitle" --body $bodyText > "$outDir/issue.create.log" 2>&1
             Write-Host "Created issue for run $id (see $outDir/issue.create.log)"
           } catch {
-            Write-Host "Failed to create issue for run $id: $_"
+            # Avoid ambiguous variable expansion inside double-quoted strings; format explicitly
+            Write-Host ("Failed to create issue for run {0}: {1}" -f $id, ($_.ToString()))
           }
         }
         Write-Host "Logs saved to $outDir"
