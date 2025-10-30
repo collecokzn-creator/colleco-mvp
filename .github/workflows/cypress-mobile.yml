@@ -11,6 +11,8 @@ jobs:
     env:
       SITEMINDER_USE_MOCK: '1'
       SITEMINDER_MOCK_PORT: '4015'
+      CYPRESS_BASE_URL: 'http://127.0.0.1:5174'
+      API_BASE: 'http://127.0.0.1:4010'
     strategy:
       fail-fast: false
       matrix:
