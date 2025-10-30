@@ -1,6 +1,6 @@
-# Start a static preview server (serve) and wait until it's responsive on port 5174
+# Start a static preview server (serve) and wait until it's responsive on port 5173
 param(
-  [int]$Port = 5174,
+  [int]$Port = 5173,
   [int]$Retries = 60,
   [int]$DelaySeconds = 2
 )

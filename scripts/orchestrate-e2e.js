@@ -9,8 +9,8 @@ const tcpPortUsed = require('tcp-port-used');
 const fs = require('fs');
 const path = require('path');
 
-const API_PORT = parseInt(process.env.API_PORT || process.env.PORT || '4010', 10);
-const PREVIEW_PORT = parseInt(process.env.PREVIEW_PORT || '5174', 10);
+const API_PORT = parseInt(process.env.API_PORT || process.env.PORT || '4000', 10);
+const PREVIEW_PORT = parseInt(process.env.PREVIEW_PORT || '5173', 10);
 const HEALTH_PATH = '/health';
 const PID_DIR = path.join(process.cwd(), 'scripts', '.pids');
 if (!fs.existsSync(PID_DIR)) try { fs.mkdirSync(PID_DIR, { recursive: true }); } catch (e) {}

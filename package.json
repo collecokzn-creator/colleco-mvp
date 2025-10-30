@@ -25,8 +25,7 @@
     "ci-e2e": "powershell -File scripts/ci-e2e.ps1",
     "ci-e2e:local": "cross-env API_BASE=http://127.0.0.1:4002 npx cypress run --e2e --config baseUrl=http://127.0.0.1:5173",
     "watch:triage": "node scripts/watch-triage.js",
-    "triage:overflow": "node scripts/auto-triage-overflow.js"
-    ,
+    "triage:overflow": "node scripts/auto-triage-overflow.js",
     "clean:server-data": "node scripts/clean-server-data.js",
     "mock:siteminder": "node scripts/mock-siteminder-server.js"
   },
@@ -34,7 +33,6 @@
     "hooks": {}
   },
   "dependencies": {
-    "uuid": "^9.0.0",
     "ajv": "^8.17.1",
     "cors": "^2.8.5",
     "express": "^4.21.1",
@@ -42,13 +40,15 @@
     "jspdf": "^3.0.3",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.268.0",
-    "nodemailer": "^6.9.13",
+    "nodemailer": "^7.0.10",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.9.1"
+    "react-router-dom": "^7.9.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@octokit/rest": "^22.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@vitejs/plugin-react": "^4.0.0",
@@ -72,9 +72,8 @@
     "supertest": "^7.1.4",
     "tailwindcss": "^3.4.17",
     "tcp-port-used": "^1.0.2",
+    "unzipper": "^0.10.11",
     "vite": "^7.1.7",
-    "vitest": "^1.6.0",
-    "@octokit/rest": "^19.0.7",
-    "unzipper": "^0.10.11"
+    "vitest": "^4.0.5"
   }
 }

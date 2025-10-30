@@ -1,11 +1,11 @@
 const http = require('http');
 const targets = [
-  { host: 'localhost', port: 4010, path: '/health' },
-  { host: '127.0.0.1', port: 4010, path: '/health' },
-  { host: '::1', port: 4010, path: '/health' },
-  { host: 'localhost', port: 5174, path: '/health' },
-  { host: '127.0.0.1', port: 5174, path: '/health' },
-  { host: '::1', port: 5174, path: '/health' }
+  { host: 'localhost', port: 4000, path: '/health' },
+  { host: '127.0.0.1', port: 4000, path: '/health' },
+  { host: '::1', port: 4000, path: '/health' },
+  { host: 'localhost', port: 5173, path: '/health' },
+  { host: '127.0.0.1', port: 5173, path: '/health' },
+  { host: '::1', port: 5173, path: '/health' }
 ];
 
 function probe(t){
@@ -32,8 +32,8 @@ function probe(t){
     else console.log(`UNK ${name} -> status=${r.statusCode}`);
   }
   // Summary for main endpoints
-  const apiOk = (await probe({ host: 'localhost', port: 4010, path: '/health' })).ok;
-  const prevOk = (await probe({ host: 'localhost', port: 5174, path: '/health' })).ok;
+  const apiOk = (await probe({ host: 'localhost', port: 4000, path: '/health' })).ok;
+  const prevOk = (await probe({ host: 'localhost', port: 5173, path: '/health' })).ok;
   if(apiOk && prevOk){ console.log('\nHEALTH_OK'); process.exit(0); }
   console.log('\nHEALTH_FAIL'); process.exit(2);
 })();

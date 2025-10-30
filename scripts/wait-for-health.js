@@ -31,8 +31,8 @@ function waitFor(host, port, tries = 24) {
 
 (async () => {
   try {
-    await waitFor('127.0.0.1', 4010);
-    await waitFor('127.0.0.1', 5174);
+  await waitFor('127.0.0.1', 4000);
+  await waitFor('127.0.0.1', 5173);
     console.log('Both healthy');
     process.exit(0);
   } catch (e) {

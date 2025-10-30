@@ -1,14 +1,4 @@
 #!/usr/bin/env node
-const { spawn } = await import('node:child_process')
-
-function run(cmd, args, env = {}) {
-  return new Promise((resolve, reject) => {
-    const p = spawn(cmd, args, { stdio: 'inherit', shell: process.platform === 'win32', env: { ...process.env, ...env } })
-    p.on('exit', (code) => code === 0 ? resolve() : reject(new Error(`${cmd} ${args.join(' ')} exited ${code}`)))
-  })
-}
-
-await run('npm', ['run', 'smoke:all'])
 /* eslint-disable no-console */
 import { spawn } from 'node:child_process'
 import process from 'node:process'
@@ -42,21 +32,21 @@ async function main() {
   console.log('[smoke] Building app...')
   await run('npm', ['run', 'build'])
 
-  // 2) Start backend on fixed port 4010 (avoid conflicts)
-  console.log('[smoke] Starting backend on :4010 ...')
-  const backend = start('node', ['server/server.js'], { env: { ...process.env, PORT: '4010' } })
-  await waitFor('http://localhost:4010/health', 40000)
+  // 2) Start backend on fixed port 4000 (avoid conflicts)
+  console.log('[smoke] Starting backend on :4000 ...')
+  const backend = start('node', ['server/server.js'], { env: { ...process.env, PORT: '4000' } })
+  await waitFor('http://127.0.0.1:4000/health', 40000)
 
-  // 3) Serve build on 5174
-  console.log('[smoke] Starting preview server on :5174 ...')
-  const preview = start('npx', ['vite', 'preview', '--port', '5174', '--strictPort'])
-  await waitFor('http://localhost:5174', 40000)
+  // 3) Serve build on 5173
+  console.log('[smoke] Starting preview server on :5173 ...')
+  const preview = start('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port', '5173', '--strictPort'])
+  await waitFor('http://127.0.0.1:5173', 40000)
 
   // 4) Run Cypress smoke
   console.log('[smoke] Running Cypress smoke...')
   const code = await new Promise((resolve) => {
     const c = spawn('npx', ['cypress', 'run', '--browser', 'chrome', '--e2e', '--spec', 'cypress/e2e/smoke.cy.js'], {
-      stdio: 'inherit', shell: true, env: { ...process.env, API_BASE: 'http://localhost:4010' }
+      stdio: 'inherit', shell: true, env: { ...process.env, API_BASE: 'http://127.0.0.1:4000' }
     })
     c.on('exit', (code) => resolve(code ?? 1))
     c.on('close', () => {

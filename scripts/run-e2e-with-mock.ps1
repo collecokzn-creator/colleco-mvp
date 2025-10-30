@@ -1,5 +1,5 @@
 param(
-  [int]$PreviewPort = 5174,
+  [int]$PreviewPort = 5173,
   [int]$MockPort = 4015
 )
 

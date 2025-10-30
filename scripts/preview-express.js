@@ -8,7 +8,7 @@
 const express = require('express');
 const path = require('path');
 
-const port = Number(process.env.PORT || process.argv[2] || 5174);
+const port = Number(process.env.PORT || process.argv[2] || 5173);
 const app = express();
 
 // Health endpoint used by CI/local orchestration

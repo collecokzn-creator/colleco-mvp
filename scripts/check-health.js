@@ -1,5 +1,5 @@
 const http = require('http');
-const urls = ['http://localhost:4010/health','http://localhost:5174/health'];
+const urls = ['http://127.0.0.1:4000/health','http://127.0.0.1:5173/health'];
 function get(url){
   return new Promise(res=>{
     const req = http.get(url, r=>{

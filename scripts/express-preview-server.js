@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 
 const argv = require('minimist')(process.argv.slice(2));
-const port = parseInt(argv.port || argv.p || process.env.PORT || '5174', 10);
+const port = parseInt(argv.port || argv.p || process.env.PORT || '5173', 10);
 const host = argv.host || '::'; // prefer IPv6/dual-stack where available; fall back in code if needed
 const dir = argv.dir || argv.d || path.join(process.cwd(), 'dist');
 
