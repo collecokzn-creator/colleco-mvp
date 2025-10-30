@@ -24,7 +24,12 @@ jobs:
               core.info('No associated PRs found for the failing workflow run.');
               return;
             }
-            const body = `The **E2E PR Smoke** workflow just failed. If you need detailed diagnostics, add the label **e2e-diag** to this PR (or request a diagnostic run) to trigger an on-demand E2E run that collects screenshots and logs.`;
+            const prUrl = pr.html_url || `https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${pr.number}`;
+            const labelsUrl = `${prUrl.replace('/pull/', '/issues/')}/labels`;
+            const body = `The **E2E PR Smoke** workflow just failed for this PR. To help triage we recommend one of the following:\n\n` +
+              `1) Add the **e2e-diag** label to this PR to trigger an on-demand E2E run that collects screenshots and logs (maintainers can add the label here: ${labelsUrl}).\n` +
+              `2) If you prefer, request a diagnostic run in the PR comments and a maintainer will run it for you.\n\n` +
+              `The diagnostic run will upload screenshots, Cypress logs, and server/Vite logs which greatly speeds up debugging flaky failures.`;
             for (const pr of prs) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
