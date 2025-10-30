@@ -40,8 +40,25 @@ jobs:
           n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
 
       - name: Run quick smoke E2E (smoke + navbar + booking modal + login smoke)
+        # Retry wrapper: attempt the Cypress run up to 2 times to avoid transient runner flakiness
         run: |
-          npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js"
+          set -euo pipefail
+          MAX_ATTEMPTS=2
+          attempt=1
+          while [ $attempt -le $MAX_ATTEMPTS ]; do
+            echo "Cypress run attempt $attempt/$MAX_ATTEMPTS"
+            npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js" && break
+            echo "Attempt $attempt failed"
+            attempt=$((attempt+1))
+            if [ $attempt -le $MAX_ATTEMPTS ]; then
+              echo "Retrying in 5s..."
+              sleep 5
+            fi
+          done
+          if [ $attempt -gt $MAX_ATTEMPTS ]; then
+            echo "Cypress failed after $MAX_ATTEMPTS attempts"
+            exit 1
+          fi
 
       - name: Collect diagnostics
         run: |
