@@ -7,7 +7,11 @@ describe('Login minimal smoke', () => {
     const email = `e2e_minimal_${ts}@example.com`;
     const password = 'password123';
 
-    cy.visit('/', {
+    // Visit the actual login route while ensuring our onBeforeLoad setup runs
+    // on the page load the app will mount from. This prevents a race where we
+    // set window flags on one navigation then reload without them.
+    cy.visit('/#/login', {
+      failOnStatusCode: false,
       onBeforeLoad(win) {
         try {
           // Clear persisted state so the run is deterministic
@@ -30,9 +34,6 @@ describe('Login minimal smoke', () => {
         } catch (e) {}
       },
     });
-
-    // Force the hash-based login route early to avoid router timing/race issues
-    cy.visit('/#/login', { failOnStatusCode: false });
 
     // Wait for the app to signal readiness (the app sets data-e2e-ready="true")
     cy.get('[data-e2e-ready="true"]', { timeout: 45000 }).should('exist');
