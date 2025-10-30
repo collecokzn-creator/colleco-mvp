@@ -1,0 +1,24 @@
+name: Repo-wide CI watcher (scheduled)
+
+on:
+  schedule:
+    # daily at 02:00 UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  watch-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run repo CI watcher (no issue creation)
+        run: pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/ci-watch-all.ps1 -minutes 30
+
+      - name: Upload collected triage artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-triage-artifacts-${{ github.run_id }}
+          path: artifacts/triage
