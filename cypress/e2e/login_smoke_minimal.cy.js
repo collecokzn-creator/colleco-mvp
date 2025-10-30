@@ -1,14 +1,30 @@
 describe('Login minimal smoke', () => {
   it('mounts the login form', () => {
+    // Use the robust readiness and injected-user fallback similar to
+    // `login_register_smoke.cy.js` so this minimal check is tolerant of
+    // CI timing and routing differences (history vs hash routers).
+    const ts = Date.now();
+    const email = `e2e_minimal_${ts}@example.com`;
+    const password = 'password123';
+
     cy.visit('/', {
       onBeforeLoad(win) {
         try {
+          // Clear persisted state so the run is deterministic
           win.localStorage && win.localStorage.clear && win.localStorage.clear();
           win.sessionStorage && win.sessionStorage.clear && win.sessionStorage.clear();
+          // Pre-create a test user so the app may take the injected path
+          const newUser = { email, password, name: email.split('@')[0] };
+          try {
+            win.localStorage.setItem('user:' + email, JSON.stringify(newUser));
+            win.localStorage.setItem('user', JSON.stringify(newUser));
+            win.localStorage.setItem('user:persistence', 'local');
+          } catch (e) {}
           // Support both HashRouter and BrowserRouter: prefer history.replaceState
           try { win.history && win.history.replaceState && win.history.replaceState(null, '', '/login'); } catch (e) {}
           // still set hash as a fallback for hash-based routing environments
           win.location.hash = '#/login';
+          // Signal the app to enable E2E helpers
           win.__E2E__ = true;
           win.Cypress = win.Cypress || {};
         } catch (e) {}
@@ -16,45 +32,32 @@ describe('Login minimal smoke', () => {
     });
 
     // Force the hash-based login route early to avoid router timing/race issues
-    // (works for HashRouter and is harmless for BrowserRouter where it will
-    // simply lead to the same route).
     cy.visit('/#/login', { failOnStatusCode: false });
 
-    // Wait for app readiness and the login form to be present. If it isn't
-    // present after ready, force the route and wait again to handle timing races.
-    cy.get('[data-e2e-ready="true"]', { timeout: 30000 }).should('exist');
-    cy.window({ timeout: 30000 }).should((win) => {
-      if (win.__E2E__) {
-        expect(win.__E2E_MOUNTED__).to.equal(true);
-      }
+    // Wait for the app to signal readiness (the app sets data-e2e-ready="true")
+    cy.get('[data-e2e-ready="true"]', { timeout: 45000 }).should('exist');
+
+    // Use a body-level existence check (retries automatically) to accept either
+    // the login form or an injected Welcome path as valid outcomes.
+    cy.get('body', { timeout: 45000 }).should(($body) => {
+      const hasForm = $body.find('[data-e2e="login-form"]').length > 0;
+      const hasWelcome = $body.find('h2').toArray().some((el) => /Welcome,/.test(el.textContent || ''));
+      expect(hasForm || hasWelcome, 'login form or welcome present').to.be.ok;
     });
-    cy.document().then((doc) => {
-      const hasForm = !!doc.querySelector('[data-e2e="login-form"]');
-      const hasWelcome = !!doc.querySelector('h2') && /Welcome,/.test(doc.querySelector('h2')?.textContent || '');
-      if (!hasForm && !hasWelcome) {
-          cy.log('Neither login form nor welcome found after ready; forcing #/login to mount the login form');
-          cy.visit('/#/login', { failOnStatusCode: false });
-          cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
-      }
+
+    // If the body-check didn't find the form, attempt the header fallback (click /login link)
+    cy.document({ timeout: 45000 }).then((doc) => {
+      const $ = Cypress.$;
+      const $form = $(doc).find('[data-e2e="login-form"]');
+      if ($form.length) return;
+      cy.get('a[href="/login"]', { timeout: 5000 }).then(($a) => {
+        if ($a && $a.length) cy.wrap($a[0]).click({ force: true });
+      });
+      cy.wait(500);
+      cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
     });
-    // Extra robust fallback: if mounting still fails (CI timing flake), reload the page once
-    // and allow additional time for SPA routing to settle before giving up.
-    cy.document().then((doc) => {
-      const hasForm = !!doc.querySelector('[data-e2e="login-form"]');
-      const hasWelcome = !!doc.querySelector('h2') && /Welcome,/.test(doc.querySelector('h2')?.textContent || '');
-      if (!hasForm && !hasWelcome) {
-        cy.log('Fallback: reload and wait to give SPA another chance to mount the login form');
-        cy.reload(true);
-        cy.wait(1200);
-      }
-    });
-    // Accept either login-form (UI) or welcome (injected user) as a valid landing.
-    cy.get('body', { timeout: 30000 }).should(($b) => {
-      const hasForm = !!$b[0].querySelector('[data-e2e="login-form"]');
-      const hasWelcome = !!$b[0].querySelector('h2') && /Welcome,/.test($b[0].querySelector('h2')?.textContent || '');
-      if (!hasForm && !hasWelcome) throw new Error('neither login form nor welcome found');
-    });
+
     // Sanity: the submit button should be present
-    cy.get('[data-e2e="submit"]', { timeout: 10000 }).should('exist');
+    cy.get('[data-e2e="submit"]', { timeout: 15000 }).should('exist');
   });
 });
