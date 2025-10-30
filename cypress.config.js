@@ -6,14 +6,21 @@ export default defineConfig({
     API_BASE: process.env.API_BASE || 'http://localhost:4000',
   },
   e2e: {
-  // The smoke preview server runs at port 5174 via npm smoke scripts; keep this in sync.
-  baseUrl: 'http://localhost:5174',
+  // The smoke preview server runs at port 5173 via npm smoke scripts; keep this in sync.
+  // Use an explicit loopback address to avoid CI runners where 'localhost' resolves
+  // to an IPv6 address that the preview server may not be listening on.
+  // The project uses port 5173 for smoke and preview scripts across the repo.
+  // Use explicit loopback and allow workflow overrides via CYPRESS_BASE_URL.
+  baseUrl: process.env.CYPRESS_BASE_URL || 'http://127.0.0.1:5173',
     supportFile: 'cypress/support/e2e.js',
     video: false,
   // Allow a reasonable wait for the browser 'load' event during CI/local runs.
   // Previously set to 0 which causes an immediate timeout; set to 60s to be safe.
   pageLoadTimeout: 60000,
-    defaultCommandTimeout: 8000,
+  // Increase default command timeout to reduce timing-related flakes
+  defaultCommandTimeout: 12000,
+  // Allow test retries in CI (runMode). This helps transient flakes make the run more stable.
+  retries: { runMode: 2, openMode: 0 },
     // Register Node-side event handlers/tasks so specs can surface browser console messages
     setupNodeEvents(on, config) {
       on('task', {

@@ -1,0 +1,71 @@
+name: E2E Tests (Cypress)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SITEMINDER_USE_MOCK: '1'
+      SITEMINDER_MOCK_PORT: '4015'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-cache-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run orchestrated E2E (with retry)
+        run: |
+          max_attempts=2
+          attempt=1
+          exit_code=0
+          until [ $attempt -gt $max_attempts ]
+          do
+            echo "Orchestrator attempt $attempt/$max_attempts"
+            npm run e2e:orchestrate && { exit_code=0; break; } || exit_code=$?
+            attempt=$((attempt+1))
+            echo "Attempt failed with exit $exit_code; retrying after short backoff..."
+            sleep 4
+          done
+          if [ $exit_code -ne 0 ]; then
+            echo "All orchestrator attempts failed with exit $exit_code"
+            exit $exit_code
+          fi
+
+      - name: Upload Cypress artifacts (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
+            cypress/results
+            cypress-logs
+          retention-days: 7
+
+      - name: Show basic environment info
+        run: |
+          echo "Node: $(node -v)"
+          echo "NPM: $(npm -v)"

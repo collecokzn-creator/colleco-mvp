@@ -1,5 +1,22 @@
 describe('Login/Register smoke', () => {
   it('can register and login using local-storage auth', () => {
+    // Stub Siteminder endpoints used by the app to keep E2E deterministic.
+    // These intercepts are lightweight and mirror the mock server responses.
+    cy.intercept('POST', '/api/bookings', (req) => {
+      req.reply({
+        statusCode: 201,
+        body: { providerBookingId: `mock-${Math.random().toString(36).slice(2,9)}`, status: 'confirmed', createdAt: new Date().toISOString() }
+      });
+    }).as('createBooking');
+
+    cy.intercept('GET', '/api/availability*', (req) => {
+      // simple deterministic availability
+      req.reply({ statusCode: 200, body: { availability: [{ date: '2025-12-01', roomTypeId: 'RT-Standard', availableUnits: 5 }] } });
+    }).as('getAvailability');
+
+    cy.intercept('PUT', '/api/bookings/*', (req) => { req.reply({ statusCode: 200, body: { status: 'updated' } }); }).as('updateBooking');
+    cy.intercept('DELETE', '/api/bookings/*', (req) => { req.reply({ statusCode: 200, body: { status: 'cancelled' } }); }).as('cancelBooking');
+
     const ts = Date.now();
     const email = `e2e_test_${ts}@example.com`;
     const password = 'password123';

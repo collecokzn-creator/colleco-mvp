@@ -10,7 +10,9 @@
     "prebuild": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs",
     "build": "vite build",
     "preview": "vite preview",
-  "smoke:preview": "npx serve -s dist -l 5174",
+    "preview:stable": "node scripts/express-preview-server.js --port 5174",
+    "e2e:orchestrate": "node scripts/orchestrate-e2e.js",
+    "smoke:preview": "npx serve -s dist -l 5174",
     "lint": "eslint . --ext .js,.jsx",
     "server": "node server/server.js",
     "test": "vitest run --reporter=default",
@@ -21,7 +23,11 @@
     "smoke:run": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js",
     "smoke:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:run\"",
     "ci-e2e": "powershell -File scripts/ci-e2e.ps1",
-    "ci-e2e:local": "cross-env API_BASE=http://127.0.0.1:4002 npx cypress run --e2e --config baseUrl=http://127.0.0.1:5173"
+    "ci-e2e:local": "cross-env API_BASE=http://127.0.0.1:4002 npx cypress run --e2e --config baseUrl=http://127.0.0.1:5173",
+    "watch:triage": "node scripts/watch-triage.js",
+    "triage:overflow": "node scripts/auto-triage-overflow.js",
+    "clean:server-data": "node scripts/clean-server-data.js",
+    "mock:siteminder": "node scripts/mock-siteminder-server.js"
   },
   "husky": {
     "hooks": {}
@@ -34,13 +40,15 @@
     "jspdf": "^3.0.3",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.268.0",
-    "nodemailer": "^6.9.13",
+    "nodemailer": "^7.0.10",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.9.1"
+    "react-router-dom": "^7.9.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@octokit/rest": "^22.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@vitejs/plugin-react": "^4.0.0",
@@ -48,10 +56,12 @@
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "cypress": "^13.17.0",
+    "cypress-plugin-tab": "^1.0.5",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "express-rate-limit": "^7.4.0",
+    "focus-trap-react": "^9.0.0",
     "helmet": "^7.1.0",
     "jsdom": "^25.0.1",
     "png-to-ico": "^2.1.8",
@@ -61,9 +71,9 @@
     "start-server-and-test": "^2.1.2",
     "supertest": "^7.1.4",
     "tailwindcss": "^3.4.17",
+    "tcp-port-used": "^1.0.2",
+    "unzipper": "^0.10.11",
     "vite": "^7.1.7",
-    "vitest": "^1.6.0",
-    "cypress-plugin-tab": "^1.0.5",
-    "focus-trap-react": "^9.0.0"
+    "vitest": "^4.0.5"
   }
 }

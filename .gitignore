@@ -19,6 +19,15 @@ colleco-ci-logs/
 cypress/screenshots/
 cypress/videos/
 
+# Local CI artifact folder produced by triage runs and previous debug runs
+cypress-logs/
+
 # Temporary CI images/logs
 *.png
 *.jpg
+
+# Generated server data - ignore specific runtime/test artifacts
+server/data/ai_analytics.log
+server/data/ai_drafts.json
+server/data/ai_metrics_history.jsonl
+server/data/collab.json

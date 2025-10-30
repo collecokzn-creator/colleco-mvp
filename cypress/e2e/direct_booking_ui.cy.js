@@ -14,8 +14,11 @@ describe('Direct booking UI flows', () => {
     // Use shared booking stub helper to keep tests DRY and deterministic
     cy.stubBooking({ id: 'test-bkg-1', items: [ { name: 'Test Hotel', amount: 240 } ], pricing: { currency: 'USD', subtotal: 240, total: 240 } });
     cy.get('form').within(() => cy.get('button[type="submit"]').click());
+  // small wait to let the app process the mocked booking/checkout navigation
+  cy.wait(300);
   cy.visit('/#/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
-  cy.contains('Payment success', { timeout: 10000 }).should('be.visible');
+  // prefer existence then visibility to avoid chai-jQuery null-subject flakes
+  cy.contains('Payment success', { timeout: 10000 }).should('exist').and('be.visible');
   });
 
   it('flight flow: book -> checkout', () => {
@@ -33,7 +36,8 @@ describe('Direct booking UI flows', () => {
   // give the app a moment to handle the mocked checkout navigation and dynamic imports
   cy.wait(300);
   cy.visit('/#/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
-  cy.contains('Payment success', { timeout: 10000 }).should('be.visible');
+  // prefer existence then visibility to avoid chai-jQuery null-subject flakes
+  cy.contains('Payment success', { timeout: 10000 }).should('exist').and('be.visible');
   });
 
   it('car flow: hire -> checkout', () => {
@@ -45,8 +49,12 @@ describe('Direct booking UI flows', () => {
       cy.get('input[type="number"]').eq(1).clear().type('500'); // Price per day
     });
     cy.stubBooking({ id: 'test-bkg-1', items: [ { name: 'SUV hire', amount: 1500 } ], pricing: { currency: 'USD', subtotal: 1500, total: 1500 }, checkout: { sessionId: 'mock-session-3', checkoutUrl: `/api/mock-checkout/mock-session-3` } });
+  // Click submit, wait briefly for app to process the mocked checkout navigation,
+  // then navigate to the success page. The small wait reduces timing flakes.
   cy.get('form').within(() => cy.get('button[type="submit"]').click());
+  cy.wait(300);
   cy.visit('/#/payment-success?bookingId=test-bkg-1', { failOnStatusCode: false });
-  cy.contains('Payment success', { timeout: 10000 }).should('be.visible');
+  // Prefer existence (then visible) to avoid chai-jQuery null-subject flakes.
+  cy.contains('Payment success', { timeout: 10000 }).should('exist').and('be.visible');
   });
 });

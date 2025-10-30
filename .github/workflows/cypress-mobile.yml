@@ -8,6 +8,11 @@ on:
 jobs:
   e2e-mobile:
     runs-on: ubuntu-latest
+    env:
+      SITEMINDER_USE_MOCK: '1'
+      SITEMINDER_MOCK_PORT: '4015'
+      CYPRESS_BASE_URL: 'http://127.0.0.1:5173'
+      API_BASE: 'http://127.0.0.1:4000'
     strategy:
       fail-fast: false
       matrix:
@@ -49,19 +54,19 @@ jobs:
       - name: Start API (background)
         run: |
           mkdir -p tmp/logs
-          nohup sh -c "npx cross-env PORT=4010 node server/server.js" > tmp/logs/api.log 2>&1 &
+          nohup sh -c "npx cross-env PORT=4000 node server/server.js" > tmp/logs/api.log 2>&1 &
           echo $! > tmp/api.pid
 
       - name: Wait for API health
         run: |
           for i in {1..60}; do
-            if curl -sSf http://localhost:4010/health >/dev/null; then
+            if curl -sSf http://localhost:4000/health >/dev/null; then
               echo "API health OK"; break
             fi
             echo "waiting for API... $i"
             sleep 1
           done
-          if ! curl -sSf http://localhost:4010/health >/dev/null; then
+          if ! curl -sSf http://localhost:4000/health >/dev/null; then
             echo "Timeout waiting for API"
             # Diagnostic blocks removed (kept minimal to reduce noise).
             exit 1
