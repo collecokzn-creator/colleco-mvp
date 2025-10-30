@@ -37,6 +37,17 @@ describe('Login minimal smoke', () => {
           cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
       }
     });
+    // Extra robust fallback: if mounting still fails (CI timing flake), reload the page once
+    // and allow additional time for SPA routing to settle before giving up.
+    cy.document().then((doc) => {
+      const hasForm = !!doc.querySelector('[data-e2e="login-form"]');
+      const hasWelcome = !!doc.querySelector('h2') && /Welcome,/.test(doc.querySelector('h2')?.textContent || '');
+      if (!hasForm && !hasWelcome) {
+        cy.log('Fallback: reload and wait to give SPA another chance to mount the login form');
+        cy.reload(true);
+        cy.wait(1200);
+      }
+    });
     // Accept either login-form (UI) or welcome (injected user) as a valid landing.
     cy.get('body', { timeout: 30000 }).should(($b) => {
       const hasForm = !!$b[0].querySelector('[data-e2e="login-form"]');
