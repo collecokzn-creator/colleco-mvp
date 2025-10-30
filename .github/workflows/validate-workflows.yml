@@ -1,0 +1,27 @@
+name: Validate workflow YAML
+
+on:
+  pull_request:
+    # run on PRs so invalid workflow YAML can be caught before merging
+    paths:
+      - '.github/workflows/**'
+  workflow_dispatch: {}
+
+jobs:
+  yaml-validate:
+    name: YAML validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run YAML validator
+        run: npm run yaml:validate
