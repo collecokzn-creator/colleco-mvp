@@ -7,6 +7,10 @@
 
 A React + Vite SPA with a minimal Express backend for collaboration and events aggregation. Includes location-aware product discovery, events from trusted providers with a demo fallback, and an admin Settings page with provider toggles and API status.
 
+## E2E & CI diagnostics
+
+See `docs/E2E.md` for E2E run instructions, the `e2e-diag` label usage, and the repository CI watcher/pruning utilities for collecting failing-run artifacts.
+
 ## Quick start
 
 Prereqs: Node 18+ recommended.
