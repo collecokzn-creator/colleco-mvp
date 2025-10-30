@@ -52,6 +52,29 @@ Quick checklist for maintainers
 - Don't enable `-CreateIssues` as a global schedule; prefer manual runs when you want issues created.
 - Keep `CI_E2E_DIAG` gated to avoid noisy logs in routine CI runs.
 
+## Artifact pruning (safe cleanup)
+
+Collected triage artifacts can grow over time. We provide a small pruning helper to remove old `artifacts/triage/run-*` folders.
+
+Script: `scripts/prune-triage.ps1`
+
+Usage (PowerShell):
+
+- Dry-run (default):
+
+	pwsh ./scripts/prune-triage.ps1 -Days 30
+
+- Actually delete (explicit):
+
+	pwsh ./scripts/prune-triage.ps1 -Days 30 -DryRun:$false
+
+Notes & safety
+
+- The script defaults to dry-run to avoid accidental deletions. Always inspect output before running with `-DryRun:$false`.
+- The script performs safety checks and will refuse to run if the target path doesn't look like a triage artifacts folder.
+- Recommended retention: 30 days. Adjust the `-Days` value for your needs.
+
+
 Steps (Linux / macOS):
 
 ```bash
