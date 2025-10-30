@@ -16,9 +16,22 @@ jobs:
       - name: Run repo CI watcher (no issue creation)
         run: pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/ci-watch-all.ps1 -minutes 30
 
+      - name: Read last-run path
+        id: get_path
+        shell: pwsh
+        run: |
+          if (Test-Path artifacts/triage/last-run.txt) {
+            $p = Get-Content artifacts/triage/last-run.txt
+            Write-Host "Found last-run: $p"
+            echo "run_path=$p" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "No last-run pointer found; defaulting to full artifacts/triage"
+            echo "run_path=artifacts/triage" >> $env:GITHUB_OUTPUT
+          }
+
       - name: Upload collected triage artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ci-triage-artifacts-${{ github.run_id }}
-          path: artifacts/triage
+          path: ${{ steps.get_path.outputs.run_path }}
