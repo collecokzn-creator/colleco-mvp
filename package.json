@@ -23,6 +23,7 @@
     "smoke:run": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js",
     "smoke:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:run\"",
     "ci-e2e": "powershell -File scripts/ci-e2e.ps1",
+  "yaml:validate": "node scripts/yaml-validate.mjs",
     "ci-e2e:local": "cross-env API_BASE=http://127.0.0.1:4002 npx cypress run --e2e --config baseUrl=http://127.0.0.1:5173",
     "watch:triage": "node scripts/watch-triage.js",
     "triage:overflow": "node scripts/auto-triage-overflow.js",

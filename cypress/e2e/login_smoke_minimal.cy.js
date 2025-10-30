@@ -86,23 +86,25 @@ describe('Login minimal smoke', () => {
 
     // Sanity: the submit button should be present
     cy.get('[data-e2e="submit"]', { timeout: 15000 }).should('exist');
-      // CI diagnostics: capture authoritative flags and persisted user to
-      // the Node runner logs and take a compact screenshot to help triage
-      // without adding a large DOM dump.
-      cy.window({ timeout: 5000 }).then((win) => {
-        try {
-          cy.task('log', ['CI-DIAG: __E2E_MOUNTED__', String(!!win.__E2E_MOUNTED__)]);
-          cy.task('log', ['CI-DIAG: __E2E_PROFILE_LOADED__', String(!!win.__E2E_PROFILE_LOADED__)]);
+      // CI diagnostics: only run diagnostics when explicitly enabled to
+      // avoid noisy logs on every run. Set CI_E2E_DIAG via the CI environment
+      // (or pass --env CI_E2E_DIAG=1 to Cypress locally).
+      if (Cypress.env('CI_E2E_DIAG')) {
+        cy.window({ timeout: 5000 }).then((win) => {
           try {
-            const lsUser = win.localStorage && win.localStorage.getItem && win.localStorage.getItem('user');
-            cy.task('log', ['CI-DIAG: localStorage.user', String(lsUser)]);
+            cy.task('log', ['CI-DIAG: __E2E_MOUNTED__', String(!!win.__E2E_MOUNTED__)]);
+            cy.task('log', ['CI-DIAG: __E2E_PROFILE_LOADED__', String(!!win.__E2E_PROFILE_LOADED__)]);
+            try {
+              const lsUser = win.localStorage && win.localStorage.getItem && win.localStorage.getItem('user');
+              cy.task('log', ['CI-DIAG: localStorage.user', String(lsUser)]);
+            } catch (e) {
+              cy.task('log', 'CI-DIAG: localStorage read failed');
+            }
           } catch (e) {
-            cy.task('log', 'CI-DIAG: localStorage read failed');
+            cy.task('log', 'CI-DIAG: diagnostic read failed');
           }
-        } catch (e) {
-          cy.task('log', 'CI-DIAG: diagnostic read failed');
-        }
-      });
-      cy.screenshot('login-ready-diag');
+        });
+        cy.screenshot('login-ready-diag');
+      }
   });
 });

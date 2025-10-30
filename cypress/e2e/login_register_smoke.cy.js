@@ -123,55 +123,59 @@ describe('Login/Register smoke', () => {
 
       // Short settle and diagnostic snapshot immediately after clicking
       // so CI logs can show what the app set synchronously (if anything).
+      // Only run these diagnostics when explicitly enabled via the
+      // `CI_E2E_DIAG` Cypress env var to avoid noisy logs on every run.
       cy.wait(100);
-      cy.window({ timeout: 5000 }).then((win) => {
-        try {
-          const logs = win && win.__E2E_LOGS__ ? win.__E2E_LOGS__ : [];
-          cy.log('DIAG (immediate) - IN-APP-E2E-LOGS: ' + JSON.stringify(logs));
-          cy.log('DIAG (immediate) - __E2E_PROFILE_LOADED__=' + JSON.stringify(win.__E2E_PROFILE_LOADED__));
-          cy.log('DIAG (immediate) - __E2E_MOUNTED__=' + JSON.stringify(win.__E2E_MOUNTED__));
+      if (Cypress.env('CI_E2E_DIAG')) {
+        cy.window({ timeout: 5000 }).then((win) => {
           try {
-            const lsUser = win.localStorage && win.localStorage.getItem && win.localStorage.getItem('user');
-            cy.log('DIAG (immediate) - localStorage.user=' + JSON.stringify(lsUser));
+            const logs = win && win.__E2E_LOGS__ ? win.__E2E_LOGS__ : [];
+            cy.log('DIAG (immediate) - IN-APP-E2E-LOGS: ' + JSON.stringify(logs));
+            cy.log('DIAG (immediate) - __E2E_PROFILE_LOADED__=' + JSON.stringify(win.__E2E_PROFILE_LOADED__));
+            cy.log('DIAG (immediate) - __E2E_MOUNTED__=' + JSON.stringify(win.__E2E_MOUNTED__));
+            try {
+              const lsUser = win.localStorage && win.localStorage.getItem && win.localStorage.getItem('user');
+              cy.log('DIAG (immediate) - localStorage.user=' + JSON.stringify(lsUser));
+            } catch (e) {
+              cy.log('DIAG (immediate) - localStorage read failed');
+            }
+            try {
+              const ssUser = win.sessionStorage && win.sessionStorage.getItem && win.sessionStorage.getItem('user');
+              cy.log('DIAG (immediate) - sessionStorage.user=' + JSON.stringify(ssUser));
+            } catch (e) {
+              cy.log('DIAG (immediate) - sessionStorage read failed');
+            }
           } catch (e) {
-            cy.log('DIAG (immediate) - localStorage read failed');
+            cy.log('DIAG (immediate) - diagnostic read failed');
           }
-          try {
-            const ssUser = win.sessionStorage && win.sessionStorage.getItem && win.sessionStorage.getItem('user');
-            cy.log('DIAG (immediate) - sessionStorage.user=' + JSON.stringify(ssUser));
-          } catch (e) {
-            cy.log('DIAG (immediate) - sessionStorage read failed');
-          }
-        } catch (e) {
-          cy.log('DIAG (immediate) - diagnostic read failed');
-        }
-      });
+        });
 
-      // Also send diagnostics to the Node runner logs (more reliable in CI)
-      cy.window({ timeout: 5000 }).then((win) => {
-        try {
-          const logs = win && win.__E2E_LOGS__ ? win.__E2E_LOGS__ : [];
-          cy.task('log', ['CI-DIAG: IN-APP-E2E-LOGS', JSON.stringify(logs || [])]);
-          cy.task('log', ['CI-DIAG: __E2E_PROFILE_LOADED__', String(!!win.__E2E_PROFILE_LOADED__)]);
-          cy.task('log', ['CI-DIAG: __E2E_MOUNTED__', String(!!win.__E2E_MOUNTED__)]);
+        // Also send diagnostics to the Node runner logs (more reliable in CI)
+        cy.window({ timeout: 5000 }).then((win) => {
           try {
-            const lsUser = win.localStorage && win.localStorage.getItem && win.localStorage.getItem('user');
-            cy.task('log', ['CI-DIAG: localStorage.user', String(lsUser)]);
+            const logs = win && win.__E2E_LOGS__ ? win.__E2E_LOGS__ : [];
+            cy.task('log', ['CI-DIAG: IN-APP-E2E-LOGS', JSON.stringify(logs || [])]);
+            cy.task('log', ['CI-DIAG: __E2E_PROFILE_LOADED__', String(!!win.__E2E_PROFILE_LOADED__)]);
+            cy.task('log', ['CI-DIAG: __E2E_MOUNTED__', String(!!win.__E2E_MOUNTED__)]);
+            try {
+              const lsUser = win.localStorage && win.localStorage.getItem && win.localStorage.getItem('user');
+              cy.task('log', ['CI-DIAG: localStorage.user', String(lsUser)]);
+            } catch (e) {
+              cy.task('log', 'CI-DIAG: localStorage read failed');
+            }
+            try {
+              const ssUser = win.sessionStorage && win.sessionStorage.getItem && win.sessionStorage.getItem('user');
+              cy.task('log', ['CI-DIAG: sessionStorage.user', String(ssUser)]);
+            } catch (e) {
+              cy.task('log', 'CI-DIAG: sessionStorage read failed');
+            }
+            const bodyAttr = document && document.body ? document.body.getAttribute('data-e2e-login-success') : null;
+            cy.task('log', ['CI-DIAG: body[data-e2e-login-success]', String(bodyAttr)]);
           } catch (e) {
-            cy.task('log', 'CI-DIAG: localStorage read failed');
+            cy.task('log', 'CI-DIAG: diagnostic read failed');
           }
-          try {
-            const ssUser = win.sessionStorage && win.sessionStorage.getItem && win.sessionStorage.getItem('user');
-            cy.task('log', ['CI-DIAG: sessionStorage.user', String(ssUser)]);
-          } catch (e) {
-            cy.task('log', 'CI-DIAG: sessionStorage read failed');
-          }
-          const bodyAttr = document && document.body ? document.body.getAttribute('data-e2e-login-success') : null;
-          cy.task('log', ['CI-DIAG: body[data-e2e-login-success]', String(bodyAttr)]);
-        } catch (e) {
-          cy.task('log', 'CI-DIAG: diagnostic read failed');
-        }
-      });
+        });
+      }
 
       // After login via UI: first assert the immediate success message is
       // visible (this appears before the redirect). Then wait for either a
