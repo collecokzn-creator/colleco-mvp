@@ -2,6 +2,13 @@ name: Auto triage overflow
 
 on:
   workflow_run:
+    workflows:
+      # Monitor the E2E-related workflows so the triage job runs after those
+      # completes. Adjust these names if your workflow display names differ.
+      - "E2E Tests (Cypress)"
+      - "E2E PR Smoke"
+      - "E2E Smoke"
+      - "Mobile Viewport E2E"
     types: [completed]
 
 jobs:
