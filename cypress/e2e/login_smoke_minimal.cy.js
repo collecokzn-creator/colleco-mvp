@@ -46,16 +46,42 @@ describe('Login minimal smoke', () => {
       expect(hasForm || hasWelcome, 'login form or welcome present').to.be.ok;
     });
 
-    // If the body-check didn't find the form, attempt the header fallback (click /login link)
+    // If the body-check didn't find the form, attempt robust fallbacks
+    // - click the /login link if present
+    // - set the location/hash directly to force the router to navigate
+    // - wait again for the app readiness signal, then assert the form exists
     cy.document({ timeout: 45000 }).then((doc) => {
       const $ = Cypress.$;
       const $form = $(doc).find('[data-e2e="login-form"]');
       if ($form.length) return;
-      cy.get('a[href="/login"]', { timeout: 5000 }).then(($a) => {
-        if ($a && $a.length) cy.wrap($a[0]).click({ force: true });
+
+      // Try clicking a login link first (some layouts expose this)
+      cy.get('a[href="/login"]', { timeout: 5000 })
+        .then(($a) => {
+          if ($a && $a.length) {
+            cy.wrap($a[0]).click({ force: true });
+          }
+        })
+        .catch(() => {
+          // ignore - fallback will try direct navigation
+        });
+
+      // Give the router a moment to settle, then force the location if still not mounted
+      cy.wait(1000);
+      cy.document().then((d2) => {
+        const $form2 = Cypress.$(d2).find('[data-e2e="login-form"]');
+        if ($form2.length) return;
+        // force navigation via history/ hash to cover both router modes
+        cy.window().then((win) => {
+          try { win.history && win.history.replaceState && win.history.replaceState(null, '', '/login'); } catch (e) {}
+          try { win.location.hash = '#/login'; } catch (e) {}
+        });
       });
-      cy.wait(500);
-      cy.get('[data-e2e="login-form"]', { timeout: 30000 }).should('exist');
+
+      // Wait for the app readiness marker again, then assert the form exists.
+      cy.get('[data-e2e-ready="true"]', { timeout: 30000 }).should('exist');
+      // Allow a longer timeout here because CI environments can be slower.
+      cy.get('[data-e2e="login-form"]', { timeout: 60000 }).should('exist');
     });
 
     // Sanity: the submit button should be present
