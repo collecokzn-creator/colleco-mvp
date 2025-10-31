@@ -24,14 +24,16 @@ jobs:
           fi
 
       - name: Run prune (honors PRUNE_DELETE secret)
+        # Run the PowerShell script directly using the pwsh shell to avoid quoting/arg issues
+        shell: pwsh
+        env:
+          DRY: ${{ steps.prune_mode.outputs.DRY }}
         run: |
-          # When invoking pwsh from bash, single-quote the PowerShell literal $false so bash
-          # doesn't expand it. This ensures we pass '-DryRun:$false' to pwsh when deletion is enabled.
-          if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
-            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30
-          else
-            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 '-DryRun:$false'
-          fi
+          if ($env:DRY -eq 'true') {
+            ./scripts/prune-triage.ps1 -Days 30 -DryRun:$true
+          } else {
+            ./scripts/prune-triage.ps1 -Days 30 -DryRun:$false
+          }
 
       - name: Upload prune results
         if: always()
@@ -48,3 +50,4 @@ jobs:
             echo "Prune ran in dry-run mode. To enable deletion set repo secret PRUNE_DELETE=true"
           else
             echo "Prune ran and deleted old run directories. Uploaded prune-triage-runonce-${{ github.run_id }}"
+          fi
