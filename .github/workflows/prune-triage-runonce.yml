@@ -26,6 +26,57 @@ jobs:
       - name: Run prune (honors PRUNE_DELETE secret)
         run: |
           # When invoking pwsh from bash, single-quote the PowerShell literal $false so bash
+          # doesn't expand it. This ensures we pass '-DryRun:$false' to pwsh when deletion is enabled.
+          if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
+            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30
+          else
+            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 '-DryRun:$false'
+          fi
+
+      - name: Upload prune results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prune-triage-runonce-${{ github.run_id }}
+          path: |
+            artifacts/triage/**
+
+      - name: Post note
+        if: always()
+        run: |
+          if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
+            echo "Prune ran in dry-run mode. To enable deletion set repo secret PRUNE_DELETE=true"
+          else
+            echo "Prune ran and deleted old run directories. Uploaded prune-triage-runonce-${{ github.run_id }}"
+          fi
+name: Prune triage (run-once)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  prune-once:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine dry-run
+        id: prune_mode
+        env:
+          PRUNE_DELETE: ${{ secrets.PRUNE_DELETE }}
+        run: |
+          echo "PRUNE_DELETE=$PRUNE_DELETE"
+          if [ "$PRUNE_DELETE" = "true" ]; then
+            echo "DRY=false" >> $GITHUB_OUTPUT
+          else
+            echo "DRY=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run prune (honors PRUNE_DELETE secret)
+        run: |
+          # When invoking pwsh from bash, single-quote the PowerShell literal $false so bash
           # doesn't expand $false to an empty string. This ensures the switch is passed as False.
           if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
             pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30
