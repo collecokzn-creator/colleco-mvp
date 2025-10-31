@@ -23,6 +23,17 @@ jobs:
             echo "DRY=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Ensure prune script is present (fetch from main if missing)
+        run: |
+          mkdir -p ./scripts
+          if [ ! -f ./scripts/prune-triage.ps1 ]; then
+            echo "Fetching prune-triage.ps1 from main branch"
+            curl -fsSL https://raw.githubusercontent.com/collecokzn-creator/colleco-mvp/main/scripts/prune-triage.ps1 -o ./scripts/prune-triage.ps1
+            chmod +x ./scripts/prune-triage.ps1 || true
+          else
+            echo "prune-triage.ps1 already present"
+          fi
+
       - name: Run prune (honors PRUNE_DELETE secret)
         # Run the PowerShell script directly using the pwsh shell to avoid quoting/arg issues
         shell: pwsh
