@@ -1,0 +1,20 @@
+# yamllint configuration - relaxed for workflow files
+extends: default
+
+rules:
+  # allow missing '---' document start in workflow files
+  document-start: disable
+
+  # allow CRLF/new-line variations (Windows), don't enforce LF strictly
+  new-lines: disable
+
+  # allow truthy/falsy shorthand common in workflows
+  truthy: disable
+
+  # allow spacing in brackets that some workflows include
+  brackets: disable
+
+  # warn instead of error for long lines (workflows often have long URLs)
+  line-length:
+    max: 140
+    level: warning
