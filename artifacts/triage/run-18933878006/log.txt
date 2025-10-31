@@ -1,0 +1,511 @@
+smoke	UNKNOWN STEP	´╗┐2025-10-30T08:03:16.4910706Z Current runner version: '2.328.0'
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4936244Z ##[group]Runner Image Provisioner
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4937042Z Hosted Compute Agent
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4937614Z Version: 20250912.392
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4938233Z Commit: d921fda672a98b64f4f82364647e2f10b2267d0b
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4938868Z Build Date: 2025-09-12T15:23:14Z
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4939691Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4940241Z ##[group]Operating System
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4940803Z Ubuntu
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4941230Z 24.04.3
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4941768Z LTS
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4942218Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4942647Z ##[group]Runner Image
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4943290Z Image: ubuntu-24.04
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4943755Z Version: 20250929.60.1
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4944739Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250929.60/images/ubuntu/Ubuntu2404-Readme.md
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4946312Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250929.60
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4947334Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4948451Z ##[group]GITHUB_TOKEN Permissions
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4950671Z Contents: read
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4951320Z Metadata: read
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4951779Z Packages: read
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4952266Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4954847Z Secret source: Actions
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.4955679Z Prepare workflow directory
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.5361677Z Prepare all required actions
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.5400499Z Getting action download info
+smoke	UNKNOWN STEP	2025-10-30T08:03:16.9207283Z Download action repository 'actions/checkout@v4' (SHA:08eba0b27e820071cde6df949e0beb9ba4906955)
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.0930487Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.1909216Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4023298Z Complete job name: smoke
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4976158Z ##[group]Run actions/checkout@v4
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4978003Z with:
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4979214Z   repository: collecokzn-creator/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4981477Z   token: ***
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4982535Z   ssh-strict: true
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4983625Z   ssh-user: git
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4984743Z   persist-credentials: true
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4986022Z   clean: true
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4987144Z   sparse-checkout-cone-mode: true
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4988517Z   fetch-depth: 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4989734Z   fetch-tags: false
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4990845Z   show-progress: true
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4991964Z   lfs: false
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4992979Z   submodules: false
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4994129Z   set-safe-directory: true
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4995772Z env:
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4996763Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4997984Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.4999595Z   CYPRESS_BASE_URL: http://127.0.0.1:5173
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.5000799Z   API_BASE: http://127.0.0.1:4000
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.5001682Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.6441546Z Syncing repository: collecokzn-creator/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.6444338Z ##[group]Getting Git version info
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.6445659Z Working directory is '/home/runner/work/colleco-mvp/colleco-mvp'
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.6447454Z [command]/usr/bin/git version
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8012462Z git version 2.51.0
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8040417Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8055196Z Temporarily overriding HOME='/home/runner/work/_temp/fac2c57b-028b-4df4-ba2d-2bd6ca429b6f' before making global git config changes
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8060998Z Adding repository directory to the temporary git global config as a safe directory
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8063337Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/colleco-mvp/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8104819Z Deleting the contents of '/home/runner/work/colleco-mvp/colleco-mvp'
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8108713Z ##[group]Initializing the repository
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8113258Z [command]/usr/bin/git init /home/runner/work/colleco-mvp/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8274272Z hint: Using 'master' as the name for the initial branch. This default branch name
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8277464Z hint: is subject to change. To configure the initial branch name to use in all
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8280096Z hint: of your new repositories, which will suppress this warning, call:
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8281500Z hint:
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8282400Z hint: 	git config --global init.defaultBranch <name>
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8283754Z hint:
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8284945Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8286715Z hint: 'development'. The just-created branch can be renamed via this command:
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8288229Z hint:
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8288968Z hint: 	git branch -m <name>
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8290358Z hint:
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8291546Z hint: Disable this message with "git config set advice.defaultBranchName false"
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8293628Z Initialized empty Git repository in /home/runner/work/colleco-mvp/colleco-mvp/.git/
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8297196Z [command]/usr/bin/git remote add origin https://github.com/collecokzn-creator/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8338527Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8341104Z ##[group]Disabling automatic garbage collection
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8343278Z [command]/usr/bin/git config --local gc.auto 0
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8376600Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8378796Z ##[group]Setting up auth
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8385413Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8421344Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8863210Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.8899658Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.9151183Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.9196848Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.9198663Z ##[group]Fetching the repository
+smoke	UNKNOWN STEP	2025-10-30T08:03:17.9207470Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +dce24a9d2453dc1d3dc9b3d4c6e44d861677e49b:refs/remotes/pull/15/merge
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4746824Z From https://github.com/collecokzn-creator/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4750534Z  * [new ref]         dce24a9d2453dc1d3dc9b3d4c6e44d861677e49b -> pull/15/merge
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4783352Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4783922Z ##[group]Determining the checkout info
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4786001Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4792214Z [command]/usr/bin/git sparse-checkout disable
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4837199Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4868462Z ##[group]Checking out the ref
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.4873244Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/15/merge
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5369217Z Note: switching to 'refs/remotes/pull/15/merge'.
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5369935Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5370242Z You are in 'detached HEAD' state. You can look around, make experimental
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5370935Z changes and commit them, and you can discard any commits you make in this
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5371768Z state without impacting any branches by switching back to a branch.
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5372221Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5372534Z If you want to create a new branch to retain commits you create, you may
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5373220Z do so (now or later) by using -c with the switch command. Example:
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5373609Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5373808Z   git switch -c <new-branch-name>
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5374363Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5374731Z Or undo this operation with:
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5375793Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5376119Z   git switch -
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5376553Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5377166Z Turn off this advice by setting config variable advice.detachedHead to false
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5377854Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5378537Z HEAD is now at dce24a9 Merge 30b11683c54c485df24d0287c83572c7f37376ce into 71f5be630d527d24b1bd80413cd09b752e1167ae
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5381483Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5422733Z [command]/usr/bin/git log -1 --format=%H
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5446840Z dce24a9d2453dc1d3dc9b3d4c6e44d861677e49b
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5698307Z ##[group]Run actions/setup-node@v4
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5698837Z with:
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5699218Z   node-version: 20.19.0
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5699806Z   always-auth: false
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5700211Z   check-latest: false
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5700871Z   token: ***
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5701229Z env:
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5701598Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5702015Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5702473Z   CYPRESS_BASE_URL: http://127.0.0.1:5173
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5702986Z   API_BASE: http://127.0.0.1:4000
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.5703416Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:18.7488648Z Attempting to download 20.19.0...
+smoke	UNKNOWN STEP	2025-10-30T08:03:19.2546731Z Acquiring 20.19.0 - x64 from https://github.com/actions/node-versions/releases/download/20.19.0-13838090974/node-20.19.0-linux-x64.tar.gz
+smoke	UNKNOWN STEP	2025-10-30T08:03:19.7500962Z Extracting ...
+smoke	UNKNOWN STEP	2025-10-30T08:03:19.7608472Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/96ab5f90-23d9-4990-8682-d1eeceb1bb4c -f /home/runner/work/_temp/d51d23da-13e6-462e-9d7e-12f269000f7e
+smoke	UNKNOWN STEP	2025-10-30T08:03:20.7571399Z Adding to the cache ...
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.3931929Z ##[group]Environment details
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6206413Z node: v20.19.0
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6207076Z npm: 10.8.2
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6207367Z yarn: 1.22.22
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6208031Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6377858Z ##[group]Run npm ci
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6378154Z [36;1mnpm ci[0m
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6417829Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6418089Z env:
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6418275Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6418508Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6418787Z   CYPRESS_BASE_URL: http://127.0.0.1:5173
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6419073Z   API_BASE: http://127.0.0.1:4000
+smoke	UNKNOWN STEP	2025-10-30T08:03:22.6419543Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:25.9332335Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+smoke	UNKNOWN STEP	2025-10-30T08:03:26.7732649Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+smoke	UNKNOWN STEP	2025-10-30T08:03:27.6523708Z npm warn deprecated fstream@1.0.12: This package is no longer supported.
+smoke	UNKNOWN STEP	2025-10-30T08:03:28.3406890Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+smoke	UNKNOWN STEP	2025-10-30T08:03:28.3744128Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+smoke	UNKNOWN STEP	2025-10-30T08:03:28.7937040Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+smoke	UNKNOWN STEP	2025-10-30T08:03:28.9071459Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+smoke	UNKNOWN STEP	2025-10-30T08:03:28.9076199Z npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+smoke	UNKNOWN STEP	2025-10-30T08:03:31.7090504Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.1870845Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.1871852Z added 910 packages, and audited 911 packages in 24s
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.1872528Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.1872981Z 224 packages are looking for funding
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.1873493Z   run `npm fund` for details
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2121632Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2122407Z 9 moderate severity vulnerabilities
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2122803Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2123298Z To address issues that do not require attention, run:
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2124663Z   npm audit fix
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2124929Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2145622Z To address all issues (including breaking changes), run:
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2146205Z   npm audit fix --force
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2146439Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2146632Z Run `npm audit` for details.
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2482506Z ##[group]Run nohup node server/server.js > server.log 2>&1 &
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2482999Z [36;1mnohup node server/server.js > server.log 2>&1 &[0m
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2483304Z [36;1mecho $! > backend.pid[0m
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2526434Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2526664Z env:
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2526844Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2527053Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2527314Z   CYPRESS_BASE_URL: http://127.0.0.1:5173
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2527584Z   API_BASE: http://127.0.0.1:4000
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2527820Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2615309Z ##[group]Run nohup bash -lc "npx cross-env VITE_API_BASE=http://127.0.0.1:4000 npm run dev -- --host 127.0.0.1 --port 5173" > vite.log 2>&1 &
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2616111Z [36;1mnohup bash -lc "npx cross-env VITE_API_BASE=http://127.0.0.1:4000 npm run dev -- --host 127.0.0.1 --port 5173" > vite.log 2>&1 &[0m
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2616591Z [36;1mecho $! > vite.pid[0m
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2649834Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2650063Z env:
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2650239Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2650453Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2650692Z   CYPRESS_BASE_URL: http://127.0.0.1:5173
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2650957Z   API_BASE: http://127.0.0.1:4000
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2651174Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2748428Z ##[group]Run n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2749854Z [36;1mn=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done[0m
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2790534Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2790776Z env:
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2790954Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2791169Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2791409Z   CYPRESS_BASE_URL: http://127.0.0.1:5173
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2791693Z   API_BASE: http://127.0.0.1:4000
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2791928Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:47.2943760Z waiting... 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:48.3029865Z waiting... 2
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7384396Z ##[group]Run npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js"
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7386894Z [36;1mnpx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js"[0m
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7435464Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7435859Z env:
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7436163Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7436561Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7437010Z   CYPRESS_BASE_URL: http://127.0.0.1:5173
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7437464Z   API_BASE: http://127.0.0.1:4000
+smoke	UNKNOWN STEP	2025-10-30T08:03:49.7437849Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:03:50.5192624Z It looks like this is your first time using Cypress: 13.17.0
+smoke	UNKNOWN STEP	2025-10-30T08:03:50.5202327Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:50.5230045Z [STARTED] Task without title.
+smoke	UNKNOWN STEP	2025-10-30T08:03:55.4456365Z [SUCCESS] Task without title.
+smoke	UNKNOWN STEP	2025-10-30T08:03:55.4458487Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:55.4458821Z Opening Cypress...
+smoke	UNKNOWN STEP	2025-10-30T08:03:56.1337759Z 
+smoke	UNKNOWN STEP	2025-10-30T08:03:56.1338964Z DevTools listening on ws://127.0.0.1:42521/devtools/browser/defb7db2-817c-4eea-be2c-eed422d1a3e6
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6447103Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6790534Z tput: No value for $TERM and no -T specified
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6794110Z [90m====================================================================================================[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6794500Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6797000Z [0m  ([4m[1mRun Starting[22m[24m)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6797364Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6881308Z [90m  Ôöî[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÉ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6884875Z [90m  Ôöé[39m [90mCypress:[39m        13.17.0                                                                        [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6886352Z [90m  Ôöé[39m [90mBrowser:[39m        Electron 118 [90m(headless)[39m                                                        [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6887579Z [90m  Ôöé[39m [90mNode Version:[39m   [0mv20.19.0 [90m(/opt/hostedtoolcache/node/20.19.0/x64/bin/node)[39m[0m                      [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6888816Z [90m  Ôöé[39m [90mSpecs:[39m          [0m5 found (smoke.cy.js, nav_mobile.cy.js, booking_modal.cy.js, login_register_sm[0m [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6889825Z [90m  Ôöé[39m                 [0moke.cy.js, login_smoke_minimal.cy.js)[0m                                          [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6890785Z [90m  Ôöé[39m [90mSearched:[39m       [0mcypress/e2e/smoke.cy.js, cypress/e2e/nav_mobile.cy.js, cypress/e2e/booking_mod[0m [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6892152Z [90m  Ôöé[39m                 [0mal.cy.js, cypress/e2e/login_register_smoke.cy.js, cypress/e2e/login_smoke_mini[0m [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6893324Z [90m  Ôöé[39m                 [0mmal.cy.js[0m                                                                      [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6896983Z [90m  Ôöö[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÿ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6898935Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6898958Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6902719Z [90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6905032Z                                                                                                     
+smoke	UNKNOWN STEP	2025-10-30T08:04:01.6905589Z   Running:  [90msmoke.cy.js[39m                                                                     [90m(1 of 5)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:04.6334441Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:04.6338135Z [0m[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:04.6370397Z [0m  Smoke[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:05.9795235Z   [32m  Ô£ô[0m[90m loads home and has visible header and footer[0m[90m (1314ms)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0334549Z   [32m  Ô£ô[0m[90m backend /health responds[0m[90m (33ms)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0335552Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0483038Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0485364Z [92m [0m[32m 2 passing[0m[90m (1s)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0485773Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0502811Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0504646Z [32m  ([4m[1mResults[22m[24m)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0510129Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0528310Z [90m  Ôöî[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÉ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0533499Z [90m  Ôöé[39m [90mTests:[39m        [32m2[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0535048Z [90m  Ôöé[39m [90mPassing:[39m      [32m2[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0536769Z [90m  Ôöé[39m [90mFailing:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0538002Z [90m  Ôöé[39m [90mPending:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0539439Z [90m  Ôöé[39m [90mSkipped:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0540691Z [90m  Ôöé[39m [90mScreenshots:[39m  [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0542004Z [90m  Ôöé[39m [90mVideo:[39m        [32mfalse[39m                                                                            [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0543681Z [90m  Ôöé[39m [90mDuration:[39m     [32m1 second[39m                                                                         [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0545091Z [90m  Ôöé[39m [90mSpec Ran:[39m     [32m[32msmoke.cy.js[32m[39m                                                                      [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0552396Z [90m  Ôöö[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÿ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0556219Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0616032Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0630751Z [90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0634591Z                                                                                                     
+smoke	UNKNOWN STEP	2025-10-30T08:04:06.0635651Z   Running:  [90mnav_mobile.cy.js[39m                                                                [90m(2 of 5)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:07.6711350Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:07.6712206Z [0m[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:07.6750102Z [0m  Mobile navbar[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:08.8632232Z   [32m  Ô£ô[0m[90m does not show Book Now in mobile navbar and has no /book links[0m[90m (1176ms)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:08.8769136Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:08.8771966Z [0m  Mobile Navbar[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3232829Z   [32m  Ô£ô[0m[90m does not show Book Now or quick /book links on mobile[0m[90m (415ms)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3235120Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3373161Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3376264Z [92m [0m[32m 2 passing[0m[90m (2s)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3376832Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3382036Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3383246Z [32m  ([4m[1mResults[22m[24m)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3388244Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3404820Z [90m  Ôöî[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÉ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3410797Z [90m  Ôöé[39m [90mTests:[39m        [32m2[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3419688Z [90m  Ôöé[39m [90mPassing:[39m      [32m2[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3421678Z [90m  Ôöé[39m [90mFailing:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3424249Z [90m  Ôöé[39m [90mPending:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3425527Z [90m  Ôöé[39m [90mSkipped:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3427208Z [90m  Ôöé[39m [90mScreenshots:[39m  [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3428470Z [90m  Ôöé[39m [90mVideo:[39m        [32mfalse[39m                                                                            [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3430241Z [90m  Ôöé[39m [90mDuration:[39m     [32m1 second[39m                                                                         [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3431719Z [90m  Ôöé[39m [90mSpec Ran:[39m     [32m[32mnav_mobile.cy.js[32m[39m                                                                 [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3438455Z [90m  Ôöö[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÿ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3442498Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3477073Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3491440Z [90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3500466Z                                                                                                     
+smoke	UNKNOWN STEP	2025-10-30T08:04:09.3502070Z   Running:  [90mbooking_modal.cy.js[39m                                                             [90m(3 of 5)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:11.1090691Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:11.1091624Z [0m[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:11.1130734Z [0m  Booking modal (programmatic open)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:12.0603816Z   [32m  Ô£ô[0m[90m opens the booking modal via the app test hook and shows dialog controls[0m[90m (893ms)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:12.0758308Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:12.0763724Z [0m  Booking Modal[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:13.2801922Z   [32m  Ô£ô[0m[90m opens modal and creates an accommodation booking[0m[90m (1180ms)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1768330Z   [32m  Ô£ô[0m[90m opens modal and focuses first control, traps focus, and closes on Escape[0m[90m (855ms)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1768982Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1928995Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1930235Z [92m [0m[32m 3 passing[0m[90m (3s)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1930629Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1931143Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1932459Z [32m  ([4m[1mResults[22m[24m)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1937435Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1952677Z [90m  Ôöî[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÉ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1957032Z [90m  Ôöé[39m [90mTests:[39m        [32m3[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1958230Z [90m  Ôöé[39m [90mPassing:[39m      [32m3[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1960114Z [90m  Ôöé[39m [90mFailing:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1961331Z [90m  Ôöé[39m [90mPending:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1962593Z [90m  Ôöé[39m [90mSkipped:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1963848Z [90m  Ôöé[39m [90mScreenshots:[39m  [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1965114Z [90m  Ôöé[39m [90mVideo:[39m        [32mfalse[39m                                                                            [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1966383Z [90m  Ôöé[39m [90mDuration:[39m     [32m3 seconds[39m                                                                        [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1967885Z [90m  Ôöé[39m [90mSpec Ran:[39m     [32m[32mbooking_modal.cy.js[32m[39m                                                              [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1974933Z [90m  Ôöö[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÿ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.1978421Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.2034837Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.2048008Z [90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.2052858Z                                                                                                     
+smoke	UNKNOWN STEP	2025-10-30T08:04:14.2054165Z   Running:  [90mlogin_register_smoke.cy.js[39m                                                      [90m(4 of 5)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:15.9873976Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:15.9875747Z [0m[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:15.9913662Z [0m  Login/Register smoke[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.0925486Z [cy.task.log] CI-DIAG: IN-APP-E2E-LOGS
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.0931397Z [{"ts":1761811456559,"msg":"__E2E_PROFILE_LOADED__","value":true},{"ts":1761811456559,"msg":"__E2E_PROFILE_LOADED__","value":true},{"ts":1761811458879,"msg":"handleLogin: setUser","email":"e2e_test_1761811456027@example.com"},{"ts":1761811458879,"msg":"handleLogin: set __E2E_USER__ (pre-setUser)","email":"e2e_test_1761811456027@example.com"},{"ts":1761811458879,"msg":"handleLogin: set PROFILE_LOADED and marker"},{"ts":1761811458879,"msg":"handleLogin: setUser called (E2E)"},{"ts":1761811458881,"msg":"handleLogin: navigated synchronously (E2E)"},{"ts":1761811458885,"msg":"__E2E_PROFILE_LOADED__","value":true}]
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1190474Z [cy.task.log] CI-DIAG: __E2E_PROFILE_LOADED__
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1190999Z true
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1356422Z [cy.task.log] CI-DIAG: __E2E_MOUNTED__
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1356942Z true
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1486496Z [cy.task.log] CI-DIAG: localStorage.user
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1487283Z {"email":"e2e_test_1761811456027@example.com","password":"password123","name":"e2e_test_1761811456027"}
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1522540Z [cy.task.log] CI-DIAG: sessionStorage.user
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1523393Z null
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1671080Z [cy.task.log] CI-DIAG: body[data-e2e-login-success]
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.1673135Z null
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.2085552Z [cy.task.log] CI-FINAL-FORM-PATH: localStorage.user
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.2087071Z {"email":"e2e_test_1761811456027@example.com","password":"password123","name":"e2e_test_1761811456027"}
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.2569976Z [cy.task.log] CI-FALLBACK: no profile-ready element; localStorage.user
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.2571719Z {"email":"e2e_test_1761811456027@example.com","password":"password123","name":"e2e_test_1761811456027"}
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.3142856Z [cy.task.log] CI-FALLBACK: success via flag or persisted user
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.3143992Z {"email":"e2e_test_1761811456027@example.com","password":"password123","name":"e2e_test_1761811456027"}
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.8498869Z [cy.task.log] CI-FINAL: localStorage.user
+smoke	UNKNOWN STEP	2025-10-30T08:04:19.8502523Z {"email":"e2e_test_1761811456027@example.com","password":"password123","name":"e2e_test_1761811456027"}
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4165560Z   [32m  Ô£ô[0m[90m can register and login using local-storage auth[0m[90m (4345ms)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4166097Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4413222Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4414508Z [92m [0m[32m 1 passing[0m[90m (4s)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4414908Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4420069Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4421549Z [32m  ([4m[1mResults[22m[24m)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4426717Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4443607Z [90m  Ôöî[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÉ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4449835Z [90m  Ôöé[39m [90mTests:[39m        [32m1[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4451374Z [90m  Ôöé[39m [90mPassing:[39m      [32m1[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4454433Z [90m  Ôöé[39m [90mFailing:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4457495Z [90m  Ôöé[39m [90mPending:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4458736Z [90m  Ôöé[39m [90mSkipped:[39m      [32m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4460288Z [90m  Ôöé[39m [90mScreenshots:[39m  [32m3[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4461558Z [90m  Ôöé[39m [90mVideo:[39m        [32mfalse[39m                                                                            [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4462771Z [90m  Ôöé[39m [90mDuration:[39m     [32m4 seconds[39m                                                                        [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4464174Z [90m  Ôöé[39m [90mSpec Ran:[39m     [32m[32mlogin_register_smoke.cy.js[32m[39m                                                       [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4471541Z [90m  Ôöö[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÿ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4475221Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4475232Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4475653Z [33m  ([4m[1mScreenshots[22m[24m)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4475985Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4477153Z [90m [39m -  [0m/home/runner/work/colleco-mvp/colleco-mvp/cypress/screenshots/login_register_smo[0m     [90m[90m(1000x672)[90m[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4478661Z [90m [39m    [0mke.cy.js/login-ready.png[0m                                                                       
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4480557Z [90m [39m -  [0m/home/runner/work/colleco-mvp/colleco-mvp/cypress/screenshots/login_register_smo[0m     [90m[90m(1000x672)[90m[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4482152Z [90m [39m    [0mke.cy.js/login-success.png[0m                                                                     
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4483786Z [90m [39m -  [0m/home/runner/work/colleco-mvp/colleco-mvp/cypress/screenshots/login_register_smo[0m     [90m[90m(1000x672)[90m[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4485745Z [90m [39m    [0mke.cy.js/login-success (1).png[0m                                                                 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4486262Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4524319Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4536489Z [90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4540923Z                                                                                                     
+smoke	UNKNOWN STEP	2025-10-30T08:04:20.4542421Z   Running:  [90mlogin_smoke_minimal.cy.js[39m                                                       [90m(5 of 5)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:04:22.1242008Z 
+smoke	UNKNOWN STEP	2025-10-30T08:04:22.1243175Z [0m[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:22.1274008Z [0m  Login minimal smoke[0m
+smoke	UNKNOWN STEP	2025-10-30T08:04:53.1666505Z     [33m(Attempt 1 of 3)[0m mounts the login form
+smoke	UNKNOWN STEP	2025-10-30T08:05:24.0404650Z     [33m(Attempt 2 of 3)[0m mounts the login form
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.8591577Z   [31m  1) mounts the login form[0m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.8603946Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9271038Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9272047Z [92m [0m[32m 0 passing[0m[90m (2m)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9272709Z [31m  1 failing[0m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9272919Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9275810Z [0m  1) Login minimal smoke
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9276245Z        mounts the login form:
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9277770Z [0m[31m     AssertionError: Timed out retrying after 30000ms: Expected to find element: `[data-e2e="login-form"]`, but never found it.[0m[90m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9279182Z       at Context.eval (webpack://collecotravel-frontend/./cypress/e2e/login_smoke_minimal.cy.js:37:64)
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9280244Z [0m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9280397Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9280406Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9286366Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9288200Z [31m  ([4m[1mResults[22m[24m)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9293264Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9310344Z [90m  Ôöî[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÉ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9315373Z [90m  Ôöé[39m [90mTests:[39m        [31m1[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9316676Z [90m  Ôöé[39m [90mPassing:[39m      [31m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9317808Z [90m  Ôöé[39m [90mFailing:[39m      [31m1[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9318988Z [90m  Ôöé[39m [90mPending:[39m      [31m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9320485Z [90m  Ôöé[39m [90mSkipped:[39m      [31m0[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9321749Z [90m  Ôöé[39m [90mScreenshots:[39m  [31m3[39m                                                                                [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9323035Z [90m  Ôöé[39m [90mVideo:[39m        [31mfalse[39m                                                                            [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9324356Z [90m  Ôöé[39m [90mDuration:[39m     [31m1 minute, 32 seconds[39m                                                             [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9325710Z [90m  Ôöé[39m [90mSpec Ran:[39m     [31m[31mlogin_smoke_minimal.cy.js[31m[39m                                                        [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9332827Z [90m  Ôöö[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÿ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9336452Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9336463Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9336907Z [33m  ([4m[1mScreenshots[22m[24m)[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9337214Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9338342Z [90m [39m -  [0m/home/runner/work/colleco-mvp/colleco-mvp/cypress/screenshots/login_smoke_minima[0m     [90m[90m(1280x720)[90m[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9340430Z [90m [39m    [0ml.cy.js/Login minimal smoke -- mounts the login form (failed).png[0m                              
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9342428Z [90m [39m -  [0m/home/runner/work/colleco-mvp/colleco-mvp/cypress/screenshots/login_smoke_minima[0m     [90m[90m(1280x720)[90m[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9344004Z [90m [39m    [0ml.cy.js/Login minimal smoke -- mounts the login form (failed) (attempt 2).png[0m                  
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9345645Z [90m [39m -  [0m/home/runner/work/colleco-mvp/colleco-mvp/cypress/screenshots/login_smoke_minima[0m     [90m[90m(1280x720)[90m[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9347341Z [90m [39m    [0ml.cy.js/Login minimal smoke -- mounts the login form (failed) (attempt 3).png[0m                  
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9347962Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9383952Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9749946Z tput: No value for $TERM and no -T specified
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9750880Z [90m====================================================================================================[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9751122Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9751322Z [0m  ([4m[1mRun Finished[22m[24m)[0m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9769150Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9769204Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9791882Z [90m   [39m    [90mSpec[39m                                              [90mTests[39m  [90mPassing[39m  [90mFailing[39m  [90mPending[39m  [90mSkipped[39m [90m [39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9796938Z [90m  Ôöî[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÉ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9800716Z [90m  Ôöé[39m [32mÔ£ö[39m  [0msmoke.cy.js[0m                              [90m00:01[39m        [0m2[0m        [32m2[39m        [90m-[39m        [90m-[39m        [90m-[39m [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9805612Z [90m  Ôö£[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöñ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9808546Z [90m  Ôöé[39m [32mÔ£ö[39m  [0mnav_mobile.cy.js[0m                         [90m00:01[39m        [0m2[0m        [32m2[39m        [90m-[39m        [90m-[39m        [90m-[39m [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9812505Z [90m  Ôö£[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöñ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9816180Z [90m  Ôöé[39m [32mÔ£ö[39m  [0mbooking_modal.cy.js[0m                      [90m00:03[39m        [0m3[0m        [32m3[39m        [90m-[39m        [90m-[39m        [90m-[39m [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9822246Z [90m  Ôö£[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöñ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9825212Z [90m  Ôöé[39m [32mÔ£ö[39m  [0mlogin_register_smoke.cy.js[0m               [90m00:04[39m        [0m1[0m        [32m1[39m        [90m-[39m        [90m-[39m        [90m-[39m [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9829017Z [90m  Ôö£[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöñ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9832334Z [90m  Ôöé[39m [31mÔ£û[39m  [0mlogin_smoke_minimal.cy.js[0m                [90m01:32[39m        [0m1[0m        [90m-[39m        [31m1[39m        [90m-[39m        [90m-[39m [90mÔöé[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9836071Z [90m  Ôöö[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÇ[39m[90mÔöÿ[39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9838605Z [90m   [39m [31mÔ£û[39m  [31m1 of 5 failed (20%)[39m                      [90m01:43[39m        [0m9[0m        [32m8[39m        [31m1[39m        [90m-[39m        [90m-[39m [90m [39m
+smoke	UNKNOWN STEP	2025-10-30T08:05:54.9838981Z 
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0746845Z ##[error]Process completed with exit code 1.
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0841060Z ##[group]Run actions/upload-artifact@v4
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0841339Z with:
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0841519Z   name: cypress-smoke-artifacts
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0841933Z   path: cypress/screenshots
+smoke	UNKNOWN STEP	cypress/videos
+smoke	UNKNOWN STEP	cypress/logs
+smoke	UNKNOWN STEP	server.log
+smoke	UNKNOWN STEP	vite.log
+smoke	UNKNOWN STEP	backend.pid
+smoke	UNKNOWN STEP	vite.pid
+smoke	UNKNOWN STEP	
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0842367Z   if-no-files-found: warn
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0842577Z   compression-level: 6
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0842772Z   overwrite: false
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0842963Z   include-hidden-files: false
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0843171Z env:
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0843327Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0843532Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0843769Z   CYPRESS_BASE_URL: http://127.0.0.1:5173
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0844028Z   API_BASE: http://127.0.0.1:4000
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.0844244Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.3233263Z Multiple search paths detected. Calculating the least common ancestor of all paths
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.3237273Z The least common ancestor is /home/runner/work/colleco-mvp/colleco-mvp. This will be the root directory of the artifact
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.3238330Z With the provided path, there will be 17 files uploaded
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.3243387Z Artifact name is valid!
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.3244591Z Root directory input is valid!
+smoke	UNKNOWN STEP	2025-10-30T08:05:55.4747490Z Beginning upload of artifact content to blob storage
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.0187819Z Uploaded bytes 609320
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.0814377Z Finished uploading artifact content to blob storage!
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.0817178Z SHA256 digest of uploaded artifact zip is 7e2ebb04c7faa58af4c3f141b64371171bdedc6ca782980f476b68b9affc481c
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.0818752Z Finalizing artifact upload
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.1731875Z Artifact cypress-smoke-artifacts.zip successfully finalized. Artifact ID 4414819819
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.1733291Z Artifact cypress-smoke-artifacts has been successfully uploaded! Final size is 609320 bytes. Artifact ID is 4414819819
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.1739937Z Artifact download URL: https://github.com/collecokzn-creator/colleco-mvp/actions/runs/18933878006/artifacts/4414819819
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.1873417Z Post job cleanup.
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.2852438Z [command]/usr/bin/git version
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.2891200Z git version 2.51.0
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.2944539Z Temporarily overriding HOME='/home/runner/work/_temp/df3095ac-b62c-48bf-951b-2cb877cef137' before making global git config changes
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.2945525Z Adding repository directory to the temporary git global config as a safe directory
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.2950036Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/colleco-mvp/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.2987158Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.3023231Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.3261595Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.3284521Z http.https://github.com/.extraheader
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.3298530Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.3333582Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.3691310Z Cleaning up orphan processes
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.3968457Z Terminate orphan process: pid (2182) (node)
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.3986297Z Terminate orphan process: pid (2189) (npm exec cross-)
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.4009184Z Terminate orphan process: pid (2320) (sh)
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.4031190Z Terminate orphan process: pid (2321) (node)
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.4070811Z Terminate orphan process: pid (2328) (npm run dev --host 127.0.0.1 --port 5173)
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.4105801Z Terminate orphan process: pid (2339) (sh)
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.4128789Z Terminate orphan process: pid (2399) (node)
+smoke	UNKNOWN STEP	2025-10-30T08:05:56.4153641Z Terminate orphan process: pid (2410) (esbuild)

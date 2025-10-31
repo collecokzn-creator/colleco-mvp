@@ -1,0 +1,409 @@
+smoke	Set up job	´╗┐2025-10-30T07:15:41.0077617Z Current runner version: '2.328.0'
+smoke	Set up job	2025-10-30T07:15:41.0116199Z ##[group]Runner Image Provisioner
+smoke	Set up job	2025-10-30T07:15:41.0117617Z Hosted Compute Agent
+smoke	Set up job	2025-10-30T07:15:41.0118419Z Version: 20250912.392
+smoke	Set up job	2025-10-30T07:15:41.0119749Z Commit: d921fda672a98b64f4f82364647e2f10b2267d0b
+smoke	Set up job	2025-10-30T07:15:41.0120909Z Build Date: 2025-09-12T15:23:14Z
+smoke	Set up job	2025-10-30T07:15:41.0121881Z ##[endgroup]
+smoke	Set up job	2025-10-30T07:15:41.0122947Z ##[group]Operating System
+smoke	Set up job	2025-10-30T07:15:41.0123854Z Ubuntu
+smoke	Set up job	2025-10-30T07:15:41.0124648Z 24.04.3
+smoke	Set up job	2025-10-30T07:15:41.0125512Z LTS
+smoke	Set up job	2025-10-30T07:15:41.0126244Z ##[endgroup]
+smoke	Set up job	2025-10-30T07:15:41.0126993Z ##[group]Runner Image
+smoke	Set up job	2025-10-30T07:15:41.0128068Z Image: ubuntu-24.04
+smoke	Set up job	2025-10-30T07:15:41.0128880Z Version: 20250929.60.1
+smoke	Set up job	2025-10-30T07:15:41.0130828Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250929.60/images/ubuntu/Ubuntu2404-Readme.md
+smoke	Set up job	2025-10-30T07:15:41.0133229Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250929.60
+smoke	Set up job	2025-10-30T07:15:41.0135139Z ##[endgroup]
+smoke	Set up job	2025-10-30T07:15:41.0137090Z ##[group]GITHUB_TOKEN Permissions
+smoke	Set up job	2025-10-30T07:15:41.0140084Z Contents: read
+smoke	Set up job	2025-10-30T07:15:41.0141144Z Metadata: read
+smoke	Set up job	2025-10-30T07:15:41.0141974Z Packages: read
+smoke	Set up job	2025-10-30T07:15:41.0142700Z ##[endgroup]
+smoke	Set up job	2025-10-30T07:15:41.0146259Z Secret source: Actions
+smoke	Set up job	2025-10-30T07:15:41.0147421Z Prepare workflow directory
+smoke	Set up job	2025-10-30T07:15:41.0723699Z Prepare all required actions
+smoke	Set up job	2025-10-30T07:15:41.0781281Z Getting action download info
+smoke	Set up job	2025-10-30T07:15:41.3495448Z Download action repository 'actions/checkout@v4' (SHA:08eba0b27e820071cde6df949e0beb9ba4906955)
+smoke	Set up job	2025-10-30T07:15:41.5490842Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+smoke	Set up job	2025-10-30T07:15:41.6698442Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+smoke	Set up job	2025-10-30T07:15:41.8711474Z Complete job name: smoke
+smoke	Checkout	´╗┐2025-10-30T07:15:41.9491025Z ##[group]Run actions/checkout@v4
+smoke	Checkout	2025-10-30T07:15:41.9492019Z with:
+smoke	Checkout	2025-10-30T07:15:41.9492556Z   repository: collecokzn-creator/colleco-mvp
+smoke	Checkout	2025-10-30T07:15:41.9493398Z   token: ***
+smoke	Checkout	2025-10-30T07:15:41.9493819Z   ssh-strict: true
+smoke	Checkout	2025-10-30T07:15:41.9494246Z   ssh-user: git
+smoke	Checkout	2025-10-30T07:15:41.9494683Z   persist-credentials: true
+smoke	Checkout	2025-10-30T07:15:41.9495187Z   clean: true
+smoke	Checkout	2025-10-30T07:15:41.9495678Z   sparse-checkout-cone-mode: true
+smoke	Checkout	2025-10-30T07:15:41.9496201Z   fetch-depth: 1
+smoke	Checkout	2025-10-30T07:15:41.9496624Z   fetch-tags: false
+smoke	Checkout	2025-10-30T07:15:41.9497075Z   show-progress: true
+smoke	Checkout	2025-10-30T07:15:41.9497515Z   lfs: false
+smoke	Checkout	2025-10-30T07:15:41.9497932Z   submodules: false
+smoke	Checkout	2025-10-30T07:15:41.9498405Z   set-safe-directory: true
+smoke	Checkout	2025-10-30T07:15:41.9499101Z env:
+smoke	Checkout	2025-10-30T07:15:41.9499679Z   SITEMINDER_USE_MOCK: 1
+smoke	Checkout	2025-10-30T07:15:41.9500179Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Checkout	2025-10-30T07:15:41.9500673Z ##[endgroup]
+smoke	Checkout	2025-10-30T07:15:42.0711533Z Syncing repository: collecokzn-creator/colleco-mvp
+smoke	Checkout	2025-10-30T07:15:42.0714589Z ##[group]Getting Git version info
+smoke	Checkout	2025-10-30T07:15:42.0715851Z Working directory is '/home/runner/work/colleco-mvp/colleco-mvp'
+smoke	Checkout	2025-10-30T07:15:42.0717622Z [command]/usr/bin/git version
+smoke	Checkout	2025-10-30T07:15:42.0809315Z git version 2.51.0
+smoke	Checkout	2025-10-30T07:15:42.0839756Z ##[endgroup]
+smoke	Checkout	2025-10-30T07:15:42.0856915Z Temporarily overriding HOME='/home/runner/work/_temp/edc211e9-0685-4550-a966-dc7ed9a26010' before making global git config changes
+smoke	Checkout	2025-10-30T07:15:42.0860333Z Adding repository directory to the temporary git global config as a safe directory
+smoke	Checkout	2025-10-30T07:15:42.0865204Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/colleco-mvp/colleco-mvp
+smoke	Checkout	2025-10-30T07:15:42.0910531Z Deleting the contents of '/home/runner/work/colleco-mvp/colleco-mvp'
+smoke	Checkout	2025-10-30T07:15:42.0914996Z ##[group]Initializing the repository
+smoke	Checkout	2025-10-30T07:15:42.0920358Z [command]/usr/bin/git init /home/runner/work/colleco-mvp/colleco-mvp
+smoke	Checkout	2025-10-30T07:15:42.1040626Z hint: Using 'master' as the name for the initial branch. This default branch name
+smoke	Checkout	2025-10-30T07:15:42.1043031Z hint: is subject to change. To configure the initial branch name to use in all
+smoke	Checkout	2025-10-30T07:15:42.1045345Z hint: of your new repositories, which will suppress this warning, call:
+smoke	Checkout	2025-10-30T07:15:42.1046765Z hint:
+smoke	Checkout	2025-10-30T07:15:42.1047757Z hint: 	git config --global init.defaultBranch <name>
+smoke	Checkout	2025-10-30T07:15:42.1048957Z hint:
+smoke	Checkout	2025-10-30T07:15:42.1050359Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+smoke	Checkout	2025-10-30T07:15:42.1052221Z hint: 'development'. The just-created branch can be renamed via this command:
+smoke	Checkout	2025-10-30T07:15:42.1053737Z hint:
+smoke	Checkout	2025-10-30T07:15:42.1054522Z hint: 	git branch -m <name>
+smoke	Checkout	2025-10-30T07:15:42.1055392Z hint:
+smoke	Checkout	2025-10-30T07:15:42.1056537Z hint: Disable this message with "git config set advice.defaultBranchName false"
+smoke	Checkout	2025-10-30T07:15:42.1063749Z Initialized empty Git repository in /home/runner/work/colleco-mvp/colleco-mvp/.git/
+smoke	Checkout	2025-10-30T07:15:42.1078522Z [command]/usr/bin/git remote add origin https://github.com/collecokzn-creator/colleco-mvp
+smoke	Checkout	2025-10-30T07:15:42.1124395Z ##[endgroup]
+smoke	Checkout	2025-10-30T07:15:42.1126012Z ##[group]Disabling automatic garbage collection
+smoke	Checkout	2025-10-30T07:15:42.1128794Z [command]/usr/bin/git config --local gc.auto 0
+smoke	Checkout	2025-10-30T07:15:42.1165943Z ##[endgroup]
+smoke	Checkout	2025-10-30T07:15:42.1167392Z ##[group]Setting up auth
+smoke	Checkout	2025-10-30T07:15:42.1174415Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoke	Checkout	2025-10-30T07:15:42.1209200Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoke	Checkout	2025-10-30T07:15:42.1577379Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoke	Checkout	2025-10-30T07:15:42.1610973Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoke	Checkout	2025-10-30T07:15:42.1843818Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+smoke	Checkout	2025-10-30T07:15:42.1881355Z ##[endgroup]
+smoke	Checkout	2025-10-30T07:15:42.1883016Z ##[group]Fetching the repository
+smoke	Checkout	2025-10-30T07:15:42.1891770Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d0999317604f3b88020647086906ab24803f3830:refs/remotes/pull/15/merge
+smoke	Checkout	2025-10-30T07:15:42.6265129Z From https://github.com/collecokzn-creator/colleco-mvp
+smoke	Checkout	2025-10-30T07:15:42.6266700Z  * [new ref]         d0999317604f3b88020647086906ab24803f3830 -> pull/15/merge
+smoke	Checkout	2025-10-30T07:15:42.6296928Z ##[endgroup]
+smoke	Checkout	2025-10-30T07:15:42.6298147Z ##[group]Determining the checkout info
+smoke	Checkout	2025-10-30T07:15:42.6299606Z ##[endgroup]
+smoke	Checkout	2025-10-30T07:15:42.6304309Z [command]/usr/bin/git sparse-checkout disable
+smoke	Checkout	2025-10-30T07:15:42.6346542Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+smoke	Checkout	2025-10-30T07:15:42.6373209Z ##[group]Checking out the ref
+smoke	Checkout	2025-10-30T07:15:42.6376690Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/15/merge
+smoke	Checkout	2025-10-30T07:15:42.6854895Z Note: switching to 'refs/remotes/pull/15/merge'.
+smoke	Checkout	2025-10-30T07:15:42.6855964Z 
+smoke	Checkout	2025-10-30T07:15:42.6856599Z You are in 'detached HEAD' state. You can look around, make experimental
+smoke	Checkout	2025-10-30T07:15:42.6858148Z changes and commit them, and you can discard any commits you make in this
+smoke	Checkout	2025-10-30T07:15:42.6861020Z state without impacting any branches by switching back to a branch.
+smoke	Checkout	2025-10-30T07:15:42.6862557Z 
+smoke	Checkout	2025-10-30T07:15:42.6863574Z If you want to create a new branch to retain commits you create, you may
+smoke	Checkout	2025-10-30T07:15:42.6865888Z do so (now or later) by using -c with the switch command. Example:
+smoke	Checkout	2025-10-30T07:15:42.6867276Z 
+smoke	Checkout	2025-10-30T07:15:42.6867820Z   git switch -c <new-branch-name>
+smoke	Checkout	2025-10-30T07:15:42.6868716Z 
+smoke	Checkout	2025-10-30T07:15:42.6869242Z Or undo this operation with:
+smoke	Checkout	2025-10-30T07:15:42.6870336Z 
+smoke	Checkout	2025-10-30T07:15:42.6870818Z   git switch -
+smoke	Checkout	2025-10-30T07:15:42.6871605Z 
+smoke	Checkout	2025-10-30T07:15:42.6872731Z Turn off this advice by setting config variable advice.detachedHead to false
+smoke	Checkout	2025-10-30T07:15:42.6874681Z 
+smoke	Checkout	2025-10-30T07:15:42.6876574Z HEAD is now at d099931 Merge 359c38e87397084e3706e8393a06f045c8647776 into 71f5be630d527d24b1bd80413cd09b752e1167ae
+smoke	Checkout	2025-10-30T07:15:42.6881432Z ##[endgroup]
+smoke	Checkout	2025-10-30T07:15:42.6907499Z [command]/usr/bin/git log -1 --format=%H
+smoke	Checkout	2025-10-30T07:15:42.6928791Z d0999317604f3b88020647086906ab24803f3830
+smoke	Use Node.js	´╗┐2025-10-30T07:15:42.7248559Z ##[group]Run actions/setup-node@v4
+smoke	Use Node.js	2025-10-30T07:15:42.7249963Z with:
+smoke	Use Node.js	2025-10-30T07:15:42.7250753Z   node-version: 20
+smoke	Use Node.js	2025-10-30T07:15:42.7251626Z   always-auth: false
+smoke	Use Node.js	2025-10-30T07:15:42.7252533Z   check-latest: false
+smoke	Use Node.js	2025-10-30T07:15:42.7253787Z   token: ***
+smoke	Use Node.js	2025-10-30T07:15:42.7254599Z env:
+smoke	Use Node.js	2025-10-30T07:15:42.7255385Z   SITEMINDER_USE_MOCK: 1
+smoke	Use Node.js	2025-10-30T07:15:42.7256397Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Use Node.js	2025-10-30T07:15:42.7257423Z ##[endgroup]
+smoke	Use Node.js	2025-10-30T07:15:42.9034041Z Found in cache @ /opt/hostedtoolcache/node/20.19.5/x64
+smoke	Use Node.js	2025-10-30T07:15:42.9041359Z ##[group]Environment details
+smoke	Use Node.js	2025-10-30T07:15:43.4117389Z node: v20.19.5
+smoke	Use Node.js	2025-10-30T07:15:43.4118814Z npm: 10.8.2
+smoke	Use Node.js	2025-10-30T07:15:43.4120418Z yarn: 1.22.22
+smoke	Use Node.js	2025-10-30T07:15:43.4122777Z ##[endgroup]
+smoke	Install dependencies	´╗┐2025-10-30T07:15:43.4328189Z ##[group]Run npm ci
+smoke	Install dependencies	2025-10-30T07:15:43.4329182Z [36;1mnpm ci[0m
+smoke	Install dependencies	2025-10-30T07:15:43.4376307Z shell: /usr/bin/bash -e {0}
+smoke	Install dependencies	2025-10-30T07:15:43.4377314Z env:
+smoke	Install dependencies	2025-10-30T07:15:43.4378032Z   SITEMINDER_USE_MOCK: 1
+smoke	Install dependencies	2025-10-30T07:15:43.4378947Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Install dependencies	2025-10-30T07:15:43.4380027Z ##[endgroup]
+smoke	Install dependencies	2025-10-30T07:15:47.6647182Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+smoke	Install dependencies	2025-10-30T07:15:48.4786400Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+smoke	Install dependencies	2025-10-30T07:15:49.2223000Z npm warn deprecated fstream@1.0.12: This package is no longer supported.
+smoke	Install dependencies	2025-10-30T07:15:49.9791813Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+smoke	Install dependencies	2025-10-30T07:15:49.9795624Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+smoke	Install dependencies	2025-10-30T07:15:50.4825949Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+smoke	Install dependencies	2025-10-30T07:15:50.5962150Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+smoke	Install dependencies	2025-10-30T07:15:50.6201162Z npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+smoke	Install dependencies	2025-10-30T07:15:53.4749652Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+smoke	Install dependencies	2025-10-30T07:16:08.3704001Z 
+smoke	Install dependencies	2025-10-30T07:16:08.3705037Z added 910 packages, and audited 911 packages in 25s
+smoke	Install dependencies	2025-10-30T07:16:08.3705528Z 
+smoke	Install dependencies	2025-10-30T07:16:08.3705839Z 224 packages are looking for funding
+smoke	Install dependencies	2025-10-30T07:16:08.3706355Z   run `npm fund` for details
+smoke	Install dependencies	2025-10-30T07:16:08.3935066Z 
+smoke	Install dependencies	2025-10-30T07:16:08.3936106Z 9 moderate severity vulnerabilities
+smoke	Install dependencies	2025-10-30T07:16:08.3936572Z 
+smoke	Install dependencies	2025-10-30T07:16:08.3936987Z To address issues that do not require attention, run:
+smoke	Install dependencies	2025-10-30T07:16:08.3937578Z   npm audit fix
+smoke	Install dependencies	2025-10-30T07:16:08.3937831Z 
+smoke	Install dependencies	2025-10-30T07:16:08.3938216Z To address all issues (including breaking changes), run:
+smoke	Install dependencies	2025-10-30T07:16:08.3938792Z   npm audit fix --force
+smoke	Install dependencies	2025-10-30T07:16:08.3939049Z 
+smoke	Install dependencies	2025-10-30T07:16:08.3939266Z Run `npm audit` for details.
+smoke	Build	´╗┐2025-10-30T07:16:08.4277434Z ##[group]Run npm run build
+smoke	Build	2025-10-30T07:16:08.4277758Z [36;1mnpm run build[0m
+smoke	Build	2025-10-30T07:16:08.4311838Z shell: /usr/bin/bash -e {0}
+smoke	Build	2025-10-30T07:16:08.4312078Z env:
+smoke	Build	2025-10-30T07:16:08.4312251Z   SITEMINDER_USE_MOCK: 1
+smoke	Build	2025-10-30T07:16:08.4312510Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Build	2025-10-30T07:16:08.4312735Z ##[endgroup]
+smoke	Build	2025-10-30T07:16:08.5438406Z 
+smoke	Build	2025-10-30T07:16:08.5439072Z > collecotravel-frontend@0.1.0 prebuild
+smoke	Build	2025-10-30T07:16:08.5440467Z > node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs
+smoke	Build	2025-10-30T07:16:08.5441431Z 
+smoke	Build	2025-10-30T07:16:08.5740617Z [branding] Copied src/assets/colleco-logo.png -> public/assets/colleco-logo.png
+smoke	Build	2025-10-30T07:16:08.5756637Z [branding] Copied src/assets/Globeicon.png -> public/assets/Globeicon.png
+smoke	Build	2025-10-30T07:16:08.9804636Z Generated PWA icons: 16, 32, 180, 192, 256, 384, 512, 1024
+smoke	Build	2025-10-30T07:16:09.1476048Z [favicon] Generated favicon.ico
+smoke	Build	2025-10-30T07:16:09.1537096Z 
+smoke	Build	2025-10-30T07:16:09.1537794Z > collecotravel-frontend@0.1.0 build
+smoke	Build	2025-10-30T07:16:09.1538424Z > vite build
+smoke	Build	2025-10-30T07:16:09.1538604Z 
+smoke	Build	2025-10-30T07:16:09.3760042Z [36mvite v7.1.7 [32mbuilding for production...[36m[39m
+smoke	Build	2025-10-30T07:16:09.6689014Z transforming...
+smoke	Build	2025-10-30T07:16:16.2575706Z [32mÔ£ô[39m 2878 modules transformed.
+smoke	Build	2025-10-30T07:16:16.6785287Z rendering chunks...
+smoke	Build	2025-10-30T07:16:16.7801709Z [33m[esbuild css minify]
+smoke	Build	2025-10-30T07:16:16.7802474Z Ôû▓ [WARNING] Unexpected "{" [css-syntax-error]
+smoke	Build	2025-10-30T07:16:16.7802844Z 
+smoke	Build	2025-10-30T07:16:16.7803051Z     <stdin>:2650:0:
+smoke	Build	2025-10-30T07:16:16.7803410Z       2650 Ôöé {
+smoke	Build	2025-10-30T07:16:16.7803727Z            ÔòÁ ^
+smoke	Build	2025-10-30T07:16:16.7803885Z 
+smoke	Build	2025-10-30T07:16:16.7804027Z [39m
+smoke	Build	2025-10-30T07:16:16.9560640Z computing gzip size...
+smoke	Build	2025-10-30T07:16:16.9824808Z [2mdist/[22m[2massets/[22m[32mcolleco-logo-DW3uDFYR.png               [39m[1m[2m    8.85 kB[22m[1m[22m
+smoke	Build	2025-10-30T07:16:16.9826381Z [2mdist/[22m[32mindex.html                                     [39m[1m[2m    9.32 kB[22m[1m[22m[2m Ôöé gzip:   3.38 kB[22m
+smoke	Build	2025-10-30T07:16:16.9831085Z [2mdist/[22m[2massets/[22m[32mGlobeicon-Czs_EUAD.png                  [39m[1m[2m1,069.68 kB[22m[1m[22m
+smoke	Build	2025-10-30T07:16:16.9832597Z [2mdist/[22m[2massets/[22m[35mHome-ComhdInD.css                       [39m[1m[2m    4.61 kB[22m[1m[22m[2m Ôöé gzip:   1.24 kB[22m
+smoke	Build	2025-10-30T07:16:16.9834174Z [2mdist/[22m[2massets/[22m[35mindex-DjRAA6So.css                      [39m[1m[2m   58.16 kB[22m[1m[22m[2m Ôöé gzip:   9.99 kB[22m
+smoke	Build	2025-10-30T07:16:16.9835878Z [2mdist/[22m[2massets/[22m[36mAdminPackageForm-KjrLlwlB.js            [39m[1m[2m    0.22 kB[22m[1m[22m[2m Ôöé gzip:   0.18 kB[22m
+smoke	Build	2025-10-30T07:16:16.9837660Z [2mdist/[22m[2massets/[22m[36mcheck-circle-2-DRetKRaz.js              [39m[1m[2m    0.23 kB[22m[1m[22m[2m Ôöé gzip:   0.19 kB[22m
+smoke	Build	2025-10-30T07:16:16.9839276Z [2mdist/[22m[2massets/[22m[36mcurrency-SRo7-frQ.js                    [39m[1m[2m    0.23 kB[22m[1m[22m[2m Ôöé gzip:   0.19 kB[22m
+smoke	Build	2025-10-30T07:16:16.9841070Z [2mdist/[22m[2massets/[22m[36mAnalytics-CbXNtE0D.js                   [39m[1m[2m    0.30 kB[22m[1m[22m[2m Ôöé gzip:   0.23 kB[22m
+smoke	Build	2025-10-30T07:16:16.9842628Z [2mdist/[22m[2massets/[22m[36mPartners-BzL8qXKQ.js                    [39m[1m[2m    0.31 kB[22m[1m[22m[2m Ôöé gzip:   0.23 kB[22m
+smoke	Build	2025-10-30T07:16:16.9844147Z [2mdist/[22m[2massets/[22m[36mSupport-Bdt8wQS1.js                     [39m[1m[2m    0.42 kB[22m[1m[22m[2m Ôöé gzip:   0.30 kB[22m
+smoke	Build	2025-10-30T07:16:16.9845652Z [2mdist/[22m[2massets/[22m[36mTrips-D087XlOe.js                       [39m[1m[2m    0.42 kB[22m[1m[22m[2m Ôöé gzip:   0.30 kB[22m
+smoke	Build	2025-10-30T07:16:16.9847205Z [2mdist/[22m[2massets/[22m[36mTerms-Bctxug0d.js                       [39m[1m[2m    0.46 kB[22m[1m[22m[2m Ôöé gzip:   0.30 kB[22m
+smoke	Build	2025-10-30T07:16:16.9848750Z [2mdist/[22m[2massets/[22m[36mAutoSyncBanner-DREzCSjW.js              [39m[1m[2m    0.47 kB[22m[1m[22m[2m Ôöé gzip:   0.33 kB[22m
+smoke	Build	2025-10-30T07:16:16.9851110Z [2mdist/[22m[2massets/[22m[36mUnauthorized-D9iHMdxS.js                [39m[1m[2m    0.50 kB[22m[1m[22m[2m Ôöé gzip:   0.33 kB[22m
+smoke	Build	2025-10-30T07:16:16.9852694Z [2mdist/[22m[2massets/[22m[36mSafety-Cy8oTSkN.js                      [39m[1m[2m    0.50 kB[22m[1m[22m[2m Ôöé gzip:   0.33 kB[22m
+smoke	Build	2025-10-30T07:16:16.9854337Z [2mdist/[22m[2massets/[22m[36mdefineProperty-CussRzss.js              [39m[1m[2m    0.51 kB[22m[1m[22m[2m Ôöé gzip:   0.34 kB[22m
+smoke	Build	2025-10-30T07:16:16.9856258Z [2mdist/[22m[2massets/[22m[36mReports-DF2M6LgZ.js                     [39m[1m[2m    0.53 kB[22m[1m[22m[2m Ôöé gzip:   0.33 kB[22m
+smoke	Build	2025-10-30T07:16:16.9857768Z [2mdist/[22m[2massets/[22m[36mAbout-DECV7XNC.js                       [39m[1m[2m    0.55 kB[22m[1m[22m[2m Ôöé gzip:   0.36 kB[22m
+smoke	Build	2025-10-30T07:16:16.9859287Z [2mdist/[22m[2massets/[22m[36mPackages-CmuSAdLG.js                    [39m[1m[2m    0.59 kB[22m[1m[22m[2m Ôöé gzip:   0.38 kB[22m
+smoke	Build	2025-10-30T07:16:16.9861093Z [2mdist/[22m[2massets/[22m[36mTransportDispatch-Ic2W8mbL.js           [39m[1m[2m    0.63 kB[22m[1m[22m[2m Ôöé gzip:   0.38 kB[22m
+smoke	Build	2025-10-30T07:16:16.9862845Z [2mdist/[22m[2massets/[22m[36munsupportedIterableToArray-4EWRbQKi.js  [39m[1m[2m    0.65 kB[22m[1m[22m[2m Ôöé gzip:   0.39 kB[22m
+smoke	Build	2025-10-30T07:16:16.9864529Z [2mdist/[22m[2massets/[22m[36mComplianceStatusCard-DmzjdPR8.js        [39m[1m[2m    0.89 kB[22m[1m[22m[2m Ôöé gzip:   0.45 kB[22m
+smoke	Build	2025-10-30T07:16:16.9866168Z [2mdist/[22m[2massets/[22m[36mLiveStatCard-DZgi5yhJ.js                [39m[1m[2m    0.92 kB[22m[1m[22m[2m Ôöé gzip:   0.47 kB[22m
+smoke	Build	2025-10-30T07:16:16.9867667Z [2mdist/[22m[2massets/[22m[36mProfile-nYoCwxKC.js                     [39m[1m[2m    0.99 kB[22m[1m[22m[2m Ôöé gzip:   0.52 kB[22m
+smoke	Build	2025-10-30T07:16:16.9869158Z [2mdist/[22m[2massets/[22m[36museBasketState-BA_4o9q-.js              [39m[1m[2m    0.99 kB[22m[1m[22m[2m Ôöé gzip:   0.50 kB[22m
+smoke	Build	2025-10-30T07:16:16.9871077Z [2mdist/[22m[2massets/[22m[36mPromotionsBalanceCard-DCiSlrZ_.js       [39m[1m[2m    1.09 kB[22m[1m[22m[2m Ôöé gzip:   0.56 kB[22m
+smoke	Build	2025-10-30T07:16:16.9872621Z [2mdist/[22m[2massets/[22m[36mPromotions-CXlffvWw.js                  [39m[1m[2m    1.12 kB[22m[1m[22m[2m Ôöé gzip:   0.57 kB[22m
+smoke	Build	2025-10-30T07:16:16.9874198Z [2mdist/[22m[2massets/[22m[36mpayments-B5qOTW8F.js                    [39m[1m[2m    1.26 kB[22m[1m[22m[2m Ôöé gzip:   0.64 kB[22m
+smoke	Build	2025-10-30T07:16:16.9875711Z [2mdist/[22m[2massets/[22m[36mPayouts-Ckz-HETu.js                     [39m[1m[2m    1.36 kB[22m[1m[22m[2m Ôöé gzip:   0.45 kB[22m
+smoke	Build	2025-10-30T07:16:16.9877205Z [2mdist/[22m[2massets/[22m[36mCarBooking-Dr5s9ZSY.js                  [39m[1m[2m    1.47 kB[22m[1m[22m[2m Ôöé gzip:   0.68 kB[22m
+smoke	Build	2025-10-30T07:16:16.9878822Z [2mdist/[22m[2massets/[22m[36mAccommodationBooking-DYLtue2s.js        [39m[1m[2m    1.53 kB[22m[1m[22m[2m Ôöé gzip:   0.69 kB[22m
+smoke	Build	2025-10-30T07:16:16.9880565Z [2mdist/[22m[2massets/[22m[36museClickOutside-D1W7v3m5.js             [39m[1m[2m    1.83 kB[22m[1m[22m[2m Ôöé gzip:   0.84 kB[22m
+smoke	Build	2025-10-30T07:16:16.9882076Z [2mdist/[22m[2massets/[22m[36mDirectBooking-BtXQmeLo.js               [39m[1m[2m    1.98 kB[22m[1m[22m[2m Ôöé gzip:   0.73 kB[22m
+smoke	Build	2025-10-30T07:16:16.9883554Z [2mdist/[22m[2massets/[22m[36mContact-C8tKCAzG.js                     [39m[1m[2m    2.14 kB[22m[1m[22m[2m Ôöé gzip:   0.92 kB[22m
+smoke	Build	2025-10-30T07:16:16.9885177Z [2mdist/[22m[2massets/[22m[36mAdminAccommodation-DMCx3uQD.js          [39m[1m[2m    2.52 kB[22m[1m[22m[2m Ôöé gzip:   0.98 kB[22m
+smoke	Build	2025-10-30T07:16:16.9886758Z [2mdist/[22m[2massets/[22m[36mTransfers-CXybymnw.js                   [39m[1m[2m    2.55 kB[22m[1m[22m[2m Ôöé gzip:   0.90 kB[22m
+smoke	Build	2025-10-30T07:16:16.9888314Z [2mdist/[22m[2massets/[22m[36mFlightBooking-DmDxr178.js               [39m[1m[2m    2.83 kB[22m[1m[22m[2m Ôöé gzip:   1.08 kB[22m
+smoke	Build	2025-10-30T07:16:16.9890444Z [2mdist/[22m[2massets/[22m[36mQuotes-CNFTYRSi.js                      [39m[1m[2m    2.92 kB[22m[1m[22m[2m Ôöé gzip:   1.22 kB[22m
+smoke	Build	2025-10-30T07:16:16.9892002Z [2mdist/[22m[2massets/[22m[36mPaymentSuccess-U671xEux.js              [39m[1m[2m    3.44 kB[22m[1m[22m[2m Ôöé gzip:   1.26 kB[22m
+smoke	Build	2025-10-30T07:16:16.9893547Z [2mdist/[22m[2massets/[22m[36mindex-kYCHX8Oh.js                       [39m[1m[2m    3.48 kB[22m[1m[22m[2m Ôöé gzip:   1.67 kB[22m
+smoke	Build	2025-10-30T07:16:16.9895266Z [2mdist/[22m[2massets/[22m[36mCompliance-BulZnLs5.js                  [39m[1m[2m    3.57 kB[22m[1m[22m[2m Ôöé gzip:   1.52 kB[22m
+smoke	Build	2025-10-30T07:16:16.9896845Z [2mdist/[22m[2massets/[22m[36mcollabStore-BfLSXAgm.js                 [39m[1m[2m    3.66 kB[22m[1m[22m[2m Ôöé gzip:   1.59 kB[22m
+smoke	Build	2025-10-30T07:16:16.9898400Z [2mdist/[22m[2massets/[22m[36mBookings-8F7UdGKE.js                    [39m[1m[2m    3.71 kB[22m[1m[22m[2m Ôöé gzip:   1.31 kB[22m
+smoke	Build	2025-10-30T07:16:16.9900042Z [2mdist/[22m[2massets/[22m[36mclient-DmVibFEL.js                      [39m[1m[2m    3.80 kB[22m[1m[22m[2m Ôöé gzip:   1.10 kB[22m
+smoke	Build	2025-10-30T07:16:16.9901544Z [2mdist/[22m[2massets/[22m[36mAdminConsole-Bcss9UI0.js                [39m[1m[2m    4.33 kB[22m[1m[22m[2m Ôöé gzip:   1.48 kB[22m
+smoke	Build	2025-10-30T07:16:16.9903109Z [2mdist/[22m[2massets/[22m[36mPaymentButton-AjnLsOlH.js               [39m[1m[2m    4.56 kB[22m[1m[22m[2m Ôöé gzip:   1.75 kB[22m
+smoke	Build	2025-10-30T07:16:16.9904194Z [2mdist/[22m[2massets/[22m[36mLogin-B7mCmEhg.js                       [39m[1m[2m    6.92 kB[22m[1m[22m[2m Ôöé gzip:   1.96 kB[22m
+smoke	Build	2025-10-30T07:16:16.9905044Z [2mdist/[22m[2massets/[22m[36mCollabAnalytics-D6WNpuHa.js             [39m[1m[2m    9.27 kB[22m[1m[22m[2m Ôöé gzip:   2.77 kB[22m
+smoke	Build	2025-10-30T07:16:16.9905927Z [2mdist/[22m[2massets/[22m[36mAIMetricsPage-Cd0lnHw2.js               [39m[1m[2m   10.37 kB[22m[1m[22m[2m Ôöé gzip:   2.92 kB[22m
+smoke	Build	2025-10-30T07:16:16.9906851Z [2mdist/[22m[2massets/[22m[36mPartnerDashboard-BGf1BN6o.js            [39m[1m[2m   10.47 kB[22m[1m[22m[2m Ôöé gzip:   3.52 kB[22m
+smoke	Build	2025-10-30T07:16:16.9907725Z [2mdist/[22m[2massets/[22m[36mSettings-DRZ8YbKE.js                    [39m[1m[2m   11.16 kB[22m[1m[22m[2m Ôöé gzip:   3.16 kB[22m
+smoke	Build	2025-10-30T07:16:16.9908637Z [2mdist/[22m[2massets/[22m[36mAdminConsoleEnhanced-DM5ES4cA.js        [39m[1m[2m   11.63 kB[22m[1m[22m[2m Ôöé gzip:   3.26 kB[22m
+smoke	Build	2025-10-30T07:16:16.9909794Z [2mdist/[22m[2massets/[22m[36mNewQuote-BlA9Dn97.js                    [39m[1m[2m   12.96 kB[22m[1m[22m[2m Ôöé gzip:   3.17 kB[22m
+smoke	Build	2025-10-30T07:16:16.9910694Z [2mdist/[22m[2massets/[22m[36mCollaboration-D7XPGfX2.js               [39m[1m[2m   15.93 kB[22m[1m[22m[2m Ôöé gzip:   4.75 kB[22m
+smoke	Build	2025-10-30T07:16:16.9911579Z [2mdist/[22m[2massets/[22m[36mWorkspacePage-7pEIVfUJ.js               [39m[1m[2m   19.72 kB[22m[1m[22m[2m Ôöé gzip:   6.24 kB[22m
+smoke	Build	2025-10-30T07:16:16.9912475Z [2mdist/[22m[2massets/[22m[36mpurify.es-aGzT-_H7.js                   [39m[1m[2m   22.15 kB[22m[1m[22m[2m Ôöé gzip:   8.67 kB[22m
+smoke	Build	2025-10-30T07:16:16.9913299Z [2mdist/[22m[2massets/[22m[36mItinerary-BS_493Pz.js                   [39m[1m[2m   26.42 kB[22m[1m[22m[2m Ôöé gzip:   7.84 kB[22m
+smoke	Build	2025-10-30T07:16:16.9914201Z [2mdist/[22m[2massets/[22m[36mAIGeneratorPage-DjwKpbBw.js             [39m[1m[2m   29.66 kB[22m[1m[22m[2m Ôöé gzip:   8.09 kB[22m
+smoke	Build	2025-10-30T07:16:16.9915149Z [2mdist/[22m[2massets/[22m[36mquotes-CJLNU-xA.js                      [39m[1m[2m   33.63 kB[22m[1m[22m[2m Ôöé gzip:  11.05 kB[22m
+smoke	Build	2025-10-30T07:16:16.9915988Z [2mdist/[22m[2massets/[22m[36mHome-DREpMS5t.js                        [39m[1m[2m   52.27 kB[22m[1m[22m[2m Ôöé gzip:  15.69 kB[22m
+smoke	Build	2025-10-30T07:16:16.9916822Z [2mdist/[22m[2massets/[22m[36mPlanTrip-BvRxNaIT.js                    [39m[1m[2m   60.23 kB[22m[1m[22m[2m Ôöé gzip:  14.58 kB[22m
+smoke	Build	2025-10-30T07:16:16.9917659Z [2mdist/[22m[2massets/[22m[36mindex.esm-CxrLPpFl.js                   [39m[1m[2m   95.90 kB[22m[1m[22m[2m Ôöé gzip:  23.03 kB[22m
+smoke	Build	2025-10-30T07:16:16.9918747Z [2mdist/[22m[2massets/[22m[36mindex.es-DEpydDc2.js                    [39m[1m[2m  158.98 kB[22m[1m[22m[2m Ôöé gzip:  53.25 kB[22m
+smoke	Build	2025-10-30T07:16:16.9919872Z [2mdist/[22m[2massets/[22m[36mhtml2canvas.esm-B0tyYwQk.js             [39m[1m[2m  202.36 kB[22m[1m[22m[2m Ôöé gzip:  48.04 kB[22m
+smoke	Build	2025-10-30T07:16:16.9920759Z [2mdist/[22m[2massets/[22m[36mjspdf.es.min-Bn-8S_mY.js                [39m[1m[2m  386.83 kB[22m[1m[22m[2m Ôöé gzip: 126.82 kB[22m
+smoke	Build	2025-10-30T07:16:16.9921759Z [2mdist/[22m[2massets/[22m[36mindex-9eYr-cVl.js                       [39m[1m[2m  406.78 kB[22m[1m[22m[2m Ôöé gzip: 129.29 kB[22m
+smoke	Build	2025-10-30T07:16:16.9922319Z [32mÔ£ô built in 7.59s[39m
+smoke	Start backend server	´╗┐2025-10-30T07:16:17.0766990Z ##[group]Run # start the demo backend on port 4001 so the workflow health check matches
+smoke	Start backend server	2025-10-30T07:16:17.0767581Z [36;1m# start the demo backend on port 4001 so the workflow health check matches[0m
+smoke	Start backend server	2025-10-30T07:16:17.0768008Z [36;1mPORT=4001 nohup node server/server.js > server.log 2>&1 &[0m
+smoke	Start backend server	2025-10-30T07:16:17.0768316Z [36;1mecho $! > backend.pid[0m
+smoke	Start backend server	2025-10-30T07:16:17.0801182Z shell: /usr/bin/bash -e {0}
+smoke	Start backend server	2025-10-30T07:16:17.0801408Z env:
+smoke	Start backend server	2025-10-30T07:16:17.0801573Z   SITEMINDER_USE_MOCK: 1
+smoke	Start backend server	2025-10-30T07:16:17.0801781Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Start backend server	2025-10-30T07:16:17.0801976Z ##[endgroup]
+smoke	Start preview server	´╗┐2025-10-30T07:16:17.0889734Z ##[group]Run # bind to loopback and use port 5173 (matches local preview)
+smoke	Start preview server	2025-10-30T07:16:17.0890491Z [36;1m# bind to loopback and use port 5173 (matches local preview)[0m
+smoke	Start preview server	2025-10-30T07:16:17.0891137Z [36;1mnohup npx serve -s dist -l 5173 > preview.log 2>&1 &[0m
+smoke	Start preview server	2025-10-30T07:16:17.0891628Z [36;1mecho $! > preview.pid[0m
+smoke	Start preview server	2025-10-30T07:16:17.0933053Z shell: /usr/bin/bash -e {0}
+smoke	Start preview server	2025-10-30T07:16:17.0933435Z env:
+smoke	Start preview server	2025-10-30T07:16:17.0933726Z   SITEMINDER_USE_MOCK: 1
+smoke	Start preview server	2025-10-30T07:16:17.0934087Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Start preview server	2025-10-30T07:16:17.0934449Z ##[endgroup]
+smoke	Wait for services	´╗┐2025-10-30T07:16:17.1031202Z ##[group]Run set -e
+smoke	Wait for services	2025-10-30T07:16:17.1031478Z [36;1mset -e[0m
+smoke	Wait for services	2025-10-30T07:16:17.1031773Z [36;1m# more verbose wait loop: report per-attempt which endpoint responds[0m
+smoke	Wait for services	2025-10-30T07:16:17.1032133Z [36;1mBACKEND_OK=0[0m
+smoke	Wait for services	2025-10-30T07:16:17.1032319Z [36;1mPREVIEW_OK=0[0m
+smoke	Wait for services	2025-10-30T07:16:17.1032510Z [36;1mfor i in $(seq 1 120); do[0m
+smoke	Wait for services	2025-10-30T07:16:17.1032780Z [36;1m  echo "try=$i: checking backend:4001 preview:5173"[0m
+smoke	Wait for services	2025-10-30T07:16:17.1033190Z [36;1m  if curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1; then[0m
+smoke	Wait for services	2025-10-30T07:16:17.1033541Z [36;1m    echo "backend 4001 OK"; BACKEND_OK=1[0m
+smoke	Wait for services	2025-10-30T07:16:17.1033783Z [36;1m  else[0m
+smoke	Wait for services	2025-10-30T07:16:17.1033963Z [36;1m    echo "backend not ready"[0m
+smoke	Wait for services	2025-10-30T07:16:17.1034179Z [36;1m  fi[0m
+smoke	Wait for services	2025-10-30T07:16:17.1034340Z [36;1m[0m
+smoke	Wait for services	2025-10-30T07:16:17.1034555Z [36;1m  if curl -fsS http://127.0.0.1:5173 >/dev/null 2>&1; then[0m
+smoke	Wait for services	2025-10-30T07:16:17.1034866Z [36;1m    echo "preview 5173 OK"; PREVIEW_OK=1[0m
+smoke	Wait for services	2025-10-30T07:16:17.1035127Z [36;1m  else[0m
+smoke	Wait for services	2025-10-30T07:16:17.1035305Z [36;1m    echo "preview not ready"[0m
+smoke	Wait for services	2025-10-30T07:16:17.1035514Z [36;1m  fi[0m
+smoke	Wait for services	2025-10-30T07:16:17.1035668Z [36;1m[0m
+smoke	Wait for services	2025-10-30T07:16:17.1035880Z [36;1m  if [ "$BACKEND_OK" -eq 1 ] && [ "$PREVIEW_OK" -eq 1 ]; then[0m
+smoke	Wait for services	2025-10-30T07:16:17.1036184Z [36;1m    echo "services up"; exit 0[0m
+smoke	Wait for services	2025-10-30T07:16:17.1036405Z [36;1m  fi[0m
+smoke	Wait for services	2025-10-30T07:16:17.1036559Z [36;1m[0m
+smoke	Wait for services	2025-10-30T07:16:17.1036758Z [36;1m  echo "waiting for services... ($i)"; sleep 1[0m
+smoke	Wait for services	2025-10-30T07:16:17.1037010Z [36;1mdone[0m
+smoke	Wait for services	2025-10-30T07:16:17.1037168Z [36;1m[0m
+smoke	Wait for services	2025-10-30T07:16:17.1037554Z [36;1mecho "ERROR: services did not become ready after timeout. Last 200 lines of server.log and preview.log follow:" >&2[0m
+smoke	Wait for services	2025-10-30T07:16:17.1038034Z [36;1mecho "--- server.log ---" >&2[0m
+smoke	Wait for services	2025-10-30T07:16:17.1038272Z [36;1mtail -n 200 server.log || true[0m
+smoke	Wait for services	2025-10-30T07:16:17.1038524Z [36;1mecho "--- preview.log ---" >&2[0m
+smoke	Wait for services	2025-10-30T07:16:17.1038770Z [36;1mtail -n 200 preview.log || true[0m
+smoke	Wait for services	2025-10-30T07:16:17.1038998Z [36;1mexit 1[0m
+smoke	Wait for services	2025-10-30T07:16:17.1072399Z shell: /usr/bin/bash -e {0}
+smoke	Wait for services	2025-10-30T07:16:17.1072774Z env:
+smoke	Wait for services	2025-10-30T07:16:17.1073049Z   SITEMINDER_USE_MOCK: 1
+smoke	Wait for services	2025-10-30T07:16:17.1073401Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Wait for services	2025-10-30T07:16:17.1073753Z ##[endgroup]
+smoke	Wait for services	2025-10-30T07:16:17.1262350Z try=1: checking backend:4001 preview:5173
+smoke	Wait for services	2025-10-30T07:16:17.1377262Z backend not ready
+smoke	Wait for services	2025-10-30T07:16:17.1461949Z preview not ready
+smoke	Wait for services	2025-10-30T07:16:17.1462859Z waiting for services... (1)
+smoke	Wait for services	2025-10-30T07:16:18.1488817Z try=2: checking backend:4001 preview:5173
+smoke	Wait for services	2025-10-30T07:16:18.1634223Z backend 4001 OK
+smoke	Wait for services	2025-10-30T07:16:18.1847780Z preview 5173 OK
+smoke	Wait for services	2025-10-30T07:16:18.1848303Z services up
+smoke	Cypress run (smoke)	´╗┐2025-10-30T07:16:18.1876773Z ##[group]Run SPECS="cypress/e2e/smoke.cy.js"
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1877123Z [36;1mSPECS="cypress/e2e/smoke.cy.js"[0m
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1877499Z [36;1mnpx cypress run --browser electron --config video=false --spec "$SPECS"[0m
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1910413Z shell: /usr/bin/bash -e {0}
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1910640Z env:
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1910813Z   SITEMINDER_USE_MOCK: 1
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1911014Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1911250Z   API_BASE: http://127.0.0.1:4001
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1911459Z   CI: true
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.1911624Z ##[endgroup]
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.7352152Z It looks like this is your first time using Cypress: 13.17.0
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.7356107Z 
+smoke	Cypress run (smoke)	2025-10-30T07:16:18.7380197Z [STARTED] Task without title.
+smoke	Cypress run (smoke)	2025-10-30T07:16:23.3208702Z [SUCCESS] Task without title.
+smoke	Cypress run (smoke)	2025-10-30T07:16:23.3212358Z 
+smoke	Cypress run (smoke)	2025-10-30T07:16:23.3212828Z Opening Cypress...
+smoke	Cypress run (smoke)	2025-10-30T07:16:23.9848127Z 
+smoke	Cypress run (smoke)	2025-10-30T07:16:23.9849656Z DevTools listening on ws://127.0.0.1:34323/devtools/browser/fa59d867-7864-4846-b1d2-54cef4336f9d
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2481096Z [33mCypress could not verify that this server is running:[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2481860Z [33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2482511Z [33m[90m  > [33m[94mhttp://127.0.0.1:5174[33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2482835Z [33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2483356Z [33mWe are verifying this server because it has been configured as your [33mbaseUrl[33m.[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2483762Z [33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2484246Z [33mCypress automatically waits until your server is accessible before running tests.[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2484656Z [33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:35.2484987Z [33m[90mWe will try connecting to it 3 more times...[33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:38.2533538Z [33m[90mWe will try connecting to it 2 more times...[33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:41.2571500Z [33m[90mWe will try connecting to it 1 more time...[33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:41.2572230Z [33m[90m[33m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:45.2614668Z [31mCypress failed to verify that your server is running.[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:45.2616024Z [31m[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:45.2616784Z [31mPlease start this server and then run Cypress again.[39m
+smoke	Cypress run (smoke)	2025-10-30T07:16:45.3377533Z ##[error]Process completed with exit code 1.
+smoke	Upload artifacts	´╗┐2025-10-30T07:16:45.3444335Z ##[group]Run actions/upload-artifact@v4
+smoke	Upload artifacts	2025-10-30T07:16:45.3444653Z with:
+smoke	Upload artifacts	2025-10-30T07:16:45.3444832Z   name: cypress-smoke-artifacts
+smoke	Upload artifacts	2025-10-30T07:16:45.3445148Z   path: cypress/videos
+smoke	Upload artifacts	cypress/screenshots
+smoke	Upload artifacts	server.log
+smoke	Upload artifacts	preview.log
+smoke	Upload artifacts	
+smoke	Upload artifacts	2025-10-30T07:16:45.3445471Z   if-no-files-found: ignore
+smoke	Upload artifacts	2025-10-30T07:16:45.3445684Z   compression-level: 6
+smoke	Upload artifacts	2025-10-30T07:16:45.3445870Z   overwrite: false
+smoke	Upload artifacts	2025-10-30T07:16:45.3446067Z   include-hidden-files: false
+smoke	Upload artifacts	2025-10-30T07:16:45.3446274Z env:
+smoke	Upload artifacts	2025-10-30T07:16:45.3446427Z   SITEMINDER_USE_MOCK: 1
+smoke	Upload artifacts	2025-10-30T07:16:45.3446626Z   SITEMINDER_MOCK_PORT: 4015
+smoke	Upload artifacts	2025-10-30T07:16:45.3446819Z ##[endgroup]
+smoke	Upload artifacts	2025-10-30T07:16:45.5727077Z Multiple search paths detected. Calculating the least common ancestor of all paths
+smoke	Upload artifacts	2025-10-30T07:16:45.5733545Z The least common ancestor is /home/runner/work/colleco-mvp/colleco-mvp. This will be the root directory of the artifact
+smoke	Upload artifacts	2025-10-30T07:16:45.5734727Z With the provided path, there will be 2 files uploaded
+smoke	Upload artifacts	2025-10-30T07:16:45.5739833Z Artifact name is valid!
+smoke	Upload artifacts	2025-10-30T07:16:45.5741122Z Root directory input is valid!
+smoke	Upload artifacts	2025-10-30T07:16:45.6922348Z Beginning upload of artifact content to blob storage
+smoke	Upload artifacts	2025-10-30T07:16:45.7776214Z Uploaded bytes 413
+smoke	Upload artifacts	2025-10-30T07:16:45.8014579Z Finished uploading artifact content to blob storage!
+smoke	Upload artifacts	2025-10-30T07:16:45.8018146Z SHA256 digest of uploaded artifact zip is 89daef681fab4ee0c81a17b0c7f8eb55c2ac5133ddeac5094c1792b7855bfa67
+smoke	Upload artifacts	2025-10-30T07:16:45.8020051Z Finalizing artifact upload
+smoke	Upload artifacts	2025-10-30T07:16:45.8853296Z Artifact cypress-smoke-artifacts.zip successfully finalized. Artifact ID 4414495610
+smoke	Upload artifacts	2025-10-30T07:16:45.8855020Z Artifact cypress-smoke-artifacts has been successfully uploaded! Final size is 413 bytes. Artifact ID is 4414495610
+smoke	Upload artifacts	2025-10-30T07:16:45.8862342Z Artifact download URL: https://github.com/collecokzn-creator/colleco-mvp/actions/runs/18932883693/artifacts/4414495610
+smoke	Post Checkout	´╗┐2025-10-30T07:16:45.9027710Z Post job cleanup.
+smoke	Post Checkout	2025-10-30T07:16:45.9974522Z [command]/usr/bin/git version
+smoke	Post Checkout	2025-10-30T07:16:46.0010864Z git version 2.51.0
+smoke	Post Checkout	2025-10-30T07:16:46.0055405Z Temporarily overriding HOME='/home/runner/work/_temp/cbf0c067-c4e7-4d33-befd-186401ebd341' before making global git config changes
+smoke	Post Checkout	2025-10-30T07:16:46.0056891Z Adding repository directory to the temporary git global config as a safe directory
+smoke	Post Checkout	2025-10-30T07:16:46.0068999Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/colleco-mvp/colleco-mvp
+smoke	Post Checkout	2025-10-30T07:16:46.0103759Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoke	Post Checkout	2025-10-30T07:16:46.0135931Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoke	Post Checkout	2025-10-30T07:16:46.0364341Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoke	Post Checkout	2025-10-30T07:16:46.0384911Z http.https://github.com/.extraheader
+smoke	Post Checkout	2025-10-30T07:16:46.0397721Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+smoke	Post Checkout	2025-10-30T07:16:46.0428731Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoke	Complete job	´╗┐2025-10-30T07:16:46.0759081Z Cleaning up orphan processes
+smoke	Complete job	2025-10-30T07:16:46.1031035Z Terminate orphan process: pid (2260) (node)
+smoke	Complete job	2025-10-30T07:16:46.1047820Z Terminate orphan process: pid (2267) (npm exec serve -s dist -l 5173)
+smoke	Complete job	2025-10-30T07:16:46.1070246Z Terminate orphan process: pid (2284) (sh)
+smoke	Complete job	2025-10-30T07:16:46.1091861Z Terminate orphan process: pid (2285) (node)
