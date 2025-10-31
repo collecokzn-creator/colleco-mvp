@@ -1,0 +1,51 @@
+name: Scheduled prune triage (weekly, dry-run)
+
+on:
+  schedule:
+    # weekly (Sunday at 03:00 UTC)
+    - cron: '0 3 * * 0'
+
+jobs:
+  prune-weekly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    # The workflow will consult repository variable `PRUNE_DELETE` (set in repo Settings -> Variables)
+    # If PRUNE_DELETE == 'true' the workflow will perform deletion; otherwise it runs in dry-run.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine dry-run
+        id: prune_mode
+        env:
+          PRUNE_DELETE: ${{ secrets.PRUNE_DELETE }}
+        run: |
+          echo "PRUNE_DELETE=$PRUNE_DELETE"
+          if [ "$PRUNE_DELETE" = "true" ]; then
+            echo "DRY=false" >> $GITHUB_OUTPUT
+          else
+            echo "DRY=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run prune (dry-run by default)
+        run: |
+          if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
+            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30
+          else
+            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 -DryRun:$false
+          fi
+
+      - name: Upload prune results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prune-triage-weekly-${{ github.run_id }}
+          path: artifacts/triage
+
+      - name: Post note
+        run: |
+          if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
+            echo "Prune ran in dry-run mode. To enable deletion set repository variable PRUNE_DELETE=true"
+          else
+            echo "Prune ran and deleted old run directories."
+          fi

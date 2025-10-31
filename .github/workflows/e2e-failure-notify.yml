@@ -1,0 +1,40 @@
+name: Notify PR on E2E failure
+
+on:
+  workflow_run:
+    workflows: ["E2E PR Smoke"]
+    types: [completed]
+
+jobs:
+  notify:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Post PR comment suggesting diagnostic run
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const run = context.payload.workflow_run;
+            const prs = run.pull_requests || [];
+            if (!prs.length) {
+              core.info('No associated PRs found for the failing workflow run.');
+              return;
+            }
+            const prUrl = pr.html_url || `https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${pr.number}`;
+            const labelsUrl = `${prUrl.replace('/pull/', '/issues/')}/labels`;
+            const body = `The **E2E PR Smoke** workflow just failed for this PR. To help triage we recommend one of the following:\n\n` +
+              `1) Add the **e2e-diag** label to this PR to trigger an on-demand E2E run that collects screenshots and logs (maintainers can add the label here: ${labelsUrl}).\n` +
+              `2) If you prefer, request a diagnostic run in the PR comments and a maintainer will run it for you.\n\n` +
+              `The diagnostic run will upload screenshots, Cypress logs, and server/Vite logs which greatly speeds up debugging flaky failures.`;
+            for (const pr of prs) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body,
+              });
+            }

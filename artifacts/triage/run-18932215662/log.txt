@@ -1,0 +1,279 @@
+smoke	UNKNOWN STEP	´╗┐2025-10-30T06:41:49.9532156Z Current runner version: '2.328.0'
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9568692Z ##[group]Runner Image Provisioner
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9570195Z Hosted Compute Agent
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9571009Z Version: 20250912.392
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9572101Z Commit: d921fda672a98b64f4f82364647e2f10b2267d0b
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9573279Z Build Date: 2025-09-12T15:23:14Z
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9574177Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9575217Z ##[group]Operating System
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9576122Z Ubuntu
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9576887Z 24.04.3
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9577760Z LTS
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9578526Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9579518Z ##[group]Runner Image
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9580850Z Image: ubuntu-24.04
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9581734Z Version: 20250929.60.1
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9583512Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250929.60/images/ubuntu/Ubuntu2404-Readme.md
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9586186Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250929.60
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9587966Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9589995Z ##[group]GITHUB_TOKEN Permissions
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9592664Z Contents: read
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9593553Z Metadata: read
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9594340Z Packages: read
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9595317Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9598663Z Secret source: Actions
+smoke	UNKNOWN STEP	2025-10-30T06:41:49.9600207Z Prepare workflow directory
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.0180881Z Prepare all required actions
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.0237484Z Getting action download info
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.2848775Z Download action repository 'actions/checkout@v4' (SHA:08eba0b27e820071cde6df949e0beb9ba4906955)
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.3712886Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.5075520Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.6975550Z Complete job name: smoke
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7654397Z ##[group]Run actions/checkout@v4
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7655218Z with:
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7655659Z   repository: collecokzn-creator/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7656354Z   token: ***
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7656956Z   ssh-strict: true
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7657394Z   ssh-user: git
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7657819Z   persist-credentials: true
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7658285Z   clean: true
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7658684Z   sparse-checkout-cone-mode: true
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7659361Z   fetch-depth: 1
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7659747Z   fetch-tags: false
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7660134Z   show-progress: true
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7660526Z   lfs: false
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7660886Z   submodules: false
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7661300Z   set-safe-directory: true
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7662024Z env:
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7662412Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7662841Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.7663283Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8730463Z Syncing repository: collecokzn-creator/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8732342Z ##[group]Getting Git version info
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8733090Z Working directory is '/home/runner/work/colleco-mvp/colleco-mvp'
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8734082Z [command]/usr/bin/git version
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8838260Z git version 2.51.0
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8864526Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8879386Z Temporarily overriding HOME='/home/runner/work/_temp/71a573e6-6afd-441d-9635-10c9bec50fba' before making global git config changes
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8881518Z Adding repository directory to the temporary git global config as a safe directory
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8884898Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/colleco-mvp/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8924716Z Deleting the contents of '/home/runner/work/colleco-mvp/colleco-mvp'
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8928792Z ##[group]Initializing the repository
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.8933099Z [command]/usr/bin/git init /home/runner/work/colleco-mvp/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9038510Z hint: Using 'master' as the name for the initial branch. This default branch name
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9040481Z hint: is subject to change. To configure the initial branch name to use in all
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9042337Z hint: of your new repositories, which will suppress this warning, call:
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9043533Z hint:
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9044303Z hint: 	git config --global init.defaultBranch <name>
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9045139Z hint:
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9045701Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9046591Z hint: 'development'. The just-created branch can be renamed via this command:
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9047291Z hint:
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9047666Z hint: 	git branch -m <name>
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9048115Z hint:
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9048699Z hint: Disable this message with "git config set advice.defaultBranchName false"
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9050427Z Initialized empty Git repository in /home/runner/work/colleco-mvp/colleco-mvp/.git/
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9055555Z [command]/usr/bin/git remote add origin https://github.com/collecokzn-creator/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9102465Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9103303Z ##[group]Disabling automatic garbage collection
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9109942Z [command]/usr/bin/git config --local gc.auto 0
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9148165Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9149560Z ##[group]Setting up auth
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9155448Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9190749Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9550991Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9587969Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9866630Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9909441Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9910957Z ##[group]Fetching the repository
+smoke	UNKNOWN STEP	2025-10-30T06:41:50.9920097Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +71cac94c62b16f33c8060a860d3ea188a8d0af2b:refs/remotes/pull/15/merge
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3800437Z From https://github.com/collecokzn-creator/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3802278Z  * [new ref]         71cac94c62b16f33c8060a860d3ea188a8d0af2b -> pull/15/merge
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3834252Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3835500Z ##[group]Determining the checkout info
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3837584Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3842286Z [command]/usr/bin/git sparse-checkout disable
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3885962Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3917192Z ##[group]Checking out the ref
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.3921877Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/15/merge
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4401216Z Note: switching to 'refs/remotes/pull/15/merge'.
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4402211Z 
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4402937Z You are in 'detached HEAD' state. You can look around, make experimental
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4404555Z changes and commit them, and you can discard any commits you make in this
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4405836Z state without impacting any branches by switching back to a branch.
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4406583Z 
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4407084Z If you want to create a new branch to retain commits you create, you may
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4408266Z do so (now or later) by using -c with the switch command. Example:
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4409189Z 
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4409692Z   git switch -c <new-branch-name>
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4410546Z 
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4410863Z Or undo this operation with:
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4411363Z 
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4411669Z   git switch -
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4412054Z 
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4412658Z Turn off this advice by setting config variable advice.detachedHead to false
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4413865Z 
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4414919Z HEAD is now at 71cac94 Merge d44c3bfd2e110a246b535aa71bce40a4c7ebbdb2 into 71f5be630d527d24b1bd80413cd09b752e1167ae
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4418409Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4450818Z [command]/usr/bin/git log -1 --format=%H
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4474099Z 71cac94c62b16f33c8060a860d3ea188a8d0af2b
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4776498Z ##[group]Run actions/setup-node@v4
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4777651Z with:
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4778460Z   node-version: 20.19.0
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4779605Z   always-auth: false
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4780520Z   check-latest: false
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4781735Z   token: ***
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4782535Z env:
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4783335Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4784342Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.4785353Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:51.6485091Z Attempting to download 20.19.0...
+smoke	UNKNOWN STEP	2025-10-30T06:41:52.0336570Z Acquiring 20.19.0 - x64 from https://github.com/actions/node-versions/releases/download/20.19.0-13838090974/node-20.19.0-linux-x64.tar.gz
+smoke	UNKNOWN STEP	2025-10-30T06:41:52.4749714Z Extracting ...
+smoke	UNKNOWN STEP	2025-10-30T06:41:52.4853515Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/eaede2bc-63a9-4505-aa79-adeccb3e9c6d -f /home/runner/work/_temp/e36f8ccb-90e3-4b30-adbd-5b934b41a03a
+smoke	UNKNOWN STEP	2025-10-30T06:41:53.4935780Z Adding to the cache ...
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.1142483Z ##[group]Environment details
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3394579Z node: v20.19.0
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3395397Z npm: 10.8.2
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3395889Z yarn: 1.22.22
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3396558Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3576056Z ##[group]Run npm ci
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3576368Z [36;1mnpm ci[0m
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3614535Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3614781Z env:
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3614965Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3615203Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T06:41:55.3615458Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:41:58.4871480Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+smoke	UNKNOWN STEP	2025-10-30T06:41:59.1290756Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+smoke	UNKNOWN STEP	2025-10-30T06:41:59.8317272Z npm warn deprecated fstream@1.0.12: This package is no longer supported.
+smoke	UNKNOWN STEP	2025-10-30T06:42:00.5181764Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+smoke	UNKNOWN STEP	2025-10-30T06:42:00.5183244Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+smoke	UNKNOWN STEP	2025-10-30T06:42:00.9943531Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+smoke	UNKNOWN STEP	2025-10-30T06:42:01.1106428Z npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+smoke	UNKNOWN STEP	2025-10-30T06:42:01.1116083Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+smoke	UNKNOWN STEP	2025-10-30T06:42:03.6656958Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8712342Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8713161Z added 910 packages, and audited 911 packages in 23s
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8715345Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8715798Z 224 packages are looking for funding
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8716448Z   run `npm fund` for details
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8947915Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8948456Z 9 moderate severity vulnerabilities
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8948702Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8948911Z To address issues that do not require attention, run:
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8949693Z   npm audit fix
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8949893Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8950221Z To address all issues (including breaking changes), run:
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8950748Z   npm audit fix --force
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8950989Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.8951188Z Run `npm audit` for details.
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9253866Z ##[group]Run nohup node server/server.js > server.log 2>&1 &
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9254539Z [36;1mnohup node server/server.js > server.log 2>&1 &[0m
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9254850Z [36;1mecho $! > backend.pid[0m
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9292161Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9292387Z env:
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9292567Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9292777Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9293001Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9378732Z ##[group]Run nohup bash -lc "npx cross-env VITE_API_BASE=http://127.0.0.1:4000 npm run dev -- --host 127.0.0.1 --port 5173" > vite.log 2>&1 &
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9379835Z [36;1mnohup bash -lc "npx cross-env VITE_API_BASE=http://127.0.0.1:4000 npm run dev -- --host 127.0.0.1 --port 5173" > vite.log 2>&1 &[0m
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9380333Z [36;1mecho $! > vite.pid[0m
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9412844Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9413226Z env:
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9413505Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9413851Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9414211Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9507485Z ##[group]Run n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9509387Z [36;1mn=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done[0m
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9557694Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9558098Z env:
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9558412Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9558783Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9559431Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:42:18.9738844Z waiting... 1
+smoke	UNKNOWN STEP	2025-10-30T06:42:19.9831445Z waiting... 2
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.2906375Z ##[group]Run npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js"
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.2908912Z [36;1mnpx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js"[0m
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.2953365Z shell: /usr/bin/bash -e {0}
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.2953694Z env:
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.2953957Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.2954284Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.2954630Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.9957361Z It looks like this is your first time using Cypress: 13.17.0
+smoke	UNKNOWN STEP	2025-10-30T06:42:21.9963935Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:22.0037832Z [STARTED] Task without title.
+smoke	UNKNOWN STEP	2025-10-30T06:42:26.3183756Z [SUCCESS] Task without title.
+smoke	UNKNOWN STEP	2025-10-30T06:42:26.3187458Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:26.3187942Z Opening Cypress...
+smoke	UNKNOWN STEP	2025-10-30T06:42:26.9387945Z 
+smoke	UNKNOWN STEP	2025-10-30T06:42:26.9388768Z DevTools listening on ws://127.0.0.1:46577/devtools/browser/8fbf7817-ec99-4247-844d-a56b6ef8bc9f
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3600594Z [33mCypress could not verify that this server is running:[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3601328Z [33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3601945Z [33m[90m  > [33m[94mhttp://127.0.0.1:5174[33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3602439Z [33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3603300Z [33mWe are verifying this server because it has been configured as your [33mbaseUrl[33m.[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3604106Z [33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3605005Z [33mCypress automatically waits until your server is accessible before running tests.[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3605737Z [33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:32.3606355Z [33m[90mWe will try connecting to it 3 more times...[33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:35.3637873Z [33m[90mWe will try connecting to it 2 more times...[33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:38.3684036Z [33m[90mWe will try connecting to it 1 more time...[33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:38.3684666Z [33m[90m[33m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.3720283Z [31mCypress failed to verify that your server is running.[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.3721121Z [31m[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.3721627Z [31mPlease start this server and then run Cypress again.[39m
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4456576Z ##[error]Process completed with exit code 1.
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4531441Z ##[group]Run actions/upload-artifact@v4
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4531718Z with:
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4531904Z   name: cypress-smoke-artifacts
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4532332Z   path: cypress/screenshots
+smoke	UNKNOWN STEP	cypress/videos
+smoke	UNKNOWN STEP	cypress/logs
+smoke	UNKNOWN STEP	server.log
+smoke	UNKNOWN STEP	vite.log
+smoke	UNKNOWN STEP	backend.pid
+smoke	UNKNOWN STEP	vite.pid
+smoke	UNKNOWN STEP	
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4532765Z   if-no-files-found: warn
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4532977Z   compression-level: 6
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4533168Z   overwrite: false
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4533358Z   include-hidden-files: false
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4533568Z env:
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4533726Z   SITEMINDER_USE_MOCK: 1
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4533934Z   SITEMINDER_MOCK_PORT: 4015
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.4534133Z ##[endgroup]
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.6900649Z Multiple search paths detected. Calculating the least common ancestor of all paths
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.6905920Z The least common ancestor is /home/runner/work/colleco-mvp/colleco-mvp. This will be the root directory of the artifact
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.6907166Z With the provided path, there will be 11 files uploaded
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.6908871Z Artifact name is valid!
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.6911919Z Root directory input is valid!
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.8159767Z Beginning upload of artifact content to blob storage
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.9356112Z Uploaded bytes 23852
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.9611745Z Finished uploading artifact content to blob storage!
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.9614860Z SHA256 digest of uploaded artifact zip is b3c61bad5e8fadcff0bf1bb43937f369be4c986dd43bd1cbcbb36913d098e30d
+smoke	UNKNOWN STEP	2025-10-30T06:42:42.9616251Z Finalizing artifact upload
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.0985014Z Artifact cypress-smoke-artifacts.zip successfully finalized. Artifact ID 4414288731
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.0987528Z Artifact cypress-smoke-artifacts has been successfully uploaded! Final size is 23852 bytes. Artifact ID is 4414288731
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.0994934Z Artifact download URL: https://github.com/collecokzn-creator/colleco-mvp/actions/runs/18932215662/artifacts/4414288731
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.1126658Z Post job cleanup.
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2078043Z [command]/usr/bin/git version
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2113732Z git version 2.51.0
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2157564Z Temporarily overriding HOME='/home/runner/work/_temp/0c30fa0e-1b7b-4455-8984-d890e7cb0f3d' before making global git config changes
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2159286Z Adding repository directory to the temporary git global config as a safe directory
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2171988Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/colleco-mvp/colleco-mvp
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2206226Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2238536Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2462675Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2483664Z http.https://github.com/.extraheader
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2496785Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2528582Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.2845148Z Cleaning up orphan processes
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.3132040Z Terminate orphan process: pid (2183) (node)
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.3149771Z Terminate orphan process: pid (2190) (npm exec cross-)
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.3172881Z Terminate orphan process: pid (2321) (sh)
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.3195484Z Terminate orphan process: pid (2322) (node)
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.3225508Z Terminate orphan process: pid (2329) (npm run dev --host 127.0.0.1 --port 5173)
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.3260150Z Terminate orphan process: pid (2340) (sh)
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.3283269Z Terminate orphan process: pid (2399) (node)
+smoke	UNKNOWN STEP	2025-10-30T06:42:43.3339787Z Terminate orphan process: pid (2410) (esbuild)
