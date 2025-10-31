@@ -25,10 +25,12 @@ jobs:
 
       - name: Run prune (honors PRUNE_DELETE secret)
         run: |
+          # When invoking pwsh from bash, single-quote the PowerShell literal $false so bash
+          # doesn't expand $false to an empty string. This ensures the switch is passed as False.
           if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
             pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30
           else
-            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 -DryRun:$false
+            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 '-DryRun:$false'
           fi
 
       - name: Upload prune results
@@ -36,7 +38,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: prune-triage-runonce-${{ github.run_id }}
-          path: artifacts/triage
+          path: |
+            artifacts/triage/**
 
       - name: Post note
         if: always()
