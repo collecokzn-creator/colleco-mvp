@@ -1,0 +1,39 @@
+name: Prune triage (test data run)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-and-prune:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create test triage directories with old timestamps
+        run: |
+          set -e
+          echo "Creating artifacts/triage/run-old and run-new"
+          mkdir -p artifacts/triage/run-old
+          mkdir -p artifacts/triage/run-new
+          # make run-old appear 40 days old, run-new 10 days old
+          touch -d "40 days ago" artifacts/triage/run-old
+          touch -d "10 days ago" artifacts/triage/run-new
+          ls -la artifacts/triage || true
+          stat -c '%n %Y' artifacts/triage/run-old || true
+
+      - name: Run prune (force deletion for test)
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 -DryRun:$false
+
+      - name: Upload prune results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prune-triage-testdata-${{ github.run_id }}
+          path: artifacts/triage
+
+      - name: Output note
+        run: |
+          echo "Created test triage dirs and ran prune. Check uploaded artifact prune-triage-testdata-${{ github.run_id }}"
