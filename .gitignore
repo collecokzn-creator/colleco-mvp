@@ -7,3 +7,18 @@ dist/
 .env.*
 !.env.example
 .fake
+
+# Ignore CI/debug artifact folders and Cypress artifacts created during CI runs
+ci-artifacts*/
+gh-artifacts*/
+ci-artifacts/
+gh-artifacts-
+colleco-ci-logs/
+
+# Cypress generated artifacts (screenshots/videos) - keep them out of the repo
+cypress/screenshots/
+cypress/videos/
+
+# Temporary CI images/logs
+*.png
+*.jpg

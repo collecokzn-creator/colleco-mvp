@@ -1,7 +1,9 @@
 // CollEco Travel Admin API (modular, scalable)
 // Use this module for admin-specific API calls and integrations.
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://api.collecotravel.com/v1';
+const BASE_URL = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL)
+  ? import.meta.env.VITE_API_URL
+  : 'https://api.collecotravel.com/v1';
 
 export async function getAuditLogs() {
   // GET /admin/audit-logs

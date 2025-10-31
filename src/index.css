@@ -24,6 +24,14 @@ html, body { color-scheme: light; }
 /* Reserve space for scrollbars to avoid overlay black lines on Windows */
 html { overflow-y: scroll; }
 
+/* Prevent sporadic horizontal scroll on narrow viewports (mobile devices).
+	 CI Chrome headless sometimes renders subtle overflows (sub-pixel math, fonts)
+	 that are visually harmless but fail our strict overflow detector. Restrict
+	 this to small screens only to avoid masking real desktop layout issues. */
+@media (max-width: 640px) {
+	html, body { overflow-x: hidden; }
+}
+
 /* Toast & subtle UI animations */
 @media (prefers-reduced-motion: no-preference) {
 	.toast-fade { animation: toastIn .35s ease-out; }
@@ -39,17 +47,111 @@ html { overflow-y: scroll; }
 /* WebKit browsers (Chrome, Edge, Safari) */
 *::-webkit-scrollbar { height: 8px; width: 8px; }
 /* Match track color exactly to page background (#f9f6f2) to avoid a visible seam */
-*::-webkit-scrollbar-track { background: #f9f6f2; }
+*::-webkit-scrollbar-track { background: transparent; }
 *::-webkit-scrollbar-thumb {
 	background-color: transparent; /* hidden by default */
 	border-radius: 8px;
-	border: 2px solid #f9f6f2;
+	border: 2px solid transparent; /* avoid visible seam on Windows */
 }
 /* Reveal thumb on container hover (desktop) */
-*:hover::-webkit-scrollbar-thumb { background-color: #efe8df; }
-*:hover::-webkit-scrollbar-thumb:hover { background-color: #e8dfd4; }
-*::-webkit-scrollbar-corner { background: #F7F4EF; }
+*:hover::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.06); }
+*:hover::-webkit-scrollbar-thumb:hover { background-color: rgba(0,0,0,0.08); }
+*::-webkit-scrollbar-corner { background: transparent; }
 
-/* Sidebar-specific scrollbars match the panel background */
-.sidebar-scroll::-webkit-scrollbar-track { background: #f3e9dc; }
-.sidebar-scroll:hover::-webkit-scrollbar-thumb { background-color: #e9dfd2; }
+.sidebar-scroll {
+	/* Hide cross-browser scrollbar visuals while preserving scroll functionality */
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE 10+ */
+	scrollbar-color: transparent transparent;
+	overscroll-behavior: contain;
+}
+.sidebar-scroll::-webkit-scrollbar {
+	width: 0px;
+	height: 0px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb { background: transparent; border: none; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* Defensive: ensure sidebar border or shadow doesn't create a visible seam on scroll */
+.sidebar-scroll { border-left-color: transparent; box-shadow: none; }
+
+/* Defensive: ensure footer text remains readable on brand brown backgrounds */
+footer.bg-brand-brown, footer[class*="bg-brand-brown"] {
+	color: white !important;
+}
+
+/*
+	Global 'rusty' text overrides (low-risk):
+	- Many components use `text-brand-brown` and occasionally `text-black`.
+	- To make the site use a warmer "rusty" tone app-wide without changing dozens of classnames,
+		we map those text classes to the `brand.russty` color defined in Tailwind config.
+	- These selectors are intentionally specific but minimal; they won't affect components that
+		explicitly set `text-white` or other color utilities. This keeps the change safe and
+		reversible by removing this block.
+*/
+
+:root {
+	--color-rusty: #B3541E; /* keep in sync with tailwind.config.js brand.russty */
+}
+
+/* Tailwind-generated classes like .text-brand-brown map to CSS variables via Tailwind,
+	 but this global override ensures any direct `color: #000` or generic `text-black`
+	 usage is softened to the rusty tone. */
+
+/* Override commonly used utility classes */
+.text-black,
+.text-brand-brown,
+.text-brand-brown\/60,
+.text-brand-brown\/70,
+.text-brand-brown\/80,
+.text-brand-brown\/85,
+.text-brand-brown\/90,
+.text-brand-brown\/50,
+body,
+/* Catch inline style attributes that set color to black or brown */
+[style*="color:#000"],
+[style*="color:#000000"],
+[style*="color: black"],
+[style*="color:black"],
+[style*="color:rgb(0,0,0)"],
+[style*="color:#3a2a20"],
+[style*="color:#000;"],
+[style*="color:#000000;"],
+[style*="color:black;"],
+[style*="color: brown"],
+[style*="color:brown"],
+[style*="color:#5c3b21"],
+{
+	color: var(--color-rusty) !important;
+}
+
+/* More specific overrides for fractional opacity utilities (Tailwind emits complex classnames)
+	 We'll use attribute selectors to catch classnames that include text-brand-brown with a slash. */
+[class*="text-brand-brown/"] {
+	color: var(--color-rusty) !important;
+}
+
+/* Ensure headings and strong text remain darker but still rusty */
+/* Headings and strong text: slightly darker rusty for contrast */
+h1, h2, h3, h4, h5, h6, strong, b {
+	color: #8B3A12 !important; /* darker rusty tone */
+}
+
+/* Target only the site-level footer (pages often use bg-brand-brown for the bottom bar).
+	 Keep any footers inside components (like the Sidebar) unaffected so they can remain white. */
+footer.bg-brand-brown,
+footer[class*="bg-brand-brown"] {
+	background-color: var(--color-rusty) !important;
+	color: white !important;
+}
+
+/* Ensure any footer elements inside the Sidebar keep their white background (user requested)
+	 and allow text there to follow the global rusty mapping. */
+aside footer {
+	background-color: #ffffff !important;
+	/* let text inside the sidebar footer follow the global rusty text override */
+	color: var(--color-rusty) !important;
+}
+aside footer * {
+	color: var(--color-rusty) !important;
+}

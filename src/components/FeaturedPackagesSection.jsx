@@ -32,22 +32,22 @@ export default function FeaturedPackagesSection() {
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-10 sm:py-12">
-      <h2 className="text-2xl sm:text-3xl font-bold">Featured packages</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-brand-orange">Featured packages</h2>
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {packages.map((pkg) => (
-          <article key={pkg.id} className="rounded-lg border border-cream-border bg-cream p-5 shadow-sm hover:shadow transition">
-            <h3 className="font-semibold text-lg leading-snug">{pkg.title}</h3>
-            <ul className="mt-2 text-sm text-brand-brown/80 list-disc list-inside">
+          <article key={pkg.id} className="rounded-lg border border-brand-gold bg-white p-5 shadow-sm hover:shadow transition">
+            <h3 className="font-semibold text-lg leading-snug text-brand-orange">{pkg.title}</h3>
+            <ul className="mt-2 text-sm text-brand-gold list-disc list-inside">
               {pkg.highlights.map((h) => (
                 <li key={h}>{h}</li>
               ))}
             </ul>
-            <div className="mt-3 text-sm text-brand-brown/90 flex items-center gap-3">
-              <span className="inline-flex items-center rounded bg-white/70 px-2 py-1 border border-cream-border">{pkg.nights} nights</span>
-              <span className="inline-flex items-center">From ${pkg.priceFrom} pp</span>
+            <div className="mt-3 text-sm text-brand-orange flex items-center gap-3">
+              <span className="inline-flex items-center rounded bg-brand-gold/20 px-2 py-1 border border-brand-gold">{pkg.nights} nights</span>
+              <span className="inline-flex items-center text-brand-gold">From ${pkg.priceFrom} pp</span>
             </div>
             <div className="mt-4">
-              <Link to={pkg.to} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight">
+              <Link to={pkg.to} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-gold">
                 See details
                 <span aria-hidden>→</span>
               </Link>

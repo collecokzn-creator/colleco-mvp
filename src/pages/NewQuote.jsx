@@ -4,6 +4,7 @@ import { useBasketState } from '../utils/useBasketState';
 import { useQuotesState } from '../utils/useQuotesState';
 import { generateQuotePdf } from '../utils/pdfGenerators';
 import { formatCurrency } from '../utils/currency';
+import * as api from '../api/quotes';
 
 export default function NewQuote() {
   const { quotes, createQuote, updateQuote, addItem, updateItem, removeItem, computeTotals, setStatus } = useQuotesState();
@@ -13,6 +14,7 @@ export default function NewQuote() {
   const editingId = params.get('edit');
   const [quoteId, setQuoteId] = useState(editingId || null);
   const [created, setCreated] = useState(false);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (!quoteId) {
@@ -44,12 +46,46 @@ export default function NewQuote() {
 
   const { subtotal, discount, tax, total } = computeTotals(quote);
 
+  async function handleSave() {
+    // clear
+    setErrors({});
+    const payload = { clientName: quote.clientName, clientEmail: quote.clientEmail, currency: quote.currency, items: quote.items, taxRate: quote.taxRate, discountRate: quote.discountRate, notes: quote.notes, status: quote.status, dueDate: quote.dueDate };
+    try {
+      let res;
+      // detect temp id (created locally)
+      const isTmp = String(quote.id||'').startsWith('tmp_') || !quote.id;
+      if (isTmp) {
+        res = await api.createQuote(payload);
+        // update local quote record with server values if available
+        if (res && res.id) {
+          updateQuote(quote.id, { id: res.id, createdAt: res.createdAt || Date.now(), updatedAt: res.updatedAt || Date.now(), quoteNumber: res.quoteNumber || quote.quoteNumber });
+        }
+      } else {
+        res = await api.updateQuote(quote.id, payload);
+        if (res && res.id) updateQuote(quote.id, { ...res });
+      }
+      // mark saved
+      setCreated(false);
+    } catch (e) {
+      // map validation errors: e.body.details = [{field,message}]
+      if (e && e.body && Array.isArray(e.body.details)){
+        const map = {};
+        for(const d of e.body.details){ map[d.field] = d.message; }
+        setErrors(map);
+      } else {
+        // generic error
+        setErrors({ _global: 'Save failed. Try again.' });
+      }
+    }
+  }
+
   return (
     <div className="px-6 py-8 text-brand-brown max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-4">
   <h1 className="text-3xl font-bold">{editingId ? 'Edit Quote' : 'New Quote'}</h1>
         <div className="flex gap-2">
           <button onClick={handleExport} className="px-3 py-2 rounded border border-brand-brown text-brand-brown hover:bg-cream-hover">Export PDF</button>
+          <button onClick={handleSave} className="px-3 py-2 rounded bg-brand-orange text-white">Save</button>
         </div>
       </div>
       {created && <p className="text-sm text-brand-brown/70 mb-4">A draft quote was created — fill in details below.</p>}
@@ -61,10 +97,12 @@ export default function NewQuote() {
               <label className="flex flex-col gap-1">
                 <span className="text-xs uppercase tracking-wide text-brand-brown/70">Client Name</span>
                 <input value={quote.clientName} onChange={e=>updateQuote(quote.id,{clientName:e.target.value})} className="px-2 py-1 rounded border border-cream-border bg-white" />
+                {errors['clientName'] && <div className="text-red-600 text-sm">{errors['clientName']}</div>}
               </label>
               <label className="flex flex-col gap-1">
                 <span className="text-xs uppercase tracking-wide text-brand-brown/70">Client Email</span>
                 <input type="email" value={quote.clientEmail||''} onChange={e=>updateQuote(quote.id,{clientEmail:e.target.value})} className="px-2 py-1 rounded border border-cream-border bg-white" />
+                {errors['clientEmail'] && <div className="text-red-600 text-sm">{errors['clientEmail']}</div>}
               </label>
               <label className="flex flex-col gap-1">
                 <span className="text-xs uppercase tracking-wide text-brand-brown/70">Currency</span>
@@ -82,10 +120,12 @@ export default function NewQuote() {
               <label className="flex flex-col gap-1">
                 <span className="text-xs uppercase tracking-wide text-brand-brown/70">Tax Rate (%)</span>
                 <input type="number" min="0" value={quote.taxRate} onChange={e=>updateQuote(quote.id,{taxRate: Number(e.target.value)})} className="px-2 py-1 rounded border border-cream-border bg-white" />
+                {errors['taxRate'] && <div className="text-red-600 text-sm">{errors['taxRate']}</div>}
               </label>
               <label className="flex flex-col gap-1">
                 <span className="text-xs uppercase tracking-wide text-brand-brown/70">Discount (%)</span>
                 <input type="number" min="0" max="100" value={quote.discountRate||0} onChange={e=>updateQuote(quote.id,{discountRate: Number(e.target.value)})} className="px-2 py-1 rounded border border-cream-border bg-white" />
+                {errors['discountRate'] && <div className="text-red-600 text-sm">{errors['discountRate']}</div>}
               </label>
               <label className="flex flex-col gap-1">
                 <span className="text-xs uppercase tracking-wide text-brand-brown/70">Status</span>

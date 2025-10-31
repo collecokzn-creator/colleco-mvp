@@ -10,6 +10,47 @@
 				"$eslint-stylish"
 			],
 			"group": "build"
+		},
+		{
+			"label": "Build after SearchBar fix",
+			"type": "shell",
+			"command": "npm run build",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run vitest for AIAgent helpers",
+			"type": "shell",
+			"command": "npm run test",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run mobile Cypress tests",
+			"type": "shell",
+			"command": "npm run mobile:all",
+			"args": [],
+			"problemMatcher": [
+				"$eslint - stylish"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Pre-push build & tests",
+			"type": "shell",
+			"command": "npm run build && npx vitest run",
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc",
+				"$eslint - stylish"
+			],
+			"group": "build"
 		}
 	]
 }

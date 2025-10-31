@@ -26,7 +26,7 @@ export default function Contact() {
       <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
       <div className="bg-cream-sand p-6 rounded-md border border-cream-border space-y-4">
         <p>📍 Address: 6 Avenue Umtentweni 4235</p>
-        <p>📞 Phone: 073 399 4708</p>
+  <p>📞 Phone: —</p>
         <p>📧 Email: <a href={`mailto:${CONTACT_EMAIL}`} className="underline">{CONTACT_EMAIL}</a></p>
         <p>🌍 Website: <a href={PUBLIC_SITE_URL} target="_blank" rel="noreferrer" className="underline">{PUBLIC_SITE_URL}</a></p>
         <form onSubmit={handleSubmit} className="mt-4 grid gap-3">

@@ -23,7 +23,7 @@ describe('Smoke', () => {
   })
 
   it('backend /health responds', () => {
-    const apiBase = Cypress.env('API_BASE') || 'http://localhost:4010'
-    cy.request(`${apiBase}/health`).its('status').should('eq', 200)
+  // Use relative path so health check targets the running backend proxied by the app
+  cy.request('/health').its('status').should('eq', 200)
   })
 })

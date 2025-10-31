@@ -2,6 +2,7 @@
 // API-first design; future: wire to modular API calls (products, compliance, payouts),
 // add compliance status indicators and document expiry notifications.
 import React from "react";
+import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import { Link } from "react-router-dom";
 import { BedDouble, Mountain, UtensilsCrossed, Ticket, Car, Plane, BarChart3, CreditCard, ShieldCheck, Megaphone, BookOpen, MessageSquare, CheckCircle2 } from "lucide-react";
 import { useLocalStorageState } from "../useLocalStorageState";
@@ -52,6 +53,7 @@ export default function PartnerDashboard() {
 
   return (
     <div className="text-brand-brown">
+      <Breadcrumbs />
       {/* Hero / Welcome */}
       <section className="mb-4 bg-cream-sand border border-cream-border rounded p-4">
         <h2 className="text-xl font-bold">Welcome to the CollEco Partner Dashboard</h2>

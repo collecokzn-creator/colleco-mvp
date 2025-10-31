@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant Partner
+  participant IntegrationLayer
+  participant SyncService
+  participant DataLayer
+  participant Admin
+  Partner->>IntegrationLayer: webhook / push updates
+  IntegrationLayer->>SyncService: normalize payload
+  SyncService->>DataLayer: upsert inventory & rates
+  SyncService->>Admin: emit sync report/alerts
+  SyncService-->>IntegrationLayer: ack (200)

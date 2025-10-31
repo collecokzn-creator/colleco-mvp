@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant Client
+  participant Payments
+  participant Finance
+  participant Provider
+  participant DataLayer
+  Client->>Payments: pay booking amount
+  Payments->>Finance: calculate commission & fees
+  Finance->>DataLayer: record payout schedule
+  Payments->>Provider: forward provider portion (if immediate)
+  Provider-->>Finance: confirm payout
+  Payments-->>Client: payment confirmation
