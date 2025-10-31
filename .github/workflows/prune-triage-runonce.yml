@@ -23,13 +23,28 @@ jobs:
             echo "DRY=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Run prune (honors PRUNE_DELETE secret)
+      - name: Ensure prune script is present (fetch from main if missing)
         run: |
-          if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
-            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30
+          mkdir -p ./scripts
+          if [ ! -f ./scripts/prune-triage.ps1 ]; then
+            echo "Fetching prune-triage.ps1 from main branch"
+            curl -fsSL https://raw.githubusercontent.com/collecokzn-creator/colleco-mvp/main/scripts/prune-triage.ps1 -o ./scripts/prune-triage.ps1
+            chmod +x ./scripts/prune-triage.ps1 || true
           else
-            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 '-DryRun:$false'
+            echo "prune-triage.ps1 already present"
           fi
+
+      - name: Run prune (honors PRUNE_DELETE secret)
+        # Run the PowerShell script directly using the pwsh shell to avoid quoting/arg issues
+        shell: pwsh
+        env:
+          DRY: ${{ steps.prune_mode.outputs.DRY }}
+        run: |
+          if ($env:DRY -eq 'true') {
+            ./scripts/prune-triage.ps1 -Days 30 -DryRun:$true
+          } else {
+            ./scripts/prune-triage.ps1 -Days 30 -DryRun:$false
+          }
 
       - name: Upload prune results
         if: always()
