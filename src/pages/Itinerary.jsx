@@ -11,6 +11,7 @@ import { useBasketState } from "../utils/useBasketState";
 import { useLocalStorageState } from "../useLocalStorageState";
 import FeesBreakdown from "../components/payments/FeesBreakdown";
 import PaymentButton from "../components/payments/PaymentButton";
+import { useClickOutsideAndEscape } from "../hooks/useClickOutside";
 
 export default function Itinerary() {
   const [trip, setTrip] = useTripState();
@@ -303,7 +304,7 @@ export default function Itinerary() {
     <div className={"px-6 py-8 text-brand-brown " + (highContrastFocus ? 'focus-visible:outline-none [&_*:focus-visible]:outline [&_*:focus-visible]:outline-2 [&_*:focus-visible]:outline-offset-2 [&_*:focus-visible]:outline-brand-brown' : '')}>
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-3xl font-bold">Itinerary</h1>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative">
           <div className="hidden sm:flex items-center gap-2 mr-2">
             <input
               value={search}
@@ -316,6 +317,57 @@ export default function Itinerary() {
               <button onClick={()=>setSearch("")} className="text-xs underline text-brand-brown/70 hover:text-brand-brown">Clear</button>
             )}
           </div>
+          {/* Integrated undo/redo controls */}
+          {(undoStackRef.current.length > 0 || redoStackRef.current.length > 0) && (
+            <div className="flex items-center gap-1 bg-white border border-cream-border rounded-lg px-2 py-1 shadow-sm">
+              <button disabled={!undoStackRef.current.length}
+                onClick={undo}
+                className={"px-2 py-1 rounded text-xs font-medium transition-colors " + (undoStackRef.current.length ? 'text-brand-brown hover:bg-cream' : 'text-gray-400 cursor-not-allowed')}
+                title={undoStackRef.current.length ? `Undo (${undoStackRef.current[undoStackRef.current.length-1].label||'change'}) – Ctrl/Cmd+Z` : 'Nothing to undo'}>
+                ↶
+              </button>
+              <div className="w-px h-4 bg-cream-border"></div>
+              <button disabled={!redoStackRef.current.length}
+                onClick={redo}
+                className={"px-2 py-1 rounded text-xs font-medium transition-colors " + (redoStackRef.current.length ? 'text-brand-brown hover:bg-cream' : 'text-gray-400 cursor-not-allowed')}
+                title={redoStackRef.current.length ? `Redo (${redoStackRef.current[redoStackRef.current.length-1].label||'change'}) – Ctrl/Cmd+Shift+Z` : 'Nothing to redo'}>
+                ↷
+              </button>
+              <div className="w-px h-4 bg-cream-border"></div>
+              <button onClick={()=>setShowHistory(s=>!s)} 
+                className="px-2 py-1 rounded text-xs font-medium text-brand-brown hover:bg-cream"
+                title="View change history">
+                📋
+              </button>
+            </div>
+          )}
+          {/* History dropdown positioned relative to header controls */}
+          {showHistory && (
+            <div className="absolute right-0 top-full mt-2 w-56 max-h-60 overflow-auto bg-white border border-cream-border rounded shadow text-xs p-2 space-y-1 z-50">
+              <div className="font-semibold mb-1">Undo Stack (latest first)</div>
+              {undoStackRef.current.slice().reverse().slice(0,10).map((entry,idx)=>{
+                const absoluteIndex = undoStackRef.current.length-1-idx;
+                return (
+                  <button key={absoluteIndex}
+                    onClick={()=>{
+                      // jump: restore snapshot and push current into redo stack
+                      const current = JSON.parse(JSON.stringify(trip));
+                      redoStackRef.current.push({ trip: current, label: 'jump-from-history' });
+                      const target = undoStackRef.current[absoluteIndex];
+                      // remove all entries above selected
+                      undoStackRef.current = undoStackRef.current.slice(0, absoluteIndex);
+                      setTrip(target.trip);
+                      setHistoryVersion(v=>v+1);
+                      setShowHistory(false);
+                    }}
+                    className="w-full text-left px-2 py-1 rounded hover:bg-cream focus:outline-none focus:ring-1 focus:ring-brand-brown">
+                    {absoluteIndex+1}. {entry.label||'change'}
+                  </button>
+                );
+              })}
+              {!undoStackRef.current.length && <div className="text-brand-brown/60 italic">Empty</div>}
+            </div>
+          )}
           {aiDraft && (
             <div className="relative">
               <button onClick={()=>setShowAiImport(s=>!s)} className="px-3 py-2 rounded bg-brand-brown text-white text-sm font-medium hover:bg-brand-brown/90">Draft</button>
@@ -576,7 +628,7 @@ export default function Itinerary() {
       </div>
 
       {/* Transparent pricing and payment */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="md:col-span-2">
           <FeesBreakdown items={paymentItems} currency="USD" />
         </div>
@@ -597,21 +649,7 @@ export default function Itinerary() {
       ))}
     </div>
   )}
-  {/* Undo / Redo floating controls + history toggle */}
-  <div className="fixed bottom-4 right-4 z-40 flex flex-col gap-2 items-end">
-    <button disabled={!undoStackRef.current.length}
-      onClick={undo}
-      className={"px-3 py-2 rounded shadow text-sm font-medium transition-colors " + (undoStackRef.current.length ? 'bg-brand-brown text-white hover:bg-brand-brown/90' : 'bg-gray-300 text-gray-500 cursor-not-allowed')}
-      title={undoStackRef.current.length ? `Undo (${undoStackRef.current[undoStackRef.current.length-1].label||'change'}) – Ctrl/Cmd+Z` : 'Nothing to undo'}>
-      Undo
-    </button>
-    <button disabled={!redoStackRef.current.length}
-      onClick={redo}
-      className={"px-3 py-2 rounded shadow text-sm font-medium transition-colors " + (redoStackRef.current.length ? 'bg-brand-brown text-white hover:bg-brand-brown/90' : 'bg-gray-300 text-gray-500 cursor-not-allowed')}
-      title={redoStackRef.current.length ? `Redo (${redoStackRef.current[redoStackRef.current.length-1].label||'change'}) – Ctrl/Cmd+Shift+Z` : 'Nothing to redo'}>
-      Redo
-    </button>
-    <button onClick={()=>setShowHistory(s=>!s)} className="px-3 py-2 rounded shadow text-sm font-medium bg-white/90 border border-cream-border hover:bg-white">{showHistory? 'Hide History':'History'}</button>
+
     {showHistory && (
       <div className="mt-1 w-56 max-h-60 overflow-auto bg-white border border-cream-border rounded shadow text-xs p-2 space-y-1">
         <div className="font-semibold mb-1">Undo Stack (latest first)</div>
@@ -634,10 +672,8 @@ export default function Itinerary() {
             </button>
           );
         })}
-        {!undoStackRef.current.length && <div className="text-brand-brown/60 italic">Empty</div>}
       </div>
     )}
-  </div>
   {repeatModal && (
       <Modal title="Repeat Item on Additional Days" onClose={()=>{ setRepeatModal(null); setRepeatDaysInput(''); }}
         actions={[
@@ -675,8 +711,13 @@ export default function Itinerary() {
 // Lightweight in-file preferences dropdown to avoid extra files (can be extracted later)
 function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts, setEnableToasts, animationsEnabled, setAnimationsEnabled }){
   const [open, setOpen] = React.useState(false);
-  const panelRef = React.useRef(null);
   const triggerRef = React.useRef(null);
+  
+  // Combined click-outside and escape key handling
+  const panelRef = useClickOutsideAndEscape(() => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }, open);
   function resetPrefs(){
     try{
       localStorage.removeItem('itineraryHighContrastFocus:v1');
@@ -689,15 +730,14 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
       setAnimationsEnabled(true);
   }catch(_err){ /* ignore */ }
   }
-  // Focus trap when open
+  // Focus trap when open (escape key is handled by useClickOutsideAndEscape hook)
   useEffect(()=>{
-    if(open){
-      const focusable = panelRef.current?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if(open && panelRef.current){
+      const focusable = panelRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
       const first = focusable?.[0];
       const last = focusable?.[focusable.length-1];
       first && first.focus();
       const onKey = (e) => {
-        if(e.key==='Escape'){ setOpen(false); triggerRef.current?.focus(); }
         if(e.key==='Tab' && focusable && focusable.length){
           if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
           else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
@@ -706,6 +746,7 @@ function PreferencesMenu({ highContrastFocus, setHighContrastFocus, enableToasts
       document.addEventListener('keydown', onKey);
       return ()=> document.removeEventListener('keydown', onKey);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
   return (
     <div className="relative">

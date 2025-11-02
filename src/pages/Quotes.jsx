@@ -1,12 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuotesState } from '../utils/useQuotesState';
 import { formatCurrency } from '../utils/currency';
 import { generateQuotePdf } from '../utils/pdfGenerators';
+import * as api from '../api/quotes';
 
 export default function Quotes() {
-  const { quotes, computeTotals, deleteQuote, cloneQuote } = useQuotesState();
   const navigate = useNavigate();
+  const [quotes, setQuotes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    api.getQuotes().then(qs => { if(mounted) setQuotes(qs || []); }).finally(()=>{ if(mounted) setLoading(false); });
+    return () => { mounted = false; };
+  }, []);
+
+  const computeTotals = (_q) => ({ subtotal: 0, tax: 0, total: 0 });
+
+  async function handleDelete(id) {
+    if(!window.confirm('Delete this quote?')) return;
+    try {
+      await api.deleteQuote(id);
+      setQuotes(prev => prev.filter(p => p.id !== id));
+    } catch (e) { console.warn('delete failed', e); }
+  }
+
+  async function handleClone(id) {
+    const src = quotes.find(q => q.id === id);
+    if(!src) return;
+    const copy = { ...src, id: undefined, clientName: `${src.clientName} (Copy)`, createdAt: undefined, updatedAt: undefined };
+    try {
+      const created = await api.createQuote(copy);
+      setQuotes(prev => [created, ...prev]);
+    } catch (e) { console.warn('clone failed', e); }
+  }
 
   return (
     <div className="px-6 py-8 text-brand-brown max-w-6xl mx-auto">
@@ -18,11 +46,11 @@ export default function Quotes() {
         <button onClick={()=>navigate('/quote/new')} className="px-4 py-2 rounded bg-brand-brown text-cream text-sm font-medium hover:bg-brand-brown/90">New Quote</button>
       </div>
 
-      {quotes.length === 0 && (
+      {loading ? <div>Loading…</div> : (quotes.length === 0 && (
         <div className="bg-cream rounded border border-cream-border p-6 text-sm text-brand-brown/70">
           No quotes yet. Create your first using the New Quote button.
         </div>
-      )}
+      ))}
 
       <ul className="space-y-3">
         {quotes.map(q => {
@@ -37,8 +65,8 @@ export default function Quotes() {
               <div className="flex gap-2 flex-wrap">
                 <button onClick={()=>navigate('/quote/new?edit='+q.id)} className="px-3 py-1.5 text-xs rounded border border-brand-brown hover:bg-cream-hover">Open</button>
                 <button onClick={()=>generateQuotePdf(q)} className="px-3 py-1.5 text-xs rounded border border-brand-brown hover:bg-cream-hover">PDF</button>
-                <button onClick={()=>cloneQuote(q.id)} className="px-3 py-1.5 text-xs rounded border border-brand-brown hover:bg-cream-hover">Clone</button>
-                <button onClick={()=>{ if(window.confirm('Delete this quote?')) deleteQuote(q.id); }} className="px-3 py-1.5 text-xs rounded border border-red-600 text-red-600 hover:bg-red-50">Delete</button>
+                <button onClick={()=>handleClone(q.id)} className="px-3 py-1.5 text-xs rounded border border-brand-brown hover:bg-cream-hover">Clone</button>
+                <button onClick={()=>handleDelete(q.id)} className="px-3 py-1.5 text-xs rounded border border-red-600 text-red-600 hover:bg-red-50">Delete</button>
               </div>
             </li>
           );

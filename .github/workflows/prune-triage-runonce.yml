@@ -2,6 +2,11 @@ name: Prune triage (run-once)
 
 on:
   workflow_dispatch:
+    inputs:
+      prune_delete:
+        description: 'Manually enable destructive deletion. When true, deletion will proceed if repository secret PRUNE_DELETE is also true OR when used for a one-off run.'
+        required: false
+        default: 'false'
 
 jobs:
   prune-once:
@@ -14,37 +19,45 @@ jobs:
       - name: Determine dry-run
         id: prune_mode
         env:
-          PRUNE_DELETE: ${{ secrets.PRUNE_DELETE }}
+          EVENT_PRUNE: ${{ github.event.inputs.prune_delete }}
+          SECRET_PRUNE: ${{ secrets.PRUNE_DELETE }}
         run: |
-          echo "PRUNE_DELETE=$PRUNE_DELETE"
-          if [ "$PRUNE_DELETE" = "true" ]; then
+          echo "EVENT_PRUNE=$EVENT_PRUNE"
+          echo "SECRET_PRUNE=$SECRET_PRUNE"
+          # If either the workflow_dispatch input or the repo secret is true, allow deletion
+          if [ "$EVENT_PRUNE" = "true" ] || [ "$SECRET_PRUNE" = "true" ]; then
             echo "DRY=false" >> $GITHUB_OUTPUT
           else
             echo "DRY=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Ensure prune script is present (fetch from main if missing)
+      - name: Ensure prune script is present
         run: |
-          mkdir -p ./scripts
           if [ ! -f ./scripts/prune-triage.ps1 ]; then
-            echo "Fetching prune-triage.ps1 from main branch"
-            curl -fsSL https://raw.githubusercontent.com/collecokzn-creator/colleco-mvp/main/scripts/prune-triage.ps1 -o ./scripts/prune-triage.ps1
-            chmod +x ./scripts/prune-triage.ps1 || true
+            echo "prune-triage.ps1 not found in branch; fetching from main branch"
+            mkdir -p scripts
+            if ! curl -fsSL "https://raw.githubusercontent.com/collecokzn-creator/colleco-mvp/main/scripts/prune-triage.ps1" -o ./scripts/prune-triage.ps1; then
+              echo "ERROR: failed to fetch prune-triage.ps1 from main; aborting."
+              exit 2
+            fi
           else
             echo "prune-triage.ps1 already present"
           fi
 
       - name: Run prune (honors PRUNE_DELETE secret)
-        # Run the PowerShell script directly using the pwsh shell to avoid quoting/arg issues
-        shell: pwsh
-        env:
-          DRY: ${{ steps.prune_mode.outputs.DRY }}
         run: |
-          if ($env:DRY -eq 'true') {
-            ./scripts/prune-triage.ps1 -Days 30 -DryRun:$true
-          } else {
-            ./scripts/prune-triage.ps1 -Days 30 -DryRun:$false
-          }
+          # Fail fast if script missing (shouldn't happen because fetch step aborts on failure)
+          if [ ! -f ./scripts/prune-triage.ps1 ]; then
+            echo "ERROR: prune-triage.ps1 is missing; aborting."
+            exit 2
+          fi
+          # When invoking pwsh from bash, single-quote the PowerShell literal $false so bash
+          # doesn't expand it. This ensures we pass '-DryRun:$false' to pwsh when deletion is enabled.
+          if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
+            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30
+          else
+            pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 '-DryRun:$false'
+          fi
 
       - name: Upload prune results
         if: always()
@@ -61,4 +74,3 @@ jobs:
             echo "Prune ran in dry-run mode. To enable deletion set repo secret PRUNE_DELETE=true"
           else
             echo "Prune ran and deleted old run directories. Uploaded prune-triage-runonce-${{ github.run_id }}"
-          fi

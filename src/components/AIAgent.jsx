@@ -1,11 +1,51 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import logoPng from "../assets/colleco-logo.png";
 
 // --- SMART AUTOMATION & GAMIFICATION STUBS ---
 // TODO: Integrate real AI backend for natural language, auto-suggest, and learning.
 // TODO: Add progress badges, trip readiness meter, and upsell suggestions.
 
 // Note: role selection handled via free text; constants removed to reduce lint noise
+
+// Helper functions exported for unit tests. These are lightweight and deterministic
+// to keep tests fast and avoid coupling to the UI internals.
+export function parseBookingIntent(text) {
+  // Very small parser used by tests: extract location, date, nights and guests.
+  // Capture the location after "in" but stop before common delimiters like
+  // "from", "for", "," or end-of-string to avoid including trailing words.
+  const locationMatch = text.match(/in\s+([A-Za-z ]+?)(?:\sfrom|\sfor|,|$)/i);
+  const dateMatch = text.match(/(20\d{2}-\d{2}-\d{2})/);
+  const nightsMatch = text.match(/(\d+)\s+nights?/i);
+  const guestsMatch = text.match(/(\d+)\s+guests?/i);
+  const type = /hotel|flight|car|stay/.test(text) ? 'hotel' : 'unknown';
+  return {
+    location: locationMatch ? locationMatch[1].trim() : undefined,
+    startDate: dateMatch ? dateMatch[1] : undefined,
+    nights: nightsMatch ? Number(nightsMatch[1]) : undefined,
+    guests: guestsMatch ? Number(guestsMatch[1]) : undefined,
+    type,
+  };
+}
+
+export function clarifyMissingIntent(obj) {
+  const parts = [];
+  if (!obj.type) parts.push('hotel or flight');
+  if (!obj.location) parts.push('destination');
+  if (!obj.startDate) parts.push('start date');
+  if (!obj.guests) parts.push('guests');
+  return `I need details: ${parts.join(', ')}`;
+}
+
+export function applyTone(role, text) {
+  if (role === 'client') return `I’ve got you covered — ${text}`;
+  if (role === 'admin') return `I’ll handle this efficiently — ${text}`;
+  return text;
+}
+
+export function detectConcise(text) {
+  return /(tl;dr|summary|straightforward|be straight)/i.test(text);
+}
 
 export default function AIAgent() {
   const [open, setOpen] = useState(false);
@@ -15,6 +55,7 @@ export default function AIAgent() {
   ]);
   // Example: user preferences, trip readiness, partner compliance, etc.
   const [progress, setProgress] = useState({ badge: 'Bronze', readiness: 40 });
+  const dragScopeRef = useRef(null);
 
   // Context-aware smart reply stub
   const smartReply = (text) => {
@@ -76,12 +117,27 @@ export default function AIAgent() {
   };
 
   return (
-    <motion.div className="fixed bottom-6 right-6 z-50" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+    <div ref={dragScopeRef} className="fixed inset-0 z-50 pointer-events-none">
+      <motion.div
+        className="absolute bottom-6 right-6 pointer-events-auto"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        drag
+        dragElastic={0.2}
+        dragMomentum={false}
+        dragConstraints={dragScopeRef}
+      >
       {open ? (
-        <motion.div className="w-80 bg-cream rounded-xl shadow-lg border border-cream-border" initial={{ scale: 0.98 }} animate={{ scale: 1 }}>
-          <div className="bg-brand-brown text-white rounded-t-xl px-4 py-2 font-bold flex items-center gap-2">
-            <span>🤖</span> CollEco AI Agent
-            <button onClick={() => setOpen(false)} className="ml-auto text-brand-highlight hover:text-white">✕</button>
+        <motion.div className="w-80 bg-cream rounded-2xl shadow-2xl border border-cream-border/80 overflow-hidden" initial={{ scale: 0.98 }} animate={{ scale: 1 }}>
+          <div className="flex items-center gap-3 bg-gradient-to-r from-brand-brown to-brand-orange text-white px-4 py-2.5 font-bold">
+            <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/20">
+              <img src={logoPng} alt="CollEco" className="h-6 w-6" />
+            </span>
+            CollEco AI Concierge
+            <button onClick={() => setOpen(false)} className="ml-auto rounded-full bg-white/10 px-2 py-1 text-sm font-semibold text-white hover:bg-white/20" aria-label="Close chat">
+              ✕
+            </button>
           </div>
           {/* Gamification: Progress badge and readiness meter */}
           {role === 'client' && (
@@ -112,9 +168,20 @@ export default function AIAgent() {
           <AIAgentInput onSend={send} />
         </motion.div>
       ) : (
-        <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.96 }} onClick={() => setOpen(true)} className="bg-gradient-to-r from-brand-orange to-brand-brown text-white px-4 py-2 rounded-full shadow font-bold hover:from-brand-highlight hover:to-brand-orange">Chat with AI</motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setOpen(true)}
+          className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-white/90 shadow-2xl shadow-brand-brown/25 backdrop-blur"
+          aria-label="Open CollEco AI chat"
+          title="Chat with CollEco AI"
+        >
+          <span className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-orange/40 via-transparent to-brand-brown/40 blur-xl" aria-hidden></span>
+          <img src={logoPng} alt="CollEco logo" className="relative h-8 w-8 object-contain" />
+        </motion.button>
       )}
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 

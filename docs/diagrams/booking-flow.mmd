@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant Client
+  participant Frontend
+  participant QuoteService
+  participant IntegrationLayer
+  participant ProviderAPI
+  participant DataLayer
+  participant Notification
+  Client->>Frontend: search request
+  Frontend->>QuoteService: create quote request
+  QuoteService->>IntegrationLayer: check provider availability
+  IntegrationLayer->>ProviderAPI: availability/pricing
+  ProviderAPI-->>IntegrationLayer: availability/pricing
+  IntegrationLayer-->>QuoteService: provider data
+  QuoteService->>DataLayer: persist quote snapshot
+  QuoteService->>Notification: notify client + partner
+  Notification-->>Client: quote ready

@@ -1,8 +1,11 @@
 name: E2E Smoke
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   smoke:
@@ -10,37 +13,80 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
+
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-      - name: Install deps
+
+      - name: Install dependencies
         run: npm ci
+
       - name: Build
-        run: |
-          export VITE_HAS_BACKEND=1
-          npm run build
+        run: npm run build
+
       - name: Start backend server
         run: |
-          node server/server.js &
-          echo "Backend starting..."
-          for i in {1..40}; do
-            if curl -fsS http://localhost:4000/health >/dev/null 2>&1; then
-              echo "Backend is up"; break; fi; echo "waiting backend ($i)"; sleep 1;
-          done
+          # start the demo backend on port 4001 so the workflow health check matches
+          PORT=4001 nohup node server/server.js > server.log 2>&1 &
+          echo $! > backend.pid
+
       - name: Start preview server
         run: |
-          npx serve -s dist -l 5174 &
-          echo "Preview starting..."
-          for i in {1..40}; do
-            if curl -fsS http://localhost:5174 >/dev/null 2>&1; then
-              echo "Preview is up"; break; fi; echo "waiting preview ($i)"; sleep 1;
+          # bind to loopback and use port 5173 (matches local preview)
+          nohup npx serve -s dist -l 5173 > preview.log 2>&1 &
+          echo $! > preview.pid
+
+      - name: Wait for services
+        run: |
+          set -e
+          # more verbose wait loop: report per-attempt which endpoint responds
+          BACKEND_OK=0
+          PREVIEW_OK=0
+          for i in $(seq 1 120); do
+            echo "try=$i: checking backend:4001 preview:5173"
+            if curl -fsS http://127.0.0.1:4001/health >/dev/null 2>&1; then
+              echo "backend 4001 OK"; BACKEND_OK=1
+            else
+              echo "backend not ready"
+            fi
+
+            if curl -fsS http://127.0.0.1:5173 >/dev/null 2>&1; then
+              echo "preview 5173 OK"; PREVIEW_OK=1
+            else
+              echo "preview not ready"
+            fi
+
+            if [ "$BACKEND_OK" -eq 1 ] && [ "$PREVIEW_OK" -eq 1 ]; then
+              echo "services up"; exit 0
+            fi
+
+            echo "waiting for services... ($i)"; sleep 1
           done
+
+          echo "ERROR: services did not become ready after timeout. Last 200 lines of server.log and preview.log follow:" >&2
+          echo "--- server.log ---" >&2
+          tail -n 200 server.log || true
+          echo "--- preview.log ---" >&2
+          tail -n 200 preview.log || true
+          exit 1
+
       - name: Cypress run (smoke)
-        uses: cypress-io/github-action@v6
-        with:
-          browser: chrome
-          spec: cypress/e2e/smoke.cy.js
         env:
-          API_BASE: http://localhost:4000
+          API_BASE: http://127.0.0.1:4001
+          CI: true
+        run: |
+          SPECS="cypress/e2e/smoke.cy.js"
+          npx cypress run --browser electron --config video=false --spec "$SPECS"
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-smoke-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
+            server.log
+            preview.log
+          if-no-files-found: ignore
