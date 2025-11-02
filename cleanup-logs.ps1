@@ -1,31 +1,35 @@
 # cleanup-logs.ps1
-# Purpose: Safely remove Cypress log folders from artifacts directory
+# Purpose: Automatically remove all Cypress log folders under the artifacts directory.
 
-Write-Host "Attempting to clear readonly/hidden attributes and remove logs directory"
+Write-Host "🔍 Searching for Cypress log folders under 'artifacts'..." -ForegroundColor Cyan
 
-# Adjust this path if your artifact run ID changes
-$p = "artifacts\18933260328\cypress\logs"
+# Get all possible Cypress logs directories (e.g., artifacts/*/cypress/logs)
+$logDirs = Get-ChildItem -Path "artifacts" -Recurse -Directory -ErrorAction SilentlyContinue |
+           Where-Object { $_.FullName -match "\\cypress\\logs$" }
 
-if (Test-Path -LiteralPath $p) {
+if ($logDirs.Count -eq 0) {
+    Write-Host "⚠️ No Cypress logs directories found." -ForegroundColor Yellow
+    exit 0
+}
+
+foreach ($dir in $logDirs) {
+    Write-Host "🧩 Found: $($dir.FullName)"
     try {
-        Write-Host "Found path: $p"
-        # Normalize attributes so files can be deleted
-        Get-ChildItem -LiteralPath $p -Recurse -Force | ForEach-Object {
+        # Reset file attributes (hidden, readonly) to allow removal
+        Get-ChildItem -LiteralPath $dir.FullName -Recurse -Force -ErrorAction SilentlyContinue | ForEach-Object {
             try { $_.Attributes = 'Normal' } catch {}
         }
 
         # Remove the directory
-        Remove-Item -LiteralPath $p -Recurse -Force -ErrorAction Stop
-        Write-Host "✅ SUCCESS: Logs folder removed."
+        Remove-Item -LiteralPath $dir.FullName -Recurse -Force -ErrorAction Stop
+        Write-Host "✅ Removed: $($dir.FullName)" -ForegroundColor Green
     }
     catch {
-        Write-Host "❌ ERROR: Remove failed:"
+        Write-Host "❌ Failed to remove: $($dir.FullName)" -ForegroundColor Red
         Write-Host $_.Exception.Message
-        exit 2
     }
 }
-else {
-    Write-Host "⚠️ NOTFOUND: Path does not exist"
-}
 
-Write-Host "Done."
+Write-Host "🎉 Cleanup complete!" -ForegroundColor Cyan
+
+Write-Host "\nRun: pwsh -NoProfile -ExecutionPolicy Bypass -File cleanup-logs.ps1" -ForegroundColor DarkCyan
