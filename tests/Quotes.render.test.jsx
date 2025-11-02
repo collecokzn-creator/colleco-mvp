@@ -21,8 +21,9 @@ import Quotes from '../src/pages/Quotes';
 describe('Quotes render', () => {
   it('renders a quote item and buttons', async () => {
     render(<Quotes />);
-    // wait for async getQuotes to resolve
-    const item = await screen.findByText(/A/);
+  // wait for async getQuotes to resolve
+  // match the client name exactly to avoid accidental matches elsewhere in the DOM
+  const item = await screen.findByText(/^A$/);
     expect(item).toBeTruthy();
     const pdfBtn = await screen.findByRole('button', { name: /PDF/i });
     fireEvent.click(pdfBtn);

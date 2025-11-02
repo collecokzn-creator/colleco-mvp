@@ -140,6 +140,27 @@ export default function App() {
     });
   }, []);
 
+  // E2E authoritative mounted/readiness marker.
+  // Set this after the root app mounts so Cypress can wait on a reliable
+  // flag instead of fragile DOM timing. We use a short idle to let initial
+  // synchronous layout complete before signalling mounted.
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && window.__E2E__) {
+        const mark = () => {
+          try {
+            window.__E2E_MOUNTED__ = true;
+          } catch (e) {}
+          try {
+            document && document.body && document.body.setAttribute && document.body.setAttribute('data-e2e-ready', 'true');
+          } catch (e) {}
+        };
+        if (typeof requestAnimationFrame !== 'undefined') requestAnimationFrame(mark);
+        else setTimeout(mark, 0);
+      }
+    } catch (e) {}
+  }, []);
+
   // Prefer HashRouter when explicitly requested via VITE_USE_HASH, or when
   // the app is served from a non-root base (BASE_URL) which can cause
   // 404s on deep links on static hosts. Hash routing avoids server-side

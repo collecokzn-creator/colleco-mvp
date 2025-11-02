@@ -10,6 +10,11 @@ on:
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    env:
+      SITEMINDER_USE_MOCK: '1'
+      SITEMINDER_MOCK_PORT: '4015'
+      CYPRESS_BASE_URL: 'http://127.0.0.1:5173'
+      API_BASE: 'http://127.0.0.1:4001'
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -7,5 +7,5 @@ const cacheDir = path.join(__dirname, "..", "node_modules", ".vite");
 
 if (fs.existsSync(cacheDir)) {
   fs.rmSync(cacheDir, { recursive: true, force: true });
-  console.log("Vite cache cleared successfully.");
+  if (!process.env.CI) process.stdout.write("Vite cache cleared successfully.\n");
 }

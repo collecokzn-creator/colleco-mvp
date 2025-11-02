@@ -1,0 +1,33 @@
+name: Workflow lint
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+  push:
+    paths:
+      - '.github/workflows/**'
+
+jobs:
+  lint:
+    name: Lint workflows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install linters
+        run: |
+          python -m pip install --upgrade pip
+          pip install yamllint ruamel.yaml
+
+      - name: Run yamllint
+        run: yamllint -f colored .github/workflows || true
+
+      - name: Check duplicate YAML keys
+        run: python scripts/check_yaml_duplicates.py .github/workflows

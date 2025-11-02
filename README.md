@@ -7,6 +7,10 @@
 
 A React + Vite SPA with a minimal Express backend for collaboration and events aggregation. Includes location-aware product discovery, events from trusted providers with a demo fallback, and an admin Settings page with provider toggles and API status.
 
+## E2E & CI diagnostics
+
+See `docs/E2E.md` for E2E run instructions, the `e2e-diag` label usage, and the repository CI watcher/pruning utilities for collecting failing-run artifacts.
+
 ## Quick start
 
 Prereqs: Node 18+ recommended.
@@ -97,21 +101,21 @@ To open the app on your phone (same Wi-Fi network):
 
 3. **On your phone’s browser, open:**
 	- Dev: `http://192.168.x.y:5173`
-	- Preview: `http://192.168.x.y:5174`
+	- Preview: `http://192.168.x.y:5173` (preview now uses the canonical port 5173)
 
 4. **Windows Firewall tips:**
 	- Allow Node.js or Vite through Windows Firewall when prompted.
-	- Or manually add a rule for TCP ports 5173 and 5174 in Windows Defender Firewall (Inbound Rules).
+	- Or manually add a rule for TCP port 5173 in Windows Defender Firewall (Inbound Rules).
 
 5. **Troubleshooting:**
 	- Ensure both devices are on the same Wi-Fi network.
 	- Disable VPNs if they block LAN traffic.
 	- Some corporate Wi-Fi may block client-to-client connections; try a home/private network.
 	- If using the API, start it as well:
-	  ```powershell
-	  $env:PORT = 4010
-	  npm run server
-	  ```
+		```powershell
+		$env:PORT = 4000
+		npm run server
+		```
 	- Frontend tests use localhost for API by default; for mobile, ensure API is reachable if needed.
 
 Always ensure sticky elements use `top: calc(var(--header-h) + var(--banner-h))` and pages add `padding-top` equal to the same to avoid overlap.
@@ -125,7 +129,7 @@ Always ensure sticky elements use `top: calc(var(--header-h) + var(--banner-h))`
 ### Local smoke tests (E2E)
 A minimal Cypress smoke test verifies the built app renders and the backend `/health` responds.
 
-- One command (build → start backend on 4010 → serve dist on 5174 → wait → run smoke):
+-- One command (build → start backend on 4000 → serve dist on 5173 → wait → run smoke):
 	```powershell
 	npm run smoke:all
 	```
@@ -134,11 +138,11 @@ A minimal Cypress smoke test verifies the built app renders and the backend `/he
 	# 1) Build
 	npm run build
 
-	# 2) Start backend and static preview (port 4010 and 5174)
+	# 2) Start backend and static preview (port 4000 and 5173)
 	npm run smoke:start:stack
 
 	# 3) In another terminal, run Cypress against the local API
-	$env:API_BASE='http://localhost:4010'; npm run cy:run
+	$env:API_BASE='http://localhost:4000'; npm run cy:run
 	```
 - Interactive mode:
 	```powershell
@@ -224,6 +228,40 @@ If trying the local API server:
 - Endpoints: GET /api/collab, GET /api/collab/:bookingId, POST /api/collab/:bookingId/message, POST /api/collab/:bookingId/attachment, POST /webhook/whatsapp
 - Example WhatsApp webhook:
 	- POST http://localhost:4000/webhook/whatsapp with `{ "bookingId": "BKG-1", "fromName": "Client", "content": "Hello from WhatsApp" }`
+
+## Siteminder mock (local dev & CI)
+
+For development and CI we provide a small, mock-first Siteminder implementation so you can exercise booking/provider flows without external network calls or sandbox credentials.
+
+- Enable the mock locally:
+	- Run the mock server directly:
+		```powershell
+		npm run mock:siteminder
+		```
+		By default the mock listens on port 4015. Change it with `SITEMINDER_MOCK_PORT` if needed.
+
+- Toggle mock mode for the app/orchestrator:
+	- Temporary (single command):
+		```powershell
+		# set env var for this run
+		$env:SITEMINDER_USE_MOCK = '1'; npm run e2e:orchestrate
+		```
+	- Or prefix commands with `cross-env` on non-PowerShell shells:
+		```bash
+		cross-env SITEMINDER_USE_MOCK=1 SITEMINDER_MOCK_PORT=4015 npm run e2e:orchestrate
+		```
+
+- CI: The E2E workflows enable the mock by default (see `.github/workflows/*`). They set:
+	- `SITEMINDER_USE_MOCK=1`
+	- `SITEMINDER_MOCK_PORT=4015`
+
+- Files and docs:
+	- Mock implementation: `scripts/mock-siteminder-server.js`
+	- Mock shapes and contract: `src/api/__mocks__/siteminder.mock.js` and `docs/siteminder_integration_contract.md`
+
+Notes:
+- The app's Siteminder wrapper is mock-first: if `SITEMINDER_USE_MOCK=1` or `SITEMINDER_API_URL` is not set, the mock will be used automatically (`src/api/siteminder.js`).
+- Use the mock for deterministic E2E runs and to develop booking flows without incurring provider costs or requiring sandbox credentials.
 
 ## Troubleshooting
 

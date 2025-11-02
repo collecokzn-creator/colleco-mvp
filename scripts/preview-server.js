@@ -66,7 +66,7 @@ const server = http.createServer((req, res) => {
     if (urlPath.endsWith('/')) filePath = path.join(filePath, 'index.html');
     // If file exists and is a file, serve it
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-      console.log(`HTTP ${new Date().toISOString()} ${req.socket.remoteAddress} GET ${urlPath}`);
+      if (!process.env.CI) process.stdout.write(`HTTP ${new Date().toISOString()} ${req.socket.remoteAddress} GET ${urlPath}\n`);
       sendFile(res, filePath);
       return;
     }
@@ -79,7 +79,7 @@ const server = http.createServer((req, res) => {
     // Otherwise, serve index.html for SPA routes
     const indexPath = path.join(distDir, 'index.html');
     if (fs.existsSync(indexPath)) {
-      console.log(`HTTP ${new Date().toISOString()} ${req.socket.remoteAddress} GET ${urlPath} -> index.html`);
+      if (!process.env.CI) process.stdout.write(`HTTP ${new Date().toISOString()} ${req.socket.remoteAddress} GET ${urlPath} -> index.html\n`);
       sendFile(res, indexPath);
       return;
     }
@@ -93,7 +93,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(port, host, () => {
-  console.log(`Preview server listening on http://${host}:${port}`);
+  if (!process.env.CI) process.stdout.write(`Preview server listening on http://${host}:${port}\n`);
 });
 
 process.on('uncaughtException', err => {

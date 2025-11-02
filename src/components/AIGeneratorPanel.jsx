@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { dbg } from '../utils/logger';
 import { Link } from 'react-router-dom';
 import { generateItinerary, streamItinerary, parseFlightIntent, parseIntent } from '../utils/aiClient.js';
 import { refineItinerary } from '../utils/aiClient.js';
@@ -69,12 +70,12 @@ export default function AIGeneratorPanel() {
     if (!prompt.trim()) { setError('Prompt required'); return; }
     setLoading(true);
     try {
-  console.log('[AIGEN] handleSingle: sending generate request', { prompt: prompt && prompt.slice(0,80) });
+    dbg('[AIGEN] handleSingle: sending generate request', { prompt: prompt && prompt.slice(0,80) });
       const data = await generateItinerary(prompt.trim());
-  console.log('[AIGEN] handleSingle: received data', data);
+  dbg('[AIGEN] handleSingle: received data', data);
       setFullData(data);
       const parsePhase = baseFrom(data);
-  console.log('[AIGEN] handleSingle: parsePhase', parsePhase);
+  dbg('[AIGEN] handleSingle: parsePhase', parsePhase);
       setPhases({ parse: parsePhase, plan: { itinerary: data.itinerary }, pricing: { pricing: data.pricing }, done: true });
       setActive(false);
     } catch(e) {
