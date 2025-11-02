@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs && node scripts/dev-detect-api.mjs && vite",
-    "prebuild": "node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs",
+  "prebuild": "pwsh -NoProfile -ExecutionPolicy Bypass -File cleanup-logs.ps1 && node scripts/copy-branding.mjs && node scripts/generate-icons.mjs && node scripts/generate-favicon.mjs",
+  "pretest": "pwsh -NoProfile -ExecutionPolicy Bypass -File cleanup-logs.ps1",
     "build": "vite build",
     "preview": "vite preview",
     "preview:stable": "node scripts/express-preview-server.js --port 5174",
