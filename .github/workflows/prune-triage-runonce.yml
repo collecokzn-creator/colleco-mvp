@@ -73,6 +73,17 @@ jobs:
             pwsh -NoProfile -ExecutionPolicy Bypass ./scripts/prune-triage.ps1 -Days 30 '-DryRun:$false'
           fi
 
+      - name: (Demo) Create old run directory for CI test
+        run: |
+          # Create a test run directory that matches the expected pattern (run-*) and age it 31 days so the prune script will find it
+          mkdir -p artifacts/triage/run-demo-ci
+          echo "ci-test" > artifacts/triage/run-demo-ci/README.txt
+          # Set mtime for directory and files to 31 days ago
+          find artifacts/triage/run-demo-ci -exec touch -d '31 days ago' {} + || true
+          # Also set the directory timestamp
+          touch -d '31 days ago' artifacts/triage/run-demo-ci || true
+          echo "Created artifacts/triage/run-demo-ci and aged it 31 days"
+
       - name: Upload prune results
         if: always()
         uses: actions/upload-artifact@v4
