@@ -31,3 +31,8 @@ server/data/ai_analytics.log
 server/data/ai_drafts.json
 server/data/ai_metrics_history.jsonl
 server/data/collab.json
+
+# Ignore CI/runtime generated artifacts and transient PIDs
+/artifacts/
+*.pid
+
