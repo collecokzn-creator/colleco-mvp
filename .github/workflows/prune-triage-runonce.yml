@@ -34,11 +34,20 @@ jobs:
       - name: Ensure prune script is present
         run: |
           if [ ! -f ./scripts/prune-triage.ps1 ]; then
-            echo "prune-triage.ps1 not found in branch; fetching from main branch"
+            echo "prune-triage.ps1 not found in branch; attempting to retrieve from origin/main via git"
             mkdir -p scripts
-            if ! curl -fsSL "https://raw.githubusercontent.com/collecokzn-creator/colleco-mvp/main/scripts/prune-triage.ps1" -o ./scripts/prune-triage.ps1; then
-              echo "ERROR: failed to fetch prune-triage.ps1 from main; aborting."
-              exit 2
+            # Fetch the main branch references and check out the single file to avoid raw.githubusercontent reliance
+            if ! git fetch origin main --depth=1; then
+              echo "WARNING: git fetch origin main failed; falling back to raw.githubusercontent"
+              if ! curl -fsSL "https://raw.githubusercontent.com/collecokzn-creator/colleco-mvp/main/scripts/prune-triage.ps1" -o ./scripts/prune-triage.ps1; then
+                echo "ERROR: failed to obtain prune-triage.ps1 by git or raw fetch; aborting."
+                exit 2
+              fi
+            else
+              if ! git checkout origin/main -- scripts/prune-triage.ps1; then
+                echo "ERROR: git checkout of scripts/prune-triage.ps1 failed; aborting."
+                exit 2
+              fi
             fi
           else
             echo "prune-triage.ps1 already present"
@@ -51,6 +60,11 @@ jobs:
             echo "ERROR: prune-triage.ps1 is missing; aborting."
             exit 2
           fi
+          # Diagnostic: show workspace layout so we can see if artifacts exist on runner
+          echo "PWD: $(pwd)"
+          echo "ROOT LISTING:"; ls -la || true
+          echo "ARTIFACTS LISTING:"; ls -la artifacts || true
+          echo "ARTIFACTS/TRIAGE LISTING:"; ls -la artifacts/triage || true
           # When invoking pwsh from bash, single-quote the PowerShell literal $false so bash
           # doesn't expand it. This ensures we pass '-DryRun:$false' to pwsh when deletion is enabled.
           if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
@@ -74,3 +88,4 @@ jobs:
             echo "Prune ran in dry-run mode. To enable deletion set repo secret PRUNE_DELETE=true"
           else
             echo "Prune ran and deleted old run directories. Uploaded prune-triage-runonce-${{ github.run_id }}"
+          fi
