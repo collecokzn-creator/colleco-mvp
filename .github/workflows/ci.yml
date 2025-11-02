@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Cleanup old Cypress logs
+        run: pwsh -NoProfile -ExecutionPolicy Bypass -File cleanup-logs.ps1
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
