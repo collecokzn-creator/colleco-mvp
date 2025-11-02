@@ -2,6 +2,11 @@ name: Prune triage (run-once)
 
 on:
   workflow_dispatch:
+    inputs:
+      prune_delete:
+        description: 'Manually enable destructive deletion. When true, deletion will proceed if repository secret PRUNE_DELETE is also true OR when used for a one-off run.'
+        required: false
+        default: 'false'
 
 jobs:
   prune-once:
@@ -14,17 +19,63 @@ jobs:
       - name: Determine dry-run
         id: prune_mode
         env:
-          PRUNE_DELETE: ${{ secrets.PRUNE_DELETE }}
+          EVENT_PRUNE: ${{ github.event.inputs.prune_delete }}
+          SECRET_PRUNE: ${{ secrets.PRUNE_DELETE }}
         run: |
-          echo "PRUNE_DELETE=$PRUNE_DELETE"
-          if [ "$PRUNE_DELETE" = "true" ]; then
+          echo "EVENT_PRUNE=$EVENT_PRUNE"
+          echo "SECRET_PRUNE=$SECRET_PRUNE"
+          # If either the workflow_dispatch input or the repo secret is true, allow deletion
+          if [ "$EVENT_PRUNE" = "true" ] || [ "$SECRET_PRUNE" = "true" ]; then
             echo "DRY=false" >> $GITHUB_OUTPUT
           else
             echo "DRY=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Ensure prune script is present
+        run: |
+          if [ ! -f ./scripts/prune-triage.ps1 ]; then
+            echo "prune-triage.ps1 not found in branch; attempting to retrieve from origin/main via git"
+            mkdir -p scripts
+            # Fetch the main branch references and check out the single file to avoid raw.githubusercontent reliance
+            if ! git fetch origin main --depth=1; then
+              echo "WARNING: git fetch origin main failed; falling back to raw.githubusercontent"
+              if ! curl -fsSL "https://raw.githubusercontent.com/collecokzn-creator/colleco-mvp/main/scripts/prune-triage.ps1" -o ./scripts/prune-triage.ps1; then
+                echo "ERROR: failed to obtain prune-triage.ps1 by git or raw fetch; aborting."
+                exit 2
+              fi
+            else
+              if ! git checkout origin/main -- scripts/prune-triage.ps1; then
+                echo "ERROR: git checkout of scripts/prune-triage.ps1 failed; aborting."
+                exit 2
+              fi
+            fi
+          else
+            echo "prune-triage.ps1 already present"
+          fi
+
+      - name: (Demo) Create old run directory for CI test
+        run: |
+          # Create a test run directory that matches the expected pattern (run-*) and age it 31 days so the prune script will find it
+          mkdir -p artifacts/triage/run-demo-ci
+          echo "ci-test" > artifacts/triage/run-demo-ci/README.txt
+          # Set mtime for directory and files to 31 days ago
+          find artifacts/triage/run-demo-ci -exec touch -d '31 days ago' {} + || true
+          # Also set the directory timestamp
+          touch -d '31 days ago' artifacts/triage/run-demo-ci || true
+          echo "Created artifacts/triage/run-demo-ci and aged it 31 days"
+
       - name: Run prune (honors PRUNE_DELETE secret)
         run: |
+          # Fail fast if script missing (shouldn't happen because fetch step aborts on failure)
+          if [ ! -f ./scripts/prune-triage.ps1 ]; then
+            echo "ERROR: prune-triage.ps1 is missing; aborting."
+            exit 2
+          fi
+          # Diagnostic: show workspace layout so we can see if artifacts exist on runner
+          echo "PWD: $(pwd)"
+          echo "ROOT LISTING:"; ls -la || true
+          echo "ARTIFACTS LISTING:"; ls -la artifacts || true
+          echo "ARTIFACTS/TRIAGE LISTING:"; ls -la artifacts/triage || true
           # When invoking pwsh from bash, single-quote the PowerShell literal $false so bash
           # doesn't expand it. This ensures we pass '-DryRun:$false' to pwsh when deletion is enabled.
           if [ "${{ steps.prune_mode.outputs.DRY }}" = "true" ]; then
@@ -48,3 +99,4 @@ jobs:
             echo "Prune ran in dry-run mode. To enable deletion set repo secret PRUNE_DELETE=true"
           else
             echo "Prune ran and deleted old run directories. Uploaded prune-triage-runonce-${{ github.run_id }}"
+          fi
