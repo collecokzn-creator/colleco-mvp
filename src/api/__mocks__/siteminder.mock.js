@@ -37,7 +37,7 @@ async function cancelBooking(providerBookingId, reason) {
   return { providerBookingId, status: 'cancelled', cancelledAt: rec.cancelledAt };
 }
 
-async function getAvailability({ propertyId, startDate, endDate, roomTypeIds }) {
+async function getAvailability({ _propertyId, startDate, endDate, roomTypeIds }) {
   // Simple deterministic availability: return 5 units per room per date
   const start = new Date(startDate);
   const end = new Date(endDate);
@@ -50,7 +50,7 @@ async function getAvailability({ propertyId, startDate, endDate, roomTypeIds }) 
   return { availability: days };
 }
 
-async function pushRates(ratePayload) {
+async function pushRates(_ratePayload) {
   // Accept everything in mock
   return { accepted: true };
 }

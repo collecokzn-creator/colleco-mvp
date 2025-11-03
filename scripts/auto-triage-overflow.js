@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 /*
  Lightweight automation to scan recent workflow runs and open draft-style issues
  for failed CI E2E runs that contain Cypress artifacts. This is intentionally
@@ -197,6 +198,7 @@ async function main() {
             console.error('upload image error', err && err.message);
           }
         }
+            /* eslint-disable no-console */
       }
     } catch (err) {
       console.error('image publish error', err && err.message);

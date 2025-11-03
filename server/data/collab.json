@@ -1,0 +1,341 @@
+{
+  "_accomInventory": {
+    "roomTypes": {
+      "standard": {
+        "total": 5,
+        "price": 800
+      },
+      "deluxe": {
+        "total": 2,
+        "price": 1500
+      }
+    },
+    "bookingsByDate": {}
+  },
+  "_accomHolds": {},
+  "_quotes": [
+    {
+      "id": "1dug87kbobzmhivzzbv",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762159047835,
+      "updatedAt": 1762159047849
+    },
+    {
+      "id": "b5r7w0e8wggmhivzzaw",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762159047800,
+      "updatedAt": 1762159047800
+    },
+    {
+      "id": "pgy9n1d32obmhivzza0",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762159047768,
+      "updatedAt": 1762159047768
+    }
+  ],
+  "fqvee2feb4imhiw091w": {
+    "id": "fqvee2feb4imhiw091w",
+    "ref": "BKG-mhiw09",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762159060436,
+    "updatedAt": 1762159060583,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762159060584
+  },
+  "_sessions": {
+    "bi9uvzd31gmmhiw095e": {
+      "bookingId": "fqvee2feb4imhiw091w",
+      "status": "Confirmed",
+      "createdAt": 1762159060562,
+      "amount": 10800
+    },
+    "fs0roe5vh2mhiw0aux": {
+      "bookingId": "uxczgwsnm9mhiw0aut",
+      "status": "pending",
+      "createdAt": 1762159062777,
+      "amount": 2825
+    },
+    "0471rzrna04emhiw0axp": {
+      "bookingId": "jipmhkz6ulrmhiw0axo",
+      "status": "pending",
+      "createdAt": 1762159062877,
+      "amount": 1605
+    }
+  },
+  "c8wv7sw2makmhiw0ato": {
+    "id": "c8wv7sw2makmhiw0ato",
+    "ref": "BKG-mhiw0a",
+    "items": [
+      {
+        "id": "qmnt1hwrlxnmhiw0ato",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762159062732,
+    "updatedAt": 1762159062732,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762159062734
+  },
+  "uxczgwsnm9mhiw0aut": {
+    "id": "uxczgwsnm9mhiw0aut",
+    "ref": "BKG-mhiw0a",
+    "items": [
+      {
+        "id": "a22yowrwseumhiw0aut",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Scheduled",
+        "amount": 2500,
+        "netRate": 2500
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762159062773,
+    "updatedAt": 1762159062773,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "jipmhkz6ulrmhiw0axo": {
+    "id": "jipmhkz6ulrmhiw0axo",
+    "ref": "BKG-mhiw0a",
+    "items": [
+      {
+        "id": "p64zaa82knqmhiw0axo",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762159062876,
+    "updatedAt": 1762159062876,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  }
+}
