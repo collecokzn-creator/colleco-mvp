@@ -275,6 +275,19 @@ export default function Itinerary() {
     return items.length ? items : [{ name: 'Itinerary deposit', amount: 100 }];
   }, [trip]);
 
+  // Day options for selects: always include a small range beyond existing days so users can
+  // assign items to day 2/3 (or create new days) even if those days aren't yet present.
+  const dayOptions = useMemo(() => {
+    try {
+      const existing = Object.keys(trip.days || {}).map(n => Number(n)).filter(n => Number.isFinite(n) && n > 0);
+      const maxExisting = existing.length ? Math.max(...existing) : 1;
+      const upto = Math.max(3, maxExisting + 2); // show at least days 1..3, and a couple ahead
+      return Array.from({ length: upto }, (_, i) => String(i + 1));
+    } catch (e) {
+      return ['1','2','3'];
+    }
+  }, [trip.days]);
+
   const handleExport = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
@@ -389,6 +402,13 @@ export default function Itinerary() {
             enableToasts={enableToasts} setEnableToasts={setEnableToasts}
             animationsEnabled={animationsEnabled} setAnimationsEnabled={setAnimationsEnabled} />
           <button onClick={handleExport} className="px-3 py-2 rounded border border-brand-brown text-brand-brown hover:bg-brand-brown/10">Export PDF</button>
+          <button onClick={() => {
+              // add an explicit empty day (next sequential)
+              const existing = Object.keys(trip.days||{}).map(n=>Number(n)).filter(n=>Number.isFinite(n) && n>0);
+              const next = existing.length ? Math.max(...existing) + 1 : 2;
+              safeSetTrip(t => ({ ...t, days: { ...t.days, [String(next)]: [] } }), 'add-empty-day');
+              try{ announce(`Added Day ${next}`); }catch(e){}
+            }} title="Add an empty day to the itinerary" className="px-3 py-2 rounded border border-cream-border text-brand-brown hover:bg-cream ml-2">Add Day</button>
         </div>
       </div>
       <p className="mb-2 text-brand-brown/80">Plan each day and capture memories — everything stays in sync.</p>
@@ -448,7 +468,7 @@ export default function Itinerary() {
                           <span className="text-brand-brown/70">Move selected to:</span>
                           <select className="border border-cream-border rounded px-1 py-0.5" onChange={(e)=>{ const td=e.target.value; if(td) bulkMove(d, td); }} defaultValue="">
                             <option value="" disabled>Day...</option>
-                            {Object.keys(trip.days).sort((a,b)=>Number(a)-Number(b)).filter(dayKey=>dayKey!==d).map(dayKey => (
+                            {dayOptions.filter(dayKey=>dayKey!==d).map(dayKey => (
                               <option key={dayKey} value={dayKey}>{dayKey}</option>
                             ))}
                           </select>
@@ -584,7 +604,7 @@ export default function Itinerary() {
                                   updateBasketDay(item.id, Number(newDay));
                                 }}
                               >
-                                {Object.keys(trip.days).sort((a,b)=>Number(a)-Number(b)).map(dayKey => (
+                                {dayOptions.map(dayKey => (
                                   <option key={dayKey} value={dayKey}>{dayKey}</option>
                                 ))}
                               </select>

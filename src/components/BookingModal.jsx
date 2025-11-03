@@ -4,7 +4,7 @@ import { bookAccommodation, bookFlight, bookCar, subscribeToFlightUpdates, getFl
 import DateRangePicker from './DateRangePicker';
 import FocusTrap from 'focus-trap-react';
 
-export default function BookingModal({ open, onClose }) {
+export default function BookingModal({ open, onClose, prefill }) {
   const [type, setType] = useState('accommodation');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -200,6 +200,23 @@ export default function BookingModal({ open, onClose }) {
       }
     } catch (e) {}
   }, [open]);
+
+  // Apply prefill values when the modal opens
+  useEffect(() => {
+    if (!open || !prefill) return;
+    try {
+      if (prefill.type) setType(prefill.type);
+      if (prefill.name) setName(prefill.name);
+      if (prefill.startDate) setStartDate(prefill.startDate);
+      if (prefill.endDate) setEndDate(prefill.endDate);
+      if (prefill.price) setPrice(String(prefill.price));
+      if (typeof prefill.guests !== 'undefined') setGuests(Number(prefill.guests) || 1);
+      if (typeof prefill.passengers !== 'undefined') setPassengers(Number(prefill.passengers) || 1);
+      if (prefill.roomType) setRoomType(prefill.roomType);
+    } catch (e) {
+      // swallow; prefill is best-effort
+    }
+  }, [open, prefill]);
 
   // When modal opens, move focus into the dialog (first focusable) for accessibility.
   useEffect(() => {

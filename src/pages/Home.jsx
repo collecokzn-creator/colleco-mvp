@@ -9,6 +9,7 @@ import { useState } from "react";
 
 export default function Home() {
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingPrefill, setBookingPrefill] = useState(null);
   // Expose a small E2E helper so tests can open the booking modal programmatically.
   // Only add this in test runs (window.__E2E__ is set by the index HTML when Cypress is present).
   React.useEffect(() => {
@@ -92,17 +93,22 @@ export default function Home() {
             <p className="mt-4 text-brand-brown/80 text-base sm:text-lg max-w-prose">
               Making trip planning effortless for friends, teams, partners, and individuals who love to explore.
             </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight">
-                Start Planning
-                <span aria-hidden>→</span>
+            <div className="mt-5 flex flex-wrap gap-3 items-center">
+              <button onClick={() => { setBookingPrefill({ type: 'accommodation' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight">
+                Book Accommodation
+              </button>
+              <button onClick={() => { setBookingPrefill({ type: 'flight' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-orange-50">
+                Book Flight
+              </button>
+              <button onClick={() => { setBookingPrefill({ type: 'car' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-orange-50">
+                Book Car
+              </button>
+              <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-cream-border text-brand-brown bg-white/80 hover:bg-cream">
+                Plan a Trip
               </Link>
-              <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-brand-brown text-brand-brown bg-white/80 hover:bg-white">
+              <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-cream-border text-brand-brown bg-white/80 hover:bg-white">
                 Try Trip Assist
               </Link>
-              <button onClick={() => setBookingOpen(true)} className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-brand-brown text-brand-brown bg-white/80 hover:bg-white">
-                Book Now
-              </button>
             </div>
             <p className="mt-3 text-xs text-brand-brown/70">No credit card required · Free to get started</p>
           </div>
@@ -256,25 +262,33 @@ export default function Home() {
         ref={ctaRef}
         className={`max-w-5xl mx-auto px-6 py-12 sm:py-16 ${ctaIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'} transition duration-700`}
       >
-        <div className="rounded-xl bg-brand-brown text-white px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow">
+        <div className="rounded-xl bg-white border border-cream-border px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow">
           <div>
-            <h3 className="text-xl sm:text-2xl font-bold">Ready to explore?</h3>
-            <p className="text-sm text-white/90">Jump into the planner or let Trip Assist suggest a perfect first draft.</p>
+            <h3 className="text-xl sm:text-2xl font-bold text-brand-russty">Ready to explore?</h3>
+            <p className="text-sm text-brand-brown/80">Jump into the planner or let Trip Assist suggest a perfect first draft.</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-white text-brand-brown font-semibold hover:bg-cream">
               Plan a Trip
             </Link>
-            <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-white text-white hover:bg-white/10">
+            <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold hover:brightness-95">
               Try Trip Assist
             </Link>
-            <button onClick={() => setBookingOpen(true)} className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-white text-brand-brown font-semibold hover:bg-cream">
-              Book Now
-            </button>
+            <div className="flex gap-2">
+              <button onClick={() => { setBookingPrefill({ type: 'accommodation' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white font-semibold shadow-sm hover:brightness-95">
+                Book Accommodation
+              </button>
+              <button onClick={() => { setBookingPrefill({ type: 'flight' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-orange-50">
+                Book Flight
+              </button>
+              <button onClick={() => { setBookingPrefill({ type: 'car' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-orange-50">
+                Book Car
+              </button>
+            </div>
           </div>
         </div>
       </section>
-      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
+  <BookingModal open={bookingOpen} onClose={() => { setBookingOpen(false); setBookingPrefill(null); }} prefill={bookingPrefill} />
     </div>
   );
 }

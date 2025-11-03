@@ -15,6 +15,318 @@
   "_accomHolds": {},
   "_quotes": [
     {
+      "id": "bq40v0rykqfmhjiagn9",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762196488389,
+      "updatedAt": 1762196488458
+    },
+    {
+      "id": "5sngg7aqu4emhjiagks",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762196488300,
+      "updatedAt": 1762196488300
+    },
+    {
+      "id": "vvy5z2yt5imhjiagh5",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762196488169,
+      "updatedAt": 1762196488169
+    },
+    {
+      "id": "6afgzmhxff2mhji503a",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762196233654,
+      "updatedAt": 1762196233665
+    },
+    {
+      "id": "4y12pm6czsmmhji5028",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762196233616,
+      "updatedAt": 1762196233616
+    },
+    {
+      "id": "9dfytrpfwojmhji501n",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762196233595,
+      "updatedAt": 1762196233595
+    },
+    {
+      "id": "35a3a99ozn5mhjgfvm7",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762193381839,
+      "updatedAt": 1762193382160
+    },
+    {
+      "id": "b15yhtrsygmhjgfup5",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762193380649,
+      "updatedAt": 1762193380649
+    },
+    {
+      "id": "pi4y0uz779mhjgful5",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762193380505,
+      "updatedAt": 1762193380505
+    },
+    {
+      "id": "91gn48z39mdmhjdaeqk",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762188087836,
+      "updatedAt": 1762188087878
+    },
+    {
+      "id": "os5lqfzfuwbmhjdaeq3",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762188087819,
+      "updatedAt": 1762188087819
+    },
+    {
+      "id": "ru73y7w6ilmhjdaept",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762188087809,
+      "updatedAt": 1762188087809
+    },
+    {
+      "id": "evbug7zflbbmhjd6kiu",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187908710,
+      "updatedAt": 1762187908719
+    },
+    {
+      "id": "duflsxk9ygmhjd6kic",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187908692,
+      "updatedAt": 1762187908692
+    },
+    {
+      "id": "ec8eb2nksyfmhjd6khu",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187908674,
+      "updatedAt": 1762187908674
+    },
+    {
+      "id": "pob8sn3dwomhjd02ay",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187605162,
+      "updatedAt": 1762187605276
+    },
+    {
+      "id": "iq3ps3xnygmhjd022j",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187604859,
+      "updatedAt": 1762187604859
+    },
+    {
+      "id": "0q5y0atwsr9hmhjd0224",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187604844,
+      "updatedAt": 1762187604844
+    },
+    {
+      "id": "ke7gh8lmssmhjcxh7p",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187484517,
+      "updatedAt": 1762187484528
+    },
+    {
+      "id": "gu875c970srmhjcxh78",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187484500,
+      "updatedAt": 1762187484500
+    },
+    {
+      "id": "ur7u4h2likmhjcxh6r",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187484483,
+      "updatedAt": 1762187484483
+    },
+    {
+      "id": "ravn40e0qibmhjcof6z",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187061995,
+      "updatedAt": 1762187062041
+    },
+    {
+      "id": "4t2jtllaccdmhjcof6h",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187061977,
+      "updatedAt": 1762187061977
+    },
+    {
+      "id": "qdede2kmsjlmhjcof63",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1762187061963,
+      "updatedAt": 1762187061963
+    },
+    {
       "id": "1dug87kbobzmhivzzbv",
       "clientName": "Updated Name",
       "clientEmail": "",
@@ -137,6 +449,150 @@
       "status": "pending",
       "createdAt": 1762159062877,
       "amount": 1605
+    },
+    "60er1zsl8e9mhjcomuj": {
+      "bookingId": "s92703dncqqmhjcomuh",
+      "status": "Confirmed",
+      "createdAt": 1762187071915,
+      "amount": 10800
+    },
+    "4iy4khkl6hamhjcoo15": {
+      "bookingId": "6a67tsx4crtmhjcoo0x",
+      "status": "pending",
+      "createdAt": 1762187073449,
+      "amount": 2825
+    },
+    "l5f80h0qutmhjcoo1k": {
+      "bookingId": "fyn8x3xlzshmhjcoo1j",
+      "status": "pending",
+      "createdAt": 1762187073464,
+      "amount": 1605
+    },
+    "axrehvh2jumhjcxg19": {
+      "bookingId": "9s5e07yj9j9mhjcxg11",
+      "status": "Confirmed",
+      "createdAt": 1762187482989,
+      "amount": 10800
+    },
+    "ecxgwyhkvdmmhjcxi1x": {
+      "bookingId": "mj8o5w1sy9fmhjcxi1s",
+      "status": "pending",
+      "createdAt": 1762187485605,
+      "amount": 2825
+    },
+    "iu3m2z47t9smhjcxi28": {
+      "bookingId": "m67cp9lucuemhjcxi27",
+      "status": "pending",
+      "createdAt": 1762187485616,
+      "amount": 1605
+    },
+    "go9lv8t1m38mhjd06mh": {
+      "bookingId": "d11t4pm6fvvmhjd06m8",
+      "status": "Confirmed",
+      "createdAt": 1762187610761,
+      "amount": 10800
+    },
+    "9lob67x0xhomhjd0ao5": {
+      "bookingId": "wbx9tuarnzbmhjd0ao0",
+      "status": "pending",
+      "createdAt": 1762187616005,
+      "amount": 2825
+    },
+    "erax57w867mhjd0aqi": {
+      "bookingId": "yz6qo0nrgemhjd0aq2",
+      "status": "pending",
+      "createdAt": 1762187616090,
+      "amount": 1605
+    },
+    "zq8dvw51agmhjd6led": {
+      "bookingId": "5v5z92q4tjpmhjd6le3",
+      "status": "pending",
+      "createdAt": 1762187909845,
+      "amount": 2825
+    },
+    "cpe6qtyihjtmhjd6lep": {
+      "bookingId": "a16vpn568lpmhjd6lem",
+      "status": "pending",
+      "createdAt": 1762187909857,
+      "amount": 1605
+    },
+    "eeg60vuq2b6mhjd6sfa": {
+      "bookingId": "jigwflyin9mhjd6sf7",
+      "status": "Confirmed",
+      "createdAt": 1762187918950,
+      "amount": 10800
+    },
+    "n61ft8cnrtnmhjdaatz": {
+      "bookingId": "mi3u6ub6erlmhjdaatm",
+      "status": "pending",
+      "createdAt": 1762188082775,
+      "amount": 2825
+    },
+    "011hqolwxnqspmhjdaaw4": {
+      "bookingId": "vtqvpq3hg4mhjdaaw1",
+      "status": "pending",
+      "createdAt": 1762188082852,
+      "amount": 1605
+    },
+    "i8cw4slevcmhjdaidu": {
+      "bookingId": "hfzrmzypzcmhjdaidr",
+      "status": "Confirmed",
+      "createdAt": 1762188092562,
+      "amount": 10800
+    },
+    "dmk24e1g53mhjgfs16": {
+      "bookingId": "8osergle259mhjgfs0x",
+      "status": "pending",
+      "createdAt": 1762193377194,
+      "amount": 2825
+    },
+    "ia9qgrttonamhjgfs1y": {
+      "bookingId": "koczmpo4hyqmhjgfs1x",
+      "status": "pending",
+      "createdAt": 1762193377222,
+      "amount": 1605
+    },
+    "tjv0kdz5yrlmhjgg7jp": {
+      "bookingId": "3o0w8aqa0h4mhjgg7jh",
+      "status": "Confirmed",
+      "createdAt": 1762193397301,
+      "amount": 10800
+    },
+    "qufe500szrmhji5fh2": {
+      "bookingId": "uhz3eau2owfmhji5fgi",
+      "status": "Confirmed",
+      "createdAt": 1762196253590,
+      "amount": 10800
+    },
+    "nprd1agyrtdmhji5gdh": {
+      "bookingId": "4ikd1hbezgmhji5gde",
+      "status": "pending",
+      "createdAt": 1762196254757,
+      "amount": 2825
+    },
+    "q5aisonb5pamhji5ge4": {
+      "bookingId": "pc74y3uhibmhji5gdz",
+      "status": "pending",
+      "createdAt": 1762196254780,
+      "amount": 1605
+    },
+    "sdnu7ak8lsamhjiacos": {
+      "bookingId": "rw64omymedmhjiacop",
+      "status": "pending",
+      "createdAt": 1762196483260,
+      "amount": 2825
+    },
+    "8wh2708ojbmhjiacp7": {
+      "bookingId": "b7b086y9no7mhjiacp5",
+      "status": "pending",
+      "createdAt": 1762196483275,
+      "amount": 1605
+    },
+    "rqptmhkaglrmhjialc3": {
+      "bookingId": "e60uyfjjkzmhjialbw",
+      "status": "Confirmed",
+      "createdAt": 1762196494467,
+      "amount": 10800
     }
   },
   "c8wv7sw2makmhiw0ato": {
@@ -181,9 +637,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Boarding",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1762186022833
       }
     ],
     "customer": {
@@ -192,7 +649,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762159062773,
-    "updatedAt": 1762159062773,
+    "updatedAt": 1762186022833,
     "pricing": {
       "items": [
         {
@@ -337,5 +794,2123 @@
       "partnerReceives": 1275,
       "total": 1605
     }
+  },
+  "s92703dncqqmhjcomuh": {
+    "id": "s92703dncqqmhjcomuh",
+    "ref": "BKG-mhjcom",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762187071913,
+    "updatedAt": 1762187072057,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762187072058
+  },
+  "5lleb35gn7smhjconyu": {
+    "id": "5lleb35gn7smhjconyu",
+    "ref": "BKG-mhjcon",
+    "items": [
+      {
+        "id": "xax50m5jeofmhjconyu",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762187073366,
+    "updatedAt": 1762187073366,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762187073392
+  },
+  "6a67tsx4crtmhjcoo0x": {
+    "id": "6a67tsx4crtmhjcoo0x",
+    "ref": "BKG-mhjcoo",
+    "items": [
+      {
+        "id": "wdyensdtbnmhjcoo0x",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Boarding",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1762196770644
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762187073441,
+    "updatedAt": 1762196770644,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "fyn8x3xlzshmhjcoo1j": {
+    "id": "fyn8x3xlzshmhjcoo1j",
+    "ref": "BKG-mhjcoo",
+    "items": [
+      {
+        "id": "zt6ndhj15jmhjcoo1j",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762187073463,
+    "updatedAt": 1762187073463,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "9s5e07yj9j9mhjcxg11": {
+    "id": "9s5e07yj9j9mhjcxg11",
+    "ref": "BKG-mhjcxg",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762187482981,
+    "updatedAt": 1762187483012,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762187483013
+  },
+  "mmf8x9d864mhjcxi0v": {
+    "id": "mmf8x9d864mhjcxi0v",
+    "ref": "BKG-mhjcxi",
+    "items": [
+      {
+        "id": "nryjifw0kpmmhjcxi0v",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762187485567,
+    "updatedAt": 1762187485567,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762187485573
+  },
+  "mj8o5w1sy9fmhjcxi1s": {
+    "id": "mj8o5w1sy9fmhjcxi1s",
+    "ref": "BKG-mhjcxi",
+    "items": [
+      {
+        "id": "9jfk4wl8mvjmhjcxi1s",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Cancelled",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1762191787822
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762187485600,
+    "updatedAt": 1762191787822,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "m67cp9lucuemhjcxi27": {
+    "id": "m67cp9lucuemhjcxi27",
+    "ref": "BKG-mhjcxi",
+    "items": [
+      {
+        "id": "gb4jix1fa2mhjcxi27",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762187485615,
+    "updatedAt": 1762187485615,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "d11t4pm6fvvmhjd06m8": {
+    "id": "d11t4pm6fvvmhjd06m8",
+    "ref": "BKG-mhjd06",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762187610752,
+    "updatedAt": 1762187610796,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762187610798
+  },
+  "607wwafn2lhmhjd0ahc": {
+    "id": "607wwafn2lhmhjd0ahc",
+    "ref": "BKG-mhjd0a",
+    "items": [
+      {
+        "id": "n42bzi60ttemhjd0ahc",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762187615760,
+    "updatedAt": 1762187615760,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762187615762
+  },
+  "wbx9tuarnzbmhjd0ao0": {
+    "id": "wbx9tuarnzbmhjd0ao0",
+    "ref": "BKG-mhjd0a",
+    "items": [
+      {
+        "id": "ts8t0if193rmhjd0ao0",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Scheduled",
+        "amount": 2500,
+        "netRate": 2500
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762187616000,
+    "updatedAt": 1762187616000,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "yz6qo0nrgemhjd0aq2": {
+    "id": "yz6qo0nrgemhjd0aq2",
+    "ref": "BKG-mhjd0a",
+    "items": [
+      {
+        "id": "200dtcwpmoamhjd0aq2",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762187616074,
+    "updatedAt": 1762187616074,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "yj7y4hh509smhjd6lbn": {
+    "id": "yj7y4hh509smhjd6lbn",
+    "ref": "BKG-mhjd6l",
+    "items": [
+      {
+        "id": "1ix1nncuzhvmhjd6lbn",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762187909747,
+    "updatedAt": 1762187909747,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762187909751
+  },
+  "5v5z92q4tjpmhjd6le3": {
+    "id": "5v5z92q4tjpmhjd6le3",
+    "ref": "BKG-mhjd6l",
+    "items": [
+      {
+        "id": "1403rja1hyiqmhjd6le3",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Scheduled",
+        "amount": 2500,
+        "netRate": 2500
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762187909835,
+    "updatedAt": 1762187909835,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "a16vpn568lpmhjd6lem": {
+    "id": "a16vpn568lpmhjd6lem",
+    "ref": "BKG-mhjd6l",
+    "items": [
+      {
+        "id": "te80ik3ghvdmhjd6lem",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762187909854,
+    "updatedAt": 1762187909854,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "jigwflyin9mhjd6sf7": {
+    "id": "jigwflyin9mhjd6sf7",
+    "ref": "BKG-mhjd6s",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762187918947,
+    "updatedAt": 1762187918979,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762187918981
+  },
+  "2xc9hylpwt1mhjdaard": {
+    "id": "2xc9hylpwt1mhjdaard",
+    "ref": "BKG-mhjdaa",
+    "items": [
+      {
+        "id": "8f297ayfrcomhjdaard",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762188082681,
+    "updatedAt": 1762188082681,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762188082684
+  },
+  "mi3u6ub6erlmhjdaatm": {
+    "id": "mi3u6ub6erlmhjdaatm",
+    "ref": "BKG-mhjdaa",
+    "items": [
+      {
+        "id": "cifv0xhp2bgmhjdaatm",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Delayed",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1762196739622
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762188082762,
+    "updatedAt": 1762196739622,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "vtqvpq3hg4mhjdaaw1": {
+    "id": "vtqvpq3hg4mhjdaaw1",
+    "ref": "BKG-mhjdaa",
+    "items": [
+      {
+        "id": "z6welqy22zmhjdaaw1",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762188082849,
+    "updatedAt": 1762188082849,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "hfzrmzypzcmhjdaidr": {
+    "id": "hfzrmzypzcmhjdaidr",
+    "ref": "BKG-mhjdai",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762188092559,
+    "updatedAt": 1762188092582,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762188092584
+  },
+  "blxfgqspqfsmhjgfryj": {
+    "id": "blxfgqspqfsmhjgfryj",
+    "ref": "BKG-mhjgfr",
+    "items": [
+      {
+        "id": "x9ypzn4d2hmhjgfryj",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762193377099,
+    "updatedAt": 1762193377099,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762193377101
+  },
+  "8osergle259mhjgfs0x": {
+    "id": "8osergle259mhjgfs0x",
+    "ref": "BKG-mhjgfs",
+    "items": [
+      {
+        "id": "2ccdd9n7dgamhjgfs0x",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Cancelled",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1762196770777
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762193377185,
+    "updatedAt": 1762196770777,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "koczmpo4hyqmhjgfs1x": {
+    "id": "koczmpo4hyqmhjgfs1x",
+    "ref": "BKG-mhjgfs",
+    "items": [
+      {
+        "id": "bzp3yda16c4mhjgfs1x",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762193377221,
+    "updatedAt": 1762193377221,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "3o0w8aqa0h4mhjgg7jh": {
+    "id": "3o0w8aqa0h4mhjgg7jh",
+    "ref": "BKG-mhjgg7",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762193397293,
+    "updatedAt": 1762193397392,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762193397415
+  },
+  "uhz3eau2owfmhji5fgi": {
+    "id": "uhz3eau2owfmhji5fgi",
+    "ref": "BKG-mhji5f",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762196253570,
+    "updatedAt": 1762196253616,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762196253617
+  },
+  "nmsv040h18mmhji5gbo": {
+    "id": "nmsv040h18mmhji5gbo",
+    "ref": "BKG-mhji5g",
+    "items": [
+      {
+        "id": "tr71sw5pqwpmhji5gbo",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762196254692,
+    "updatedAt": 1762196254692,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762196254700
+  },
+  "4ikd1hbezgmhji5gde": {
+    "id": "4ikd1hbezgmhji5gde",
+    "ref": "BKG-mhji5g",
+    "items": [
+      {
+        "id": "tnwhi9fnebmhji5gde",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Completed",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1762196729618
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762196254754,
+    "updatedAt": 1762196729618,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "pc74y3uhibmhji5gdz": {
+    "id": "pc74y3uhibmhji5gdz",
+    "ref": "BKG-mhji5g",
+    "items": [
+      {
+        "id": "eku4gqnrvakmhji5gdz",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762196254775,
+    "updatedAt": 1762196254775,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "4ybdgik4rx6mhjiacn4": {
+    "id": "4ybdgik4rx6mhjiacn4",
+    "ref": "BKG-mhjiac",
+    "items": [
+      {
+        "id": "zovu8oc8i1mhjiacn4",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1762196483200,
+    "updatedAt": 1762196483200,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762196483203
+  },
+  "rw64omymedmhjiacop": {
+    "id": "rw64omymedmhjiacop",
+    "ref": "BKG-mhjiac",
+    "items": [
+      {
+        "id": "0g1rsc51563cmhjiacop",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Landed",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1762196739624
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762196483257,
+    "updatedAt": 1762196739624,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "b7b086y9no7mhjiacp5": {
+    "id": "b7b086y9no7mhjiacp5",
+    "ref": "BKG-mhjiac",
+    "items": [
+      {
+        "id": "t20l8yjzjzjmhjiacp5",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1762196483273,
+    "updatedAt": 1762196483273,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "e60uyfjjkzmhjialbw": {
+    "id": "e60uyfjjkzmhjialbw",
+    "ref": "BKG-mhjial",
+    "items": [
+      {
+        "type": "accommodation",
+        "amount": 10000,
+        "nights": 2,
+        "name": "Test Hotel"
+      }
+    ],
+    "customer": {},
+    "metadata": {
+      "partnerBookingCount": 30
+    },
+    "status": "Confirmed",
+    "createdAt": 1762196494460,
+    "updatedAt": 1762196494486,
+    "pricing": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "accommodation",
+          "amount": 10000,
+          "nights": 2,
+          "name": "Test Hotel",
+          "net": 10000,
+          "serviceFee": 800,
+          "totalWithFee": 10800,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 10000,
+      "totalServiceFees": 800,
+      "commission": 1000,
+      "commissionRate": 0.1,
+      "commissionTier": "Gold",
+      "collEcoEarns": 1800,
+      "partnerReceives": 9000,
+      "total": 10800
+    },
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1762196494488
   }
 }

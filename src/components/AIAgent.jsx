@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import logoPng from "../assets/colleco-logo.png";
 
@@ -56,6 +56,7 @@ export default function AIAgent() {
   // Example: user preferences, trip readiness, partner compliance, etc.
   const [progress, setProgress] = useState({ badge: 'Bronze', readiness: 40 });
   const dragScopeRef = useRef(null);
+  const messagesRef = useRef(null);
 
   // Context-aware smart reply stub
   const smartReply = (text) => {
@@ -116,6 +117,14 @@ export default function AIAgent() {
     }, 600);
   };
 
+  // Auto-scroll messages container to keep the latest messages and input visible
+  useEffect(() => {
+    if (messagesRef.current) {
+      // scroll to bottom
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <div ref={dragScopeRef} className="fixed inset-0 z-50 pointer-events-none">
       <motion.div
@@ -129,13 +138,14 @@ export default function AIAgent() {
         dragConstraints={dragScopeRef}
       >
       {open ? (
-        <motion.div className="w-80 bg-cream rounded-2xl shadow-2xl border border-cream-border/80 overflow-hidden" initial={{ scale: 0.98 }} animate={{ scale: 1 }}>
-          <div className="flex items-center gap-3 bg-gradient-to-r from-brand-brown to-brand-orange text-white px-4 py-2.5 font-bold">
-            <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/20">
+        <motion.div className="w-80 bg-surface rounded-2xl shadow-2xl border border-cream-border/80 overflow-hidden" initial={{ scale: 0.98 }} animate={{ scale: 1 }}>
+          <div className="flex items-center gap-3 bg-white px-4 py-2.5 font-bold border-b border-cream-border">
+            <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange/10">
               <img src={logoPng} alt="CollEco" className="h-6 w-6" />
+              <span className="absolute -left-3 top-0 h-full w-1 bg-brand-orange rounded-full" aria-hidden></span>
             </span>
-            CollEco AI Concierge
-            <button onClick={() => setOpen(false)} className="ml-auto rounded-full bg-white/10 px-2 py-1 text-sm font-semibold text-white hover:bg-white/20" aria-label="Close chat">
+            <span className="text-brand-russty">CollEco AI Concierge</span>
+            <button onClick={() => setOpen(false)} className="ml-auto rounded-full bg-brand-orange text-white px-2 py-1 text-sm font-semibold hover:bg-brand-brown" aria-label="Close chat">
               ✕
             </button>
           </div>
@@ -149,15 +159,15 @@ export default function AIAgent() {
               <span className="text-xs text-brand-brown/70">{progress.readiness}% ready</span>
             </div>
           )}
-          <div className="p-4 h-48 overflow-y-auto text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
+          <div ref={messagesRef} className="p-4 h-48 overflow-y-auto text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
             {messages.map((m, i) => (
               <div
                 key={i}
                 className={`mb-2 inline-block max-w-[90%] rounded-lg px-2 py-1 ${
                   m.from === 'agent'
-                    ? 'bg-brand-orange/10 text-brand-brown'
+                    ? 'bg-white text-brand-russty border border-amber-100'
                     : m.from === 'user'
-                    ? 'bg-cream-sand text-brand-brown'
+                    ? 'bg-cream-sand text-brand-russty'
                     : 'bg-transparent text-brand-orange font-semibold'
                 } ${m.from === 'user' ? 'text-right' : ''}`}
               >
@@ -188,11 +198,11 @@ export default function AIAgent() {
 function AIAgentInput({ onSend }) {
   const [v, setV] = useState("");
   return (
-    <div className="flex gap-2 border-t border-cream-border p-2 bg-cream rounded-b-xl">
+    <div className="flex gap-2 border-t border-cream-border p-2 bg-white rounded-b-xl">
       <input
         value={v}
         onChange={e => setV(e.target.value)}
-        className="border border-cream-border rounded px-2 py-1 flex-1 bg-cream text-brand-brown placeholder-brand-brown/50"
+        className="border border-cream-border rounded px-2 py-1 flex-1 bg-white text-brand-russty placeholder-brand-brown/50"
         placeholder="Type your message..."
         onKeyDown={e => e.key === 'Enter' && v.trim() && (onSend(v), setV(''))}
         aria-label="Type your message"
