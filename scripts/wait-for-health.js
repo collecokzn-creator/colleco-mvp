@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const http = require('http');
 function waitFor(host, port, tries = 24) {
   return new Promise((resolve, reject) => {

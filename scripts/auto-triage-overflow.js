@@ -197,6 +197,7 @@ async function main() {
             console.error('upload image error', err && err.message);
           }
         }
+            /* eslint-disable no-console */
       }
     } catch (err) {
       console.error('image publish error', err && err.message);

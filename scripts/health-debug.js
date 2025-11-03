@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const http = require('http');
 const targets = [
   { host: 'localhost', port: 4000, path: '/health' },

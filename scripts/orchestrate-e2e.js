@@ -17,6 +17,7 @@ if (!fs.existsSync(PID_DIR)) try { fs.mkdirSync(PID_DIR, { recursive: true }); }
 const LOG_DIR = path.join(process.cwd(), 'cypress-logs');
 if (!fs.existsSync(LOG_DIR)) try { fs.mkdirSync(LOG_DIR, { recursive: true }); } catch (e) {}
 
+/* eslint-disable no-console */
 function log(...args) { console.log('[orchestrator]', ...args); }
 
 function logToFile(...args) {

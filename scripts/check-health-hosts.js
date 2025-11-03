@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const http = require('http');
 const hosts = ['localhost','127.0.0.1','::1'];
 const port = 4000;
