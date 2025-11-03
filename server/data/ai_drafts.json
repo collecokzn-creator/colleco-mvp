@@ -1881,5 +1881,14 @@
       "itinerary": []
     },
     "createdAt": 1761117612275
+  },
+  "3j2rxh0ee2kmhiw0mgz": {
+    "id": "3j2rxh0ee2kmhiw0mgz",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762159077827
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const http = require('http');
 const urls = ['http://127.0.0.1:4000/health','http://127.0.0.1:5173/health'];
 function get(url){

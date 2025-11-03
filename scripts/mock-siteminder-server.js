@@ -2,6 +2,7 @@
 // Tiny mock server for Siteminder-like endpoints. Run locally during dev:
 // node scripts/mock-siteminder-server.js
 
+/* eslint-disable no-console */
 const http = require('http');
 const url = require('url');
 const MOCK_PORT = process.env.SITEMINDER_MOCK_PORT || 4015;

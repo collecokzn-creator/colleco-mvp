@@ -1,0 +1,19 @@
+Switched to branch 'fix/prune-triage-runonce/chore-ci-lint-build-and-pwa'
+Already up to date.
+---- FILE: .github/workflows/prune-triage-runonce.yml ----
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Bika Collin MKhize\AppData\Roaming\Python\Python313\site-packages\yamllint\__main__.py", line 19, in <module>
+    run()
+    ~~~^^
+  File "C:\Users\Bika Collin MKhize\AppData\Roaming\Python\Python313\site-packages\yamllint\cli.py", line 197, in run
+    conf = YamlLintConfig(file=args.config_file)
+  File "C:\Users\Bika Collin MKhize\AppData\Roaming\Python\Python313\site-packages\yamllint\config.py", line 41, in __init__
+    with open(file, mode='rb') as f:
+         ~~~~^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '.yamllint.yml'
+C:\Python313\python.exe: can't open file 'C:\\Users\\Bika Collin MKhize\\OneDrive\\Documents\\GitHub\\colleco-mvp\\scripts\\check_yaml_duplicates.py': [Errno 2] No such file or directory
+error: unable to write symref for HEAD: Permission denied
+fatal: unable to update HEAD

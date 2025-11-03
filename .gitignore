@@ -36,3 +36,4 @@ server/data/collab.json
 /artifacts/
 *.pid
 
+\n# Ignore CI/runtime artifacts\n/artifacts/\n

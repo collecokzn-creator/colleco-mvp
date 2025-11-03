@@ -5,6 +5,7 @@
    - Listens on 0.0.0.0 to be reachable via localhost and 127.0.0.1
    - Keeps process alive and logs errors to stdout/stderr
 */
+/* eslint-disable no-console */
 const express = require('express');
 const path = require('path');
 
