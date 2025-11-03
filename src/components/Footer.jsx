@@ -6,6 +6,7 @@ const Footer = () => (
   <a href="https://www.travelcolleco.com" className="text-brand-orange hover:text-brand-orange transition font-medium mt-2" target="_blank" rel="noopener noreferrer">
       www.travelcolleco.com
     </a>
+  <div className="mt-2 text-sm text-brand-russty">Email: <a href="mailto:collecotravel@gmail.com" className="underline">collecotravel@gmail.com</a> • WhatsApp: 0733994708</div>
   </footer>
 );
 

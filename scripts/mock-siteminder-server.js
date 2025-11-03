@@ -19,11 +19,15 @@ function readJson(req) {
   });
 }
 
+const crypto = require('crypto');
+
+const WEBHOOK_SECRET = process.env.SITEMINDER_WEBHOOK_SECRET || 'change-me-to-verify-webhooks';
+
 const server = http.createServer(async (req, res) => {
   const p = url.parse(req.url, true);
   res.setHeader('Access-Control-Allow-Origin','*');
   res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization');
+  res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization,x-siteminder-signature');
   if (req.method === 'OPTIONS') return res.end();
 
   try {
@@ -67,6 +71,28 @@ const server = http.createServer(async (req, res) => {
       const resp = await mock.pushRates(body || {});
       res.writeHead(200, { 'content-type': 'application/json' });
       return res.end(JSON.stringify(resp));
+    }
+
+    // Accept webhook callbacks from the app/CI. Validate HMAC signature if secret is set.
+    if (req.method === 'POST' && p.pathname === '/api/webhook') {
+      // read raw body for signature validation
+      let raw = '';
+      req.on('data', c => raw += c);
+      await new Promise(r => req.on('end', r));
+      const sig = req.headers['x-siteminder-signature'];
+      if (WEBHOOK_SECRET) {
+        const h = crypto.createHmac('sha256', WEBHOOK_SECRET).update(raw || '').digest('hex');
+        if (!sig || (sig !== h && sig !== `sha256=${h}`)) {
+          res.writeHead(401, { 'content-type': 'application/json' });
+          return res.end(JSON.stringify({ ok: false, error: 'invalid_signature' }));
+        }
+      }
+      // parse JSON body for convenience
+      let parsed = null;
+      try { parsed = raw ? JSON.parse(raw) : null; } catch (e) {/* ignore */}
+      // For the mock, just acknowledge and optionally echo
+      res.writeHead(200, { 'content-type': 'application/json' });
+      return res.end(JSON.stringify({ ok: true, received: parsed }));
     }
 
     res.writeHead(404, { 'content-type': 'application/json' });
