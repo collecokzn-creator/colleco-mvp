@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 /*
  Lightweight automation to scan recent workflow runs and open draft-style issues
  for failed CI E2E runs that contain Cypress artifacts. This is intentionally
