@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
     optimizeDeps: {
       include: ['react', 'react-dom']
     },
+    // build settings
   // Support GitHub Pages repo subpaths by allowing a base from env in CI
   // Locally this remains '/'. For production builds served from a subpath
   // we preserve BASE_PATH. When BASE_PATH is the root '/', emit relative
