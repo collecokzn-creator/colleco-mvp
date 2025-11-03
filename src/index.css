@@ -121,7 +121,7 @@ body,
 [style*="color: brown"],
 [style*="color:brown"],
 [style*="color:#5c3b21"],
-{
+[style*="color:#5c3b21"] {
 	color: var(--color-rusty) !important;
 }
 
