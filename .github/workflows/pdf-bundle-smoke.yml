@@ -1,0 +1,26 @@
+name: PDF Bundle Smoke
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ main ]
+
+jobs:
+  smoke:
+    name: Run PDF bundle smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Run PDF bundle smoke test
+        run: npx vitest run tests/pdfBundle.test.js --reporter dot
