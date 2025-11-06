@@ -1,0 +1,27 @@
+name: CI Puppeteer PDF Verify
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 3 * * 1' # every Monday at 03:00 UTC
+
+jobs:
+  verify:
+    name: Puppeteer PDF verification (on-demand)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Create runner HTML
+        run: node scripts/create_runner.mjs
+      - name: Run Puppeteer verifier
+        run: node scripts/ci_puppeteer_verify.mjs
