@@ -21,6 +21,14 @@ export default function BookingModal({ open, onClose }) {
   const [passengers, setPassengers] = useState(1);
   const [roundTrip, setRoundTrip] = useState(false);
   const [returnDate, setReturnDate] = useState('');
+  const [pickupLocation, setPickupLocation] = useState('Durban Airport');
+  const [pickupDate, setPickupDate] = useState('');
+  const [pickupTime, setPickupTime] = useState('09:00');
+  const [dropoffLocation, setDropoffLocation] = useState('Durban Airport');
+  const [dropoffDate, setDropoffDate] = useState('');
+  const [dropoffTime, setDropoffTime] = useState('17:00');
+  const [carQuotes, setCarQuotes] = useState([]);
+  const [selectedCarQuote, setSelectedCarQuote] = useState(null);
   const [monitoring, setMonitoring] = useState({});
   const modalRef = useRef(null);
   const previousFocusRef = useRef(null);
@@ -103,8 +111,12 @@ export default function BookingModal({ open, onClose }) {
         if (roundTrip && returnDate) payload.returnFlight = { from: name || 'Destination', to: 'Unknown', date: returnDate, price: parseFloat(price) || 0 };
         res = await bookFlight(payload);
       } else {
-        const days = startDate && endDate ? Math.max(1, Math.round((new Date(endDate) - new Date(startDate)) / (1000*60*60*24))) : 1;
-        res = await bookCar({ vehicleType: name || 'Standard', days, pricePerDay: parseFloat(price) || 0, currency, customer: { name } , metadata: { passengers } });
+        // Car booking: derive days from pickup/dropoff if provided, otherwise fall back to start/end
+        const days = (pickupDate && dropoffDate)
+          ? Math.max(1, Math.round((new Date(dropoffDate) - new Date(pickupDate)) / (1000*60*60*24)))
+          : (startDate && endDate ? Math.max(1, Math.round((new Date(endDate) - new Date(startDate)) / (1000*60*60*24))) : 1);
+        const vehicleType = name || (selectedCarQuote && selectedCarQuote.vehicle) || 'Standard';
+        res = await bookCar({ vehicleType, days, pricePerDay: parseFloat(price) || 0, currency, customer: { name }, metadata: { passengers, pickup: { location: pickupLocation, date: pickupDate, time: pickupTime }, dropoff: { location: dropoffLocation, date: dropoffDate, time: dropoffTime } } });
       }
       setResult(res);
     } catch (err) {
@@ -324,6 +336,78 @@ export default function BookingModal({ open, onClose }) {
             <div>
               <label className="block text-sm font-medium">Passengers</label>
               <input type="number" min={1} value={passengers} onChange={(e) => setPassengers(Number(e.target.value || 1))} className="mt-1 block w-28 rounded border px-2 py-1" />
+            </div>
+          )}
+
+          {type === 'car' && (
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-sm font-medium">Pick-up location</label>
+                  <input value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium">Drop-off location</label>
+                  <input value={dropoffLocation} onChange={(e) => setDropoffLocation(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" />
+                </div>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                <div>
+                  <label className="block text-sm font-medium">Pick-up date</label>
+                  <input type="date" value={pickupDate} onChange={(e) => setPickupDate(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium">Pick-up time</label>
+                  <input type="time" value={pickupTime} onChange={(e) => setPickupTime(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium">Drop-off date</label>
+                  <input type="date" value={dropoffDate} onChange={(e) => setDropoffDate(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium">Drop-off time</label>
+                  <input type="time" value={dropoffTime} onChange={(e) => setDropoffTime(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" />
+                </div>
+              </div>
+              <div className="mt-2">
+                <button type="button" onClick={async ()=>{
+                  // Simple client-side mock of car quotes for demo; in future call API endpoint
+                  try{
+                    setCarQuotes([]);
+                    const days = (pickupDate && dropoffDate) ? Math.max(1, Math.round((new Date(dropoffDate) - new Date(pickupDate)) / (1000*60*60*24))) : 1;
+                    const base = 300; // base per day in ZAR for demo
+                    const quotes = [
+                      { id: 'q1', vehicle: 'Toyota Corolla', pricePerDay: Math.round(base * 1.0), seats: 5 },
+                      { id: 'q2', vehicle: 'Ford Ranger', pricePerDay: Math.round(base * 1.6), seats: 5 },
+                      { id: 'q3', vehicle: 'VW Polo', pricePerDay: Math.round(base * 0.9), seats: 4 }
+                    ].map(q => ({ ...q, total: q.pricePerDay * days }));
+                    setCarQuotes(quotes);
+                    setSelectedCarQuote(null);
+                  }catch(e){ setError(String(e)); }
+                }} className="px-4 py-2 bg-brand-orange text-white rounded">Get Quote / Search</button>
+              </div>
+
+              {carQuotes && carQuotes.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  <div className="text-sm font-semibold">Available vehicles</div>
+                  {carQuotes.map(q => (
+                    <div key={q.id} className="border rounded p-2 flex items-center justify-between">
+                      <div>
+                        <div className="font-semibold">{q.vehicle} • {q.seats} seats</div>
+                        <div className="text-sm text-brand-brown/70">{currency} {q.pricePerDay} / day • Total: {currency} {q.total}</div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button type="button" onClick={() => {
+                          // choose this quote and populate form for booking
+                          setSelectedCarQuote(q);
+                          setName(q.vehicle);
+                          setPrice(String(q.pricePerDay));
+                        }} className="px-3 py-1 border rounded text-sm">Select</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

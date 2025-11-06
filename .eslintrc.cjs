@@ -1,4 +1,33 @@
 module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+    node: true
+  },
+  parserOptions: {
+    ecmaVersion: 2021,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
+  },
+  plugins: ['react', 'react-hooks'],
+  extends: ['eslint:recommended', 'plugin:react/recommended'],
+  rules: {
+    // prevent duplicated imports which caused a production build failure
+    'no-duplicate-imports': 'error',
+    // prevent redeclaration of variables
+    'no-redeclare': 'error',
+    // we use React 18+ with automatic JSX runtime
+    'react/react-in-jsx-scope': 'off'
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  }
+};
+module.exports = {
   root: true,
   env: { browser: true, es2022: true, node: true },
   extends: [

@@ -317,7 +317,12 @@ function respondWithMock(response) {
     return Response.error()
   }
 
-  const mockedResponse = new Response(response.body, response)
+  // Ensure responses with null-body status codes (204/304) are created with a null body.
+  let bodyForResponse = response.body;
+  if (response && (response.status === 0 || response.status === 204 || response.status === 304 || bodyForResponse == null)) {
+    bodyForResponse = null;
+  }
+  const mockedResponse = new Response(bodyForResponse, response)
 
   Reflect.defineProperty(mockedResponse, IS_MOCKED_RESPONSE, {
     value: true,

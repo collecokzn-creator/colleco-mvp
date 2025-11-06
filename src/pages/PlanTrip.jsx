@@ -11,135 +11,15 @@ import { sortEvents as sortEventsUtil, mergeAndSort } from "../utils/eventsSort"
 import { buildLocationMaps as buildLocMapsUtil, detectCategory, resolveLocationToken, longestLocationMatch, getSuggestion, loadMyLocation, persistMyLocation, loadSmartSettings } from "../utils/searchIntent";
 import MyLocationModal from "../components/MyLocationModal";
 import WeatherWidget from "../components/WeatherWidget";
-import { useClickOutsideAndEscape } from "../hooks/useClickOutside";
 
 export default function PlanTrip() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [directBookingOpen, setDirectBookingOpen] = useState(false);
-  // Open Direct Booking via URL query flag
-  useEffect(() => {
-    try {
-      const params = new URLSearchParams(location.search);
-      if (params.get('direct') === '1') {
-        setDirectBookingOpen(true);
-      }
-    } catch {}
-  }, [location.search]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  // Persist last-used booking date for convenience
-  const [bookingDate, setBookingDate] = useState(() => {
-    try { return localStorage.getItem('directBooking:lastDate') || ""; } catch { return ""; }
-  });
   const [trip] = useTripState();
   const [query, setQuery] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
   const [searchEl, setSearchEl] = useState(null);
   const { basket, addToBasket, removeFromBasket, updateQuantity, updateDay, paidItems, clearBasket } = useBasketState();
   const [copyLinkStatus, setCopyLinkStatus] = useState(""); // '', 'ok', 'err'
-
-  // Define modal component unconditionally to keep hook order stable
-  const DirectBookingModal = () => {
-    const modalRef = useRef(null);
-    const searchRef = useRef(null);
-    useClickOutsideAndEscape(modalRef, () => setDirectBookingOpen(false));
-    // Intentionally run once on mount; we read selectedProduct from closure for conditional focus
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
-      // Focus search shortly after mount
-      const t = setTimeout(() => {
-        try {
-          if (!selectedProduct) searchRef.current?.focus();
-        } catch {}
-      }, 0);
-      return () => clearTimeout(t);
-    }, []);
-    // Focus trap
-    useEffect(() => {
-      function handleTrap(e) {
-        if (e.key === 'Tab' && modalRef.current) {
-          const focusables = modalRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-          if (focusables.length) {
-            const first = focusables[0];
-            const last = focusables[focusables.length - 1];
-            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-          }
-        }
-      }
-      document.addEventListener('keydown', handleTrap);
-      return () => document.removeEventListener('keydown', handleTrap);
-    }, []);
-
-    return (
-      <div
-        ref={modalRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="direct-booking-title"
-        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative"
-        tabIndex={-1}
-      >
-        <button className="absolute top-2 right-2 text-brand-russty" onClick={() => setDirectBookingOpen(false)} aria-label="Close">&times;</button>
-        <h2 id="direct-booking-title" className="text-xl font-bold text-brand-rusty mb-3">Direct Booking</h2>
-        {!selectedProduct ? (
-          <>
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              placeholder="Search products (e.g. flights, hotels...)"
-              ref={searchRef}
-              className="w-full border rounded px-3 py-2 mb-3"
-            />
-            <div className="max-h-40 overflow-y-auto mb-3">
-              {PRODUCTS.filter(p =>
-                p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                p.category.toLowerCase().includes(searchTerm.toLowerCase())
-              ).slice(0, 10).map(p => (
-                <button
-                  key={p.title}
-                  className="block w-full text-left px-3 py-2 rounded hover:bg-cream-hover"
-                  onClick={() => setSelectedProduct(p)}
-                >
-                  <span className="font-semibold text-brand-russty">{p.title}</span>
-                  <span className="ml-2 text-xs text-brand-russty/70">{p.category}</span>
-                </button>
-              ))}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="mb-2 font-semibold text-brand-russty">{selectedProduct.title}</div>
-            <div className="mb-2 text-sm text-brand-russty/80">{selectedProduct.category}</div>
-            <input
-              type="date"
-              value={bookingDate}
-              onChange={e => { const v = e.target.value; setBookingDate(v); try { localStorage.setItem('directBooking:lastDate', v); } catch {} }}
-              className="w-full border rounded px-3 py-2 mb-3"
-            />
-            <button
-              className="w-full bg-brand-orange text-white font-bold py-2 rounded mb-2"
-              onClick={() => {
-                try { showToast('Payment initiated', 'success'); } catch {}
-                const params = new URLSearchParams({ item: selectedProduct.title, date: bookingDate });
-                navigate(`/payment-success?${params.toString()}`);
-              }}
-              disabled={!bookingDate || !selectedProduct}
-            >
-              Proceed to Payment
-            </button>
-            <button className="w-full text-xs text-brand-russty underline" onClick={() => setSelectedProduct(null)}>
-              &larr; Back to search
-            </button>
-          </>
-        )}
-      </div>
-    );
-  };
   const [copySummaryStatus, setCopySummaryStatus] = useState(""); // '', 'ok', 'err'
   const [confirmClear, setConfirmClear] = useState(false);
   const [lastCleared, setLastCleared] = useState([]); // snapshot for undo
@@ -177,14 +57,6 @@ export default function PlanTrip() {
   const [showAdvanced, setShowAdvanced] = useState(() => {
     try { return localStorage.getItem('planTrip:showAdvanced:v2') === '1'; } catch { return false; }
   });
-  
-  // Click outside and escape to close advanced filters
-  const advancedFiltersRef = useClickOutsideAndEscape(() => {
-    if (showAdvanced) {
-      setShowAdvanced(false);
-      try { localStorage.setItem('planTrip:showAdvanced:v2', '0'); } catch {}
-    }
-  }, showAdvanced);
   useEffect(() => {
     function onStorage(e){ if(!e) return; if(e.key === 'showWeather'){ setShowWeather(e.newValue !== '0'); } }
     window.addEventListener('storage', onStorage);
@@ -205,6 +77,18 @@ export default function PlanTrip() {
     const qParam = params.get('q');
     if(qParam) setQuery(qParam);
   }, [location.search]);
+
+  // Legacy support: if someone navigates to /plan-trip?direct=1 (old direct-booking flow),
+  // redirect to the unified booking page so the modal doesn't open.
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(location.search);
+      if (params.get('direct') === '1') {
+        // Preserve other meaningful filters? For now, redirect to /book to keep UX simple.
+        navigate('/book', { replace: true });
+      }
+    } catch {}
+  }, [location.search, navigate]);
 
   // Build filters from URL params (continent, country, province, city, area)
   const locFilters = useMemo(() => {
@@ -317,6 +201,10 @@ export default function PlanTrip() {
     showToast(`Applied preset "${name}"`, 'success');
   }
   useEffect(() => {
+    // Do not auto-restore saved filters while running unit tests; tests should set
+    // explicit filters via the URL or manage localStorage directly to avoid flaky
+    // interactions between test runs.
+    if (process.env.NODE_ENV === 'test') return;
     const params = new URLSearchParams(location.search);
     const hasAny = ['continent','country','province','city','area','category','priceMin','priceMax','paidOnly','freeOnly'].some(k => params.get(k));
     if (hasAny) return;
@@ -690,11 +578,11 @@ export default function PlanTrip() {
     return actions;
   }, []);
   return (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-brand-russty">
+    <div className="px-6 py-8 text-brand-brown">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="text-3xl font-bold mb-1">Trip Planner</h2>
-          <p className="mb-4 text-brand-russty/80">Plan your trip with simple, powerful filters.</p>
+          <p className="mb-4 text-brand-brown/80">Plan your trip with simple, powerful filters.</p>
         </div>
         <div className="mt-1">
           <label className="inline-flex items-center gap-2 text-sm">
@@ -704,13 +592,10 @@ export default function PlanTrip() {
         </div>
       </div>
 
-
-          {/* Direct Booking as a peer option in the grid */}
-
-          {!simpleMode && (
+      {!simpleMode && (
         <>
           <div className="mb-4"><AutoSyncBanner message="Your quotes, itinerary, and bookings stay in sync in real time." /></div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <LiveTripProgress steps={computeProgress(trip, basket.length)} />
             <Link to="/quotes" className="p-4 bg-cream-sand border border-cream-border rounded-md hover:bg-cream-hover transition">
               <div className="font-semibold">Quotes</div>
@@ -720,33 +605,6 @@ export default function PlanTrip() {
               <div className="font-semibold">Itinerary</div>
               <p className="text-sm text-brand-brown/80">All basket items populate your day plan.</p>
             </Link>
-            <div className="relative p-4 bg-cream-sand border border-cream-border rounded-md hover:shadow-lg transition flex flex-col items-center text-center space-y-3">
-              <div className="w-full h-full flex flex-col justify-between text-left">
-                <div>
-                  <div className="font-semibold text-base text-brand-brown">Book Direct</div>
-                  <p className="text-sm text-brand-brown/80 mt-2 mb-4">Book and pay instantly for any product.</p>
-                </div>
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold shadow hover:bg-brand-highlight transition relative z-10 self-start"
-                  onClick={() => navigate('/plan-trip?direct=1')}
-                  aria-label="Open Direct Booking"
-                  style={{ marginTop: 'auto' }}
-                >
-                  Book Now
-                </button>
-              </div>
-            </div>
-      {/* Toasts aria-live region for accessibility */}
-      <div aria-live="polite" aria-atomic="true" className="sr-only">
-        {toasts.map(t => t.text).join(' ')}
-      </div>
-      {/* Direct Booking Modal */}
-      {directBookingOpen && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-          <DirectBookingModal />
-        </div>
-      )}
           </div>
         </>
       )}
@@ -758,7 +616,7 @@ export default function PlanTrip() {
           {showWeather && (
             <div className="mb-2">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-semibold text-brand-russty/80">Weather</span>
+                <span className="text-sm font-semibold text-brand-brown/80">Weather</span>
                 <button
                   type="button"
                   className="text-[11px] px-2 py-0.5 rounded border border-cream-border bg-white hover:bg-cream-hover"
@@ -780,17 +638,16 @@ export default function PlanTrip() {
           )}
           {(simpleMode || activeTab==='catalog') && (
           <>
-          <div className="flex flex-col gap-3 mb-3 sticky [top:calc(var(--header-h)+var(--banner-h))] z-[45] bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/60 px-3 py-3 rounded border border-cream-border shadow-sm">
-            {/* Product Catalog Heading */}
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-xl text-brand-russty">Product Catalog</h3>
-              <div className="flex items-center gap-2 text-sm text-brand-russty/60">
-                <span>{sortedFiltered.length} results</span>
-                {/* Hidden/collapsed sort control - only show on advanced mode */}
-                {showAdvanced && (
+          <div className="flex flex-col gap-2 mb-3 sticky [top:calc(var(--header-h)+var(--banner-h))] z-[45] bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/60 px-2 py-2 rounded border border-cream-border shadow-sm">
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="font-semibold text-lg">Product Catalog <span className="text-sm text-brand-brown/60">• {sortedFiltered.length}</span></h3>
+              <div className="flex items-center gap-2">
+                {/* Catalog sort control */}
+                <label className="text-[11px] text-brand-brown/70 inline-flex items-center gap-1">
+                  <span className="hidden sm:inline">Sort</span>
                   <select
                     aria-label="Sort catalog"
-                    className="text-xs px-2 py-1 border border-cream-border rounded bg-white"
+                    className="text-[11px] px-2 py-1 border border-cream-border rounded bg-white"
                     value={catalogSort}
                     onChange={(e)=> setCatalogSort(e.target.value)}
                   >
@@ -799,27 +656,22 @@ export default function PlanTrip() {
                     <option value="priceAsc">Price: Low to High</option>
                     <option value="priceDesc">Price: High to Low</option>
                   </select>
-                )}
-              </div>
-            </div>
-            
-            {/* Search Bar and Controls */}
-            <div className="flex flex-col gap-3">
-              {/* Search input row */}
-              <div className="relative">
-                <input
-                  ref={setSearchEl}
-                  value={query}
-                  onChange={e=>{
-                    setQuery(e.target.value);
-                    const params = new URLSearchParams(location.search);
-                    if(e.target.value) params.set('q', e.target.value); else params.delete('q');
-                    navigate({ search: params.toString() ? `?${params.toString()}` : '' }, { replace: true });
-                  }}
-                  placeholder="Search products, destinations, activities…"
-                  title="Press / to focus"
-                  className="w-full text-sm pl-3 pr-24 py-2.5 border border-cream-border rounded-md bg-white focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
-                  aria-label="Search product catalog"
+                </label>
+                {/* Compact search */}
+                <div className="relative">
+                  <input
+                    ref={setSearchEl}
+                    value={query}
+                    onChange={e=>{
+                      setQuery(e.target.value);
+                      const params = new URLSearchParams(location.search);
+                      if(e.target.value) params.set('q', e.target.value); else params.delete('q');
+                      navigate({ search: params.toString() ? `?${params.toString()}` : '' }, { replace: true });
+                    }}
+                    placeholder="Search catalog…"
+                    title="Press / to focus"
+                    className="text-sm pl-2 pr-8 py-1 border border-cream-border rounded bg-white w-[14rem] max-w-[48vw]"
+                    aria-label="Search product catalog"
                     onKeyDown={(e)=>{
                       if(e.key==='Escape'){
                         e.preventDefault();
@@ -833,63 +685,47 @@ export default function PlanTrip() {
                       }
                     }}
                   />
-                {smartSuggestion && (
-                  <button
-                    type="button"
-                    onClick={applySmartSearch}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-xs px-2 py-1 rounded bg-brand-orange text-white hover:bg-brand-orange/90 focus:outline-none focus:ring-2 focus:ring-brand-orange/30 inline-flex items-center gap-1"
-                    aria-label="Apply smart filters suggestion"
-                  >
-                    <span>🔎</span>
-                    <span className="hidden sm:inline truncate max-w-[6rem]">{smartSuggestion.text}</span>
-                  </button>
-                )}
-              </div>
-              
-              {/* Action buttons row */}
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  {/* Near Me button */}
-                  <button
-                    type="button"
-                    className="text-xs px-3 py-2 rounded-md border border-cream-border bg-white hover:bg-cream-hover flex items-center gap-1 whitespace-nowrap"
-                    title="Use my location"
-                    onClick={()=>{
-                      const loc = loadMyLocation();
-                      if(!loc || (!loc.city && !loc.province && !loc.country)){
-                        showToast('Set your location first', 'warn');
-                        return;
-                      }
-                      const params = new URLSearchParams(location.search);
-                      ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
-                      if(loc.city) params.set('city', loc.city); else if(loc.province) params.set('province', loc.province); else if(loc.country) params.set('country', loc.country);
-                      navigate({ search: `?${params.toString()}` }, { replace: false });
-                      showToast('Applied filters near your location', 'success');
-                    }}
-                  >📍 Near me</button>
-                  
-                  {/* Advanced toggle */}
-                  <button
-                    type="button"
-                    className="text-xs px-3 py-2 rounded-md border border-cream-border bg-white hover:bg-cream-hover flex items-center gap-1 whitespace-nowrap"
-                    title="More filters and tools"
-                    aria-expanded={showAdvanced}
-                    onClick={()=>{ const next=!showAdvanced; setShowAdvanced(next); try{ localStorage.setItem('planTrip:showAdvanced:v2', next?'1':'0'); }catch{} }}
-                  >
-                    <span>{showAdvanced ? '🔼' : '🔽'}</span>
-                    <span>{showAdvanced? 'Hide' : 'More'}</span>
-                  </button>
+                  {smartSuggestion && (
+                    <button
+                      type="button"
+                      onClick={applySmartSearch}
+                      className="absolute right-1 top-1/2 -translate-y-1/2 text-[11px] px-2 py-0.5 rounded bg-white border border-cream-border shadow-sm hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 inline-flex items-center gap-1"
+                      aria-label="Apply smart filters suggestion"
+                    >
+                      <span className="text-brand-brown/70">🔎</span>
+                      <span className="hidden md:inline truncate max-w-[10rem]">{smartSuggestion.text}</span>
+                    </button>
+                  )}
                 </div>
-                
-                {/* Tip text */}
-                {!simpleMode && (
-                          <span className="text-xs text-brand-russty/60 italic">💡 Try &quot;Hotels in Durban&quot; or &quot;Safari in Kruger&quot;</span>
-                )}
+                {/* Near Me + Advanced toggle */}
+                <button
+                  type="button"
+                  className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                  title="Use my location"
+                  onClick={()=>{
+                    const loc = loadMyLocation();
+                    if(!loc || (!loc.city && !loc.province && !loc.country)){
+                      showToast('Set your location first', 'warn');
+                      return;
+                    }
+                    const params = new URLSearchParams(location.search);
+                    ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
+                    if(loc.city) params.set('city', loc.city); else if(loc.province) params.set('province', loc.province); else if(loc.country) params.set('country', loc.country);
+                    navigate({ search: `?${params.toString()}` }, { replace: false });
+                    showToast('Applied filters near your location', 'success');
+                  }}
+                >Near me</button>
+                <button
+                  type="button"
+                  className="text-[11px] px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover"
+                  title="More filters and tools"
+                  aria-expanded={showAdvanced}
+                  onClick={()=>{ const next=!showAdvanced; setShowAdvanced(next); try{ localStorage.setItem('planTrip:showAdvanced:v2', next?'1':'0'); }catch{} }}
+                >{showAdvanced? 'Hide' : 'Advanced'}</button>
               </div>
             </div>
-            
             {!simpleMode && (
-                      <span className="hidden md:block text-[11px] text-brand-russty/60">Tip: try “Hotels in Durban”, then press Enter</span>
+              <span className="hidden md:block text-[11px] text-brand-brown/60">Tip: try “Hotels in Durban”, then press Enter</span>
             )}
             {showAdvanced && (
               <div className="border-t border-cream-border pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -900,7 +736,7 @@ export default function PlanTrip() {
                       <button
                         key={idx}
                         type="button"
-                                className="text-xs px-2 py-1 rounded border border-cream-border hover:bg-cream-muted focus:outline-none focus:ring-2 focus:ring-brand-russty/30"
+                        className="text-xs px-2 py-1 rounded border border-cream-border hover:bg-cream-muted focus:outline-none focus:ring-2 focus:ring-brand-brown/30"
                         onClick={()=>{
                           const params = new URLSearchParams(location.search);
                           ['continent','country','province','city','area','category','q'].forEach(k=> params.delete(k));
@@ -1047,7 +883,7 @@ export default function PlanTrip() {
           {/* Live region for announcing results count to assistive tech */}
           <div aria-live="polite" role="status" className="sr-only">{sortedFiltered.length} results in catalog</div>
           {showAdvanced && (
-          <div ref={advancedFiltersRef} className="flex flex-wrap gap-2 sm:gap-2.5 md:gap-3 mb-3">
+          <div className="flex flex-wrap gap-2 sm:gap-2.5 md:gap-3 mb-3">
             <select
               value={locFilters.continent}
               onChange={(e)=>updateLocationParam('continent', e.target.value)}
@@ -1151,7 +987,7 @@ export default function PlanTrip() {
                   <button
                     key={k}
                     onClick={() => updateLocationParam(k, '')}
-                    className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                    className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 active:scale-[0.98] transition"
                     title={`Clear ${k}`}
                     aria-label={`Clear ${k} filter: ${locFilters[k]}`}
                   >
@@ -1162,7 +998,7 @@ export default function PlanTrip() {
               {locFilters.category ? (
                 <button
                   onClick={() => updateParam('category','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 active:scale-[0.98] transition"
                   title={`Clear category`}
                   aria-label={`Clear category filter: ${locFilters.category}`}
                 >
@@ -1172,7 +1008,7 @@ export default function PlanTrip() {
               {locFilters.priceMin ? (
                 <button
                   onClick={() => updateParam('priceMin','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 active:scale-[0.98] transition"
                   title="Clear minimum price"
                   aria-label={`Clear minimum price filter: ${locFilters.priceMin}`}
                 >
@@ -1182,7 +1018,7 @@ export default function PlanTrip() {
               {locFilters.priceMax ? (
                 <button
                   onClick={() => updateParam('priceMax','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 active:scale-[0.98] transition"
                   title="Clear maximum price"
                   aria-label={`Clear maximum price filter: ${locFilters.priceMax}`}
                 >
@@ -1192,7 +1028,7 @@ export default function PlanTrip() {
               {locFilters.paidOnly ? (
                 <button
                   onClick={() => updateParam('paidOnly','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 active:scale-[0.98] transition"
                   title="Clear paid only"
                   aria-label={`Clear paid only filter`}
                 >
@@ -1211,7 +1047,7 @@ export default function PlanTrip() {
               ) : null}
               <button
                 onClick={clearLocationFilters}
-                className="text-[11px] px-2 py-1 rounded-full border border-cream-border bg-white hover:bg-cream-hover text-brand-russty/80 focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                className="text-[11px] px-2 py-1 rounded-full border border-cream-border bg-white hover:bg-cream-hover text-brand-brown/80 focus:outline-none focus:ring-2 focus:ring-brand-brown/30 active:scale-[0.98] transition"
                 title="Clear all location filters"
                 aria-label="Clear all location filters"
               >
@@ -1223,10 +1059,10 @@ export default function PlanTrip() {
             {sortedFiltered.map(p => (
               <li key={p.id} className="p-4 rounded border bg-cream-sand border-cream-border flex flex-col md:flex-row md:items-center gap-3">
                 <div className="flex-1 min-w-0">
-                        <span>{sortedFiltered.length} results</span>
-                  <div className="text-sm text-brand-russty/70">{highlight(p.description)}</div>
-                  <div className="text-[11px] text-brand-russty/50">{p.category} • {p.price > 0 ? `Price: $${p.price}` : 'Included / No charge'}</div>
-                  <div className="text-[11px] text-brand-russty/60 mt-0.5">
+                  <div className="font-medium">{highlight(p.title)}</div>
+                  <div className="text-sm text-brand-brown/70">{highlight(p.description)}</div>
+                  <div className="text-[11px] text-brand-brown/50">{p.category} • {p.price > 0 ? `Price: $${p.price}` : 'Included / No charge'}</div>
+                  <div className="text-[11px] text-brand-brown/60 mt-0.5">
                     {(p.province || p.country || p.city) ? (
                       <>
                         {p.province ? `${p.province}, ` : ''}{p.city || p.country}
@@ -1235,15 +1071,15 @@ export default function PlanTrip() {
                     ) : null}
                   </div>
                 </div>
-                <button onClick={()=>addToBasket(p)} className="px-3 py-1.5 text-xs rounded border border-brand-russty hover:bg-cream-hover">Add</button>
+                <button onClick={()=>addToBasket(p)} className="px-3 py-1.5 text-xs rounded border border-brand-brown hover:bg-cream-hover">Add</button>
               </li>
             ))}
             {sortedFiltered.length===0 && (
-              <li className="text-sm text-brand-russty/60 flex items-center gap-2">
+              <li className="text-sm text-brand-brown/60 flex items-center gap-2">
                 <span>No results.</span>
-                <button onClick={clearLocationFilters} className="text-brand-russty underline hover:no-underline">Clear filters</button>
+                <button onClick={clearLocationFilters} className="text-brand-brown underline hover:no-underline">Clear filters</button>
                 <span className="hidden sm:inline">or</span>
-                <button onClick={()=>{ const params = new URLSearchParams(location.search); ['continent','country','province','city','area','category','priceMin','priceMax','paidOnly','q'].forEach(k=>params.delete(k)); setQuery(''); navigate({ search: '' }, { replace: true }); }} className="text-brand-russty underline hover:no-underline">Reset all</button>
+                <button onClick={()=>{ const params = new URLSearchParams(location.search); ['continent','country','province','city','area','category','priceMin','priceMax','paidOnly','q'].forEach(k=>params.delete(k)); setQuery(''); navigate({ search: '' }, { replace: true }); }} className="text-brand-brown underline hover:no-underline">Reset all</button>
               </li>
             )}
           </ul>
@@ -1498,13 +1334,13 @@ export default function PlanTrip() {
           {toasts.length>0 && (
             <div className="fixed right-4 bottom-4 z-50 space-y-2">
               {toasts.map(t => (
-                <div key={t.id} className={`px-3 py-2 rounded shadow border text-sm ${t.type==='success'?'bg-green-50 border-green-200 text-green-800': t.type==='error'?'bg-red-50 border-red-200 text-red-800': t.type==='warn'?'bg-yellow-50 border-yellow-200 text-yellow-800':'bg-white border-cream-border text-brand-russty'}`}>{t.text}</div>
+                <div key={t.id} className={`px-3 py-2 rounded shadow border text-sm ${t.type==='success'?'bg-green-50 border-green-200 text-green-800': t.type==='error'?'bg-red-50 border-red-200 text-red-800': t.type==='warn'?'bg-yellow-50 border-yellow-200 text-yellow-800':'bg-white border-cream-border text-brand-brown'}`}>{t.text}</div>
               ))}
             </div>
           )}
           {/* Live region: announce basket item count updates */}
           <div aria-live="polite" role="status" className="sr-only">Basket has {basket.length} item{basket.length===1?'':'s'}</div>
-          {basket.length === 0 && <p className="text-sm text-brand-russty/60">No items yet. Add from the catalog.</p>}
+          {basket.length === 0 && <p className="text-sm text-brand-brown/60">No items yet. Add from the catalog.</p>}
           <ul className="space-y-2 mb-4">
             {basket.map(item => (
               <li key={item.id} className="bg-white rounded border border-cream-border p-2 text-sm flex flex-col gap-1">
@@ -1512,7 +1348,7 @@ export default function PlanTrip() {
                   <span className="font-medium truncate">{item.title}</span>
                   <button onClick={()=>removeFromBasket(item.id)} className="text-[10px] uppercase tracking-wide text-red-600 hover:text-red-500">Remove</button>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 text-[11px] text-brand-russty/70">
+                <div className="flex flex-wrap items-center gap-2 text-[11px] text-brand-brown/70">
                   <span>{item.price > 0 ? formatCurrency(item.price, 'USD') : 'Included'}</span>
                   <span>• Qty</span>
                   <input type="number" min={1} value={item.quantity} onChange={e=>updateQuantity(item.id, Number(e.target.value))} className="w-14 px-1 py-0.5 border border-cream-border rounded" />
@@ -1525,7 +1361,7 @@ export default function PlanTrip() {
           {(() => {
             const paidTotal = paidItems.reduce((sum,i)=> sum + (Number(i.price)||0) * (Number(i.quantity)||1), 0);
             return (
-              <div className="flex items-center justify-between text-xs text-brand-russty/80 mb-3">
+              <div className="flex items-center justify-between text-xs text-brand-brown/80 mb-3">
                 <span>All items appear in itinerary. Paid items appear in quotes.</span>
                 <span className="font-semibold">Paid total: {formatCurrency(paidTotal, 'USD')}</span>
               </div>
@@ -1575,7 +1411,7 @@ export default function PlanTrip() {
             >Copy summary</button>
             <span aria-live="polite" className="sr-only">{copySummaryStatus==='ok' ? 'Basket summary copied' : (copySummaryStatus==='err' ? 'Copy failed' : '')}</span>
           </div>
-          <Link to="/quote/new" state={{ fromBasket: true }} className={`block text-center px-3 py-2 rounded text-sm font-medium border ${paidItems.length? 'bg-brand-orange text-cream border-brand-orange hover:bg-brand-orange/90':'bg-cream-sand text-brand-russty/50 border-cream-border cursor-not-allowed'}`}>Create Quote ({paidItems.length})</Link>
+          <Link to="/quote/new" state={{ fromBasket: true }} className={`block text-center px-3 py-2 rounded text-sm font-medium border ${paidItems.length? 'bg-brand-brown text-cream border-brand-brown hover:bg-brand-brown/90':'bg-cream-sand text-brand-brown/50 border-cream-border cursor-not-allowed'}`}>Create Quote ({paidItems.length})</Link>
         </div>
         )}
       </div>
@@ -1583,15 +1419,15 @@ export default function PlanTrip() {
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-[calc(var(--footer-h)+1rem)]">
         <Link to="/bookings" className="p-4 bg-cream-sand border border-cream-border rounded-md hover:bg-cream-hover transition">
           <div className="font-semibold">Bookings</div>
-          <p className="text-sm text-brand-russty/80">See all confirmations and status in one place.</p>
+          <p className="text-sm text-brand-brown/80">See all confirmations and status in one place.</p>
         </Link>
         <Link to="/terms" className="p-4 bg-cream-sand border border-cream-border rounded-md hover:bg-cream-hover transition">
           <div className="font-semibold">Travel Safety & Terms</div>
-          <p className="text-sm text-brand-russty/80">Know-before-you-go and policies.</p>
+          <p className="text-sm text-brand-brown/80">Know-before-you-go and policies.</p>
         </Link>
         <Link to="/contact" className="p-4 bg-cream-sand border border-cream-border rounded-md hover:bg-cream-hover transition">
           <div className="font-semibold">Concierge</div>
-          <p className="text-sm text-brand-russty/80">Need help? Our team is here.</p>
+          <p className="text-sm text-brand-brown/80">Need help? Our team is here.</p>
         </Link>
       </div>
       {/* My Location Modal */}

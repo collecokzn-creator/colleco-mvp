@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
+import { BookingDatesProvider } from './context/BookingDatesContext.jsx';
 import "./index.css"; // Tailwind styles
 import appIconPng from "./assets/colleco-logo.png";
 
@@ -45,9 +46,11 @@ function InstallBanner() {
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <UserProvider>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
+      <BookingDatesProvider>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </BookingDatesProvider>
       <InstallBanner />
     </UserProvider>
   </React.StrictMode>

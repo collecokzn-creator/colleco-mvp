@@ -111,6 +111,14 @@ export async function bookCar({ vehicleType, days = 1, pricePerDay, currency = '
   return res.json();
 }
 
+export async function bookShuttle({ shuttleId, pickupTime, seats = 1, amount = 0, currency = 'USD', customer = {}, metadata = {} }){
+  const res = await fetch(`${BASE_URL}/bookings/shuttle`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ shuttleId, pickupTime, seats, amount, currency, customer, metadata })
+  });
+  if(!res.ok){ const ct = res.headers.get('content-type') || ''; const body = ct.includes('application/json') ? await res.json() : await res.text(); const err = new Error('Failed to create shuttle booking'); err.status = res.status; err.body = body; throw err; }
+  return res.json();
+}
+
 // Add more endpoints as needed for partners, admin, payments, etc.
 
 export async function getFlight(itemId){

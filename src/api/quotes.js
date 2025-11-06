@@ -64,4 +64,16 @@ export async function patchQuote(id, patch) {
   }
 }
 
-export default { getQuotes, createQuote, deleteQuote, updateQuote, patchQuote };
+export async function sendQuote(id, payload) {
+  try {
+    const res = await fetch(`${API_BASE}/quotes/${id}/send`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+    const j = await res.json().catch(()=>null);
+    if (!res.ok) { const err = new Error('send_failed'); err.status = res.status; err.body = j; throw err; }
+    return j || { ok: true };
+  } catch (e) {
+    if (e && e.body) throw e;
+    throw new Error('send_failed');
+  }
+}
+
+export default { getQuotes, createQuote, deleteQuote, updateQuote, patchQuote, sendQuote };

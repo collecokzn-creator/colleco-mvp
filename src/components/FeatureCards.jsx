@@ -60,8 +60,8 @@ export default function FeatureCards({
   };
   const handleBook = () => {
     if (onBook) return onBook();
-    // Navigate to Plan Trip with a query flag to open the Direct Booking modal
-    return safeNavigate("/plan-trip?direct=1");
+    // Default: navigate to the unified Book page
+    return safeNavigate('/book');
   };
 
   return (

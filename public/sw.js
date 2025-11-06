@@ -8,6 +8,7 @@ const ITINERARY_JSON_PATH = '/assets/data/itinerary.json';
 const ASSETS = [
   '/',
   '/index.html',
+  '/favicon.ico',
   '/offline.html',
   '/manifest.webmanifest',
   '/bookings',
@@ -22,7 +23,33 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(STATIC_CACHE);
-    await cache.addAll(ASSETS);
+    // Attempt to load a generated precache manifest from the built dist (post-build step)
+    try {
+      // Prefer a small 'critical' manifest (smaller precache); fall back to the full manifest.
+      let urls = null;
+      try {
+        const resp = await fetch('/sw-manifest.critical.json');
+        if (resp && resp.ok) urls = await resp.json();
+      } catch (e) {}
+      if (!urls) {
+        try {
+          const resp2 = await fetch('/sw-manifest.json');
+          if (resp2 && resp2.ok) urls = await resp2.json();
+        } catch (e) {}
+      }
+      if (Array.isArray(urls) && urls.length) {
+        // Merge the static ASSETS with generated urls (dedupe)
+        const toAdd = Array.from(new Set([...ASSETS, ...urls]));
+        await cache.addAll(toAdd).catch(() => {
+          // If some entries fail, fall back to adding only ASSETS
+          return cache.addAll(ASSETS).catch(()=>{});
+        });
+        return;
+      }
+    } catch (e) {
+      // ignore and fall back
+    }
+    await cache.addAll(ASSETS).catch(()=>{});
   })());
   self.skipWaiting?.();
 });
@@ -89,12 +116,45 @@ self.addEventListener('fetch', (event) => {
   if (req.mode === 'navigate') {
     event.respondWith((async () => {
       try {
+        // Try network first to get the freshest HTML
         const fresh = await fetch(req);
         return fresh;
-      } catch {
+      } catch (e) {
+        // If network fails, attempt serving the cached index.html (SPA shell)
+        try {
+          const cache = await caches.open(STATIC_CACHE);
+          const index = await cache.match('/index.html');
+          if (index) return index;
+          const offline = await cache.match('/offline.html');
+          if (offline) return offline;
+        } catch (inner) {
+          // fall through to final fallback
+        }
+        // Final fallback: return a lightweight offline response (avoid 503 for navigations)
+        return new Response('<!doctype html><meta charset="utf-8"><title>Offline</title><meta name="viewport" content="width=device-width,initial-scale=1"><h1>Offline</h1><p>The application is offline.</p>', { status: 200, headers: { 'Content-Type': 'text/html' } });
+      }
+    })());
+    return;
+  }
+
+  // Favicon: prefer cache-first, but never return 503 for a missing favicon
+  if (url.pathname === '/favicon.ico') {
+    event.respondWith((async () => {
+      try {
         const cache = await caches.open(STATIC_CACHE);
-        const offline = await cache.match('/offline.html');
-        return offline || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' }});
+        const cached = await cache.match(req);
+        if (cached) return cached;
+        // attempt network and cache result
+        try {
+          const resp = await fetch(req);
+          if (resp && resp.ok) { cache.put(req, resp.clone()).catch(() => {}); return resp; }
+        } catch (e) {
+          // network failed
+        }
+        // Return 204 (no content) instead of 503 to avoid noisy console errors for favicon
+        return new Response(null, { status: 204 });
+      } catch (outer) {
+        return new Response(null, { status: 204 });
       }
     })());
     return;
@@ -114,9 +174,10 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       try {
         const resp = await fetch(req);
-        if (resp.ok) return resp;
+        if (resp && resp.ok) return resp;
       } catch {}
-      return new Response('', { status: 204 }); // empty placeholder keeps broken image icon away
+      // 204 responses must not have a body. Return an empty response with 204 and no body.
+      return new Response(null, { status: 204 });
     })());
     return;
   }
@@ -140,13 +201,29 @@ self.addEventListener('fetch', (event) => {
   // Other GET requests: stale-while-revalidate
   if (req.method === 'GET') {
     event.respondWith((async () => {
-      const cache = await caches.open(STATIC_CACHE);
-      const cached = await cache.match(req);
-      const network = fetch(req).then(resp => {
-        cache.put(req, resp.clone()).catch(() => {});
-        return resp;
-      }).catch(() => undefined);
-      return cached || network || fetch(req);
+      try {
+        const cache = await caches.open(STATIC_CACHE);
+        const cached = await cache.match(req);
+        if (cached) {
+          // Trigger background update but don't block the response
+          fetch(req).then(resp => { if (resp && resp.ok) cache.put(req, resp.clone()).catch(() => {}); }).catch(() => {});
+          return cached;
+        }
+        // No cache: attempt network and return a sensible fallback on error
+        try {
+          const resp = await fetch(req);
+          if (resp && resp.ok) {
+            cache.put(req, resp.clone()).catch(() => {});
+            return resp;
+          }
+          return new Response('Network error', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+        } catch (e) {
+          return new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+        }
+      } catch (outerErr) {
+        // As a last resort ensure we always return a Response object
+        return new Response('Service Worker Error', { status: 500, headers: { 'Content-Type': 'text/plain' } });
+      }
     })());
   }
 });

@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Puppeteer PDF Runner</title>
+  </head>
+  <body>
+    <script type="module">
+      import * as mod from './assets/pdfGenerators-CxOueK1z.js';
+      // prefer named export exportQuotePdfData, fallbacks to common mangled names
+      window._exportQuote = mod.exportQuotePdfData || mod.generateQuotePdf || mod.e || mod.a || (mod.default && (mod.default.exportQuotePdfData || mod.default.generateQuotePdf));
+      window._ready = true;
+    </script>
+    <div id="status">ready</div>
+  </body>
+</html>

@@ -97,13 +97,30 @@ function GuardedRoute({ route }) {
     return <Navigate to="/login" replace state={{ from: route.path }} />;
   }
 
-  if (
-    requiredRoles.length > 0 &&
-    (!effectiveRole || !requiredRoles.includes(effectiveRole))
-  ) {
-    const fallback = meta.redirectFallback ?? "/";
-    return <Navigate to={fallback} replace />;
-  }
+    // If route requires specific roles, and user is authenticated but lacks role,
+    // show an informative CTA for partner routes instead of redirecting away.
+    if (requiredRoles.length > 0 && (!effectiveRole || !requiredRoles.includes(effectiveRole))) {
+      const needsPartner = requiredRoles.includes('partner');
+      // If the user is not authenticated, fallback to the login redirect above.
+      if (!isAuthenticated) {
+        const fallback = meta.redirectFallback ?? "/";
+        return <Navigate to={fallback} replace />;
+      }
+
+      // Authenticated but wrong role: show a helpful partner CTA for partner-only pages.
+    if (needsPartner) {
+      const UnauthorizedCallout = React.lazy(() => import('./components/ui/UnauthorizedCallout'));
+      return (
+        <React.Suspense fallback={<div className="p-6 text-center">Loading…</div>}>
+          <UnauthorizedCallout registerParams={{ tab: 'register', role: 'partner', ref: route.path }} title="Partner access required" description="This area of CollEco is reserved for registered partners. To access partner features (bookings, payouts, product management), please register as a partner or contact our team for onboarding." />
+        </React.Suspense>
+      );
+    }
+
+      // Default fallback behavior for other role mismatches
+      const fallback = meta.redirectFallback ?? "/";
+      return <Navigate to={fallback} replace />;
+    }
 
   return createRouteElement(route);
 }

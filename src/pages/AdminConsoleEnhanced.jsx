@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import ActivityFeed from "../components/ActivityFeed";
 import InsightsPanel from "../components/InsightsPanel";
 import { FileText, UserCheck, CheckCircle, DollarSign } from "lucide-react";
-import { useAnimation } from "framer-motion";
 
 const MENU = [
   { key: "dashboard", roles: ["admin", "manager"] },

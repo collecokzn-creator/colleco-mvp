@@ -44,6 +44,12 @@
               "meta": { "title": "Car Hire", "requiresAuth": false, "layout": "marketing" }
             },
             {
+              "path": "/book",
+              "name": "Book Now",
+              "component": "BookingPage",
+              "meta": { "title": "Book Now", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
               "path": "/plan-trip",
               "name": "Plan a Trip",
               "component": "PlanTrip",
@@ -53,6 +59,30 @@
                 "requiresAuth": false,
                 "layout": "marketing"
               }
+            },
+            {
+              "path": "/stays",
+              "name": "Stays",
+              "component": "StaysList",
+              "meta": { "title": "Stays", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
+              "path": "/flights",
+              "name": "Flights",
+              "component": "FlightsList",
+              "meta": { "title": "Flights", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
+              "path": "/shuttles",
+              "name": "Shuttles",
+              "component": "ShuttlesList",
+              "meta": { "title": "Shuttles", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
+              "path": "/cars",
+              "name": "Car Hire",
+              "component": "CarsList",
+              "meta": { "title": "Car Hire", "requiresAuth": false, "layout": "marketing" }
             },
             {
               "path": "/packages",
@@ -164,6 +194,28 @@
               }
             },
             {
+              "path": "/invoices",
+              "name": "Invoices",
+              "component": "Invoices",
+              "meta": {
+                "title": "Invoices",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent", "client"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/invoice/new",
+              "name": "Create Invoice",
+              "component": "Invoice",
+              "meta": {
+                "title": "Create Invoice",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent"],
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/itinerary",
               "name": "Itinerary Builder",
               "component": "Itinerary",
@@ -265,6 +317,17 @@
               "component": "AdminAccommodation",
               "meta": {
                 "title": "Accommodation Inventory",
+                "requiresAuth": true,
+                "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/partner-signups",
+              "name": "Partner Signups",
+              "component": "AdminPartnerSignups",
+              "meta": {
+                "title": "Partner Signups",
                 "requiresAuth": true,
                 "roles": ["admin"],
                 "layout": "workspace"

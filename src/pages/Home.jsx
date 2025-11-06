@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useInViewOnce from "../utils/useInViewOnce";
 import PromotionsSection from "../components/PromotionsSection";
 import FeaturedPackagesSection from "../components/FeaturedPackagesSection";
 import logo from "../assets/colleco-logo.png";
-import BookingModal from "../components/BookingModal";
-import { useState } from "react";
+import MapView from "../components/MapView";
+import ShuttleControls from '../components/ShuttleControls';
+import useShuttleStream from '../hooks/useShuttleStream';
+import { getHotels, getFlights, getShuttles, getCars, getBookings } from '../api/mockTravelApi';
 
 export default function Home() {
-  const [bookingOpen, setBookingOpen] = useState(false);
+  // bookingOpen/modal removed in favor of dedicated /book page
+  const [, setBookingOpen] = useState(false);
+  const [hotels, setHotels] = useState([]);
+  const [flights, setFlights] = useState([]);
+  const [shuttles, setShuttles] = useState([]);
+  const [cars, setCars] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [shuttlePositions, setShuttlePositions] = useState([]);
   // Expose a small E2E helper so tests can open the booking modal programmatically.
   // Only add this in test runs (window.__E2E__ is set by the index HTML when Cypress is present).
   React.useEffect(() => {
@@ -45,7 +54,7 @@ export default function Home() {
           } catch (e) {}
         };
 
-  window.__openBooking = () => { try { window.__openBookingCalled = true; } catch (e) {} try { ensureE2EFallback(); } catch (e) {} setBookingOpen(true); };
+        window.__openBooking = () => { try { window.__openBookingCalled = true; } catch (e) {} try { ensureE2EFallback(); } catch (e) {} setBookingOpen(true); };
         // Fallback helper to force-open and provide a reliable mount signal for flaky environments.
         // Tests may call __forceOpenBooking when timing issues prevent the modal's effect from being observed.
         window.__forceOpenBooking = () => {
@@ -60,6 +69,20 @@ export default function Home() {
       try { if (typeof window !== 'undefined') delete window.__forceOpenBooking; } catch (e) {}
     };
   }, []);
+
+  // Use shuttle stream hook to manage WS/SSE + logs + reconnect
+  const {
+    shuttlePositions: streamedPositions,
+    setShuttlePositions: setStreamedPositions,
+    streamMode,
+    setStreamMode,
+    streamStatus,
+    reconnectIn,
+    messageLog,
+    clearLog,
+    sendCommand
+  } = useShuttleStream({ initialMode: 'auto', initialPositions: [] });
+  const [showLive, setShowLive] = useState(true);
   const [heroRef, heroIn] = useInViewOnce({ threshold: 0.3 });
   const [featRef, featIn] = useInViewOnce({ threshold: 0.2 });
   const [howRef, howIn] = useInViewOnce({ threshold: 0.2 });
@@ -71,6 +94,34 @@ export default function Home() {
     url: 'https://www.collecotravel.com',
     logo: 'https://www.collecotravel.com/logo.png'
   };
+
+  useEffect(()=>{
+    try {
+      const h = getHotels();
+      if(h && typeof h.then === 'function') h.then(list=>setHotels(list||[])).catch(()=>setHotels([])); else setHotels(h||[]);
+    } catch(e){ setHotels([]); }
+    try {
+      const f = getFlights();
+      if(f && typeof f.then === 'function') f.then(list=>setFlights(list||[])).catch(()=>setFlights([])); else setFlights(f||[]);
+    } catch(e){ setFlights([]); }
+    try {
+      const s = getShuttles();
+      if(s && typeof s.then === 'function') s.then(list=>{
+        const seed = (list||[]).map((sh, i)=>({ id: sh.id, name: sh.route, lat: sh.originLat || -29.85 + i*0.01, lng: sh.originLng || 31.03 + i*0.01, waypoints: sh.waypoints || null }));
+        setShuttles(list||[]);
+        setShuttlePositions(seed);
+        try { setStreamedPositions(seed); } catch(e){}
+      }).catch(()=>{ setShuttles([]); setShuttlePositions([]); try { setStreamedPositions([]); } catch(e){} }); else { const seed = (s||[]).map((sh, i)=>({ id: sh.id, name: sh.route, lat: sh.originLat || -29.85 + i*0.01, lng: sh.originLng || 31.03 + i*0.01, waypoints: sh.waypoints || null })); setShuttles(s||[]); setShuttlePositions(seed); try { setStreamedPositions(seed); } catch(e){} }
+    } catch(e){ setShuttles([]); setShuttlePositions([]); try { setStreamedPositions([]); } catch(e){} }
+    try {
+      const c = getCars();
+      if(c && typeof c.then === 'function') c.then(list=>setCars(list||[])).catch(()=>setCars([])); else setCars(c||[]);
+    } catch(e){ setCars([]); }
+    try {
+      const b = getBookings();
+      if(b && typeof b.then === 'function') b.then(list=>setBookings(list||[])).catch(()=>setBookings([])); else setBookings(b||[]);
+    } catch(e){ setBookings([]); }
+  }, [setStreamedPositions]);
 
   return (
   <div className="bg-white text-brand-brown">
@@ -93,16 +144,15 @@ export default function Home() {
               Making trip planning effortless for friends, teams, partners, and individuals who love to explore.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight">
-                Start Planning
-                <span aria-hidden>→</span>
+              <Link to="/book" data-e2e-book-now className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight">
+                Book Now
+              </Link>
+              <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-brand-brown text-brand-brown bg-white/80 hover:bg-white">
+                Plan Trip
               </Link>
               <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-brand-brown text-brand-brown bg-white/80 hover:bg-white">
-                Try Trip Assist
+                Trip Assist
               </Link>
-              <button onClick={() => setBookingOpen(true)} className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-brand-brown text-brand-brown bg-white/80 hover:bg-white">
-                Book Now
-              </button>
             </div>
             <p className="mt-3 text-xs text-brand-brown/70">No credit card required · Free to get started</p>
           </div>
@@ -251,6 +301,127 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Demo content: featured lists and recent bookings */}
+      <section className="max-w-6xl mx-auto px-6 py-8">
+        <h2 className="text-2xl font-bold mb-4">Explore — demo listings</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <div className="flex items-baseline justify-between">
+              <h3 className="text-lg font-semibold mb-2">Featured Stays</h3>
+              <Link to="/stays" className="text-sm text-brand-orange hover:underline">View all</Link>
+            </div>
+            <div className="space-y-3">
+              {hotels.slice(0,4).map(h => (
+                <div key={h.id} className="border rounded p-3 bg-white">
+                  <div className="font-semibold">{h.name}</div>
+                  <div className="text-sm text-gray-600">{h.location}</div>
+                  <div className="mt-1"><span className="font-bold">{h.pricePerNight} ZAR</span> / night</div>
+                  <div className="mt-2 flex gap-2">
+                    <Link to={`/plan-trip?dest=${encodeURIComponent(h.location||h.name||'')}`} className="text-sm text-brand-brown px-3 py-1 rounded hover:bg-cream-sand">Plan</Link>
+                    <Link to={`/book/accommodation?hotelId=${encodeURIComponent(h.id)}`} className="text-sm text-white bg-brand-orange px-3 py-1 rounded">Book</Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="flex items-baseline justify-between">
+              <h3 className="text-lg font-semibold mb-2">Popular Flights</h3>
+              <Link to="/flights" className="text-sm text-brand-orange hover:underline">View all</Link>
+            </div>
+            <div className="space-y-3">
+              {flights.slice(0,4).map(f => (
+                <div key={f.id} className="border rounded p-3 bg-white">
+                  <div className="font-semibold">{f.from} → {f.to}</div>
+                  <div className="text-sm text-gray-600">{f.airline} • {f.date} {f.time}</div>
+                  <div className="mt-1"><span className="font-bold">{f.price} ZAR</span></div>
+                  <div className="mt-2 flex gap-2">
+                    <Link to={`/plan-trip?tab=events&from=${encodeURIComponent(f.from||'')}&to=${encodeURIComponent(f.to||'')}`} className="text-sm text-brand-brown px-3 py-1 rounded hover:bg-cream-sand">Plan</Link>
+                    <Link to={`/book/flight?flightId=${encodeURIComponent(f.id)}`} className="text-sm text-white bg-brand-orange px-3 py-1 rounded">Book</Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <div className="flex items-baseline justify-between">
+              <h3 className="text-lg font-semibold mb-2">Shuttle Services (demo)</h3>
+              <Link to="/shuttles" className="text-sm text-brand-orange hover:underline">View all</Link>
+            </div>
+            <div className="space-y-3">
+              {shuttles.slice(0,4).map(s => (
+                <div key={s.id} className="border rounded p-3 bg-white">
+                  <div className="font-semibold">{s.route}</div>
+                  <div className="text-sm text-gray-600">{s.origin} → {s.destination}</div>
+                  <div className="mt-1"><span className="font-bold">{s.price} ZAR</span></div>
+                  <div className="mt-2 flex gap-2">
+                    <Link to={`/plan-trip?category=Transport&city=${encodeURIComponent(s.origin||'')}`} className="text-sm text-brand-brown px-3 py-1 rounded hover:bg-cream-sand">Plan</Link>
+                    <Link to={`/book?type=shuttle&shuttleId=${encodeURIComponent(s.id)}`} className="text-sm text-white bg-brand-orange px-3 py-1 rounded">Book</Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="flex items-baseline justify-between">
+              <h3 className="text-lg font-semibold mb-2">Car Hire (demo)</h3>
+              <Link to="/cars" className="text-sm text-brand-orange hover:underline">View all</Link>
+            </div>
+            <div className="space-y-3">
+              {cars.slice(0,4).map(c => (
+                <div key={c.id} className="border rounded p-3 bg-white">
+                  <div className="font-semibold">{c.make} {c.model}</div>
+                  <div className="text-sm text-gray-600">{c.vehicleType} • {c.location}</div>
+                  <div className="mt-1"><span className="font-bold">{c.pricePerDay} ZAR</span> / day</div>
+                  <div className="mt-2 flex gap-2">
+                    <Link to={`/plan-trip?category=Transport&city=${encodeURIComponent(c.location||'')}`} className="text-sm text-brand-brown px-3 py-1 rounded hover:bg-cream-sand">Plan</Link>
+                    <Link to={`/book/car?carId=${encodeURIComponent(c.id)}`} className="text-sm text-white bg-brand-orange px-3 py-1 rounded">Book</Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Recent Bookings (demo)</h3>
+            <div className="space-y-2">
+              {bookings.length===0 && <div className="text-sm text-gray-600">No recent bookings</div>}
+              {bookings.slice(-4).reverse().map(b => (
+                <div key={b.id} className="border rounded p-2 bg-white text-sm">
+                  <div className="font-semibold">{b.type || (b.name || b.title)}</div>
+                  <div className="text-xs text-gray-600">{b.createdAt ? new Date(b.createdAt).toLocaleString() : ''}</div>
+                  <div className="mt-1">{b.amount ? <span className="font-bold">{b.amount} {b.currency||'ZAR'}</span> : null} {b.status ? <span className="ml-2 text-xs text-green-700">{b.status}</span> : null}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-2">Live shuttle positions (demo)</h3>
+            <div className="relative h-64 border rounded overflow-hidden">
+              <MapView
+                center={(streamedPositions && streamedPositions.length) ? [streamedPositions[0].lat, streamedPositions[0].lng] : (shuttlePositions.length ? [shuttlePositions[0].lat, shuttlePositions[0].lng] : undefined)}
+                markers={streamedPositions && streamedPositions.length ? streamedPositions : shuttlePositions}
+                showLive={showLive}
+              />
+              <ShuttleControls
+                streamMode={streamMode}
+                setStreamMode={setStreamMode}
+                streamStatus={streamStatus}
+                reconnectIn={reconnectIn}
+                messageLog={messageLog}
+                clearLog={clearLog}
+                sendCommand={sendCommand}
+                showLive={showLive}
+                setShowLive={setShowLive}
+              />
+            </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section
         ref={ctaRef}
@@ -261,20 +432,20 @@ export default function Home() {
             <h3 className="text-xl sm:text-2xl font-bold">Ready to explore?</h3>
             <p className="text-sm text-white/90">Jump into the planner or let Trip Assist suggest a perfect first draft.</p>
           </div>
-          <div className="flex gap-3">
+            <div className="flex gap-3">
             <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-white text-brand-brown font-semibold hover:bg-cream">
               Plan a Trip
             </Link>
             <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-white text-white hover:bg-white/10">
               Try Trip Assist
             </Link>
-            <button onClick={() => setBookingOpen(true)} className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-white text-brand-brown font-semibold hover:bg-cream">
+            <Link to="/book" data-e2e-book-now-cta className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-white text-brand-brown font-semibold hover:bg-cream">
               Book Now
-            </button>
+            </Link>
           </div>
         </div>
       </section>
-      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
+      {/* Booking modal deprecated: users are redirected to /book for full-page booking flows */}
     </div>
   );
 }

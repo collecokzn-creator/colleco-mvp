@@ -1,12 +1,23 @@
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
 
 function Login() {
-  const [tab, setTab] = useState("login");
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'login';
+  const initialRole = searchParams.get('role') || 'client';
+  const initialCompanyName = searchParams.get('companyName') || '';
+  const initialRef = searchParams.get('ref') || null;
+  const [tab, setTab] = useState(initialTab);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState(initialRole);
+  const [partnerCategory, setPartnerCategory] = useState('business');
+  const [companyName, setCompanyName] = useState(initialCompanyName);
+  const [inviteRef] = useState(initialRef);
+  const [phone, setPhone] = useState('');
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -149,11 +160,31 @@ function Login() {
       setError("An account with this email already exists.");
       return;
     }
-    const newUser = { email, password, name: email.split("@")[0] };
+    // Build user object with optional partner profile
+    const base = { email, password, name: email.split("@")[0], role: role || 'client' };
+    if (role === 'partner') {
+      if (!companyName) { setError('Please provide a company or display name for partner registration.'); return; }
+      if (!agreeTerms) { setError('You must accept the Terms and Conditions to register as a partner.'); return; }
+      base.partnerProfile = { category: partnerCategory, companyName: companyName, phone: phone || null, verified: false, createdAt: new Date().toISOString(), inviteRef: inviteRef || null };
+    }
+    const newUser = base;
     localStorage.setItem("user:" + email, JSON.stringify(newUser));
     // remember chosen persistence and biometrics for subsequent login
     try { localStorage.setItem('user:persistence', keepLoggedIn ? 'local' : 'session'); } catch (e) {}
     try { localStorage.setItem('user:biometrics', useBiometrics ? '1' : '0'); } catch (e) {}
+    // Log partner signups with invite ref for analytics/debugging
+    try {
+      if (role === 'partner') {
+        const key = 'mock:partnerSignups';
+        const raw = localStorage.getItem(key);
+        const arr = raw ? JSON.parse(raw) : [];
+        arr.push({ email, companyName, ref: inviteRef || null, ts: new Date().toISOString() });
+        localStorage.setItem(key, JSON.stringify(arr));
+      }
+    } catch (e) {
+      // ignore logging failures
+    }
+
     setSuccess("Registration successful! You can now log in.");
   }
 
@@ -183,6 +214,12 @@ function Login() {
   return (
     <div className="p-6 max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-brand-orange">Login / Register</h2>
+      {/* Invitation banner when an invite ref is present */}
+      {inviteRef && tab === 'register' && (
+        <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded text-sm text-emerald-800">
+          You were invited from <span className="font-semibold">{inviteRef}</span> — thank you! This will be recorded with your registration.
+        </div>
+      )}
       <div className="flex mb-4 gap-2">
         <button
           data-e2e="login-tab"
@@ -195,7 +232,7 @@ function Login() {
           onClick={() => { setTab("register"); setError(""); setSuccess(""); }}
         >Register</button>
       </div>
-      <form data-e2e="login-form" className="bg-cream-sand p-6 border border-cream-border rounded" onSubmit={tab === "login" ? handleLogin : handleRegister}>
+  <form data-e2e="login-form" className="bg-cream-sand p-6 border border-cream-border rounded" onSubmit={tab === "login" ? handleLogin : handleRegister}>
   <label className="block mb-2 text-brand-russty font-semibold">Email</label>
         <input
           type="email"
@@ -225,6 +262,40 @@ function Login() {
             {showPassword ? "🙈" : "👁️"}
           </button>
         </div>
+        {tab === 'register' && (
+          <div className="mb-4">
+            <label className="block mb-2 text-brand-russty font-semibold">Account Type</label>
+            <div className="flex gap-3 mb-3">
+              <label className={`px-3 py-2 rounded border ${role==='client' ? 'bg-brand-orange text-white' : 'bg-cream-sand'}`}><input type="radio" name="role" value="client" checked={role==='client'} onChange={()=>setRole('client')} className="mr-2"/> Individual</label>
+              <label className={`px-3 py-2 rounded border ${role==='partner' ? 'bg-brand-orange text-white' : 'bg-cream-sand'}`}><input type="radio" name="role" value="partner" checked={role==='partner'} onChange={()=>setRole('partner')} className="mr-2"/> Partner</label>
+            </div>
+            {role === 'partner' && (
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm text-brand-russty">Partner category</label>
+                  <select className="w-full border px-3 py-2 rounded" value={partnerCategory} onChange={e=>setPartnerCategory(e.target.value)}>
+                    <option value="business">Business</option>
+                    <option value="influencer">Influencer</option>
+                    <option value="affiliate">Affiliate</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-brand-russty">Company / Display name</label>
+                  <input className="w-full border px-3 py-2 rounded" value={companyName} onChange={e=>setCompanyName(e.target.value)} />
+                </div>
+                <div>
+                  <label className="block text-sm text-brand-russty">Phone (optional)</label>
+                  <input className="w-full border px-3 py-2 rounded" value={phone} onChange={e=>setPhone(e.target.value)} />
+                </div>
+                <label className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={agreeTerms} onChange={e=>setAgreeTerms(e.target.checked)} />
+                  <span>I agree to the <a href="/terms" className="text-brand-orange underline">Terms & Conditions</a> and partner policies.</span>
+                </label>
+              </div>
+            )}
+          </div>
+        )}
         {error && <div className="mb-3 text-red-600 font-semibold">{error}</div>}
         {success && <div className="mb-3 text-green-700 font-semibold">{success}</div>}
         <div className="flex items-center justify-between gap-3 mt-3 mb-3">

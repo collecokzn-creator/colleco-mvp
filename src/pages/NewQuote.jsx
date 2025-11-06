@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useBasketState } from '../utils/useBasketState';
 import { useQuotesState } from '../utils/useQuotesState';
-import { generateQuotePdf } from '../utils/pdfGenerators';
+import { generateQuotePdf, exportQuotePdfData } from '../utils/pdfGenerators';
 import { formatCurrency } from '../utils/currency';
 import * as api from '../api/quotes';
 
@@ -15,6 +15,7 @@ export default function NewQuote() {
   const [quoteId, setQuoteId] = useState(editingId || null);
   const [created, setCreated] = useState(false);
   const [errors, setErrors] = useState({});
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     if (!quoteId) {
@@ -49,7 +50,7 @@ export default function NewQuote() {
   async function handleSave() {
     // clear
     setErrors({});
-    const payload = { clientName: quote.clientName, clientEmail: quote.clientEmail, currency: quote.currency, items: quote.items, taxRate: quote.taxRate, discountRate: quote.discountRate, notes: quote.notes, status: quote.status, dueDate: quote.dueDate };
+    const payload = { clientName: quote.clientName, clientEmail: quote.clientEmail, clientPhone: quote.clientPhone, currency: quote.currency, items: quote.items, taxRate: quote.taxRate, discountRate: quote.discountRate, notes: quote.notes, status: quote.status, dueDate: quote.dueDate, validityDays: quote.validityDays, paymentTerms: quote.paymentTerms };
     try {
       let res;
       // detect temp id (created locally)
@@ -86,6 +87,27 @@ export default function NewQuote() {
         <div className="flex gap-2">
           <button onClick={handleExport} className="px-3 py-2 rounded border border-brand-brown text-brand-brown hover:bg-cream-hover">Export PDF</button>
           <button onClick={handleSave} className="px-3 py-2 rounded bg-brand-orange text-white">Save</button>
+          <button
+            onClick={async ()=>{
+              if(!quote || !quote.id) return alert('Please save the quote before sending.');
+              if(!quote.clientEmail) return alert('Quote has no client email. Please add recipient.');
+              try{
+                setSending(true);
+                const dataUri = await exportQuotePdfData(quote);
+                if(!dataUri) throw new Error('pdf_export_failed');
+                const payload = { to: quote.clientEmail, subject: `Quote ${quote.quoteNumber || quote.id}`, text: `Please find your quote attached.`, pdfBase64: dataUri, fileName: `${(quote.quoteNumber||quote.id)}_Quote.pdf` };
+                await api.sendQuote(quote.id, payload);
+                // mark as Sent locally
+                setStatus(quote.id, 'Sent');
+                alert('Quote sent successfully');
+              }catch(e){
+                console.error('send failed', e);
+                alert('Send failed: ' + ((e && e.body && e.body.error) ? e.body.error : e.message || 'failed'));
+              } finally { setSending(false); }
+            }}
+            disabled={sending}
+            className="px-3 py-2 rounded border bg-white text-brand-brown"
+          >{sending ? 'Sending…' : 'Send'}</button>
         </div>
       </div>
       {created && <p className="text-sm text-brand-brown/70 mb-4">A draft quote was created — fill in details below.</p>}
@@ -114,6 +136,10 @@ export default function NewQuote() {
                 </select>
               </label>
               <label className="flex flex-col gap-1">
+                <span className="text-xs uppercase tracking-wide text-brand-brown/70">Client Phone</span>
+                <input value={quote.clientPhone||''} onChange={e=>updateQuote(quote.id,{clientPhone:e.target.value})} className="px-2 py-1 rounded border border-cream-border bg-white" />
+              </label>
+              <label className="flex flex-col gap-1">
                 <span className="text-xs uppercase tracking-wide text-brand-brown/70">Quote Number</span>
                 <input value={quote.quoteNumber||''} readOnly className="px-2 py-1 rounded border border-cream-border bg-white text-brand-brown/60" />
               </label>
@@ -139,6 +165,14 @@ export default function NewQuote() {
               <label className="flex flex-col gap-1">
                 <span className="text-xs uppercase tracking-wide text-brand-brown/70">Due Date</span>
                 <input type="date" value={quote.dueDate||''} onChange={e=>updateQuote(quote.id,{dueDate:e.target.value})} className="px-2 py-1 rounded border border-cream-border bg-white" />
+              </label>
+              <label className="flex flex-col gap-1">
+                <span className="text-xs uppercase tracking-wide text-brand-brown/70">Validity (days)</span>
+                <input type="number" min="0" value={quote.validityDays||30} onChange={e=>updateQuote(quote.id,{validityDays: Number(e.target.value)})} className="px-2 py-1 rounded border border-cream-border bg-white" />
+              </label>
+              <label className="flex flex-col gap-1 md:col-span-2">
+                <span className="text-xs uppercase tracking-wide text-brand-brown/70">Payment Terms</span>
+                <input value={quote.paymentTerms||''} onChange={e=>updateQuote(quote.id,{paymentTerms:e.target.value})} className="px-2 py-1 rounded border border-cream-border bg-white" />
               </label>
             </div>
             <label className="flex flex-col gap-1 text-sm">

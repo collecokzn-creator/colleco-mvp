@@ -529,6 +529,21 @@ function cryptoRandom() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
 
+// Generate a human-friendly quote/reference number and persist a counter in the store
+function generateQuoteNumber() {
+  try {
+    store._meta = store._meta || {};
+    store._meta.quoteCounter = (store._meta.quoteCounter || 0) + 1;
+    saveStore();
+    const counter = store._meta.quoteCounter;
+    const year = new Date().getFullYear().toString().slice(-2);
+    return `Q-${year}-${String(counter).padStart(5, '0')}`;
+  } catch (e) {
+    // fallback
+    return `Q-${Date.now()}`;
+  }
+}
+
 // Health
 app.get('/health', (req, res) => {
   res.json({ ok: true, service: 'collab-api', time: new Date().toISOString() });
@@ -563,6 +578,20 @@ app.get('/api/admin/compliance', (req, res) => {
   res.json(ADMIN_MOCK.compliance);
 });
 
+// Admin: export all bookings as JSON attachment (protected)
+app.get('/api/admin/bookings/export', authCheck, (req, res) => {
+  try {
+    const all = {};
+    for (const [k,v] of Object.entries(store)){
+      if(!k.startsWith('_')) all[k] = v;
+    }
+    const content = JSON.stringify(all, null, 2);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', 'attachment; filename="bookings-export.json"');
+    return res.send(content);
+  } catch(e){ return res.status(500).json({ error: 'export_failed' }); }
+});
+
 app.post('/api/admin/partners/:id/approve', (req, res) => {
   // Simulate approval
   res.json({ ok: true, id: req.params.id, status: "active" });
@@ -590,6 +619,88 @@ app.post('/api/payments/checkout', authCheck, (req, res) => {
   const sessionId = cryptoRandom();
   const checkoutUrl = `https://checkout.example/redirect/${sessionId}`;
   res.json({ ok: true, sessionId, checkoutUrl, fees, metadata });
+});
+
+// Stripe integration: create Checkout Session (if STRIPE_SECRET configured)
+let stripeClient = null;
+try {
+  if (process.env.STRIPE_SECRET) {
+    const Stripe = require('stripe');
+    stripeClient = Stripe(process.env.STRIPE_SECRET);
+    console.log('[payments] Stripe client initialized');
+  }
+} catch (e) {
+  console.warn('[payments] stripe package not installed or failed to initialize:', e && e.message);
+}
+
+app.post('/api/payments/create-stripe-session', authCheck, async (req, res) => {
+  const { bookingId, items = [], currency = 'USD' } = req.body || {};
+  if (!stripeClient) return res.status(501).json({ error: 'stripe_not_configured' });
+  try {
+    let line_items = [];
+    let successUrl = `${req.protocol}://${req.get('host')}/payment-success`;
+    let cancelUrl = `${req.protocol}://${req.get('host')}/payment-success?status=cancelled`;
+    if (bookingId) {
+      const b = store[bookingId];
+      if (!b) return res.status(404).json({ error: 'booking_not_found' });
+      successUrl = `${req.protocol}://${req.get('host')}/payment-success?bookingId=${encodeURIComponent(bookingId)}`;
+      cancelUrl = `${req.protocol}://${req.get('host')}/payment-success?bookingId=${encodeURIComponent(bookingId)}&status=cancelled`;
+      const toCharge = b.pricing ? [{ name: b.ref, amount: Math.round((b.pricing.total||0)*100) }] : [];
+      line_items = (b.items || []).map(it => ({ price_data: { currency: currency.toLowerCase(), product_data: { name: it.title || it.name || 'Item' }, unit_amount: Math.round((it.amount||0)*100) }, quantity: 1 }));
+      if (line_items.length === 0 && toCharge.length) {
+        line_items = toCharge.map(t => ({ price_data: { currency: currency.toLowerCase(), product_data: { name: t.name || 'Booking' }, unit_amount: t.amount }, quantity: 1 }));
+      }
+    } else if (Array.isArray(items) && items.length) {
+      line_items = items.map(it => ({ price_data: { currency: currency.toLowerCase(), product_data: { name: it.name || it.title || 'Item' }, unit_amount: Math.round((it.amount||0)*100) }, quantity: Number(it.qty||1) }));
+    } else {
+      return res.status(400).json({ error: 'no_items' });
+    }
+
+    if (line_items.length === 0) return res.status(400).json({ error: 'no_line_items' });
+
+    const session = await stripeClient.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items,
+      mode: 'payment',
+      success_url: successUrl,
+      cancel_url: cancelUrl
+    });
+    return res.json({ ok: true, sessionId: session.id, checkoutUrl: session.url });
+  } catch (e) {
+    console.error('stripe create session failed', e);
+    return res.status(500).json({ error: 'stripe_error', message: e && e.message });
+  }
+});
+
+// Stripe webhook endpoint (raw body) to update booking statuses
+app.post('/api/payments/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  if (!stripeClient) return res.status(501).send('Stripe not configured');
+  const sig = req.headers['stripe-signature'];
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
+  let event = null;
+  try {
+    if (webhookSecret) event = stripeClient.webhooks.constructEvent(req.body, sig, webhookSecret);
+    else event = req.body;
+  } catch (err) {
+    console.error('stripe webhook signature verification failed', err && err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+  // handle session.completed or payment_intent.succeeded
+  try {
+    if (event.type === 'checkout.session.completed' || event.type === 'payment_intent.succeeded') {
+      const session = event.data.object;
+      // If we provided metadata.bookingId in session we can map; otherwise skip
+      const bookingId = session.metadata && session.metadata.bookingId;
+      if (bookingId && store[bookingId]) {
+        store[bookingId].status = 'Confirmed';
+        store[bookingId].updatedAt = Date.now();
+        saveStore();
+        // apply inventory
+        try { applyBookingToInventory(store[bookingId]); } catch(e){ console.error(e); }
+      }
+    }
+  } catch (e) { console.error('stripe webhook handling error', e); }
+  res.json({ received: true });
 });
 
 // --- Bookings API ---
@@ -788,6 +899,81 @@ app.post('/api/bookings/car', authCheck, (req, res) => {
   } catch (e) { console.error('car booking error', e); return res.status(500).json({ error: 'server_error' }); }
 });
 
+// Shuttles: public listing and server-side booking support
+app.get('/api/shuttles', (req, res) => {
+  try {
+    const origin = (req.query.origin||'').toString().toLowerCase();
+    const destination = (req.query.destination||'').toString().toLowerCase();
+    const arr = (store._shuttles && Array.isArray(store._shuttles)) ? store._shuttles.slice() : (store._shuttles = [
+      { id:1, route: 'Airport ↔ City Center', origin: 'King Shaka International Airport', destination: 'Durban City Centre', departTimes: ['08:00','10:00','12:00','14:00'], price: 120, capacity:20, vehicle:'Shuttle Bus', provider:'Durban Shuttle Co', description:'Frequent shuttle between airport and city centre.' },
+      { id:2, route: 'Umhlanga ↔ Beachfront', origin: 'Umhlanga Rocks', destination: 'Durban Beachfront', departTimes: ['09:00','11:30','13:30'], price: 80, capacity:12, vehicle:'Van', provider:'Coastal Shuttles', description:'Short-hop shuttle.' }
+    ]);
+    let out = arr;
+    if(origin) out = out.filter(s => String(s.origin||'').toLowerCase().includes(origin));
+    if(destination) out = out.filter(s => String(s.destination||'').toLowerCase().includes(destination));
+    return res.json({ ok:true, shuttles: out });
+  } catch(e){ console.error('shuttles.list', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+app.post('/api/bookings/shuttle', authCheck, (req, res) => {
+  try {
+    const body = req.body || {};
+    const { shuttleId, pickupTime, seats = 1, amount = 0, currency = 'ZAR', customer = {}, metadata = {} } = body;
+    const sh = (store._shuttles||[]).find(x => Number(x.id) === Number(shuttleId));
+    if(!sh) return res.status(404).json({ error:'shuttle_not_found' });
+    const item = { type:'shuttle', title: sh.route, shuttleId: sh.id, origin: sh.origin, destination: sh.destination, pickupTime: pickupTime || (sh.departTimes && sh.departTimes[0]) || null, seats: Number(seats), amount: Number(amount), currency };
+    const result = createBookingInternal([item], customer, currency, metadata);
+    if(result.checkout) return res.status(200).json({ ok:true, booking: result.booking, checkout: result.checkout, fees: result.fees });
+    return res.json({ ok:true, booking: result.booking });
+  } catch(e){ console.error('shuttle.booking', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+// SSE: simulated shuttle positions stream (simple demo simulator)
+app.get('/events/shuttles', (req, res) => {
+  try {
+    // SSE headers
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive',
+      'Access-Control-Allow-Origin': '*'
+    });
+
+    // Helper to build positions array
+    function currentPositions(){
+      const arr = (store._shuttles && Array.isArray(store._shuttles)) ? store._shuttles : [];
+      return arr.map((s, i) => {
+        // base lat/lng seeded from shuttle index or explicit originLat/originLng if provided
+        const baseLat = (s.originLat && Number.isFinite(Number(s.originLat))) ? Number(s.originLat) : (-29.85 + i * 0.01);
+        const baseLng = (s.originLng && Number.isFinite(Number(s.originLng))) ? Number(s.originLng) : (31.03 + i * 0.01);
+        // small random jitter for demo movement
+        const jitter = () => (Math.random() - 0.5) * 0.005;
+        return { id: s.id, name: s.route || s.title || `Shuttle ${s.id}`, lat: +(baseLat + jitter()).toFixed(6), lng: +(baseLng + jitter()).toFixed(6), ts: Date.now() };
+      });
+    }
+
+    // Send an initial event
+    const send = () => {
+      try {
+        const payload = currentPositions();
+        res.write(`event: positions\n`);
+        res.write(`data: ${JSON.stringify(payload)}\n\n`);
+      } catch (e) { /* ignore */ }
+    };
+
+    // Send immediately and then every 2s
+    send();
+    const iv = setInterval(send, 2000);
+
+    // Clean up when client disconnects
+    req.on('close', () => {
+      clearInterval(iv);
+    });
+  } catch (e) {
+    try { res.end(); } catch (err) {}
+  }
+});
+
 // Flight monitoring: get flight item by id
 app.get('/api/flights/:itemId', authCheck, (req, res) => {
   const itemId = req.params.itemId;
@@ -839,6 +1025,73 @@ function simulateFlightStatusUpdates(){
     }
   } catch (e){ console.error('flight simulator error', e); }
 }
+
+// --- Car inventory (server-side demo persistence) ---
+store._cars = store._cars || [
+  { id: 1, make: 'Toyota', model: 'Rav4', vehicleType: 'SUV', seats: 5, pricePerDay: 650, location: 'Durban', image: '/assets/cars/rav4.jpg', description: 'Comfortable SUV, great for families.' },
+  { id: 2, make: 'Volkswagen', model: 'Polo', vehicleType: 'Hatchback', seats: 5, pricePerDay: 420, location: 'Durban', image: '/assets/cars/polo.jpg', description: 'Economic city car, easy parking.' },
+  { id: 3, make: 'Mercedes', model: 'C-Class', vehicleType: 'Sedan', seats: 5, pricePerDay: 1200, location: 'Durban', image: '/assets/cars/cclass.jpg', description: 'Premium comfort for business trips.' }
+];
+
+function nextCarId(){
+  const ids = (store._cars||[]).map(c=>Number(c.id)||0);
+  return Math.max(0, ...ids) + 1;
+}
+
+// Public: list cars (optionally filter by location or vehicleType)
+app.get('/api/cars', (req, res) => {
+  try {
+    const qloc = (req.query.location||'').toString().toLowerCase();
+    const qvt = (req.query.vehicleType||'').toString().toLowerCase();
+    let arr = Array.isArray(store._cars) ? store._cars.slice() : [];
+    if(qloc) arr = arr.filter(c => String(c.location||'').toLowerCase().includes(qloc));
+    if(qvt) arr = arr.filter(c => String(c.vehicleType||'').toLowerCase().includes(qvt));
+    return res.json({ ok:true, cars: arr });
+  } catch(e){ console.error('cars.list', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+// Public: get car by id
+app.get('/api/cars/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const c = (store._cars||[]).find(x => Number(x.id) === id);
+  if(!c) return res.status(404).json({ error:'not_found' });
+  return res.json({ ok:true, car: c });
+});
+
+// Admin: add a car
+app.post('/api/cars', authCheck, (req, res) => {
+  try {
+    const body = req.body || {};
+    const car = { id: nextCarId(), make: body.make||'', model: body.model||'', vehicleType: body.vehicleType||'', seats: Number(body.seats||4), pricePerDay: Number(body.pricePerDay||0), location: body.location||'', image: body.image||'', description: body.description||'' };
+    store._cars = store._cars || [];
+    store._cars.push(car);
+    saveStore();
+    return res.status(201).json({ ok:true, car });
+  } catch(e){ console.error('cars.add', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+// Admin: update car
+app.put('/api/cars/:id', authCheck, (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const idx = (store._cars||[]).findIndex(c=>Number(c.id)===id);
+    if(idx === -1) return res.status(404).json({ error:'not_found' });
+    const patch = req.body || {};
+    store._cars[idx] = { ...store._cars[idx], ...patch };
+    saveStore();
+    return res.json({ ok:true, car: store._cars[idx] });
+  } catch(e){ console.error('cars.update', e); return res.status(500).json({ error:'server_error' }); }
+});
+
+// Admin: delete car
+app.delete('/api/cars/:id', authCheck, (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    store._cars = (store._cars||[]).filter(c => Number(c.id) !== id);
+    saveStore();
+    return res.json({ ok:true });
+  } catch(e){ console.error('cars.delete', e); return res.status(500).json({ error:'server_error' }); }
+});
 setInterval(simulateFlightStatusUpdates, 10_000).unref();
 
 // Read booking by id
@@ -1021,6 +1274,33 @@ try {
 
   ajvValidateQuote = ajv.compile(quoteSchema);
   ajvValidateBooking = ajv.compile(bookingSchema);
+  // Invoice schema mirrors quotes for basic persistence
+  const invoiceSchema = {
+    type: 'object',
+    properties: {
+      clientName: { type: 'string', minLength: 1, maxLength: 200 },
+      clientEmail: { type: 'string', format: 'email' },
+      currency: { type: 'string', pattern: '^[A-Z]{3}$' },
+      invoiceNumber: { type: 'string' },
+      items: {
+        type: 'array',
+        maxItems: 500,
+        items: {
+          type: 'object',
+          properties: {
+            title: { type: 'string', minLength: 1, maxLength: 300 },
+            unitPrice: { type: 'number', minimum: 0 },
+            quantity: { type: 'number', minimum: 0 }
+          },
+          required: ['title']
+        }
+      },
+      taxRate: { type: 'number', minimum: 0, maximum: 100 }
+    },
+    required: ['clientName']
+  };
+  var ajvValidateInvoice = null;
+  try { ajvValidateInvoice = ajv.compile(invoiceSchema); } catch(e) { /* ignore */ }
   // Additional schemas for direct booking endpoints
   const accommodationSchema = {
     type: 'object',
@@ -1212,6 +1492,7 @@ app.post('/api/quotes', authCheck, (req, res) => {
     const id = cryptoRandom();
     const quote = {
       id,
+      quoteNumber: data.quoteNumber || generateQuoteNumber(),
       clientName: data.clientName || data.name || '',
       clientEmail: data.clientEmail || '',
       currency: data.currency || 'USD',
@@ -1230,6 +1511,31 @@ app.post('/api/quotes', authCheck, (req, res) => {
   } catch (e) {
     console.error('create quote error', e);
     res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// Send a quote by email. Expects { to, subject, text, pdfBase64, fileName }
+app.post('/api/quotes/:id/send', authCheck, async (req, res) => {
+  const { to, subject, text, pdfBase64, fileName } = req.body || {};
+  if (!to || !pdfBase64) return res.status(400).json({ error: 'missing_fields' });
+  if (!mailer) return res.status(500).json({ error: 'mailer_not_configured' });
+  try {
+    // strip data URL prefix if present
+    const base = String(pdfBase64 || '');
+    const idx = base.indexOf('base64,');
+    const raw = idx !== -1 ? base.slice(idx + 7) : base;
+    const buffer = Buffer.from(raw, 'base64');
+    await mailer.sendMail({
+      from: CONTACT_FROM,
+      to,
+      subject: subject || 'Your quote from CollEco',
+      text: text || 'Please find your quote attached.',
+      attachments: [{ filename: fileName || 'quote.pdf', content: buffer }]
+    });
+    res.json({ ok: true, sent: true });
+  } catch (e) {
+    console.error('send quote failed', e);
+    res.status(500).json({ error: 'send_failed' });
   }
 });
 
@@ -1290,6 +1596,104 @@ app.delete('/api/quotes/:id', authCheck, (req, res) => {
     res.json({ ok: true });
   } catch (e) {
     console.error('delete quote error', e);
+    res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// --- Invoices API (simple persistence in server store) ---
+// GET /api/invoices -> list
+app.get('/api/invoices', authCheck, (req, res) => {
+  const i = Array.isArray(store._invoices) ? store._invoices : [];
+  res.json({ ok: true, invoices: i });
+});
+
+app.post('/api/invoices', authCheck, (req, res) => {
+  try {
+    const data = req.body || {};
+    // reuse quote validator for invoice-shaped payloads
+    const v = validateQuoteData(data, { partial: false });
+    if(!v.valid) return res.status(400).json({ error: 'validation_failed', details: v.errors });
+    const id = cryptoRandom();
+    const invoice = {
+      id,
+      invoiceNumber: data.invoiceNumber || '',
+      clientName: data.clientName || data.name || '',
+      clientEmail: data.clientEmail || '',
+      currency: data.currency || 'USD',
+      items: Array.isArray(data.items) ? data.items : [],
+      taxRate: Number(data.taxRate||0),
+      notes: data.notes || '',
+      status: data.status || 'Draft',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    store._invoices = Array.isArray(store._invoices) ? store._invoices : [];
+    store._invoices.unshift(invoice);
+    saveStore();
+    res.status(201).json({ ok: true, invoice });
+  } catch (e) {
+    console.error('create invoice error', e);
+    res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// Update invoice
+app.put('/api/invoices/:id', authCheck, (req, res) => {
+  try {
+    const id = req.params.id;
+    const list = Array.isArray(store._invoices) ? store._invoices : [];
+    const idx = list.findIndex(q => q.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'not_found' });
+    const existing = list[idx];
+    const patch = req.body || {};
+    const v = validateQuoteData(patch, { partial: true });
+    if(!v.valid) return res.status(400).json({ error: 'validation_failed', details: v.errors });
+    const updated = { ...existing, ...patch, updatedAt: Date.now() };
+    list[idx] = updated;
+    store._invoices = list;
+    saveStore();
+    res.json({ ok: true, invoice: updated });
+  } catch (e) {
+    console.error('update invoice error', e);
+    res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// PATCH partial
+app.patch('/api/invoices/:id', authCheck, (req, res) => {
+  try {
+    const id = req.params.id;
+    const list = Array.isArray(store._invoices) ? store._invoices : [];
+    const idx = list.findIndex(q => q.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'not_found' });
+    const existing = list[idx];
+    const patch = req.body || {};
+    const v = validateQuoteData(patch, { partial: true });
+    if(!v.valid) return res.status(400).json({ error: 'validation_failed', details: v.errors });
+    const updated = { ...existing, ...patch, updatedAt: Date.now() };
+    list[idx] = updated;
+    store._invoices = list;
+    saveStore();
+    res.json({ ok: true, invoice: updated });
+  } catch (e) {
+    console.error('patch invoice error', e);
+    res.status(500).json({ error: 'server_error' });
+  }
+});
+
+// Delete invoice
+app.delete('/api/invoices/:id', authCheck, (req, res) => {
+  try {
+    const id = req.params.id;
+    const list = Array.isArray(store._invoices) ? store._invoices : [];
+    const idx = list.findIndex(q => q.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'not_found' });
+    list.splice(idx, 1);
+    store._invoices = list;
+    saveStore();
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('delete invoice error', e);
     res.status(500).json({ error: 'server_error' });
   }
 });
@@ -1777,6 +2181,51 @@ function listenWithFallback(startPort, maxTries = 5) {
     const server = app.listen(port, () => {
       console.log(`[collab-api] listening on http://localhost:${port}`);
     });
+    // Optionally attach a WebSocket shuttle simulator if 'ws' is installed.
+    try {
+      const WebSocketServer = require('ws').Server;
+      const wss = new WebSocketServer({ server, path: '/ws/shuttles' });
+      console.log('[collab-api] WebSocket shuttle endpoint enabled at /ws/shuttles');
+
+      function currentPositionsForWS(){
+        const arr = (store._shuttles && Array.isArray(store._shuttles)) ? store._shuttles : [];
+        return arr.map((s, i) => {
+          const baseLat = (s.originLat && Number.isFinite(Number(s.originLat))) ? Number(s.originLat) : (-29.85 + i * 0.01);
+          const baseLng = (s.originLng && Number.isFinite(Number(s.originLng))) ? Number(s.originLng) : (31.03 + i * 0.01);
+          const jitter = () => (Math.random() - 0.5) * 0.005;
+          return { id: s.id, name: s.route || s.title || `Shuttle ${s.id}`, lat: +(baseLat + jitter()).toFixed(6), lng: +(baseLng + jitter()).toFixed(6), ts: Date.now() };
+        });
+      }
+
+      // Broadcast positions periodically
+      const broadcastInterval = setInterval(() => {
+        try {
+          const payload = currentPositionsForWS();
+          const msg = JSON.stringify({ type: 'positions', data: payload });
+          wss.clients.forEach((c) => { if (c && c.readyState === c.OPEN) { c.send(msg); } });
+        } catch (e) { /* ignore */ }
+      }, 2000);
+
+      wss.on('connection', (socket) => {
+        try { socket.send(JSON.stringify({ type: 'hello', data: 'connected' })); } catch (e) {}
+        // send an immediate snapshot
+        try { socket.send(JSON.stringify({ type: 'positions', data: currentPositionsForWS() })); } catch (e) {}
+        socket.on('message', (msg) => {
+          // Basic echo/echo-commands for demo. Accept JSON { type:'cmd', cmd:'ping' }
+          try {
+            const p = typeof msg === 'string' ? JSON.parse(msg) : msg;
+            if (p && p.type === 'cmd' && p.cmd === 'whereami') {
+              socket.send(JSON.stringify({ type: 'info', data: { serverTime: Date.now(), clients: wss.clients.size } }));
+            }
+          } catch (e) {}
+        });
+      });
+
+      // cleanup on server close
+      server.on('close', () => { clearInterval(broadcastInterval); try { wss.close(); } catch (e) {} });
+    } catch (e) {
+      // ws not installed or failed to initialize — skip WebSocket support silently.
+    }
     server.on('error', (err) => {
       // If the caller requested no-fallback behavior (useful in CI to
       // avoid noisy port-scanning logs), honor the DEMO_NO_FALLBACK env var

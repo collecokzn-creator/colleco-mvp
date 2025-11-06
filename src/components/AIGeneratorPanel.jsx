@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { dbg } from '../utils/logger';
 import { Link } from 'react-router-dom';
-import { generateItinerary, streamItinerary, parseFlightIntent, parseIntent } from '../utils/aiClient.js';
-import { refineItinerary } from '../utils/aiClient.js';
+import { generateItinerary, streamItinerary, parseFlightIntent, parseIntent, refineItinerary } from '../utils/aiClient.js';
 import { startSession, refineSession, uploadDraft, fetchSession } from '../utils/aiSessionClient.js';
 
 /**

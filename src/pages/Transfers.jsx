@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Transfers() {
   React.useEffect(() => {
@@ -57,7 +58,7 @@ export default function Transfers() {
           <p><span className="font-semibold">ETA:</span> {quote.eta}</p>
           <p><span className="font-semibold">Vehicle:</span> {quote.vehicle}</p>
           <p><span className="font-semibold">Driver:</span> {quote.driver}</p>
-          <button className="mt-4 bg-brand-brown text-white px-4 py-2 rounded">Book Now</button>
+          <Link to="/book" className="mt-4 inline-block bg-brand-brown text-white px-4 py-2 rounded text-center">Book Now</Link>
         </div>
       )}
     </div>

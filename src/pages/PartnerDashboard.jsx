@@ -1,9 +1,6 @@
-// --- COMPLIANCE & DATA HANDLING STUBS ---
-// API-first design; future: wire to modular API calls (products, compliance, payouts),
-// add compliance status indicators and document expiry notifications.
 import React from "react";
-import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import { Link } from "react-router-dom";
+import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import { BedDouble, Mountain, UtensilsCrossed, Ticket, Car, Plane, BarChart3, CreditCard, ShieldCheck, Megaphone, BookOpen, MessageSquare, CheckCircle2 } from "lucide-react";
 import { useLocalStorageState } from "../useLocalStorageState";
 import LiveStatCard from "../components/ui/LiveStatCard";
@@ -11,6 +8,10 @@ import VerifiedBadge from "../components/ui/VerifiedBadge";
 import AutoSyncBanner from "../components/ui/AutoSyncBanner";
 import ComplianceStatusCard from "../components/ui/ComplianceStatusCard";
 import PromotionsBalanceCard from "../components/ui/PromotionsBalanceCard";
+const UnauthorizedCallout = React.lazy(() => import('../components/ui/UnauthorizedCallout'));
+import OwnerDashboard from "./OwnerDashboard.jsx";
+import PartnerBookings from "../components/PartnerBookings.jsx";
+import { useUser } from "../context/UserContext.jsx";
 
 const PARTNER_CATEGORIES = [
   {
@@ -50,6 +51,7 @@ const PARTNER_CATEGORIES = [
 
 export default function PartnerDashboard() {
   const [role, setRole] = useLocalStorageState("partnerRole", null);
+  const { user } = useUser();
 
   return (
     <div className="text-brand-brown">
@@ -67,7 +69,7 @@ export default function PartnerDashboard() {
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         <LiveStatCard title="Bookings this month" value="—" to="/bookings" icon={Ticket} />
         <LiveStatCard title="Revenue earned" value="—" to="/reports" icon={BarChart3} />
-  <LiveStatCard title="Documents status" value={<span className="inline-flex items-center gap-2">Valid <VerifiedBadge verified /></span>} to="/compliance" icon={ShieldCheck} highlight="bg-emerald-500" />
+        <LiveStatCard title="Documents status" value={<span className="inline-flex items-center gap-2">Valid <VerifiedBadge verified /></span>} to="/compliance" icon={ShieldCheck} highlight="bg-emerald-500" />
       </section>
 
       {/* Role chip + change */}
@@ -141,6 +143,33 @@ export default function PartnerDashboard() {
           <PromotionsBalanceCard balance={0} />
         </div>
       </section>
+
+      {/* Booking Management: partner view for demo bookings */}
+      <section className="mb-6">
+        <h3 className="font-bold mb-2">Booking Management</h3>
+        {/* Only show booking management to logged-in partners */}
+        {(!user || user.role !== 'partner') ? (
+          <div className="p-4">
+            <React.Suspense fallback={<div className="p-4 bg-cream-sand border border-cream-border rounded">Loading…</div>}>
+              <UnauthorizedCallout registerParams={{ tab: 'register', role: 'partner', ref: 'partner-bookings' }} title="Partner booking access" description="Booking management is available to registered partners. Please register or login as a partner to manage bookings." />
+            </React.Suspense>
+          </div>
+        ) : (
+          <PartnerBookings currentUser={user} />
+        )}
+      </section>
+
+      {/* Product Management / Owner tools: embed OwnerDashboard for product owners */}
+      <section className="mb-6">
+        <h3 className="font-bold mb-2">Product Management</h3>
+        {role && ["hotel","car-hire","tour-activity","restaurant","sports-events"].includes(role) ? (
+          <OwnerDashboard />
+        ) : (
+          <div className="p-4 bg-cream-sand border border-cream-border rounded">Select a partner type above to manage specific products (e.g., Hotels, Cars, Tours).</div>
+        )}
+      </section>
+
+      
 
       {/* Engagement & Support */}
       <section className="bg-cream-sand p-4 border border-cream-border rounded mb-6">

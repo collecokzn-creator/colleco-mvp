@@ -44,13 +44,15 @@ export default function Navbar() {
 
 	// Close menus on outside click
 	useEffect(() => {
-		const onClick = (e) => {
-			const t = tripRef.current;
-			const p = partnerRef.current;
-			if (openMenu && t && !t.contains(e.target) && p && !p.contains(e.target)) {
-				setOpenMenu(null);
-			}
-		};
+			const onClick = (e) => {
+				const t = tripRef.current;
+				const p = partnerRef.current;
+				const target = e && e.target;
+				if (!target || !(target instanceof Node)) return;
+				if (openMenu && t && (!t.contains || !t.contains(target)) && p && (!p.contains || !p.contains(target))) {
+					setOpenMenu(null);
+				}
+			};
 		document.addEventListener('mousedown', onClick);
 		return () => document.removeEventListener('mousedown', onClick);
 	}, [openMenu]);
@@ -70,11 +72,13 @@ export default function Navbar() {
 	// Close mobile search on outside click/tap
 	useEffect(() => {
 		if (!showMobileSearch) return undefined;
-		const onDown = (e) => {
-			const node = mobileSearchRef.current;
-			if (!node) return;
-			if (!node.contains(e.target)) setShowMobileSearch(false);
-		};
+			const onDown = (e) => {
+				const node = mobileSearchRef.current;
+				const target = e && e.target;
+				if (!node) return;
+				if (!target || !(target instanceof Node)) return;
+				if (!node.contains(target)) setShowMobileSearch(false);
+			};
 		document.addEventListener('mousedown', onDown);
 		document.addEventListener('touchstart', onDown, { passive: true });
 		return () => {

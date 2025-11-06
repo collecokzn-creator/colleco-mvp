@@ -3,6 +3,7 @@ import Modal from '../components/ui/Modal';
 import AutoSyncBanner from "../components/ui/AutoSyncBanner";
 import ItineraryDay from "../components/ui/ItineraryDay";
 import ExperienceCard from "../components/ui/ExperienceCard";
+import ItineraryItem from "../components/ItineraryItem.jsx";
 import MemoryNote from "../components/ui/MemoryNote";
 import LiveTripProgress from "../components/ui/LiveTripProgress";
 import jsPDF from "jspdf";
@@ -537,6 +538,8 @@ export default function Itinerary() {
                             </div>
                           )}
                           <ExperienceCard title={item.title} subtitle={item.subtitle} time={item.time} />
+                          {/* Enrich each itinerary item with a live weather forecast and an illustrative image. */}
+                          <ItineraryItem item={item} day={Number(d)} />
                           {item._aiSource && (
                             <span className="absolute right-1 bottom-1 text-[9px] tracking-wide px-1.5 py-0.5 rounded bg-brand-orange text-white/95 font-semibold uppercase shadow-sm">Suggested</span>
                           )}

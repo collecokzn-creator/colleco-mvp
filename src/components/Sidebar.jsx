@@ -61,6 +61,7 @@ const SIDEBAR_CONFIG = {
             { name: "Partners", icon: "Users2", route: "/admin/partners" },
             { name: "Approval & Documents", icon: "FileText", route: "/admin/partner-approval" },
             { name: "Profiles", icon: "MapPin", route: "/admin/partner-profiles" },
+            { name: "Partner Signups", icon: "Users", route: "/admin/partner-signups" },
           ],
         },
         {
@@ -644,7 +645,8 @@ export default function Sidebar() {
   const handleSidebarMouseLeave = (event) => {
     if (isMobile || roleMenuOpen || isPinned) return;
     const nextTarget = event?.relatedTarget;
-    if (nextTarget && asideRef.current && asideRef.current.contains(nextTarget)) return;
+    // relatedTarget may be null or not a DOM Node (e.g. window), guard before calling contains
+    if (nextTarget && asideRef.current && typeof asideRef.current.contains === 'function' && nextTarget instanceof Node && asideRef.current.contains(nextTarget)) return;
     clearHoverTimeout();
     pointerInsideRef.current = false;
     lastPointerYRef.current = null;

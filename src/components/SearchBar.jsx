@@ -143,7 +143,11 @@ export default function SearchBar({ className = '' }){
   }, [q, suggestions, recent, events]);
 
   useEffect(() => {
-    function onClick(e){ if(wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false); }
+    function onClick(e){
+      const target = e && e.target;
+      if(!target || !(target instanceof Node)) return;
+      if(wrapRef.current && !wrapRef.current.contains(target)) setOpen(false);
+    }
     document.addEventListener('mousedown', onClick);
     return () => document.removeEventListener('mousedown', onClick);
   }, []);
