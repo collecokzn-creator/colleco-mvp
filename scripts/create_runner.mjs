@@ -17,7 +17,7 @@ if (!bundle) {
   process.exit(1)
 }
 
-const rel = `./assets/${bundle}`
+const rel = `/assets/${bundle}`
 const html = `<!doctype html>
 <html>
   <head>
@@ -25,6 +25,7 @@ const html = `<!doctype html>
     <title>CI PDF Runner</title>
   </head>
   <body>
+    <div id="root"></div>
     <script type="module">
       import * as mod from '${rel}';
       window._exportQuote = mod.exportQuotePdfData || mod.generateQuotePdf || mod.e || mod.a || (mod.default && (mod.default.exportQuotePdfData || mod.default.generateQuotePdf));

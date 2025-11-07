@@ -58,8 +58,12 @@ async function run() {
     }, sample)
 
     if (!dataUri || typeof dataUri !== 'string') throw new Error('Exporter returned unexpected value')
-    const m = dataUri.match(/^data:application\/pdf;base64,(.+)$/)
-    if (!m) throw new Error('Unexpected data URI from exporter')
+    // accept data URI variants with optional parameters (e.g. data:application/pdf;filename=generated.pdf;base64,...)
+    const m = dataUri.match(/^data:application\/pdf(?:;[^,]*)?;base64,(.+)$/)
+    if (!m) {
+      console.error('Raw exporter output (truncated):', String(dataUri).slice(0,200))
+      throw new Error('Unexpected data URI from exporter')
+    }
     const buf = Buffer.from(m[1], 'base64')
     fs.mkdirSync(path.dirname(outPdf), { recursive: true })
     fs.writeFileSync(outPdf, buf)
