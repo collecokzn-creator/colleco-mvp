@@ -26,6 +26,12 @@
               }
             },
             {
+              "path": "/book",
+              "name": "Book Now",
+              "component": "Book",
+              "meta": { "title": "Book Now", "requiresAuth": false, "layout": "marketing" }
+            },
+            {
               "path": "/book/accommodation",
               "name": "Book Accommodation",
               "component": "AccommodationBooking",

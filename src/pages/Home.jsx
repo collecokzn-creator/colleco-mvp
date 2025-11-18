@@ -94,9 +94,9 @@ export default function Home() {
               Making trip planning effortless for friends, teams, partners, and individuals who love to explore.
             </p>
             <div className="mt-5 flex flex-wrap gap-3 items-center">
-              <button onClick={() => { setBookingPrefill(null); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight">
+              <Link to="/book" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight" data-e2e="open-booking">
                 Book Now
-              </button>
+              </Link>
               <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-cream-border text-brand-brown bg-white/80 hover:bg-cream">
                 Plan a Trip
               </Link>
@@ -268,9 +268,9 @@ export default function Home() {
             <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold hover:brightness-95">
               Try Trip Assist
             </Link>
-            <button onClick={() => { setBookingPrefill(null); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white font-semibold shadow-sm hover:brightness-95">
+            <Link to="/book" className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white font-semibold shadow-sm hover:brightness-95" data-e2e="open-booking">
               Book Now
-            </button>
+            </Link>
           </div>
         </div>
       </section>
