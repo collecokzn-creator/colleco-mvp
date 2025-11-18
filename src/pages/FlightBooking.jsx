@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { bookFlight, subscribeToFlightUpdates, getFlight } from '../api/client';
 
 export default function FlightBooking(){
@@ -23,6 +24,9 @@ export default function FlightBooking(){
 
   return (
     <div className="p-6">
+      <div className="mb-4">
+        <Link to="/book" className="text-sm text-brand-brown/70 hover:underline">← Back to booking options</Link>
+      </div>
       <h1 className="text-xl font-bold mb-4">Book Flight</h1>
       <form onSubmit={handleSubmit} className="space-y-3 max-w-md">
         <label>From<input value={from} onChange={e=>setFrom(e.target.value)} className="w-full p-2 border" /></label>
