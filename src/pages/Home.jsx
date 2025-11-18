@@ -94,14 +94,8 @@ export default function Home() {
               Making trip planning effortless for friends, teams, partners, and individuals who love to explore.
             </p>
             <div className="mt-5 flex flex-wrap gap-3 items-center">
-              <button onClick={() => { setBookingPrefill({ type: 'accommodation' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight">
-                Book Accommodation
-              </button>
-              <button onClick={() => { setBookingPrefill({ type: 'flight' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-orange-50">
-                Book Flight
-              </button>
-              <button onClick={() => { setBookingPrefill({ type: 'car' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-orange-50">
-                Book Car
+              <button onClick={() => { setBookingPrefill(null); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight">
+                Book Now
               </button>
               <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-cream-border text-brand-brown bg-white/80 hover:bg-cream">
                 Plan a Trip
@@ -274,17 +268,9 @@ export default function Home() {
             <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold hover:brightness-95">
               Try Trip Assist
             </Link>
-            <div className="flex gap-2">
-              <button onClick={() => { setBookingPrefill({ type: 'accommodation' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white font-semibold shadow-sm hover:brightness-95">
-                Book Accommodation
-              </button>
-              <button onClick={() => { setBookingPrefill({ type: 'flight' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-orange-50">
-                Book Flight
-              </button>
-              <button onClick={() => { setBookingPrefill({ type: 'car' }); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-orange text-brand-orange bg-white hover:bg-orange-50">
-                Book Car
-              </button>
-            </div>
+            <button onClick={() => { setBookingPrefill(null); setBookingOpen(true); }} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white font-semibold shadow-sm hover:brightness-95">
+              Book Now
+            </button>
           </div>
         </div>
       </section>
