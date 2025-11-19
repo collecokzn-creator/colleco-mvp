@@ -117,7 +117,8 @@ export default function Transfers() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-6">
+    <div className="overflow-x-hidden">
+      <div className="max-w-7xl mx-auto max-w-xl mx-auto p-6">
       <Breadcrumbs />
       <div className="mb-4">
         <Link to="/book" className="text-sm text-brand-brown/70 hover:underline">← Back to booking options</Link>
@@ -325,6 +326,7 @@ export default function Transfers() {
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }

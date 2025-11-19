@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 
 function Packages() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
+    <div className="overflow-x-hidden">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
       <h1 className="text-3xl font-bold">Our Packages</h1>
       <p className="mt-4 text-gray-600">
         Exciting travel packages are being curated by our AI and will be available here soon.
@@ -17,6 +19,8 @@ function Packages() {
         <p>Packages coming soon...</p>
       </div>
     </motion.div>
+    </div>
+    </div>
   );
 }
 

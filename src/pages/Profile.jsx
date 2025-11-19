@@ -24,7 +24,8 @@ export default function Profile() {
   }, [user]);
 
   return (
-    <div className="p-6 max-w-3xl" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
+    <div className="overflow-x-hidden">
+      <div className="max-w-7xl mx-auto p-6 max-w-3xl" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
       <h2 className="text-2xl font-bold mb-3 text-brand-orange">Profile</h2>
       <div className="bg-cream-sand p-4 border border-cream-border">
         {user ? (
@@ -36,6 +37,7 @@ export default function Profile() {
           <p className="text-brand-brown">User profile page placeholder.</p>
         )}
       </div>
+    </div>
     </div>
   );
 }

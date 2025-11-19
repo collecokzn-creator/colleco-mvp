@@ -690,7 +690,8 @@ export default function PlanTrip() {
     return actions;
   }, []);
   return (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-brand-russty">
+  <div className="overflow-x-hidden">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-brand-russty">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="text-3xl font-bold mb-1">Trip Planner</h2>
@@ -1605,6 +1606,7 @@ export default function PlanTrip() {
           showToast('Location saved', 'success');
         }}
       />
+    </div>
     </div>
   );
 }

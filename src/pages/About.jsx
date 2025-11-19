@@ -2,7 +2,8 @@ import React from "react";
 
 export default function About() {
 	return (
-		<div className="text-brand-brown">
+		<div className="overflow-x-hidden">
+			<div className="max-w-7xl mx-auto text-brand-brown">
 				<h1 className="text-3xl font-bold mb-4">About Us</h1>
 				<div className="bg-cream-sand p-6 rounded-md border border-cream-border">
 					<p className="leading-relaxed">
@@ -11,6 +12,7 @@ export default function About() {
 						safety, transparency, and unforgettable experiences.
 					</p>
 				</div>
+		</div>
 		</div>
 	);
 }

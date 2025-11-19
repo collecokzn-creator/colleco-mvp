@@ -59,7 +59,8 @@ export default function Notifications() {
   const unreadCount = alerts.filter(a => !a.read).length;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="overflow-x-hidden">
+      <div className="max-w-7xl mx-auto max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Notifications</h1>
         <div className="flex gap-3 items-center">
@@ -119,6 +120,7 @@ export default function Notifications() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }

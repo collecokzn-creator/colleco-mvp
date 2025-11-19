@@ -52,7 +52,8 @@ export default function PartnerDashboard() {
   const [role, setRole] = useLocalStorageState("partnerRole", null);
 
   return (
-    <div className="text-brand-brown">
+    <div className="overflow-x-hidden">
+      <div className="max-w-7xl mx-auto text-brand-brown">
       <Breadcrumbs />
       {/* Hero / Welcome */}
       <section className="mb-4 bg-cream-sand border border-cream-border rounded p-4">
@@ -171,6 +172,7 @@ export default function PartnerDashboard() {
           <AdvantageItem text="24/7 partner support" />
         </ul>
       </section>
+    </div>
     </div>
   );
 }

@@ -19,7 +19,8 @@ export default function Home() {
   };
 
   return (
-  <div className="bg-white text-brand-brown">
+  <div className="overflow-x-hidden">
+    <div className="max-w-full bg-white text-brand-brown">
       {/* SEO */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       {/* Hero */}
@@ -219,6 +220,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+    </div>
     </div>
   );
 }

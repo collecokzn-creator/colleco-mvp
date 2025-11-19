@@ -22,7 +22,8 @@ export default function Contact() {
     }
   }
   return (
-    <div className="px-6 py-8 text-brand-russty">
+    <div className="overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-6 py-8 text-brand-russty">
       <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
       <div className="bg-surface p-6 rounded-md border border-cream-border space-y-4">
         <p>📍 Address: South Africa, South Coast, Port Shepstone</p>
@@ -46,6 +47,7 @@ export default function Contact() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

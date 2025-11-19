@@ -21,7 +21,8 @@ export default function Wishlist() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="overflow-x-hidden">
+      <div className="max-w-7xl mx-auto max-w-6xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">My Wishlist</h1>
       
       {items.length === 0 ? (
@@ -50,6 +51,7 @@ export default function Wishlist() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }
