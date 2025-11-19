@@ -7,6 +7,7 @@ import { totalPaid } from "../utils/payments";
 import PaymentsHistory from "../components/payments/PaymentsHistory";
 import VerifiedBadge from "../components/ui/VerifiedBadge";
 import { isApiEnabled as providersApiEnabled, listProviders } from "../api/providersApi";
+import WorkflowPanel from "../components/WorkflowPanel";
 import { BookingStatusBar } from "../components/mvp/EnhancementStubs";
 
 export default function Bookings() {
@@ -151,6 +152,11 @@ export default function Bookings() {
 				<p className="mb-4 text-brand-brown/80">All your confirmed items in one place — always up to date.</p>
 
 			<div className="mb-3"><AutoSyncBanner message="Bookings sync with partners automatically — no manual refresh needed." /></div>
+
+			{/* Workflow Panel */}
+			<div className="mb-6">
+				<WorkflowPanel currentPage="bookings" basketCount={0} />
+			</div>
 
 			<section className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
 				<LiveStatCard title="Upcoming" value="—" />

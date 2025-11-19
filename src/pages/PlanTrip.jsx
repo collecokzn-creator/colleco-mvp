@@ -11,6 +11,7 @@ import { sortEvents as sortEventsUtil, mergeAndSort } from "../utils/eventsSort"
 import { buildLocationMaps as buildLocMapsUtil, detectCategory, resolveLocationToken, longestLocationMatch, getSuggestion, loadMyLocation, persistMyLocation, loadSmartSettings } from "../utils/searchIntent";
 import MyLocationModal from "../components/MyLocationModal";
 import WeatherWidget from "../components/WeatherWidget";
+import WorkflowPanel from "../components/WorkflowPanel";
 import { useClickOutsideAndEscape } from "../hooks/useClickOutside";
 
 export default function PlanTrip() {

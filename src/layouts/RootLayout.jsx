@@ -4,7 +4,6 @@ import Sidebar from "../components/Sidebar.jsx";
 import MobileNav from "../components/MobileNav.jsx";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import AutoFocus from "../components/AutoFocus.jsx";
-import KeyboardShortcutsHelp from "../components/KeyboardShortcutsHelp.jsx";
 import { Outlet } from "react-router-dom";
 import globePng from "../assets/Globeicon.png";
 import AIAgent from "../components/AIAgent.jsx";
@@ -106,10 +105,6 @@ export default function RootLayout() {
 
       {/* Mobile Bottom Navigation - White footer with Home, Packages, Bookings, Alerts, Account */}
       <MobileNav />
-
-      {/* Keyboard Shortcuts Help - Global ? key trigger */}
-      <KeyboardShortcutsHelp />
-
       {/* Back to Top button */}
       {showBackTop && (
         <button

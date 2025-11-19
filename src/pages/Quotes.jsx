@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '../utils/currency';
 import { generateQuotePdf } from '../utils/pdfGenerators';
+import WorkflowPanel from '../components/WorkflowPanel';
 import * as api from '../api/quotes';
 
 export default function Quotes() {
@@ -44,6 +45,10 @@ export default function Quotes() {
           <p className="text-brand-brown/70 text-sm">Manage, export and track client quotations independently of itineraries.</p>
         </div>
         <button onClick={()=>navigate('/quote/new')} className="px-4 py-2 rounded bg-brand-brown text-cream text-sm font-medium hover:bg-brand-brown/90">New Quote</button>
+
+            <div className="mb-6">
+              <WorkflowPanel currentPage="quotes" basketCount={0} hasQuote={quotes.length > 0} />
+            </div>
       </div>
 
       {loading ? <div>Loading…</div> : (quotes.length === 0 && (

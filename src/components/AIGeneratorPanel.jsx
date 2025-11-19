@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { dbg } from '../utils/logger';
+import WorkflowPanel from './WorkflowPanel';
 import { Link } from 'react-router-dom';
 import { generateItinerary, streamItinerary, parseFlightIntent, parseIntent } from '../utils/aiClient.js';
 import { refineItinerary } from '../utils/aiClient.js';
@@ -316,6 +317,9 @@ export default function AIGeneratorPanel() {
     <div className="ai-panel max-w-4xl mx-auto flex flex-col gap-4" aria-labelledby="aiGenHeading">
   <h1 id="aiGenHeading" className="text-2xl font-bold text-brand-brown">Trip Assist</h1>
   <p className="text-sm text-brand-brown/80 leading-snug">Describe your trip — budget, vibe, pace, must‑dos. You’ll get a draft with an outline and rough costs. See it build in steps or generate a single draft, then refine until it feels right.</p>
+
+  {/* Workflow Panel */}
+  <WorkflowPanel currentPage="ai" />
 
       {/* Quick start prompt ideas */}
       <div className="rounded border border-cream-border bg-cream p-3">

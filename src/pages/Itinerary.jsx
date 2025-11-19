@@ -11,6 +11,7 @@ import { useBasketState } from "../utils/useBasketState";
 import { useLocalStorageState } from "../useLocalStorageState";
 import FeesBreakdown from "../components/payments/FeesBreakdown";
 import PaymentButton from "../components/payments/PaymentButton";
+import WorkflowPanel from "../components/WorkflowPanel";
 import { useClickOutsideAndEscape } from "../hooks/useClickOutside";
 
 export default function Itinerary() {
@@ -434,6 +435,14 @@ export default function Itinerary() {
       )}
 
       <div className="mb-4"><AutoSyncBanner message="Itinerary updates will reflect in quotes and bookings automatically." /></div>
+      
+      <div className="mb-4">
+        <WorkflowPanel 
+          currentPage="itinerary" 
+          basketCount={basket.length}
+          hasItinerary={Object.keys(trip.days).length > 0}
+        />
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         <div className="lg:col-span-1 w-full">
