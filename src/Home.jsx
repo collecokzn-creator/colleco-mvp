@@ -16,7 +16,11 @@ export default function Home() {
       <img
         src={globePng}
         alt="CollEco Bird Logo"
-        className="absolute right-8 top-1/2 -translate-y-1/2 h-40 w-auto opacity-90"
+        className="absolute right-8 top-1/2 -translate-y-1/2 h-40 w-auto opacity-90 transition-transform duration-500 hover:scale-110"
+        style={{
+          filter: 'drop-shadow(4px 4px 8px rgba(179, 84, 30, 0.4)) drop-shadow(-2px -2px 4px rgba(255, 255, 255, 0.8))',
+          transform: 'perspective(200px) rotateY(-8deg) translateY(-50%)',
+        }}
         width={160}
         height={160}
       />
