@@ -313,6 +313,16 @@
               }
             },
             {
+              "path": "/account",
+              "name": "Account",
+              "component": "Profile",
+              "meta": {
+                "title": "My Account",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/settings",
               "name": "Account Settings",
               "component": "Settings",
