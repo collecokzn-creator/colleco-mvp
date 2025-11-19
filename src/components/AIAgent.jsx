@@ -58,6 +58,28 @@ export default function AIAgent() {
   const dragScopeRef = useRef(null);
   const messagesRef = useRef(null);
 
+  // Snap above footer on mobile when dragged near bottom
+  const handleDragEnd = (event, info) => {
+    if (typeof window === 'undefined') return;
+    const isMobile = window.innerWidth < 640; // sm breakpoint
+    if (!isMobile) return;
+    
+    const footerHeight = 64; // MobileNav h-16 = 64px
+    const safeZone = 96; // 96px = bottom-24 default offset
+    const viewportHeight = window.innerHeight;
+    
+    // Get current bottom position (viewport height - element's bottom edge)
+    const elementBottom = viewportHeight - (info.point.y + 64); // assuming button height ~64px
+    
+    // If dragged below safe zone, snap it back above footer
+    if (elementBottom < safeZone) {
+      // Trigger a snap animation by updating position via state/transform
+      // Since framer-motion controls position, we rely on dragConstraints to prevent going too low
+      // But we can add a gentle "pull back" effect by resetting drag
+      event.target.style.transform = '';
+    }
+  };
+
   // Context-aware smart reply stub
   const smartReply = (text) => {
     if (!role) {
@@ -136,6 +158,7 @@ export default function AIAgent() {
         dragElastic={0.2}
         dragMomentum={false}
         dragConstraints={dragScopeRef}
+        onDragEnd={handleDragEnd}
       >
       {open ? (
         <motion.div className="w-80 bg-surface rounded-2xl shadow-2xl border border-cream-border/80 overflow-hidden" initial={{ scale: 0.98 }} animate={{ scale: 1 }}>
