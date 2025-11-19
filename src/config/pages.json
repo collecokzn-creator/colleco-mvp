@@ -497,6 +497,17 @@
               }
             },
             {
+              "path": "/partner/transfers",
+              "name": "Transfer Requests",
+              "component": "PartnerTransferDashboard",
+              "meta": {
+                "title": "Transfer Requests Dashboard",
+                "role": "partner",
+                "requiresAuth": false,
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/partner/bookings",
               "name": "Bookings & Availability",
               "component": "WorkspacePage",

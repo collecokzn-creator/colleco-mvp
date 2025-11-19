@@ -342,6 +342,161 @@ app.post('/api/inventory/bulk-upload', upload.single('file'), (req, res) => {
   }
 });
 
+// --- Transfer Request Endpoints ---
+
+// POST /api/transfers/request - Create a new transfer request
+app.post('/api/transfers/request', (req, res) => {
+  try {
+    const { pickup, dropoff, date, time, pax, bookingType } = req.body || {};
+    if (!pickup || !dropoff) {
+      return res.status(400).json({ ok: false, error: 'pickup_dropoff_required' });
+    }
+    
+    const requestId = crypto.randomBytes(6).toString('hex');
+    const request = {
+      id: requestId,
+      pickup,
+      dropoff,
+      date: date || new Date().toISOString(),
+      time: time || new Date().toISOString(),
+      pax: Number(pax || 1),
+      bookingType: bookingType || 'instant',
+      status: 'searching',
+      price: calculateTransferPrice(pickup, dropoff, pax),
+      createdAt: Date.now(),
+      customerIp: req.ip,
+      driver: null,
+      partnerId: null
+    };
+    
+    store._transferRequests[requestId] = request;
+    saveStore();
+    
+    try {
+      fs.appendFileSync(TRANSFER_REQUESTS_FILE, JSON.stringify(request) + '\n', 'utf8');
+    } catch (e) {
+      console.error('[transfers] persist failed', e);
+    }
+    
+    // Auto-match after 2 seconds (simulate matching)
+    setTimeout(() => {
+      if (store._transferRequests[requestId] && store._transferRequests[requestId].status === 'searching') {
+        store._transferRequests[requestId].status = 'matched';
+        saveStore();
+      }
+    }, 2000);
+    
+    return res.json({ ok: true, request });
+  } catch (e) {
+    console.error('[transfers] request failed', e);
+    return res.status(500).json({ ok: false, error: 'request_failed' });
+  }
+});
+
+// GET /api/transfers/request/:id - Get a specific transfer request
+app.get('/api/transfers/request/:id', (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const request = store._transferRequests[requestId];
+    
+    if (!request) {
+      return res.status(404).json({ ok: false, error: 'request_not_found' });
+    }
+    
+    return res.json({ ok: true, request });
+  } catch (e) {
+    console.error('[transfers] get request failed', e);
+    return res.status(500).json({ ok: false, error: 'get_failed' });
+  }
+});
+
+// GET /api/transfers/requests - Get all transfer requests (for partners)
+app.get('/api/transfers/requests', (req, res) => {
+  try {
+    const requests = Object.values(store._transferRequests || {})
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(0, 50);
+    
+    return res.json({ ok: true, requests });
+  } catch (e) {
+    console.error('[transfers] get requests failed', e);
+    return res.status(500).json({ ok: false, error: 'get_requests_failed' });
+  }
+});
+
+// POST /api/transfers/request/:id/accept - Partner accepts a request
+app.post('/api/transfers/request/:id/accept', (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const { driver } = req.body || {};
+    
+    const request = store._transferRequests[requestId];
+    
+    if (!request) {
+      return res.status(404).json({ ok: false, error: 'request_not_found' });
+    }
+    
+    if (request.status !== 'searching' && request.status !== 'matched') {
+      return res.status(400).json({ ok: false, error: 'request_already_accepted' });
+    }
+    
+    request.status = 'accepted';
+    request.driver = driver;
+    request.acceptedAt = Date.now();
+    request.partnerId = req.ip; // In production, use authenticated partner ID
+    
+    saveStore();
+    
+    return res.json({ ok: true, request });
+  } catch (e) {
+    console.error('[transfers] accept failed', e);
+    return res.status(500).json({ ok: false, error: 'accept_failed' });
+  }
+});
+
+// POST /api/transfers/request/:id/status - Update transfer status
+app.post('/api/transfers/request/:id/status', (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const { status } = req.body || {};
+    
+    const validStatuses = ['accepted', 'en-route', 'arrived', 'completed', 'cancelled'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ ok: false, error: 'invalid_status' });
+    }
+    
+    const request = store._transferRequests[requestId];
+    
+    if (!request) {
+      return res.status(404).json({ ok: false, error: 'request_not_found' });
+    }
+    
+    request.status = status;
+    request.lastUpdatedAt = Date.now();
+    
+    if (status === 'completed') {
+      request.completedAt = Date.now();
+    }
+    
+    saveStore();
+    
+    return res.json({ ok: true, request });
+  } catch (e) {
+    console.error('[transfers] status update failed', e);
+    return res.status(500).json({ ok: false, error: 'status_update_failed' });
+  }
+});
+
+// Helper: Calculate transfer price based on distance/locations
+function calculateTransferPrice(pickup, dropoff, pax) {
+  // Simple pricing logic - in production, use distance API
+  const basePrice = 150;
+  const perPaxPrice = 50;
+  const distanceMultiplier = 1.5; // Assume average distance
+  
+  return Math.round((basePrice + (pax * perPaxPrice)) * distanceMultiplier);
+}
+
 function loadProviders() {
   try {
     if (fs.existsSync(PROVIDERS_FILE)) {
@@ -361,6 +516,10 @@ function saveProviders() {
 // Store: { [bookingId]: thread }
 const store = loadStore();
 const providers = loadProviders();
+
+// Transfer requests store
+store._transferRequests = store._transferRequests || {};
+const TRANSFER_REQUESTS_FILE = path.join(DATA_DIR, 'transfer_requests.jsonl');
 
 // Simple in-memory accommodation inventory (persisted inside store._accomInventory)
 // Structure: store._accomInventory = { roomTypes: { [roomType]: { total: number, price: number } }, bookingsByDate: { 'YYYY-MM-DD': { [roomType]: bookedCount } } }
