@@ -497,6 +497,212 @@ function calculateTransferPrice(pickup, dropoff, pax) {
   return Math.round((basePrice + (pax * perPaxPrice)) * distanceMultiplier);
 }
 
+// POST /api/transfers/request/:id/rate - Rate a driver
+app.post('/api/transfers/request/:id/rate', (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const { rating, review, driverName } = req.body || {};
+    
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ ok: false, error: 'invalid_rating' });
+    }
+    
+    const ratingData = {
+      id: crypto.randomBytes(4).toString('hex'),
+      requestId,
+      rating: Number(rating),
+      review: review || '',
+      driverName: driverName || '',
+      createdAt: Date.now(),
+      customerIp: req.ip
+    };
+    
+    store._transferRatings[requestId] = ratingData;
+    
+    // Mark request as rated
+    if (store._transferRequests[requestId]) {
+      store._transferRequests[requestId].rated = true;
+    }
+    
+    saveStore();
+    
+    try {
+      fs.appendFileSync(TRANSFER_RATINGS_FILE, JSON.stringify(ratingData) + '\n', 'utf8');
+    } catch (e) {
+      console.error('[rating] persist failed', e);
+    }
+    
+    return res.json({ ok: true, rating: ratingData });
+  } catch (e) {
+    console.error('[rating] submit failed', e);
+    return res.status(500).json({ ok: false, error: 'rating_failed' });
+  }
+});
+
+// GET /api/transfers/history - Get transfer history
+app.get('/api/transfers/history', (req, res) => {
+  try {
+    const transfers = Object.values(store._transferRequests || {})
+      .filter(t => t.status === 'completed' || t.status === 'cancelled')
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(0, 100);
+    
+    return res.json({ ok: true, transfers });
+  } catch (e) {
+    console.error('[history] get failed', e);
+    return res.status(500).json({ ok: false, error: 'history_failed' });
+  }
+});
+
+// GET /api/transfers/request/:id/receipt - Get transfer receipt
+app.get('/api/transfers/request/:id/receipt', (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const request = store._transferRequests[requestId];
+    
+    if (!request) {
+      return res.status(404).json({ ok: false, error: 'request_not_found' });
+    }
+    
+    // Generate receipt data
+    const receipt = {
+      id: requestId,
+      date: new Date(request.createdAt).toISOString(),
+      pickup: request.pickup,
+      dropoff: request.dropoff,
+      price: request.price,
+      driver: request.driver,
+      status: request.status,
+      receiptUrl: `/receipts/${requestId}.pdf` // In production, generate PDF
+    };
+    
+    return res.json({ ok: true, receipt, receiptUrl: receipt.receiptUrl });
+  } catch (e) {
+    console.error('[receipt] get failed', e);
+    return res.status(500).json({ ok: false, error: 'receipt_failed' });
+  }
+});
+
+// GET /api/transfers/request/:id/messages - Get chat messages
+app.get('/api/transfers/request/:id/messages', (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const messages = store._transferMessages[requestId] || [];
+    
+    return res.json({ ok: true, messages });
+  } catch (e) {
+    console.error('[messages] get failed', e);
+    return res.status(500).json({ ok: false, error: 'messages_failed' });
+  }
+});
+
+// POST /api/transfers/request/:id/messages - Send chat message
+app.post('/api/transfers/request/:id/messages', (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const { message } = req.body || {};
+    
+    if (!message) {
+      return res.status(400).json({ ok: false, error: 'message_required' });
+    }
+    
+    store._transferMessages[requestId] = store._transferMessages[requestId] || [];
+    store._transferMessages[requestId].push(message);
+    
+    saveStore();
+    
+    return res.json({ ok: true, message });
+  } catch (e) {
+    console.error('[messages] post failed', e);
+    return res.status(500).json({ ok: false, error: 'message_failed' });
+  }
+});
+
+// GET /api/transfers/analytics - Get transfer analytics
+app.get('/api/transfers/analytics', (req, res) => {
+  try {
+    const range = req.query.range || 'week';
+    const now = Date.now();
+    const rangeMs = {
+      week: 7 * 24 * 60 * 60 * 1000,
+      month: 30 * 24 * 60 * 60 * 1000,
+      year: 365 * 24 * 60 * 60 * 1000
+    }[range] || 7 * 24 * 60 * 60 * 1000;
+    
+    const transfers = Object.values(store._transferRequests || {})
+      .filter(t => t.createdAt > now - rangeMs);
+    
+    const metrics = {
+      totalTransfers: transfers.length,
+      totalRevenue: transfers.reduce((sum, t) => sum + (t.price || 0), 0),
+      activePartners: new Set(transfers.map(t => t.partnerId).filter(Boolean)).size,
+      avgRating: calculateAvgRating(),
+      totalRatings: Object.keys(store._transferRatings || {}).length,
+      transferGrowth: 15, // Mock
+      revenueGrowth: 22, // Mock
+      partnerUtilization: 75, // Mock
+      popularRoutes: calculatePopularRoutes(transfers),
+      topPartners: calculateTopPartners(transfers),
+      hourlyDistribution: calculateHourlyDistribution(transfers)
+    };
+    
+    return res.json({ ok: true, metrics });
+  } catch (e) {
+    console.error('[analytics] get failed', e);
+    return res.status(500).json({ ok: false, error: 'analytics_failed' });
+  }
+});
+
+function calculateAvgRating() {
+  const ratings = Object.values(store._transferRatings || {});
+  if (ratings.length === 0) return 0;
+  const sum = ratings.reduce((s, r) => s + (r.rating || 0), 0);
+  return (sum / ratings.length).toFixed(1);
+}
+
+function calculatePopularRoutes(transfers) {
+  const routes = {};
+  transfers.forEach(t => {
+    const key = `${t.pickup}|${t.dropoff}`;
+    routes[key] = routes[key] || { pickup: t.pickup, dropoff: t.dropoff, count: 0, totalPrice: 0 };
+    routes[key].count++;
+    routes[key].totalPrice += t.price || 0;
+  });
+  
+  return Object.values(routes)
+    .map(r => ({ ...r, avgPrice: Math.round(r.totalPrice / r.count) }))
+    .sort((a, b) => b.count - a.count);
+}
+
+function calculateTopPartners(transfers) {
+  const partners = {};
+  transfers.forEach(t => {
+    if (!t.driver || !t.partnerId) return;
+    const key = t.partnerId;
+    partners[key] = partners[key] || {
+      name: t.driver.name,
+      vehicle: t.driver.vehicle,
+      trips: 0,
+      revenue: 0,
+      rating: 4.5,
+      acceptanceRate: 85
+    };
+    partners[key].trips++;
+    partners[key].revenue += t.price || 0;
+  });
+  
+  return Object.values(partners).sort((a, b) => b.trips - a.trips);
+}
+
+function calculateHourlyDistribution(transfers) {
+  const hours = Array(24).fill(0);
+  transfers.forEach(t => {
+    const hour = new Date(t.createdAt).getHours();
+    hours[hour]++;
+  });
+  return hours;
+}
+
 function loadProviders() {
   try {
     if (fs.existsSync(PROVIDERS_FILE)) {
@@ -519,7 +725,10 @@ const providers = loadProviders();
 
 // Transfer requests store
 store._transferRequests = store._transferRequests || {};
+store._transferMessages = store._transferMessages || {}; // requestId -> messages[]
+store._transferRatings = store._transferRatings || {};
 const TRANSFER_REQUESTS_FILE = path.join(DATA_DIR, 'transfer_requests.jsonl');
+const TRANSFER_RATINGS_FILE = path.join(DATA_DIR, 'transfer_ratings.jsonl');
 
 // Simple in-memory accommodation inventory (persisted inside store._accomInventory)
 // Structure: store._accomInventory = { roomTypes: { [roomType]: { total: number, price: number } }, bookingsByDate: { 'YYYY-MM-DD': { [roomType]: bookedCount } } }

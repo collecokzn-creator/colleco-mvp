@@ -203,6 +203,17 @@
                   "requiresAuth": false,
                   "layout": "marketing"
                 }
+              },
+              {
+                "path": "/transfers/history",
+                "name": "Transfer History",
+                "component": "TransferHistory",
+                "meta": {
+                  "title": "Transfer History",
+                  "description": "View your past transfers and receipts.",
+                  "requiresAuth": false,
+                  "layout": "marketing"
+                }
               }
           ]
         },
@@ -349,6 +360,17 @@
               "component": "AdminAccommodation",
               "meta": {
                 "title": "Accommodation Inventory",
+                "requiresAuth": true,
+                "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/transfer-analytics",
+              "name": "Transfer Analytics",
+              "component": "TransferAnalytics",
+              "meta": {
+                "title": "Transfer Analytics",
                 "requiresAuth": true,
                 "roles": ["admin"],
                 "layout": "workspace"

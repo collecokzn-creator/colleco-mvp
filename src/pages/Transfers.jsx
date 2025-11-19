@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import LiveMap from '../components/LiveMap';
+import TransferChat from '../components/TransferChat';
+import DriverRating from '../components/DriverRating';
+import { requestNotificationPermission, notifyTransferStatus } from '../utils/notifications';
 
 function Breadcrumbs() {
   return (
@@ -20,6 +24,8 @@ export default function Transfers() {
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    // Request notification permission on load
+    requestNotificationPermission();
   }, []);
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
@@ -30,6 +36,9 @@ export default function Transfers() {
   const [request, setRequest] = useState(null);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null); // null, 'searching', 'matched', 'accepted', 'en-route', 'arrived', 'completed'
+  const [driverLocation, setDriverLocation] = useState(null);
+  const [showChat, setShowChat] = useState(false);
+  const [previousStatus, setPreviousStatus] = useState(null);
 
   async function submitRequest(e) {
     e.preventDefault();
@@ -79,9 +88,22 @@ export default function Transfers() {
         
         if (data.ok && data.request) {
           setRequest(data.request);
-          setStatus(data.request.status);
+          const newStatus = data.request.status;
           
-          if (data.request.status === 'completed' || data.request.status === 'cancelled') {
+          // Trigger notification on status change
+          if (newStatus !== previousStatus && newStatus !== 'searching') {
+            notifyTransferStatus(newStatus, data.request);
+            setPreviousStatus(newStatus);
+          }
+          
+          setStatus(newStatus);
+          
+          // Update driver location if available
+          if (data.request.driverLocation) {
+            setDriverLocation(data.request.driverLocation);
+          }
+          
+          if (newStatus === 'completed' || newStatus === 'cancelled') {
             clearInterval(interval);
           }
         }
@@ -229,6 +251,42 @@ export default function Transfers() {
               <p><span className="font-semibold">ETA:</span> {request.driver.eta || 'Calculating...'}</p>
               <p><span className="font-semibold">Price:</span> R{request.price}</p>
               
+              {/* Live Map */}
+              {(status === 'accepted' || status === 'en-route' || status === 'arrived') && (
+                <div className="mt-4">
+                  <LiveMap 
+                    pickup={request.pickup} 
+                    dropoff={request.dropoff} 
+                    driverLocation={driverLocation}
+                    showRoute={true}
+                  />
+                </div>
+              )}
+              
+              {/* Chat Button */}
+              {(status === 'accepted' || status === 'en-route' || status === 'arrived') && (
+                <div className="mt-4 flex gap-2">
+                  <button
+                    onClick={() => setShowChat(!showChat)}
+                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                  >
+                    💬 {showChat ? 'Hide Chat' : 'Chat with Driver'}
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
+                  >
+                    📞 Call
+                  </button>
+                </div>
+              )}
+              
+              {/* Chat Component */}
+              {showChat && request.id && (
+                <div className="mt-4 h-96">
+                  <TransferChat requestId={request.id} role="customer" />
+                </div>
+              )}
+              
               {status === 'accepted' && (
                 <div className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
                   <p className="text-blue-800 text-xs">Driver is preparing to pick you up. You'll receive updates as they approach.</p>
@@ -251,6 +309,19 @@ export default function Transfers() {
           
           {status === 'searching' && (
             <p className="text-sm text-gray-600">We're notifying all available drivers in your area. This may take a moment...</p>
+          )}
+          
+          {/* Rating Component after completion */}
+          {status === 'completed' && request.driver && (
+            <div className="mt-4">
+              <DriverRating 
+                requestId={request.id} 
+                driver={request.driver}
+                onSubmit={() => {
+                  // Reload or navigate to history
+                }}
+              />
+            </div>
           )}
         </div>
       )}
