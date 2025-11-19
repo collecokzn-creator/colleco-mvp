@@ -54,42 +54,47 @@ export default function Navbar() {
 	}, [showMobileSearch]);
 
 	return (
-		<nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-brand-gold/20 backdrop-blur-sm bg-white/95">
+		<nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-100">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6">
-				<div className="flex items-center justify-between h-14">
-					{/* Logo & Branding - Compact */}
-					<Link to="/" className="flex items-center gap-2 shrink-0">
+				<div className="flex items-center justify-between h-16">
+					{/* Logo & Branding */}
+					<Link to="/" className="flex items-center gap-2.5 shrink-0">
 						<img
 							src={logoPng}
-							alt="CollEco"
-							className="h-8 w-8 object-contain"
-							width="32"
-							height="32"
+							alt="CollEco Travel"
+							className="h-9 w-9 object-contain"
+							width="36"
+							height="36"
 						/>
-						<span className="hidden sm:inline text-base font-bold text-brand-orange">CollEco</span>
+						<div className="hidden sm:flex flex-col leading-tight">
+							<span className="text-base font-bold text-brand-orange">CollEco Travel</span>
+							<span className="text-[10px] text-gray-500 italic" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>The Odyssey of Adventure</span>
+						</div>
 					</Link>
 
 					{/* Search Bar - Center on desktop */}
-					<div className="hidden md:block flex-1 max-w-md mx-6">
+					<div className="hidden md:block flex-1 max-w-lg mx-6">
 						<SearchBar integrated={true} />
 					</div>
 
-					{/* Action Buttons - Compact */}
-					<div className="flex items-center gap-2">
+					{/* Action Buttons */}
+					<div className="flex items-center gap-3">
 						{/* Mobile Search Toggle */}
 						<button
 							type="button"
 							onClick={() => setShowMobileSearch(!showMobileSearch)}
-							className="md:hidden p-2 text-brand-orange hover:bg-brand-orange/5 rounded-lg transition-colors"
+							className="md:hidden p-2 text-gray-600 hover:text-brand-orange hover:bg-gray-50 rounded-md transition-colors"
 							aria-label={showMobileSearch ? "Close search" : "Open search"}
 						>
-							<span className="text-lg">{showMobileSearch ? '×' : '🔍'}</span>
+							<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+							</svg>
 						</button>
 
 						{/* Start Living Button */}
 						<Link
 							to="/login"
-							className="px-4 py-1.5 text-sm font-semibold text-white bg-brand-orange hover:bg-brand-highlight rounded-lg transition-colors"
+							className="px-4 py-2 text-sm font-semibold text-white bg-brand-orange hover:bg-brand-highlight rounded-md shadow-sm transition-colors"
 						>
 							Start Living
 						</Link>
@@ -98,10 +103,10 @@ export default function Navbar() {
 						<button
 							type="button"
 							onClick={toggleSidebar}
-							className="p-2 text-brand-orange hover:bg-brand-orange/5 rounded-lg transition-colors"
+							className="p-2 text-gray-600 hover:text-brand-orange hover:bg-gray-50 rounded-md transition-colors"
 							aria-label="Menu"
 						>
-							<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
 							</svg>
 						</button>
@@ -110,8 +115,10 @@ export default function Navbar() {
 
 				{/* Mobile Search Dropdown */}
 				{showMobileSearch && (
-					<div ref={mobileSearchRef} className="md:hidden pb-3 px-2">
-						<SearchBar integrated={true} />
+					<div ref={mobileSearchRef} className="md:hidden border-t border-gray-100 pb-3 px-2">
+						<div className="pt-3">
+							<SearchBar integrated={true} />
+						</div>
 					</div>
 				)}
 			</div>
