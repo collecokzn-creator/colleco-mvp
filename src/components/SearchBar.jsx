@@ -183,8 +183,8 @@ export default function SearchBar({ className = '' }){
 
   return (
     <div ref={wrapRef} className={`relative ${className}`}>
-      <div className="flex items-center gap-2 border border-cream-border bg-white rounded-full px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-brand-orange/30 focus-within:border-brand-orange/50 transition-all">
-        <span aria-hidden className="text-brand-orange text-lg">🔎</span>
+      <div className="flex items-center gap-2 border border-cream-border bg-white rounded-lg px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-brand-orange/40 focus-within:border-brand-orange/50 transition-all">
+        <span aria-hidden className="text-brand-orange/70 text-base">🔎</span>
         <input
           value={q}
           onChange={e=>{ setQ(e.target.value); setOpen(true); setActiveIdx(0); }}
@@ -198,13 +198,13 @@ export default function SearchBar({ className = '' }){
             else if(e.key==='Enter'){ e.preventDefault(); go(filtered[activeIdx]); }
             else if(e.key==='Escape'){ setOpen(false); }
           }}
-          placeholder="Search flights, hotels, experiences & more…"
+          placeholder="Search destinations, hotels, experiences…"
           className="flex-1 outline-none text-sm bg-transparent placeholder:text-brand-russty/50 text-brand-brown"
           aria-label="Global search"
         />
       </div>
       {open && (
-        <div className="absolute left-0 mt-2 w-full min-w-[20rem] max-w-xl bg-white border border-brand-gold/30 rounded-2xl shadow-lg z-50 max-h-96 overflow-auto">
+        <div className="absolute left-0 mt-2 w-full min-w-[20rem] max-w-xl bg-white border border-cream-border rounded-lg shadow-lg z-50 max-h-96 overflow-auto">
           {q.trim().length >= 3 && events && events.length > 0 && (
             <div className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-white/90 bg-white border-b border-brand-gold/20 px-4 py-2 text-[11px] text-brand-russty/70">
               <span className="mr-1 font-semibold">Sources:</span>
