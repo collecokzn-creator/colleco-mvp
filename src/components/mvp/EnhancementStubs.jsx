@@ -151,7 +151,9 @@ export const RefundStatus = ({ status }) => (
 // 10. WISHLIST / FAVORITES
 // ==========================================================
 export const WishlistButton = () => (
-  <button className="p-2 bg-red-500 text-white rounded-lg">❤ Add to Favorites</button>
+  <button className="px-3 py-2 bg-brand-russty text-white rounded-md text-sm font-semibold hover:bg-brand-russty/80 transition-colors shadow-sm flex items-center justify-center gap-1">
+    <span>❤</span>
+  </button>
 );
 
 // ==========================================================

@@ -47,15 +47,17 @@ export default function FeaturedPackagesSection() {
               <span className="inline-flex items-center rounded bg-brand-gold/20 px-2 py-1 border border-brand-gold">{pkg.nights} nights</span>
               <span className="inline-flex items-center text-brand-gold">From ${pkg.priceFrom} pp</span>
             </div>
-            <div className="mt-4 flex gap-2 items-center">
-              <Link to={pkg.to} className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-gold">
+            <div className="mt-4 flex flex-col gap-2">
+              <Link to={pkg.to} className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight transition-colors shadow-sm">
                 See details
                 <span aria-hidden>→</span>
               </Link>
-              <Link to="/book" className="px-3 py-2 rounded-md bg-green-600 text-white text-sm font-semibold hover:bg-green-700">
-                Quick Book
-              </Link>
-              <WishlistButton itemId={pkg.id} itemTitle={pkg.title} />
+              <div className="flex gap-2">
+                <Link to="/book" className="flex-1 inline-flex items-center justify-center px-3 py-2 rounded-md bg-brand-gold text-white text-sm font-semibold hover:bg-brand-gold/80 transition-colors shadow-sm">
+                  Quick Book
+                </Link>
+                <WishlistButton itemId={pkg.id} itemTitle={pkg.title} />
+              </div>
             </div>
           </article>
         ))}
