@@ -126,9 +126,9 @@ export default function AIAgent() {
   }, [messages]);
 
   return (
-    <div ref={dragScopeRef} className="fixed inset-0 z-50 pointer-events-none">
+    <div ref={dragScopeRef} className="fixed inset-0 z-toast pointer-events-none">
       <motion.div
-        className="absolute bottom-6 right-6 pointer-events-auto"
+        className="absolute right-4 sm:right-6 bottom-24 sm:bottom-16 lg:bottom-6 pointer-events-auto"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
