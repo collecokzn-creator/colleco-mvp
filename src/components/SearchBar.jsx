@@ -183,8 +183,8 @@ export default function SearchBar({ className = '' }){
 
   return (
     <div ref={wrapRef} className={`relative ${className}`}>
-      <div className="flex items-center gap-2 border border-cream-border bg-white rounded-md px-2 py-1.5 shadow-sm focus-within:ring-2 focus-within:ring-brand-orange/30">
-  <span aria-hidden className="text-brand-russty/60">🔎</span>
+      <div className="flex items-center gap-2 border border-cream-border bg-white rounded-full px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-brand-orange/30 focus-within:border-brand-orange/50 transition-all">
+        <span aria-hidden className="text-brand-orange text-lg">🔎</span>
         <input
           value={q}
           onChange={e=>{ setQ(e.target.value); setOpen(true); setActiveIdx(0); }}
@@ -198,34 +198,34 @@ export default function SearchBar({ className = '' }){
             else if(e.key==='Enter'){ e.preventDefault(); go(filtered[activeIdx]); }
             else if(e.key==='Escape'){ setOpen(false); }
           }}
-          placeholder="Search products and services…"
-          className="w-64 sm:w-72 md:w-80 outline-none text-sm bg-transparent placeholder:text-brand-russty/50"
+          placeholder="Search flights, hotels, experiences & more…"
+          className="flex-1 outline-none text-sm bg-transparent placeholder:text-brand-russty/50 text-brand-brown"
           aria-label="Global search"
         />
       </div>
       {open && (
-        <div className="absolute left-0 mt-1 w-[min(20rem,85vw)] bg-cream border border-cream-border rounded-md shadow-lg z-50 max-h-64 overflow-auto">
+        <div className="absolute left-0 mt-2 w-full min-w-[20rem] max-w-xl bg-white border border-brand-gold/30 rounded-2xl shadow-lg z-50 max-h-96 overflow-auto">
           {q.trim().length >= 3 && events && events.length > 0 && (
-            <div className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-cream/80 bg-cream/90 border-b border-cream-border px-3 py-1 text-[11px] text-brand-russty/70">
-              <span className="mr-1">Sources:</span>
+            <div className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-white/90 bg-white border-b border-brand-gold/20 px-4 py-2 text-[11px] text-brand-russty/70">
+              <span className="mr-1 font-semibold">Sources:</span>
               {Array.from(new Set(events.map(e => e.source || 'Unknown'))).map(src => (
                 <span key={src} className="inline-flex items-center gap-1 mr-1">
-                  <span className="px-1 py-0.5 rounded bg-cream-sand border border-cream-border">{src}</span>
+                  <span className="px-2 py-0.5 rounded-full bg-brand-orange/10 text-brand-orange text-[10px] font-medium">{src}</span>
                 </span>
               ))}
             </div>
           )}
           {filtered.length===0 && (
-            <div className="px-3 py-2 text-sm text-brand-russty/70">No matches</div>
+            <div className="px-4 py-3 text-sm text-brand-russty/70">No matches found</div>
           )}
           {filtered.length>0 && (
-            <ul className="py-1 text-sm">
+            <ul className="py-2 text-sm">
               {filtered.map((s, idx)=> (
                 <li key={s.group + s.label}>
                   <button
                     onMouseEnter={()=>setActiveIdx(idx)}
                     onClick={()=>go(s)}
-                    className={`w-full text-left px-3 py-2 flex items-center justify-between ${idx===activeIdx? 'bg-cream-sand' : 'hover:bg-cream-hover'}`}
+                    className={`w-full text-left px-4 py-2.5 flex items-center justify-between transition-colors ${idx===activeIdx? 'bg-brand-orange/5' : 'hover:bg-cream'}`}
                   >
                     <span className="flex items-center gap-2 min-w-0">
                       <span aria-hidden className="text-brand-russty/60">{groupIcon[s.group]||'•'}</span>

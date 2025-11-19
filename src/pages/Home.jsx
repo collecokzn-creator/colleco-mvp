@@ -4,7 +4,6 @@ import useInViewOnce from "../utils/useInViewOnce";
 import PromotionsSection from "../components/PromotionsSection";
 import FeaturedPackagesSection from "../components/FeaturedPackagesSection";
 import logo from "../assets/colleco-logo.png";
-import { GlobalSearchBar } from "../components/mvp/EnhancementStubs";
 
 export default function Home() {
   const [heroRef, heroIn] = useInViewOnce({ threshold: 0.3 });
@@ -58,11 +57,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Unified Global Search (MVP stub) */}
-      <section className="max-w-6xl mx-auto px-6 py-4 bg-white border-white">
-        <GlobalSearchBar />
       </section>
 
       {/* Trust badges */}
