@@ -34,7 +34,7 @@ async function ensure(size) {
     return;
   }
   await sharp(srcIcon)
-    .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .resize(size, size, { fit: 'contain', background: { r: 255, g: 248, b: 241, alpha: 1 } })
     .png({ compressionLevel: 9 })
     .toFile(outPath);
 }
@@ -44,17 +44,17 @@ const sizes = [16, 32, 180, 192, 256, 384, 512, 1024];
 async function generateScreenshots() {
   if (!sharpAvailable) return;
   // Create simple padded variants for portrait and landscape from square icon as placeholder.
-  const base = sharp(srcIcon).resize(1024, 1024, { fit: 'contain', background: { r:0,g:0,b:0,alpha:0 } });
+  const base = sharp(srcIcon).resize(1024, 1024, { fit: 'contain', background: { r:255,g:248,b:241,alpha:1 } });
   const portraitPath = path.join(shotsDir, 'screenshot-1080x1920.png');
   const landscapePath = path.join(shotsDir, 'screenshot-1920x1080.png');
-  // Generate transparent padded images (placeholder); real app UI screenshots can replace these later.
+  // Generate cream background padded images (placeholder); real app UI screenshots can replace these later.
   await base
-    .extend({ top:448, bottom:448, left:28, right:28, background: { r: 255, g:255, b:255, alpha:0 } })
+    .extend({ top:448, bottom:448, left:28, right:28, background: { r: 255, g:248, b:241, alpha:1 } })
     .resize(1080, 1920)
     .png({ compressionLevel: 9 })
     .toFile(portraitPath);
   await base
-    .extend({ top:28, bottom:28, left:448, right:448, background: { r:255,g:255,b:255,alpha:0 } })
+    .extend({ top:28, bottom:28, left:448, right:448, background: { r:255,g:248,b:241,alpha:1 } })
     .resize(1920, 1080)
     .png({ compressionLevel: 9 })
     .toFile(landscapePath);
