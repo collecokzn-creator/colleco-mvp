@@ -45,6 +45,17 @@ Open http://localhost:3000.
   - `SEATGEEK_CLIENT_ID`
 - Provider toggles are persisted to `server/data/providers.json` and editable in Settings.
 
+## Transfer service (Uber-like)
+- Live map tracking requires Google Maps JavaScript API
+- Configure via environment variable (frontend):
+  - `VITE_GOOGLE_MAPS_API_KEY`
+- Features: instant/prearranged booking, real-time tracking, in-transfer chat, driver ratings
+
+## Weather forecasts
+- Live weather data powered by Open-Meteo API (no key required)
+- Toggle visibility in Settings page
+- Shows current conditions + 7-day forecast with travel tips and packing suggestions
+
 ### Demo events fallback
 - Works without any keys
 - Enable via query `demo=1`, environment `DEMO_EVENTS=1`, or when no provider keys found
