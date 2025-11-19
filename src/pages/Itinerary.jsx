@@ -314,17 +314,18 @@ export default function Itinerary() {
 
   return (
     <>
-    <div className={"px-6 py-8 text-brand-brown " + (highContrastFocus ? 'focus-visible:outline-none [&_*:focus-visible]:outline [&_*:focus-visible]:outline-2 [&_*:focus-visible]:outline-offset-2 [&_*:focus-visible]:outline-brand-brown' : '')}>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-3xl font-bold">Itinerary</h1>
-        <div className="flex items-center gap-2 relative">
-          <div className="hidden sm:flex items-center gap-2 mr-2">
+    <div className="w-full max-w-full overflow-x-hidden">
+    <div className={"max-w-7xl mx-auto px-4 sm:px-6 py-8 text-brand-brown " + (highContrastFocus ? 'focus-visible:outline-none [&_*:focus-visible]:outline [&_*:focus-visible]:outline-2 [&_*:focus-visible]:outline-offset-2 [&_*:focus-visible]:outline-brand-brown' : '')}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-2 mb-2">
+        <h1 className="text-2xl sm:text-3xl font-bold">Itinerary</h1>
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto relative">
+          <div className="hidden sm:flex items-center gap-2 mr-2 flex-1 sm:flex-none">
             <input
               value={search}
               onChange={(e)=>setSearch(e.target.value)}
               placeholder="Search itinerary…"
               aria-label="Search itinerary items"
-              className="px-2 py-1 text-sm border border-cream-border rounded bg-white w-48"
+              className="px-2 py-1 text-sm border border-cream-border rounded bg-white w-full sm:w-48"
             />
             {searching && (
               <button onClick={()=>setSearch("")} className="text-xs underline text-brand-brown/70 hover:text-brand-brown">Clear</button>
@@ -434,9 +435,11 @@ export default function Itinerary() {
 
       <div className="mb-4"><AutoSyncBanner message="Itinerary updates will reflect in quotes and bookings automatically." /></div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-  <LiveTripProgress steps={computeProgress(trip, linkQuotes ? basket.length : 0)} />
-        <div className="md:col-span-2 rounded border border-cream-border bg-cream p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+        <div className="lg:col-span-1 w-full">
+          <LiveTripProgress steps={computeProgress(trip, linkQuotes ? basket.length : 0)} />
+        </div>
+        <div className="lg:col-span-2 w-full rounded border border-cream-border bg-cream p-3 sm:p-4 overflow-hidden">
           <div className="grid grid-cols-1 gap-4">
             {Object.keys(trip.days).length === 0 ? (
               <div className="text-brand-brown/70">No items yet. {linkQuotes ? 'Add products to your basket on Trip Planner.' : 'Basket auto-sync disabled.'}</div>
@@ -462,11 +465,11 @@ export default function Itinerary() {
                       dragItem.current = dragOverItem.current = null;
                     }}
                   >
-                    <div className="flex justify-between gap-3 mb-1 text-xs">
+                    <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-3 mb-1 text-xs">
                       {bulkModeDay===d && (
                         <div className="flex items-center gap-2">
-                          <span className="text-brand-brown/70">Move selected to:</span>
-                          <select className="border border-cream-border rounded px-1 py-0.5" onChange={(e)=>{ const td=e.target.value; if(td) bulkMove(d, td); }} defaultValue="">
+                          <span className="text-brand-brown/70 text-[10px] sm:text-xs">Move selected to:</span>
+                          <select className="border border-cream-border rounded px-1 py-0.5 text-xs" onChange={(e)=>{ const td=e.target.value; if(td) bulkMove(d, td); }} defaultValue="">
                             <option value="" disabled>Day...</option>
                             {dayOptions.filter(dayKey=>dayKey!==d).map(dayKey => (
                               <option key={dayKey} value={dayKey}>{dayKey}</option>
@@ -474,7 +477,7 @@ export default function Itinerary() {
                           </select>
                         </div>
                       )}
-                      <div className="flex gap-3">
+                      <div className="flex gap-2 sm:gap-3 flex-wrap">
                         {!searching && (
                           <>
                             <button onClick={()=>toggleBulkMode(d)} className="underline text-brand-brown/70 hover:text-brand-brown">{bulkModeDay===d? 'Exit bulk select' : 'Bulk select'}</button>
@@ -648,14 +651,15 @@ export default function Itinerary() {
       </div>
 
       {/* Transparent pricing and payment */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="md:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+        <div className="lg:col-span-2 w-full overflow-hidden">
           <FeesBreakdown items={paymentItems} currency="USD" />
         </div>
-        <div className="flex items-start">
+        <div className="flex items-start w-full">
           <PaymentButton items={paymentItems} currency="USD" />
         </div>
       </div>
+  </div>
   </div>
   <div aria-live="polite" aria-atomic="true" className="sr-only" ref={liveRef}></div>
   {/* Toast notifications */}
