@@ -729,7 +729,7 @@ export default function PlanTrip() {
                 <button
                   type="button"
                   className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold shadow hover:bg-brand-highlight transition relative z-10 self-start"
-                  onClick={() => navigate('/plan-trip?direct=1')}
+                  onClick={() => navigate('/book')}
                   aria-label="Open Direct Booking"
                   style={{ marginTop: 'auto' }}
                 >
