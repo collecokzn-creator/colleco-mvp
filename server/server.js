@@ -304,6 +304,44 @@ app.post('/api/tickets', (req, res) => {
   }
 });
 
+// --- Bulk Inventory Upload endpoint ---
+const multer = require('multer');
+const upload = multer({ dest: path.join(DATA_DIR, 'uploads') });
+const INVENTORY_UPLOADS_FILE = path.join(DATA_DIR, 'bulk_inventory_uploads.jsonl');
+
+app.post('/api/inventory/bulk-upload', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ ok: false, error: 'no_file_uploaded' });
+  }
+  try {
+    const csv = fs.readFileSync(req.file.path, 'utf8');
+    const lines = csv.split(/\r?\n/).filter(Boolean);
+    const headers = lines[0].split(',').map(h => h.trim());
+    const items = lines.slice(1).map(line => {
+      const values = line.split(',').map(v => v.trim());
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = values[i] || ''; });
+      return obj;
+    });
+    // Save upload record
+    const uploadRecord = {
+      id: crypto.randomBytes(4).toString('hex'),
+      uploadedAt: Date.now(),
+      filename: req.file.originalname,
+      uploaderIp: req.ip,
+      itemCount: items.length,
+      headers,
+      items: items.slice(0, 10) // only store preview for audit
+    };
+    fs.appendFileSync(INVENTORY_UPLOADS_FILE, JSON.stringify(uploadRecord) + '\n', 'utf8');
+    // Optionally: update in-memory store or DB here
+    return res.json({ ok: true, count: items.length, preview: items.slice(0, 5), headers });
+  } catch (e) {
+    console.error('[bulk-upload] error', e);
+    return res.status(500).json({ ok: false, error: 'csv_parse_failed' });
+  }
+});
+
 function loadProviders() {
   try {
     if (fs.existsSync(PROVIDERS_FILE)) {

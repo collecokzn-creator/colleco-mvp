@@ -2,6 +2,20 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { bookCar } from '../api/client';
 
+function Breadcrumbs() {
+  return (
+    <nav className="text-sm mb-4" aria-label="Breadcrumb">
+      <ol className="flex items-center gap-2 text-gray-600">
+        <li><Link to="/" className="hover:text-brand-orange">Home</Link></li>
+        <li>/</li>
+        <li><Link to="/packages" className="hover:text-brand-orange">Packages</Link></li>
+        <li>/</li>
+        <li className="text-brand-brown font-semibold">Car Rental</li>
+      </ol>
+    </nav>
+  );
+}
+
 export default function CarBooking(){
   const [vehicleType, setVehicleType] = useState('SUV');
   const [days, setDays] = useState(1);
@@ -19,6 +33,7 @@ export default function CarBooking(){
 
   return (
     <div className="p-6">
+      <Breadcrumbs />
       <div className="mb-4">
         <Link to="/book" className="text-sm text-brand-brown/70 hover:underline">← Back to booking options</Link>
       </div>

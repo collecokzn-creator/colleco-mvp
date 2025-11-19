@@ -1,0 +1,36 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
+export default function MobileNav() {
+  const location = useLocation();
+  
+  const navItems = [
+    { path: '/', icon: '🏠', label: 'Home' },
+    { path: '/packages', icon: '🎒', label: 'Packages' },
+    { path: '/bookings', icon: '📋', label: 'Bookings' },
+    { path: '/notifications', icon: '🔔', label: 'Alerts' },
+    { path: '/account', icon: '👤', label: 'Account' }
+  ];
+
+  return (
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-50">
+      <div className="flex justify-around items-center h-16">
+        {navItems.map(item => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link 
+              key={item.path}
+              to={item.path}
+              className={`flex flex-col items-center justify-center flex-1 h-full transition ${
+                isActive ? 'text-brand-orange' : 'text-gray-600'
+              }`}
+            >
+              <span className="text-2xl mb-1">{item.icon}</span>
+              <span className="text-xs font-medium">{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

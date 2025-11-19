@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { WishlistButton } from "./mvp/EnhancementStubs";
 
 // Lightweight featured packages; images omitted for now to keep bundle slim
 export default function FeaturedPackagesSection() {
@@ -46,7 +47,7 @@ export default function FeaturedPackagesSection() {
               <span className="inline-flex items-center rounded bg-brand-gold/20 px-2 py-1 border border-brand-gold">{pkg.nights} nights</span>
               <span className="inline-flex items-center text-brand-gold">From ${pkg.priceFrom} pp</span>
             </div>
-            <div className="mt-4 flex gap-2">
+            <div className="mt-4 flex gap-2 items-center">
               <Link to={pkg.to} className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-gold">
                 See details
                 <span aria-hidden>→</span>
@@ -54,6 +55,7 @@ export default function FeaturedPackagesSection() {
               <Link to="/book" className="px-3 py-2 rounded-md bg-green-600 text-white text-sm font-semibold hover:bg-green-700">
                 Quick Book
               </Link>
+              <WishlistButton itemId={pkg.id} itemTitle={pkg.title} />
             </div>
           </article>
         ))}

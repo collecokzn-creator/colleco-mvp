@@ -148,6 +148,62 @@
                 "layout": "auth"
               }
             }
+            ,
+              {
+                "path": "/wishlist",
+                "name": "Wishlist",
+                "component": "Wishlist",
+                "meta": {
+                  "title": "My Wishlist",
+                  "description": "View and manage your saved travel items.",
+                  "requiresAuth": false,
+                  "layout": "marketing"
+                }
+              },
+              {
+                "path": "/refunds",
+                "name": "Refunds",
+                "component": "Refunds",
+                "meta": {
+                  "title": "Refunds",
+                  "description": "Track your refund requests and status.",
+                  "requiresAuth": false,
+                  "layout": "marketing"
+                }
+              },
+              {
+                "path": "/supplier/inventory/upload",
+                "name": "Bulk Inventory Upload",
+                "component": "BulkInventoryUpload",
+                "meta": {
+                  "title": "Bulk Inventory Upload",
+                  "description": "Upload inventory in bulk via CSV.",
+                  "requiresAuth": false,
+                  "layout": "marketing"
+                }
+              },
+              {
+                "path": "/admin/chat",
+                "name": "Admin Chat",
+                "component": "AdminChat",
+                "meta": {
+                  "title": "Admin Chat",
+                  "description": "In-app chat for admin and support.",
+                  "requiresAuth": false,
+                  "layout": "marketing"
+                }
+              },
+              {
+                "path": "/notifications",
+                "name": "Notifications",
+                "component": "Notifications",
+                "meta": {
+                  "title": "Notifications",
+                  "description": "View your trip alerts and notifications.",
+                  "requiresAuth": false,
+                  "layout": "marketing"
+                }
+              }
           ]
         },
         {

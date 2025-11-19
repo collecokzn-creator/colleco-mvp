@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar.jsx";
 import Sidebar from "../components/Sidebar.jsx";
+import MobileNav from "../components/MobileNav.jsx";
 import { Outlet } from "react-router-dom";
 import globePng from "../assets/Globeicon.png";
 import AIAgent from "../components/AIAgent.jsx";
@@ -84,7 +85,7 @@ export default function RootLayout() {
 
     {/* Footer (fixed) */}
     <AIAgent />
-  <footer className="fixed bottom-0 left-0 right-0 bg-brand-brown text-white text-center py-4 text-sm border-t border-cream-border font-semibold tracking-wide flex flex-col items-center gap-1 z-40">
+  <footer className="fixed bottom-0 left-0 right-0 bg-brand-brown text-white text-center py-4 text-sm border-t border-cream-border font-semibold tracking-wide flex flex-col items-center gap-1 z-40 pb-20 md:pb-4">
         <span>© {new Date().getFullYear()} CollEco Travel — All rights reserved.</span>
         <span className="flex items-center gap-2 text-white text-sm font-normal">
           <span className="inline-flex h-5 w-5 rounded-full overflow-hidden mr-1 align-text-bottom ring-[0.5px] ring-white/40 shrink-0 bg-white/10">
@@ -93,6 +94,9 @@ export default function RootLayout() {
           <a href="https://www.collecotravel.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-highlight">www.collecotravel.com</a>
         </span>
       </footer>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileNav />
 
       {/* Back to Top button */}
       {showBackTop && (

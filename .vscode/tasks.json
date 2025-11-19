@@ -51,6 +51,12 @@
 				"$eslint - stylish"
 			],
 			"group": "build"
+		},
+		{
+			"label": "Build after SearchBar fix",
+			"type": "shell",
+			"command": "npm run build",
+			"group": "build"
 		}
 	]
 }
