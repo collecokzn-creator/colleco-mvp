@@ -201,20 +201,20 @@ export default function Home() {
         ref={ctaRef}
         className={`max-w-5xl mx-auto px-6 py-12 sm:py-16 ${ctaIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'} transition duration-700`}
       >
-        <div className="rounded-xl bg-white border border-cream-border px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow">
-          <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-brand-russty">Ready to explore?</h3>
-            <p className="text-sm text-brand-brown/80">Jump into the planner or let Trip Assist suggest a perfect first draft.</p>
+        <div className="rounded-xl bg-gradient-to-br from-cream/50 to-white border-2 border-brand-gold/30 px-6 py-8 sm:py-10 flex flex-col gap-6 shadow-lg">
+          <div className="text-center sm:text-left">
+            <h3 className="text-2xl sm:text-3xl font-bold text-brand-orange mb-2">Ready to explore?</h3>
+            <p className="text-base text-brand-brown/90">Jump into the planner or let Trip Assist suggest a perfect first draft.</p>
           </div>
-          <div className="flex gap-3 items-center">
-            <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-white text-brand-brown font-semibold hover:bg-cream">
-              Plan a Trip
+          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-center sm:justify-start">
+            <Link to="/plan-trip" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-white text-brand-orange font-bold border-2 border-brand-orange hover:bg-brand-orange hover:text-white transition-all shadow-md">
+              🗺️ Plan a Trip
             </Link>
-            <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold hover:brightness-95">
-              Try Trip Assist
+            <Link to="/ai" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-brand-gold text-white font-bold hover:bg-brand-gold/90 transition-colors shadow-md">
+              ✨ Try Trip Assist
             </Link>
-            <Link to="/book" className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white font-semibold shadow-sm hover:brightness-95" data-e2e="open-booking">
-              Book Now
+            <Link to="/book" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-brand-russty text-white font-bold hover:bg-brand-russty/90 transition-colors shadow-md" data-e2e="open-booking">
+              🚀 Book Now
             </Link>
           </div>
         </div>
