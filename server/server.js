@@ -275,6 +275,35 @@ app.get('/api/search/suggest', (req, res) => {
   }
 });
 
+// --- Support Tickets endpoint ---
+const TICKETS_FILE = path.join(DATA_DIR, 'support_tickets.jsonl');
+app.post('/api/tickets', (req, res) => {
+  try {
+    const { message, email } = req.body || {};
+    if (!message) return res.status(400).json({ error: 'message_required' });
+    
+    const ticket = {
+      id: crypto.randomBytes(4).toString('hex'),
+      message: String(message).slice(0, 5000),
+      email: email ? String(email).slice(0, 200) : 'anonymous',
+      status: 'new',
+      createdAt: Date.now(),
+      ip: req.ip
+    };
+    
+    try {
+      fs.appendFileSync(TICKETS_FILE, JSON.stringify(ticket) + '\n', 'utf8');
+    } catch (e) {
+      console.error('[tickets] persist failed', e);
+    }
+    
+    return res.json({ ok: true, ticket });
+  } catch (e) {
+    console.error('[tickets] error', e);
+    return res.status(500).json({ error: 'ticket_failed' });
+  }
+});
+
 function loadProviders() {
   try {
     if (fs.existsSync(PROVIDERS_FILE)) {

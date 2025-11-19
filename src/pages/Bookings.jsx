@@ -7,6 +7,7 @@ import { totalPaid } from "../utils/payments";
 import PaymentsHistory from "../components/payments/PaymentsHistory";
 import VerifiedBadge from "../components/ui/VerifiedBadge";
 import { isApiEnabled as providersApiEnabled, listProviders } from "../api/providersApi";
+import { BookingStatusBar } from "../components/mvp/EnhancementStubs";
 
 export default function Bookings() {
 	const [providers, setProviders] = useState([]);
@@ -40,6 +41,12 @@ export default function Bookings() {
 
 			<section className="bg-cream-sand p-4 border border-cream-border rounded">
 				<h3 className="font-bold mb-2">Upcoming bookings</h3>
+				
+				{/* Booking Progress Tracker */}
+				<div className="mb-4 bg-white rounded-lg">
+					<BookingStatusBar stage="Confirmed" />
+				</div>
+				
 				<div className="flex items-center justify-between mb-2">
 					<div className="text-sm text-brand-brown/70">Toggle trusted providers to see verified-only options.</div>
 					<label className="text-sm flex items-center gap-2">

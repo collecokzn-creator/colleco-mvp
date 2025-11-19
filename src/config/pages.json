@@ -94,6 +94,28 @@
               }
             },
             {
+              "path": "/support/tickets",
+              "name": "Support Tickets",
+              "component": "SupportTickets",
+              "meta": {
+                "title": "Support Tickets",
+                "description": "Submit and track support tickets",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/supplier/payouts",
+              "name": "Supplier Payouts",
+              "component": "SupplierPayouts",
+              "meta": {
+                "title": "Supplier Payouts",
+                "description": "Manage supplier earnings and payout requests",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
               "path": "/safety",
               "name": "Safety Promise",
               "component": "Safety",
