@@ -6,9 +6,9 @@ export default function MobileNav() {
   
   const navItems = [
     { path: '/', icon: '🏠', label: 'Home', iconColor: null },
-    { path: '/plan-trip', icon: '🧭', label: 'Plan', iconColor: 'text-brand-orange' },
-    { path: '/ai', icon: '✨', label: 'Assist', iconColor: 'text-brand-gold' },
+    { path: '/packages', icon: '🎒', label: 'Packages', iconColor: 'text-brand-orange' },
     { path: '/bookings', icon: '📋', label: 'Bookings', iconColor: null },
+    { path: '/notifications', icon: '🔔', label: 'Alerts', iconColor: 'text-brand-gold' },
     { path: '/account', icon: '👤', label: 'Account', iconColor: 'text-brand-orange' }
   ];
 
