@@ -54,7 +54,7 @@ export default function Navbar() {
 	}, [showMobileSearch]);
 
 	return (
-		<nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-100">
+		<nav className="fixed top-0 left-0 right-0 z-50 bg-cream/95 backdrop-blur-sm shadow-md border-b border-brand-gold/20">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6">
 				<div className="flex items-center justify-between h-16">
 					{/* Logo & Branding */}
@@ -68,7 +68,7 @@ export default function Navbar() {
 						/>
 						<div className="hidden sm:flex flex-col leading-tight">
 							<span className="text-base font-bold text-brand-orange">CollEco Travel</span>
-							<span className="text-[10px] text-gray-500 italic" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>The Odyssey of Adventure</span>
+							<span className="text-[10px] text-brand-brown italic" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>The Odyssey of Adventure</span>
 						</div>
 					</Link>
 
@@ -83,7 +83,7 @@ export default function Navbar() {
 						<button
 							type="button"
 							onClick={() => setShowMobileSearch(!showMobileSearch)}
-							className="md:hidden p-2 text-gray-600 hover:text-brand-orange hover:bg-gray-50 rounded-md transition-colors"
+							className="md:hidden p-2 text-brand-brown hover:text-brand-orange hover:bg-cream-hover rounded-md transition-colors"
 							aria-label={showMobileSearch ? "Close search" : "Open search"}
 						>
 							<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@ export default function Navbar() {
 						<button
 							type="button"
 							onClick={toggleSidebar}
-							className="p-2 text-gray-600 hover:text-brand-orange hover:bg-gray-50 rounded-md transition-colors"
+							className="p-2 text-brand-brown hover:text-brand-orange hover:bg-cream-hover rounded-md transition-colors"
 							aria-label="Menu"
 						>
 							<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@ export default function Navbar() {
 
 				{/* Mobile Search Dropdown */}
 				{showMobileSearch && (
-					<div ref={mobileSearchRef} className="md:hidden border-t border-gray-100 pb-3 px-2">
+					<div ref={mobileSearchRef} className="md:hidden border-t border-brand-gold/20 pb-3 px-2">
 						<div className="pt-3">
 							<SearchBar integrated={true} />
 						</div>
