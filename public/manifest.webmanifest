@@ -9,8 +9,8 @@
   "display": "standalone",
   "orientation": "portrait-primary",
   "dir": "ltr",
-  "background_color": "#f9f6f2",
-  "theme_color": "#e86f00",
+  "background_color": "#FFF8F1",
+  "theme_color": "#F47C20",
   "categories": ["travel", "productivity", "communication"],
   "icons": [
     { "src": "/assets/icons/colleco-logo-16.png?v=17", "sizes": "16x16", "type": "image/png" },
