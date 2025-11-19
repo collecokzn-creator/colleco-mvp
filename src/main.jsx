@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
-import SplashScreen from "./components/SplashScreen.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
 import "./index.css"; // Tailwind styles
 import appIconPng from "./assets/colleco-logo.png";
@@ -43,32 +42,11 @@ function InstallBanner() {
   );
 }
 
-function AppWithSplash() {
-  const [showSplash, setShowSplash] = useState(() => {
-    // Only show splash on mobile and first visit
-    const isMobile = window.innerWidth < 768;
-    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
-    return isMobile && !hasSeenSplash;
-  });
-
-  const handleSplashComplete = () => {
-    sessionStorage.setItem('hasSeenSplash', 'true');
-    setShowSplash(false);
-  };
-
-  return (
-    <>
-      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
-      <App />
-    </>
-  );
-}
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <UserProvider>
       <ErrorBoundary>
-        <AppWithSplash />
+        <App />
       </ErrorBoundary>
       <InstallBanner />
     </UserProvider>
