@@ -15,7 +15,16 @@ function getApiBase() {
   } catch (e) {}
   return BUILD_API_BASE;
 }
-const API_BASE = getApiBase();
+let API_BASE = getApiBase();
+// If we're deployed (non-localhost) but API_BASE points to localhost, fall back to same-origin.
+try {
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host && host !== 'localhost' && /localhost:\d+$/i.test(API_BASE)) {
+      API_BASE = ''; // use relative /api/* endpoints (expect reverse proxy or same server)
+    }
+  }
+} catch {}
 const API_TOKEN = import.meta.env.VITE_API_TOKEN || '';
 function withAuth(headers = {}){
   const h = { ...headers };
@@ -24,18 +33,26 @@ function withAuth(headers = {}){
 }
 
 export async function generateItinerary(prompt) {
-  const res = await fetch(`${API_BASE}/api/ai/itinerary`, {
-    method: 'POST',
-    headers: withAuth({ 'Content-Type': 'application/json' }),
-    body: JSON.stringify({ prompt })
-  });
-  if (!res.ok) {
-    let err = 'Request failed';
-    try { const j = await res.json(); err = j.error || err; } catch {}
-    throw new Error(err);
+  try {
+    const res = await fetch(`${API_BASE}/api/ai/itinerary`, {
+      method: 'POST',
+      headers: withAuth({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ prompt })
+    });
+    if (!res.ok) {
+      let err = `Request failed (${res.status})`;
+      try { const j = await res.json(); err = j.error || err; } catch {}
+      throw new Error(err);
+    }
+    const data = await res.json();
+    return data.data;
+  } catch (e) {
+    if (e.name === 'TypeError') {
+      // Network errors often surface as TypeError in fetch
+      throw new Error('Network error – verify API is reachable');
+    }
+    throw e;
   }
-  const data = await res.json();
-  return data.data;
 }
 
 export function streamItinerary(prompt, { onEvent, onError, onDone, signal } = {}) {
@@ -47,7 +64,7 @@ export function streamItinerary(prompt, { onEvent, onError, onDone, signal } = {
   fetch(url.toString(), { signal: ctrl.signal, headers: withAuth({ 'Accept': 'text/event-stream' }) })
     .then(async (res) => {
       if (!res.ok) {
-        let err = 'Stream request failed';
+        let err = `Stream request failed (${res.status})`;
         try { const j = await res.json(); err = j.error || err; } catch {}
         throw new Error(err);
       }
@@ -89,7 +106,11 @@ export function streamItinerary(prompt, { onEvent, onError, onDone, signal } = {
     })
     .catch(err => {
       if (ctrl.signal.aborted) return; // ignore abort errors
-      onError && onError(err);
+      if (err && err.name === 'TypeError') {
+        onError && onError(new Error('Network error – streaming endpoint unreachable'));
+      } else {
+        onError && onError(err);
+      }
     });
 
   return { cancel: () => ctrl.abort() };
