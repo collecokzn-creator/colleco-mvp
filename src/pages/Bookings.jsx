@@ -27,9 +27,10 @@ export default function Bookings() {
 		? items.filter(it => it.providerId && verifiedIds.has(it.providerId))
 		: items;
 	return (
-		<div className="px-6 py-8 text-brand-brown">
-			<h1 className="text-3xl font-bold mb-2">Bookings</h1>
-			<p className="mb-4 text-brand-brown/80">All your confirmed items in one place — always up to date.</p>
+		<div className="overflow-x-hidden">
+			<div className="max-w-7xl mx-auto px-6 py-8 text-brand-brown">
+				<h1 className="text-3xl font-bold mb-2">Bookings</h1>
+				<p className="mb-4 text-brand-brown/80">All your confirmed items in one place — always up to date.</p>
 
 			<div className="mb-3"><AutoSyncBanner message="Bookings sync with partners automatically — no manual refresh needed." /></div>
 
@@ -84,6 +85,7 @@ export default function Bookings() {
 					<PaymentsHistory />
 				</div>
 			</section>
+		</div>
 		</div>
 	);
 }
