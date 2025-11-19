@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar.jsx";
 import Sidebar from "../components/Sidebar.jsx";
 import MobileNav from "../components/MobileNav.jsx";
+import Breadcrumbs from "../components/Breadcrumbs.jsx";
+import AutoFocus from "../components/AutoFocus.jsx";
 import { Outlet } from "react-router-dom";
 import globePng from "../assets/Globeicon.png";
 import AIAgent from "../components/AIAgent.jsx";
@@ -71,6 +73,7 @@ export default function RootLayout() {
   };
   return (
   <div className="min-h-screen bg-cream">
+      <AutoFocus />
       {/* Connectivity bar - Hidden in development for better UX */}
       {false && (offline || (hasBackend && !apiOk)) && (
         <div role="status" aria-live="polite" className="fixed top-0 left-0 right-0 z-[70] bg-red-50 text-red-700 border-b border-red-200 text-xs px-3 py-1.5 flex items-center justify-between"
@@ -90,6 +93,7 @@ export default function RootLayout() {
           <Sidebar />
           <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0" tabIndex="-1">
             <section className="px-6 py-6">
+              <Breadcrumbs />
               <Outlet />
             </section>
           </main>

@@ -12,7 +12,14 @@ import { startSession, refineSession, uploadDraft, fetchSession } from '../utils
  * - Shows phased output (parse, plan, pricing) with accessible live updates
  */
 export default function AIGeneratorPanel() {
-  const [prompt, setPrompt] = useState('Family trip to Rome and Florence for 6 nights in June, 2 adults 1 child, budget $4000, love food and history');
+  const [prompt, setPrompt] = useState(() => {
+    try {
+      const saved = localStorage.getItem('colleco.lastAIPrompt');
+      return saved || 'Family trip to Rome and Florence for 6 nights in June, 2 adults 1 child, budget $4000, love food and history';
+    } catch {
+      return 'Family trip to Rome and Florence for 6 nights in June, 2 adults 1 child, budget $4000, love food and history';
+    }
+  });
   const [mode, setMode] = useState('stream'); // 'stream' | 'single'
   const [phases, setPhases] = useState({});
   const [fullData, setFullData] = useState(null);
@@ -35,6 +42,13 @@ export default function AIGeneratorPanel() {
   const [opsUndo, setOpsUndo] = useState([]);
   const abortRef = useRef(null);
   const liveRef = useRef(null);
+
+  // Persist prompt to localStorage
+  useEffect(() => {
+    try {
+      if (prompt && prompt.trim()) localStorage.setItem('colleco.lastAIPrompt', prompt);
+    } catch {}
+  }, [prompt]);
 
   // Intentionally only depend on state slices that change the live message
   // eslint-disable-next-line react-hooks/exhaustive-deps

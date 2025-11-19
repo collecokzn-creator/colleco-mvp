@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useInViewOnce from "../utils/useInViewOnce";
 import PromotionsSection from "../components/PromotionsSection";
@@ -10,6 +10,17 @@ export default function Home() {
   const [featRef, featIn] = useInViewOnce({ threshold: 0.2 });
   const [howRef, howIn] = useInViewOnce({ threshold: 0.2 });
   const [ctaRef, ctaIn] = useInViewOnce({ threshold: 0.2 });
+  const [hasDraft, setHasDraft] = useState(false);
+  const [hasBasket, setHasBasket] = useState(false);
+
+  useEffect(() => {
+    try {
+      const draft = localStorage.getItem('colleco.aiDraft');
+      const basket = localStorage.getItem('colleco.basket');
+      setHasDraft(!!draft);
+      setHasBasket(basket ? JSON.parse(basket).length > 0 : false);
+    } catch {}
+  }, []);
   const orgJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -51,6 +62,20 @@ export default function Home() {
               </Link>
             </div>
             <p className="mt-3 text-xs text-brand-brown/70">No credit card required · Free to get started</p>
+            {(hasDraft || hasBasket) && (
+              <div className="mt-4 p-3 rounded-lg bg-brand-orange/10 border border-brand-orange/30">
+                <div className="text-sm font-semibold text-brand-brown mb-1 flex items-center gap-2">
+                  <span>🎯</span> Continue Planning
+                </div>
+                <p className="text-xs text-brand-brown/70 mb-2">
+                  {hasDraft && hasBasket ? 'You have a draft and items in your basket.' : hasDraft ? 'You have an AI-generated draft ready.' : 'You have items in your basket.'}
+                </p>
+                <div className="flex gap-2">
+                  {hasDraft && <Link to="/itinerary" className="px-3 py-1.5 rounded bg-brand-orange text-white text-xs font-semibold hover:bg-brand-highlight">View Draft</Link>}
+                  {hasBasket && <Link to="/plan-trip" className="px-3 py-1.5 rounded border border-brand-orange text-brand-brown text-xs font-semibold hover:bg-cream-hover">My Basket</Link>}
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex justify-center md:justify-end">
             <div className="relative h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64 rounded-full bg-white/70 ring-1 ring-cream-border shadow flex items-center justify-center">

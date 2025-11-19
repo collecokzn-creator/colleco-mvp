@@ -1,26 +1,66 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-const Breadcrumbs = () => {
-  const location = useLocation();
-  const segments = location.pathname.split("/").filter(Boolean);
-
-  return (
-    <nav className="text-sm text-gray-400 mb-4">
-      <Link to="/" className="text-yellow-400 hover:underline">Home</Link>
-      {segments.map((segment, index) => {
-        const path = "/" + segments.slice(0, index + 1).join("/");
-        return (
-          <span key={path}>
-            {" / "}
-            <Link to={path} className="hover:underline capitalize text-yellow-400">
-              {segment}
-            </Link>
-          </span>
-        );
-      })}
-    </nav>
-  );
+const routeLabels = {
+  '/': 'Home',
+  '/plan-trip': 'Plan Trip',
+  '/itinerary': 'Itinerary',
+  '/ai': 'Trip Assist',
+  '/bookings': 'Bookings',
+  '/packages': 'Packages',
+  '/transfers': 'Transfers',
+  '/collaboration': 'Collaboration',
+  '/partner': 'Partner Dashboard',
+  '/settings': 'Settings',
+  '/profile': 'Profile',
+  '/account': 'Account',
+  '/notifications': 'Notifications',
+  '/contact': 'Contact',
+  '/about': 'About',
+  '/quotes': 'Quotes',
+  '/compliance': 'Compliance',
+  '/admin': 'Admin',
 };
 
-export default Breadcrumbs;
+export default function Breadcrumbs() {
+  const location = useLocation();
+  const paths = location.pathname.split('/').filter(Boolean);
+  
+  if (paths.length === 0) return null; // Don't show on home
+
+  const crumbs = [{ path: '/', label: 'Home' }];
+  let currentPath = '';
+  
+  paths.forEach((segment) => {
+    currentPath += `/${segment}`;
+    const label = routeLabels[currentPath] || segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+    crumbs.push({ path: currentPath, label });
+  });
+
+  return (
+    <nav aria-label="Breadcrumb" className="mb-4">
+      <ol className="flex items-center gap-2 text-sm text-brand-brown/70">
+        {crumbs.map((crumb, idx) => {
+          const isLast = idx === crumbs.length - 1;
+          return (
+            <li key={crumb.path} className="flex items-center gap-2">
+              {idx > 0 && <span aria-hidden="true">/</span>}
+              {isLast ? (
+                <span className="font-semibold text-brand-brown" aria-current="page">
+                  {crumb.label}
+                </span>
+              ) : (
+                <Link 
+                  to={crumb.path} 
+                  className="hover:text-brand-orange hover:underline transition-colors"
+                >
+                  {crumb.label}
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
