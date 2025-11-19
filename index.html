@@ -6,7 +6,7 @@
     <title>CollEco Travel</title>
     <meta name="description" content="Discover and plan trips with smart, location-aware search across continents, provinces, cities, and areas. Live weather, filters, and one‑click intents." />
   <!-- CollEco brand theme color (orange) for browser UI -->
-  <meta name="theme-color" content="#D2691E" />
+  <meta name="theme-color" content="#F47C20" />
     <link rel="canonical" href="https://www.travelcolleco.com/" />
     <!-- Performance: early DNS/TLS to likely origins (Open‑Meteo, static) -->
     <link rel="preconnect" href="https://api.open-meteo.com" crossorigin />
@@ -15,6 +15,16 @@
     <link rel="icon" href="/assets/colleco-logo.png?v=14" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/colleco-logo.png?v=14" />
   <link rel="manifest" href="/manifest.webmanifest" />
+    
+    <!-- Immediate background color to prevent black flash -->
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #FFF8F1 0%, #F3E9DC 50%, #FFF8F1 100%);
+        overflow: hidden;
+      }
+    </style>
     <script>
       // Recover SPA deep-links after GitHub Pages 404 redirect
       (function(){
@@ -64,7 +74,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #FFF8F1 0%, #FFFFFF 50%, #F3E9DC 100%);
+      background: linear-gradient(135deg, #FFF8F1 0%, #F3E9DC 50%, #FFF8F1 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -72,27 +82,62 @@
       z-index: 9999;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     ">
-      <div style="
-        width: 120px;
-        height: 120px;
-        background: linear-gradient(135deg, rgba(243, 233, 220, 0.8), rgba(255, 255, 255, 0.9));
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 30px rgba(179, 84, 30, 0.15);
-        border: 2px solid rgba(210, 105, 30, 0.25);
-        margin-bottom: 24px;
-        animation: pulse 2s ease-in-out infinite alternate;
-      ">
+      <!-- Globe circle container with spinning orange ring -->
+      <div style="position: relative; width: 192px; height: 192px; margin-bottom: 32px;">
+        <!-- Spinning orange ring -->
+        <div style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: 4px solid transparent;
+          border-top-color: #F47C20;
+          border-right-color: #F47C20;
+          border-radius: 50%;
+          animation: spin-ring 3s linear infinite;
+        "></div>
+        
+        <!-- Globe circle -->
+        <div style="
+          position: relative;
+          z-index: 10;
+          width: 192px;
+          height: 192px;
+          background: rgba(255, 255, 255, 0.3);
+          backdrop-filter: blur(8px);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 20px 60px rgba(244, 124, 32, 0.2);
+          border: 4px solid rgba(244, 124, 32, 0.2);
+        ">
+          <!-- Globe icon -->
+          <img 
+            src="/assets/Globeicon.png" 
+            alt="CollEco Globe" 
+            style="
+              width: 160px;
+              height: 160px;
+              object-fit: contain;
+              animation: pulse-gentle 2s ease-in-out infinite;
+            "
+          />
+        </div>
+        
+        <!-- Flying bird logo -->
         <img 
           src="/assets/colleco-logo.png?v=14" 
-          alt="CollEco Logo" 
+          alt="CollEco Bird" 
           style="
-            width: 80px;
-            height: 80px;
+            position: absolute;
+            top: 50%;
+            width: 64px;
+            height: 64px;
             object-fit: contain;
-            background: transparent;
+            transform: translateY(-50%);
+            animation: bird-fly 2s ease-in-out infinite;
           "
         />
       </div>
@@ -102,52 +147,70 @@
           font-size: 28px;
           font-weight: bold;
           margin: 0 0 8px 0;
-          color: #D2691E;
+          color: #F47C20;
           letter-spacing: -0.5px;
         ">CollEco Travel</h1>
         <p style="
           font-size: 14px;
           font-style: italic;
-          margin: 0 0 24px 0;
-          color: #B3541E;
-          opacity: 0.8;
+          margin: 0;
+          color: #3A2C1A;
           font-family: cursive, 'Inter', sans-serif;
         ">The Odyssey of Adventure</p>
-        
-        <!-- Loading animation -->
-        <div style="
-          width: 40px;
-          height: 4px;
-          background: #F3E9DC;
-          border-radius: 2px;
-          margin: 0 auto;
-          overflow: hidden;
-        ">
-          <div style="
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, #D2691E, #B3541E, #D2691E);
-            border-radius: 2px;
-            animation: loading 1.5s ease-in-out infinite;
-          "></div>
-        </div>
       </div>
     </div>
 
     <style>
-      @keyframes pulse {
-        0% { transform: scale(1); box-shadow: 0 10px 30px rgba(179, 84, 30, 0.15); }
-        100% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(179, 84, 30, 0.25); }
+      @keyframes spin-ring {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
       }
       
-      @keyframes loading {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
+      @keyframes pulse-gentle {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.9; }
+      }
+      
+      @keyframes bird-fly {
+        0% { 
+          left: -100px; 
+          transform: translateY(-50%) rotate(-15deg);
+        }
+        25% {
+          transform: translateY(-70%) rotate(-5deg);
+        }
+        50% { 
+          left: calc(50% - 32px);
+          transform: translateY(-80%) rotate(0deg);
+        }
+        75% {
+          transform: translateY(-70%) rotate(5deg);
+        }
+        100% { 
+          left: calc(100% + 100px);
+          transform: translateY(-50%) rotate(15deg);
+        }
       }
       
       /* Hide launch screen once React loads */
       #root:not(:empty) ~ #launch-screen {
-        display: none;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      /* Ensure launch screen is visible immediately */
+      #launch-screen {
+        opacity: 1;
+      }
+      
+      /* Restore body overflow when app loads */
+      #root:not(:empty) {
+        overflow: auto;
+      }
+      
+      html:has(#root:not(:empty)) {
+        overflow: auto;
       }
     </style>
     
