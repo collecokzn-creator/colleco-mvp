@@ -57,22 +57,24 @@ export default function Navbar() {
 		<nav className="fixed top-0 left-0 right-0 z-50 bg-cream/95 backdrop-blur-sm shadow-md border-b border-brand-gold/20">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6">
 				<div className="flex items-center justify-between h-16">
-					{/* Logo & Branding */}
-					<Link to="/" className="flex items-center gap-2.5 shrink-0">
-						<img
-							src={logoPng}
-							alt="CollEco Travel"
-							className="h-9 w-9 object-contain"
-							width="36"
-							height="36"
-						/>
-						<div className="hidden sm:flex flex-col leading-tight">
-							<span className="text-base font-bold text-brand-orange">CollEco Travel</span>
-							<span className="text-[10px] text-brand-brown italic" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>The Odyssey of Adventure</span>
-						</div>
-					</Link>
-
-					{/* Search Bar - Center on desktop */}
+				{/* Logo & Branding */}
+				<Link to="/" className="flex items-center gap-2.5 shrink-0">
+					<img
+						src={logoPng}
+						alt="CollEco Travel"
+						className="h-9 w-9 object-contain transition-transform duration-300 hover:scale-110"
+						style={{
+							filter: 'drop-shadow(2px 2px 4px rgba(179, 84, 30, 0.3)) drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.8))',
+							transform: 'perspective(100px) rotateY(-5deg)',
+						}}
+						width="36"
+						height="36"
+					/>
+					<div className="hidden sm:flex flex-col leading-tight">
+						<span className="text-base font-bold text-brand-orange">CollEco Travel</span>
+						<span className="text-[10px] text-brand-brown italic" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>The Odyssey of Adventure</span>
+					</div>
+				</Link>					{/* Search Bar - Center on desktop */}
 					<div className="hidden md:block flex-1 max-w-lg mx-6">
 						<SearchBar integrated={true} />
 					</div>
