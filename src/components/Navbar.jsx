@@ -53,6 +53,13 @@ export default function Navbar() {
 		};
 	}, [showMobileSearch]);
 
+	const primaryLinks = [
+		{ to: '/plan-trip', label: 'Plan' },
+		{ to: '/itinerary', label: 'Itinerary' },
+		{ to: '/ai', label: 'Trip Assist' },
+		{ to: '/bookings', label: 'Bookings' }
+	];
+
 	return (
 		<nav className="fixed top-0 left-0 right-0 z-50 bg-cream/95 backdrop-blur-sm shadow-md border-b border-brand-gold/20">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -80,7 +87,21 @@ export default function Navbar() {
 					</div>
 
 					{/* Action Buttons */}
-					<div className="flex items-center gap-3">
+					<div className="hidden lg:flex items-center gap-4 ml-4">
+						{primaryLinks.map(l => {
+							const active = location.pathname.startsWith(l.to);
+							return (
+								<Link
+									key={l.to}
+									to={l.to}
+									className={`text-sm font-medium px-3 py-2 rounded-md transition-colors ${active ? 'bg-brand-orange text-white shadow-sm' : 'text-brand-brown hover:bg-cream-hover'}`}
+								>
+									{l.label}
+								</Link>
+							);
+						})}
+					</div>
+					<div className="flex items-center gap-3 ml-auto">
 						{/* Mobile Search Toggle */}
 						<button
 							type="button"

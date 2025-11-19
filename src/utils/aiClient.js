@@ -93,6 +93,10 @@ export function streamItinerary(prompt, { onEvent, onError, onDone, signal } = {
               try {
                 const parsed = JSON.parse(data);
                 onEvent && onEvent({ event, data: parsed });
+                if (event === 'pricing') {
+                  // Dispatch custom event so layout can surface a global toast shortcut
+                  try { window.dispatchEvent(new CustomEvent('colleco:draftPricing',{ detail:{ phase:'pricing' } })); } catch {}
+                }
                 if (event === 'done') {
                   onDone && onDone();
                 }

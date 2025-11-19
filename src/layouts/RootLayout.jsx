@@ -14,6 +14,19 @@ export default function RootLayout() {
   const [apiOk, setApiOk] = useState(true);
   const [offline, setOffline] = useState(false);
   const [lastPingMs, setLastPingMs] = useState(0);
+  const [toastDraft, setToastDraft] = useState(false);
+
+  // Listen for pricing phase draft readiness from AI stream
+  useEffect(() => {
+    const onDraftPricing = () => {
+      setToastDraft(true);
+      // Auto dismiss after 12s
+      const t = setTimeout(()=>setToastDraft(false), 12000);
+      return () => clearTimeout(t);
+    };
+    window.addEventListener('colleco:draftPricing', onDraftPricing);
+    return () => window.removeEventListener('colleco:draftPricing', onDraftPricing);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -99,6 +112,19 @@ export default function RootLayout() {
         >
           ↑ Top
         </button>
+      )}
+      {toastDraft && (
+        <div className="fixed bottom-[calc(var(--footer-h)+4.5rem)] right-4 z-[95] bg-white border border-brand-orange/30 shadow-lg rounded-md px-4 py-3 w-64 animate-fade-in">
+          <div className="text-sm font-semibold text-brand-brown mb-1 flex items-center gap-2">
+            <span className="text-brand-orange">✨</span> Draft Ready
+          </div>
+          <p className="text-[11px] text-brand-brown/70 mb-3">Pricing phase received. Import or refine itinerary now.</p>
+          <div className="flex gap-2">
+            <a href="/itinerary" className="flex-1 text-center px-2 py-1 rounded bg-brand-orange text-white text-xs font-semibold hover:bg-brand-highlight">Import</a>
+            <a href="/plan-trip" className="flex-1 text-center px-2 py-1 rounded border border-brand-brown text-brand-brown text-xs font-semibold hover:bg-cream-hover">Planner</a>
+          </div>
+          <button onClick={()=>setToastDraft(false)} className="absolute top-1 right-1 text-[10px] text-brand-brown/60 hover:text-brand-brown">✕</button>
+        </div>
       )}
     </div>
   );

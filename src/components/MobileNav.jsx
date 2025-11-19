@@ -6,9 +6,9 @@ export default function MobileNav() {
   
   const navItems = [
     { path: '/', icon: '🏠', label: 'Home', iconColor: null },
-    { path: '/packages', icon: '🎒', label: 'Packages', iconColor: 'text-brand-orange' },
+    { path: '/plan-trip', icon: '🧭', label: 'Plan', iconColor: 'text-brand-orange' },
+    { path: '/ai', icon: '✨', label: 'Assist', iconColor: 'text-brand-gold' },
     { path: '/bookings', icon: '📋', label: 'Bookings', iconColor: null },
-    { path: '/notifications', icon: '🔔', label: 'Alerts', iconColor: 'text-brand-gold' },
     { path: '/account', icon: '👤', label: 'Account', iconColor: 'text-brand-orange' }
   ];
 
@@ -21,10 +21,10 @@ export default function MobileNav() {
             <Link 
               key={item.path}
               to={item.path}
-              className={`flex flex-col items-center justify-center flex-1 h-full transition-all rounded-lg ${
+              className={`flex flex-col items-center justify-center flex-1 h-full transition-all rounded-lg relative ${
                 isActive 
-                  ? 'text-brand-orange bg-cream-sand/30' 
-                  : 'text-brand-brown hover:text-brand-orange hover:bg-cream-hover/20'
+                  ? 'text-brand-orange bg-cream-sand/40 shadow-inner after:absolute after:bottom-1 after:h-1 after:left-2 after:right-2 after:rounded-full after:bg-brand-orange/70' 
+                  : 'text-brand-brown hover:text-brand-orange hover:bg-cream-hover/30'
               }`}
             >
               <span className={`text-2xl mb-0.5 ${item.iconColor || ''}`}>{item.icon}</span>
