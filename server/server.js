@@ -12,6 +12,16 @@ const path = require('path');
 const { parsePrompt, parseFlightRequest, parseIntent } = require('./aiParser');
 const crypto = require('crypto');
 const pricingEngine = require('./pricingEngine');
+// --- Search suggest mock ---
+const DEFAULT_SUGGESTIONS = [
+  { type: 'flight', label: 'JNB → CPT' },
+  { type: 'flight', label: 'CPT → DUR' },
+  { type: 'hotel', label: 'Cape Town - Waterfront' },
+  { type: 'hotel', label: 'Durban - Umhlanga Rocks' },
+  { type: 'car', label: 'SUV - Cape Town Airport' },
+  { type: 'tour', label: 'Table Mountain Hike' },
+  { type: 'package', label: 'Zanzibar 5-night All-Inclusive' },
+];
 // --- AI Enhancements: rate limiting, cache, analytics log, refine endpoint ---
 const AI_RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute window
 const AI_RATE_LIMIT_MAX = 20; // max requests per window per ip (sliding window)
@@ -252,6 +262,17 @@ app.post('/api/contact', async (req, res) => {
     fs.appendFileSync(CONTACT_LOG, JSON.stringify(entry)+"\n", 'utf8');
     return res.json({ ok:true, via:'log' });
   } catch(e){ return res.status(500).json({ error:'persist_failed' }); }
+});
+
+// --- Unified Search: autosuggest placeholder ---
+app.get('/api/search/suggest', (req, res) => {
+  try {
+    const q = String(req.query.q || '').toLowerCase();
+    const list = DEFAULT_SUGGESTIONS.filter(s => !q || s.label.toLowerCase().includes(q) || s.type.toLowerCase().includes(q));
+    return res.json({ ok: true, suggestions: list.slice(0, 10) });
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: 'suggest_failed' });
+  }
 });
 
 function loadProviders() {
