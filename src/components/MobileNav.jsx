@@ -5,11 +5,11 @@ export default function MobileNav() {
   const location = useLocation();
   
   const navItems = [
-    { path: '/', icon: '🏠', label: 'Home' },
-    { path: '/packages', icon: '🎒', label: 'Packages' },
-    { path: '/bookings', icon: '📋', label: 'Bookings' },
-    { path: '/notifications', icon: '🔔', label: 'Alerts' },
-    { path: '/account', icon: '👤', label: 'Account' }
+    { path: '/', icon: '🏠', label: 'Home', iconColor: null },
+    { path: '/packages', icon: '🎒', label: 'Packages', iconColor: 'text-brand-orange' },
+    { path: '/bookings', icon: '📋', label: 'Bookings', iconColor: null },
+    { path: '/notifications', icon: '🔔', label: 'Alerts', iconColor: 'text-brand-gold' },
+    { path: '/account', icon: '👤', label: 'Account', iconColor: 'text-brand-orange' }
   ];
 
   return (
@@ -27,7 +27,7 @@ export default function MobileNav() {
                   : 'text-brand-brown hover:text-brand-orange hover:bg-cream-hover/20'
               }`}
             >
-              <span className="text-2xl mb-0.5">{item.icon}</span>
+              <span className={`text-2xl mb-0.5 ${item.iconColor || ''}`}>{item.icon}</span>
               <span className="text-[10px] font-semibold tracking-wide">{item.label}</span>
             </Link>
           );
