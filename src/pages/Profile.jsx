@@ -136,59 +136,51 @@ export default function Profile() {
   }
 
   return (
-    <div className="overflow-x-hidden bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto p-6" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
+    <div className="overflow-x-hidden bg-cream min-h-screen">
+      <div className="max-w-5xl mx-auto px-4 py-8" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
         
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-brand-brown">My Profile</h1>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 bg-brand-russty text-white rounded-lg font-semibold hover:bg-brand-brown transition"
-          >
-            🚪 Log Out
-          </button>
-        </div>
-
-        {/* Profile Picture Section */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <div className="w-32 h-32 rounded-full bg-gray-200 overflow-hidden border-4 border-brand-orange shadow-lg">
-                {profilePicture ? (
-                  <img src={profilePicture} alt="Profile" className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-5xl text-gray-400">
-                    👤
-                  </div>
-                )}
-              </div>
-              <button
-                onClick={() => fileInputRef.current.click()}
-                className="absolute bottom-0 right-0 w-10 h-10 bg-brand-orange text-white rounded-full shadow-lg hover:bg-brand-gold transition flex items-center justify-center"
-              >
-                📷
-              </button>
-            </div>
-            
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-brand-brown">{formData.name}</h2>
-              <p className="text-gray-600">{formData.email}</p>
-              <div className="mt-3 flex gap-2">
+        {/* Header Section */}
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-8 mb-6">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-6">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-cream-sand overflow-hidden border-2 border-brand-orange">
+                  {profilePicture ? (
+                    <img src={profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-4xl text-gray-400">
+                      👤
+                    </div>
+                  )}
+                </div>
                 <button
                   onClick={() => fileInputRef.current.click()}
-                  className="px-4 py-2 bg-brand-orange text-white rounded-lg text-sm font-semibold hover:bg-brand-gold transition"
+                  className="absolute -bottom-1 -right-1 w-8 h-8 bg-brand-orange text-white rounded-full hover:bg-brand-gold transition flex items-center justify-center text-sm"
                 >
-                  📁 Upload Photo
-                </button>
-                <button
-                  onClick={startCamera}
-                  className="px-4 py-2 bg-brand-orange text-white rounded-lg text-sm font-semibold hover:bg-brand-gold transition"
-                >
-                  📸 Take Photo
+                  📷
                 </button>
               </div>
+              
+              <div>
+                <h1 className="text-2xl font-bold text-brand-brown mb-1">{formData.name}</h1>
+                <p className="text-brand-russty text-sm">{formData.email}</p>
+                <div className="mt-3 flex gap-2">
+                  <button
+                    onClick={() => editing ? handleSaveProfile() : setEditing(true)}
+                    className="px-3 py-1.5 bg-cream-sand text-brand-brown rounded text-xs font-medium hover:bg-cream-hover transition"
+                  >
+                    {editing ? '💾 Save' : '✏️ Edit Profile'}
+                  </button>
+                </div>
+              </div>
             </div>
+            
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 text-brand-russty text-sm hover:text-brand-brown transition"
+            >
+              Log Out
+            </button>
           </div>
           
           <input
@@ -201,17 +193,17 @@ export default function Profile() {
           
           {/* Camera Modal */}
           {showCamera && (
-            <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-              <div className="bg-white rounded-lg p-6 max-w-lg w-full">
-                <h3 className="text-xl font-bold mb-4 text-brand-brown">Capture Photo</h3>
-                <video ref={videoRef} autoPlay className="w-full rounded-lg mb-4"></video>
+            <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-xl p-6 max-w-lg w-full">
+                <h3 className="text-lg font-semibold mb-4 text-brand-brown">Capture Photo</h3>
+                <video ref={videoRef} autoPlay className="w-full rounded-lg mb-4 bg-black"></video>
                 <canvas ref={canvasRef} className="hidden"></canvas>
                 <div className="flex gap-3">
                   <button
                     onClick={capturePhoto}
-                    className="flex-1 px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition"
+                    className="flex-1 px-4 py-2.5 bg-brand-orange text-white rounded-lg font-medium hover:bg-brand-gold transition"
                   >
-                    📸 Capture
+                    Capture
                   </button>
                   <button
                     onClick={() => {
@@ -220,7 +212,7 @@ export default function Profile() {
                       tracks.forEach(track => track.stop());
                       setShowCamera(false);
                     }}
-                    className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition"
+                    className="flex-1 px-4 py-2.5 bg-cream-sand text-brand-brown rounded-lg font-medium hover:bg-cream-hover transition"
                   >
                     Cancel
                   </button>
@@ -230,165 +222,131 @@ export default function Profile() {
           )}
         </div>
 
-        {/* Wallet Section */}
-        <div className="bg-gradient-to-r from-brand-orange to-brand-gold rounded-lg shadow-md p-6 mb-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm opacity-90">Wallet Balance</p>
-              <p className="text-4xl font-bold">R {walletBalance.toFixed(2)}</p>
-            </div>
-            <div className="text-5xl">💳</div>
-          </div>
-          <div className="mt-4 flex gap-3">
-            <button className="px-4 py-2 bg-white text-brand-orange rounded-lg font-semibold hover:bg-gray-100 transition text-sm">
-              💰 Add Funds
-            </button>
-            <button className="px-4 py-2 bg-white/20 text-white rounded-lg font-semibold hover:bg-white/30 transition text-sm">
-              📊 Transaction History
-            </button>
-          </div>
-        </div>
-
-        {/* Personal Information */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-brand-brown">Personal Information</h3>
-            <button
-              onClick={() => editing ? handleSaveProfile() : setEditing(true)}
-              className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition text-sm"
-            >
-              {editing ? '💾 Save' : '✏️ Edit'}
-            </button>
+        {/* Personal Details */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label className="block text-xs font-medium text-brand-russty mb-1">Phone</label>
+            {editing ? (
+              <input
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                className="w-full border border-cream-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+              />
+            ) : (
+              <p className="text-brand-brown text-sm">{formData.phone || '—'}</p>
+            )}
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
-              {editing ? (
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full border rounded-lg px-3 py-2"
-                />
-              ) : (
-                <p className="text-gray-800">{formData.name}</p>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
-              <p className="text-gray-800">{formData.email}</p>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
-              {editing ? (
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="w-full border rounded-lg px-3 py-2"
-                />
-              ) : (
-                <p className="text-gray-800">{formData.phone || 'Not provided'}</p>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Date of Birth</label>
-              {editing ? (
-                <input
-                  type="date"
-                  value={formData.dateOfBirth}
-                  onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})}
-                  className="w-full border rounded-lg px-3 py-2"
-                />
-              ) : (
-                <p className="text-gray-800">{formData.dateOfBirth || 'Not provided'}</p>
-              )}
-            </div>
-            
-            <div className="md:col-span-2">
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Address</label>
-              {editing ? (
-                <input
-                  type="text"
-                  value={formData.address}
-                  onChange={(e) => setFormData({...formData, address: e.target.value})}
-                  className="w-full border rounded-lg px-3 py-2"
-                />
-              ) : (
-                <p className="text-gray-800">{formData.address || 'Not provided'}</p>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Nationality</label>
-              {editing ? (
-                <input
-                  type="text"
-                  value={formData.nationality}
-                  onChange={(e) => setFormData({...formData, nationality: e.target.value})}
-                  className="w-full border rounded-lg px-3 py-2"
-                />
-              ) : (
-                <p className="text-gray-800">{formData.nationality || 'Not provided'}</p>
-              )}
-            </div>
+          <div>
+            <label className="block text-xs font-medium text-brand-russty mb-1">Date of Birth</label>
+            {editing ? (
+              <input
+                type="date"
+                value={formData.dateOfBirth}
+                onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})}
+                className="w-full border border-cream-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+              />
+            ) : (
+              <p className="text-brand-brown text-sm">{formData.dateOfBirth || '—'}</p>
+            )}
+          </div>
+          
+          <div className="md:col-span-2">
+            <label className="block text-xs font-medium text-brand-russty mb-1">Address</label>
+            {editing ? (
+              <input
+                type="text"
+                value={formData.address}
+                onChange={(e) => setFormData({...formData, address: e.target.value})}
+                className="w-full border border-cream-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+              />
+            ) : (
+              <p className="text-brand-brown text-sm">{formData.address || '—'}</p>
+            )}
+          </div>
+          
+          <div>
+            <label className="block text-xs font-medium text-brand-russty mb-1">Nationality</label>
+            {editing ? (
+              <input
+                type="text"
+                value={formData.nationality}
+                onChange={(e) => setFormData({...formData, nationality: e.target.value})}
+                className="w-full border border-cream-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+              />
+            ) : (
+              <p className="text-brand-brown text-sm">{formData.nationality || '—'}</p>
+            )}
           </div>
         </div>
 
-        {/* Current Bookings */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h3 className="text-xl font-bold text-brand-brown mb-4">🎫 Active Bookings</h3>
-          {bookings.length > 0 ? (
-            <div className="space-y-3">
-              {bookings.map((booking, index) => (
-                <div key={index} className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-brand-brown">{booking.destination || booking.title}</p>
-                      <p className="text-sm text-gray-600">{booking.date} • {booking.guests || 1} guest(s)</p>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      booking.status === 'confirmed' ? 'bg-cream-sand text-brand-brown' :
-                      booking.status === 'pending' ? 'bg-amber-100 text-brand-russty' :
-                      'bg-cream-hover text-brand-brown'
-                    }`}>
-                      {booking.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500 text-center py-8">No active bookings. <a href="/plan-trip" className="text-brand-orange hover:underline">Plan a trip</a></p>
-          )}
+        {/* Wallet & Quick Stats */}
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-brand-brown">Wallet</h3>
+            <button className="text-xs text-brand-orange hover:text-brand-gold transition">View History</button>
+          </div>
+          <div className="flex items-baseline gap-2 mb-4">
+            <span className="text-3xl font-bold text-brand-brown">R {walletBalance.toFixed(2)}</span>
+            <span className="text-sm text-brand-russty">Available Balance</span>
+          </div>
+          <button className="w-full py-2.5 bg-brand-orange text-white rounded-lg text-sm font-medium hover:bg-brand-gold transition">
+            Add Funds
+          </button>
         </div>
 
-        {/* Travel History */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-bold text-brand-brown mb-4">🗺️ Travel History</h3>
-          {travelHistory.length > 0 ? (
-            <div className="space-y-3">
-              {travelHistory.map((trip, index) => (
-                <div key={index} className="p-4 border border-gray-200 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-brand-brown">{trip.destination}</p>
-                      <p className="text-sm text-gray-600">{trip.date} • {trip.duration}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-semibold text-brand-orange">R {trip.amount}</p>
-                      <p className="text-xs text-gray-500">Completed</p>
-                    </div>
+        {/* Bookings Overview */}
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-brand-brown">Recent Activity</h3>
+            <a href="/bookings" className="text-xs text-brand-orange hover:text-brand-gold transition">View All</a>
+          </div>
+          
+          {bookings.length > 0 ? (
+            <div className="space-y-3 mb-6">
+              {bookings.slice(0, 3).map((booking, index) => (
+                <div key={index} className="flex items-center justify-between py-3 border-b border-cream-border last:border-0">
+                  <div>
+                    <p className="font-medium text-brand-brown text-sm">{booking.destination || booking.title}</p>
+                    <p className="text-xs text-brand-russty">{booking.date}</p>
                   </div>
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
+                    booking.status === 'confirmed' ? 'bg-cream-sand text-brand-brown' :
+                    booking.status === 'pending' ? 'bg-amber-100 text-brand-russty' :
+                    'bg-cream-hover text-brand-brown'
+                  }`}>
+                    {booking.status}
+                  </span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-8">No travel history yet. Start your journey!</p>
+            <div className="text-center py-8">
+              <p className="text-sm text-brand-russty mb-3">No active bookings</p>
+              <a href="/plan-trip" className="inline-block px-4 py-2 bg-cream-sand text-brand-brown rounded-lg text-sm font-medium hover:bg-cream-hover transition">
+                Plan a Trip
+              </a>
+            </div>
+          )}
+          
+          {travelHistory.length > 0 && (
+            <>
+              <div className="border-t border-cream-border pt-4 mt-4">
+                <p className="text-xs font-medium text-brand-russty mb-3">Travel History</p>
+                <div className="space-y-2">
+                  {travelHistory.slice(0, 2).map((trip, index) => (
+                    <div key={index} className="flex items-center justify-between py-2">
+                      <div>
+                        <p className="text-sm text-brand-brown">{trip.destination}</p>
+                        <p className="text-xs text-brand-russty">{trip.date}</p>
+                      </div>
+                      <p className="text-sm font-medium text-brand-orange">R {trip.amount}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
           )}
         </div>
 
