@@ -78,8 +78,34 @@ export default function Home() {
             )}
           </div>
           <div className="flex justify-center md:justify-end">
-            <div className="relative h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64 rounded-full bg-white/70 ring-1 ring-cream-border shadow flex items-center justify-center">
-              <img src={logo} alt="CollEco logo" className="h-32 w-32 sm:h-40 sm:w-40 object-contain" />
+            <div className="relative h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64">
+              {/* Outer glow */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-orange/30 via-brand-gold/20 to-brand-orange/30 blur-2xl animate-pulse"></div>
+              
+              {/* 3D Circle with bird logo */}
+              <div className="relative h-full w-full rounded-full bg-gradient-to-br from-white via-cream to-white ring-2 ring-brand-gold/40 shadow-2xl flex items-center justify-center"
+                style={{
+                  transform: 'perspective(500px) rotateY(-10deg) rotateX(5deg)',
+                  boxShadow: '0 20px 60px rgba(179, 84, 30, 0.3), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(0,0,0,0.1)'
+                }}>
+                
+                {/* Inner highlight */}
+                <div className="absolute inset-4 rounded-full bg-gradient-to-br from-white/50 to-transparent"></div>
+                
+                {/* Logo with enhanced 3D effect */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-orange/20 to-brand-gold/30 rounded-full blur-md"></div>
+                  <img 
+                    src={logo} 
+                    alt="CollEco logo" 
+                    className="relative h-32 w-32 sm:h-40 sm:w-40 object-contain"
+                    style={{
+                      filter: 'drop-shadow(4px 4px 8px rgba(179, 84, 30, 0.4)) drop-shadow(-3px -3px 6px rgba(255, 255, 255, 0.9)) brightness(1.15) contrast(1.1)',
+                      transform: 'perspective(300px) rotateY(-5deg) translateZ(20px)',
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
