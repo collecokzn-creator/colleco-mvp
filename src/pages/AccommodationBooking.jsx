@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import BookingNav from '../components/BookingNav';
 import { bookAccommodation } from '../api/client';
 
 export default function AccommodationBooking(){
@@ -19,11 +19,9 @@ export default function AccommodationBooking(){
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-4">
-        <Link to="/book" className="text-sm text-brand-brown/70 hover:underline">← Back to booking options</Link>
-      </div>
-      <h1 className="text-xl font-bold mb-4">Book Accommodation</h1>
+    <div className="max-w-6xl mx-auto px-6 py-8">
+      <BookingNav />
+      <h1 className="text-3xl font-bold mb-4 text-brand-brown">Accommodation Booking</h1>
       <form onSubmit={handleSubmit} className="space-y-3 max-w-md">
         <label className="block">Hotel name<input value={hotelName} onChange={e=>setHotelName(e.target.value)} className="w-full p-2 border" /></label>
         <label className="block">Nights<input type="number" value={nights} onChange={e=>setNights(e.target.value)} className="w-full p-2 border" /></label>

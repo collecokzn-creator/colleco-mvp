@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import BookingNav from '../components/BookingNav';
 import { BedDouble, Plane, Car, Bus } from 'lucide-react';
 
 export default function Book() {
@@ -12,6 +13,7 @@ export default function Book() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
+      <BookingNav />
       <h1 className="text-3xl font-bold mb-4">Book Now</h1>
       <p className="text-sm text-brand-brown/70 mb-6">Choose what you want to book — we’ll walk you through the details and pricing.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

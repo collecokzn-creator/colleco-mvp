@@ -1,23 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import BookingNav from '../components/BookingNav';
 import LiveMap from '../components/LiveMap';
 import TransferChat from '../components/TransferChat';
 import DriverRating from '../components/DriverRating';
 import { requestNotificationPermission, notifyTransferStatus } from '../utils/notifications';
-
-function Breadcrumbs() {
-  return (
-    <nav className="text-sm mb-4" aria-label="Breadcrumb">
-      <ol className="flex items-center gap-2 text-gray-600">
-        <li><Link to="/" className="hover:text-brand-orange">Home</Link></li>
-        <li>/</li>
-        <li><Link to="/packages" className="hover:text-brand-orange">Packages</Link></li>
-        <li>/</li>
-        <li className="text-brand-brown font-semibold">Transfers</li>
-      </ol>
-    </nav>
-  );
-}
 
 export default function Transfers() {
   React.useEffect(() => {
@@ -118,12 +105,9 @@ export default function Transfers() {
 
   return (
     <div className="overflow-x-hidden">
-      <div className="max-w-7xl mx-auto max-w-xl mx-auto p-6">
-      <Breadcrumbs />
-      <div className="mb-4">
-        <Link to="/book" className="text-sm text-brand-brown/70 hover:underline">← Back to booking options</Link>
-      </div>
-      <h1 className="text-2xl font-bold mb-4 text-brand-orange">Request a Transfer</h1>
+      <div className="max-w-6xl mx-auto px-6 py-8">
+      <BookingNav />
+      <h1 className="text-3xl font-bold mb-4 text-brand-brown">Shuttle & Transfers</h1>
       
       {/* Booking Type Toggle */}
       <div className="mb-6 flex gap-3">

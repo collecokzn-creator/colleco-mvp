@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import BookingNav from '../components/BookingNav';
 import { bookCar } from '../api/client';
-
-function Breadcrumbs() {
-  return (
-    <nav className="text-sm mb-4" aria-label="Breadcrumb">
-      <ol className="flex items-center gap-2 text-gray-600">
-        <li><Link to="/" className="hover:text-brand-orange">Home</Link></li>
-        <li>/</li>
-        <li><Link to="/packages" className="hover:text-brand-orange">Packages</Link></li>
-        <li>/</li>
-        <li className="text-brand-brown font-semibold">Car Rental</li>
-      </ol>
-    </nav>
-  );
-}
 
 export default function CarBooking(){
   const [vehicleType, setVehicleType] = useState('SUV');
@@ -32,12 +18,9 @@ export default function CarBooking(){
   }
 
   return (
-    <div className="p-6">
-      <Breadcrumbs />
-      <div className="mb-4">
-        <Link to="/book" className="text-sm text-brand-brown/70 hover:underline">← Back to booking options</Link>
-      </div>
-      <h1 className="text-xl font-bold mb-4">Hire a Car</h1>
+    <div className="max-w-6xl mx-auto px-6 py-8">
+      <BookingNav />
+      <h1 className="text-3xl font-bold mb-4 text-brand-brown">Car Hire</h1>
       <form onSubmit={handleSubmit} className="space-y-3 max-w-md">
         <label>Vehicle Type<input value={vehicleType} onChange={e=>setVehicleType(e.target.value)} className="w-full p-2 border" /></label>
         <label>Days<input type="number" value={days} onChange={e=>setDays(e.target.value)} className="w-full p-2 border" /></label>
