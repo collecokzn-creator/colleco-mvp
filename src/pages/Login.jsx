@@ -7,6 +7,7 @@ function Login() {
   const [tab, setTab] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -46,7 +47,7 @@ function Login() {
       setError("Invalid email or password.");
       return;
     }
-  setSuccess("Login successful! Welcome, " + user.name + ".");
+    setSuccess("Login successful! Welcome, " + user.name + ".");
     // E2E trace: record login attempt and user into window.__E2E_LOGS__ for CI debugging
     try {
       if (typeof window !== 'undefined' && window.__E2E__) {
@@ -93,7 +94,7 @@ function Login() {
         window.__E2E_LOGS__.push({ ts: Date.now(), msg: 'handleLogin: setUser called (E2E)'});
         try {
           // Navigate synchronously in E2E to avoid tick-based races in CI.
-          navigate('/profile');
+          navigate('/');
           window.__E2E_LOGS__.push({ ts: Date.now(), msg: 'handleLogin: navigated synchronously (E2E)'});
         } catch (err) {
           window.__E2E_LOGS__.push({ ts: Date.now(), msg: 'handleLogin: navigate failed', err: String(err) });
@@ -125,18 +126,23 @@ function Login() {
         setTimeout(() => {
           try { window.__E2E_PROFILE_LOADED__ = true; } catch (err) {}
           window.__E2E_LOGS__.push({ ts: Date.now(), msg: 'handleLogin: e2e-navigating-after-tick' });
-          navigate("/profile");
+          navigate("/");
         }, 300);
         return;
       }
     } catch (e) {}
-    setTimeout(() => navigate("/profile"), 600); // Redirect after short success message
+    setTimeout(() => navigate("/"), 800); // Redirect to home after success message
   }
 
   function handleRegister(e) {
     e.preventDefault();
     setError("");
     setSuccess("");
+    
+    if (!name || name.trim().length < 2) {
+      setError("Please enter your full name.");
+      return;
+    }
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
@@ -149,12 +155,34 @@ function Login() {
       setError("An account with this email already exists.");
       return;
     }
-    const newUser = { email, password, name: email.split("@")[0] };
+    
+    const newUser = { email, password, name: name.trim() };
     localStorage.setItem("user:" + email, JSON.stringify(newUser));
+    
     // remember chosen persistence and biometrics for subsequent login
     try { localStorage.setItem('user:persistence', keepLoggedIn ? 'local' : 'session'); } catch (e) {}
     try { localStorage.setItem('user:biometrics', useBiometrics ? '1' : '0'); } catch (e) {}
-    setSuccess("Registration successful! You can now log in.");
+    
+    setSuccess("Registration successful! Redirecting to home...");
+    
+    // Auto-login after registration
+    setUser(newUser);
+    
+    // E2E support
+    try {
+      if (typeof window !== 'undefined' && window.__E2E__) {
+        window.__E2E_USER__ = newUser;
+        window.__E2E_PROFILE_LOADED__ = true;
+        if (keepLoggedIn) {
+          localStorage.setItem('user', JSON.stringify(newUser));
+        } else {
+          sessionStorage.setItem('user', JSON.stringify(newUser));
+        }
+      }
+    } catch (e) {}
+    
+    // Redirect to home page after registration
+    setTimeout(() => navigate("/"), 800);
   }
 
   function handleLogout() {
@@ -167,83 +195,207 @@ function Login() {
 
   if (effectiveUser) {
     return (
-      <div className="p-6 max-w-md mx-auto">
-        <h2 className="text-2xl font-bold mb-4 text-brand-orange">Welcome, {effectiveUser.name}!</h2>
-        <div className="bg-cream-sand p-6 border border-cream-border rounded mb-4">
-          <p className="text-brand-russty mb-4">You are logged in as <span className="font-semibold">{effectiveUser.email}</span>.</p>
-          <button
-            className="px-4 py-2 rounded bg-brand-orange text-white font-semibold hover:bg-brand-orange/90 transition"
-            onClick={handleLogout}
-          >Logout</button>
+      <div className="min-h-screen bg-gradient-to-br from-cream via-cream-sand to-cream flex items-center justify-center p-6">
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-cream-border">
+          <div className="text-center mb-6">
+            <div className="w-20 h-20 bg-gradient-to-br from-brand-orange to-brand-gold rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
+              ✓
+            </div>
+            <h2 className="text-2xl font-bold text-brand-brown">Welcome, {effectiveUser.name}!</h2>
+          </div>
+          <div className="bg-cream-sand p-6 border border-cream-border rounded-lg mb-4">
+            <p className="text-brand-russty mb-4">You are logged in as <span className="font-semibold">{effectiveUser.email}</span>.</p>
+            <button
+              className="w-full px-4 py-2.5 rounded-lg bg-brand-orange text-white font-semibold hover:bg-brand-gold transition-all shadow-md"
+              onClick={handleLogout}
+            >Logout</button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-brand-orange">Login / Register</h2>
-      <div className="flex mb-4 gap-2">
-        <button
-          data-e2e="login-tab"
-          className={`px-4 py-2 rounded font-semibold transition ${tab === "login" ? "bg-brand-orange text-white" : "bg-cream-sand text-brand-russty border border-cream-border"}`}
-          onClick={() => { setTab("login"); setError(""); setSuccess(""); }}
-        >Login</button>
-        <button
-          data-e2e="register-tab"
-          className={`px-4 py-2 rounded font-semibold transition ${tab === "register" ? "bg-brand-orange text-white" : "bg-cream-sand text-brand-russty border border-cream-border"}`}
-          onClick={() => { setTab("register"); setError(""); setSuccess(""); }}
-        >Register</button>
-      </div>
-      <form data-e2e="login-form" className="bg-cream-sand p-6 border border-cream-border rounded" onSubmit={tab === "login" ? handleLogin : handleRegister}>
-  <label className="block mb-2 text-brand-russty font-semibold">Email</label>
-        <input
-          type="email"
-          className="w-full mb-4 px-3 py-2 border border-cream-border rounded"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-        />
-  <label className="block mb-2 text-brand-russty font-semibold">Password</label>
-        <div className="relative mb-4">
-          <input
-            type={showPassword ? "text" : "password"}
-            className="w-full px-3 py-2 border border-cream-border rounded pr-10"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-            aria-label="Password"
-          />
+    <div className="min-h-screen bg-gradient-to-br from-cream via-cream-sand to-cream flex items-center justify-center p-6">
+      <div className="max-w-md w-full">
+        {/* Header */}
+        <div className="text-center mb-8 animate-fade-in">
+          <div className="w-16 h-16 bg-gradient-to-br from-brand-orange to-brand-gold rounded-full mx-auto mb-4 flex items-center justify-center text-3xl shadow-lg">
+            🌍
+          </div>
+          <h1 className="text-3xl font-bold text-brand-brown mb-2">CollEco Travel</h1>
+          <p className="text-brand-russty">Start your journey with us</p>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex mb-6 gap-3 bg-white p-2 rounded-xl shadow-md">
           <button
-            type="button"
-            onClick={() => setShowPassword(v => !v)}
-            aria-label={showPassword ? "Hide password" : "Show password"}
-            aria-pressed={showPassword}
-            className="absolute inset-y-0 right-2 my-auto h-7 w-7 flex items-center justify-center rounded bg-cream border border-cream-border text-brand-russty hover:bg-cream-sand"
-            title={showPassword ? "Hide" : "Show"}
+            data-e2e="login-tab"
+            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${
+              tab === "login" 
+                ? "bg-gradient-to-r from-brand-orange to-brand-gold text-white shadow-md transform scale-105" 
+                : "text-brand-russty hover:bg-cream-sand"
+            }`}
+            onClick={() => { setTab("login"); setError(""); setSuccess(""); setName(""); }}
           >
-            {showPassword ? "🙈" : "👁️"}
+            Login
+          </button>
+          <button
+            data-e2e="register-tab"
+            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${
+              tab === "register" 
+                ? "bg-gradient-to-r from-brand-orange to-brand-gold text-white shadow-md transform scale-105" 
+                : "text-brand-russty hover:bg-cream-sand"
+            }`}
+            onClick={() => { setTab("register"); setError(""); setSuccess(""); }}
+          >
+            Register
           </button>
         </div>
-        {error && <div className="mb-3 bg-amber-100 text-brand-russty p-3 rounded font-semibold">{error}</div>}
-        {success && <div className="mb-3 bg-cream-sand text-brand-brown p-3 rounded font-semibold">{success}</div>}
-        <div className="flex items-center justify-between gap-3 mt-3 mb-3">
-          <label className="flex items-center gap-2 text-sm">
-            <input data-e2e="keep-logged-in" type="checkbox" checked={keepLoggedIn} onChange={e => setKeepLoggedIn(e.target.checked)} />
-            <span className="text-brand-russty">Keep me logged in</span>
-          </label>
-          {/* Simple biometrics toggle - gated to platforms that likely support WebAuthn */}
-          <label className="flex items-center gap-2 text-sm">
-            <input data-e2e="use-biometrics" type="checkbox" checked={useBiometrics} onChange={e => setUseBiometrics(e.target.checked)} />
-            <span className="text-brand-russty">Use biometrics</span>
-          </label>
+
+        {/* Form */}
+        <form 
+          data-e2e="login-form" 
+          className="bg-white rounded-2xl shadow-xl p-8 border border-cream-border" 
+          onSubmit={tab === "login" ? handleLogin : handleRegister}
+        >
+          <div className="mb-5">
+            <h2 className="text-2xl font-bold text-brand-brown mb-2">
+              {tab === "login" ? "Welcome Back" : "Create Account"}
+            </h2>
+            <p className="text-sm text-brand-russty">
+              {tab === "login" 
+                ? "Sign in to continue your adventure" 
+                : "Join us and start exploring"}
+            </p>
+          </div>
+
+          {/* Name field for registration */}
+          {tab === "register" && (
+            <div className="mb-4">
+              <label className="block mb-2 text-brand-brown font-semibold text-sm">Full Name</label>
+              <input
+                type="text"
+                className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="John Doe"
+                required
+              />
+            </div>
+          )}
+
+          {/* Email */}
+          <div className="mb-4">
+            <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address</label>
+            <input
+              type="email"
+              className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div className="mb-4">
+            <label className="block mb-2 text-brand-brown font-semibold text-sm">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full px-4 py-3 border-2 border-cream-border rounded-lg pr-12 focus:border-brand-orange focus:outline-none transition-colors"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder={tab === "register" ? "At least 6 characters" : "Enter your password"}
+                required
+                aria-label="Password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(v => !v)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+                className="absolute inset-y-0 right-3 my-auto h-10 w-10 flex items-center justify-center rounded-lg hover:bg-cream-sand text-brand-russty transition-colors"
+                title={showPassword ? "Hide" : "Show"}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          {/* Error and Success Messages */}
+          {error && (
+            <div className="mb-4 bg-amber-100 border border-amber-300 text-brand-russty p-4 rounded-lg font-semibold animate-shake">
+              ⚠️ {error}
+            </div>
+          )}
+          {success && (
+            <div className="mb-4 bg-cream-sand border border-brand-gold text-brand-brown p-4 rounded-lg font-semibold animate-fade-in">
+              ✓ {success}
+            </div>
+          )}
+
+          {/* Options */}
+          <div className="flex items-center justify-between gap-3 mb-6">
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input 
+                data-e2e="keep-logged-in" 
+                type="checkbox" 
+                checked={keepLoggedIn} 
+                onChange={e => setKeepLoggedIn(e.target.checked)}
+                className="w-4 h-4 text-brand-orange border-cream-border rounded focus:ring-brand-orange"
+              />
+              <span className="text-brand-russty">Keep me logged in</span>
+            </label>
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input 
+                data-e2e="use-biometrics" 
+                type="checkbox" 
+                checked={useBiometrics} 
+                onChange={e => setUseBiometrics(e.target.checked)}
+                className="w-4 h-4 text-brand-orange border-cream-border rounded focus:ring-brand-orange"
+              />
+              <span className="text-brand-russty">Biometrics</span>
+            </label>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            data-e2e="submit"
+            type="submit"
+            className="w-full px-6 py-3.5 rounded-lg bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all"
+          >
+            {tab === "login" ? "Sign In →" : "Create Account →"}
+          </button>
+
+          {/* Additional Info */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-brand-russty">
+              {tab === "login" ? "Don't have an account? " : "Already have an account? "}
+              <button
+                type="button"
+                onClick={() => {
+                  setTab(tab === "login" ? "register" : "login");
+                  setError("");
+                  setSuccess("");
+                  setName("");
+                }}
+                className="text-brand-orange font-semibold hover:text-brand-gold transition-colors"
+              >
+                {tab === "login" ? "Register here" : "Login here"}
+              </button>
+            </p>
+          </div>
+        </form>
+
+        {/* Footer */}
+        <div className="mt-6 text-center">
+          <p className="text-xs text-brand-russty">
+            By continuing, you agree to our Terms of Service and Privacy Policy
+          </p>
         </div>
-        <button
-          data-e2e="submit"
-          type="submit"
-          className="w-full px-4 py-2 rounded bg-brand-orange text-white font-semibold hover:bg-brand-orange/90 transition"
-        >{tab === "login" ? "Login" : "Register"}</button>
-      </form>
+      </div>
     </div>
   );
 }

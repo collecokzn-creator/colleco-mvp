@@ -36,11 +36,18 @@ html { overflow-y: scroll; }
 @media (prefers-reduced-motion: no-preference) {
 	.toast-fade { animation: toastIn .35s ease-out; }
 	@keyframes toastIn { 0% { opacity: 0; transform: translateY(6px);} 100% { opacity:1; transform: translateY(0);} }
+	
+	/* Login page animations */
+	.animate-fade-in { animation: fadeIn 0.6s ease-out; }
+	@keyframes fadeIn { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
+	
+	.animate-shake { animation: shake 0.5s ease-in-out; }
+	@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 }
 
 /* Reduced motion: ensure no transform jerk */
 @media (prefers-reduced-motion: reduce) {
-	.toast-fade { transition: none; animation: none; }
+	.toast-fade, .animate-fade-in, .animate-shake { transition: none; animation: none; }
 }
 
 /* Themed scrollbars (avoid dark/black lines) */
