@@ -17,7 +17,7 @@ describe('Smoke', () => {
   // Wait for root mount and some key elements to render
     cy.get('#root', { timeout: 60000 }).should('exist')
   cy.get('nav', { timeout: 60000 }).should('be.visible')
-    cy.get('footer', { timeout: 60000 }).should('be.visible')
+    cy.get('footer', { timeout: 60000 }).scrollIntoView().should('be.visible')
     // Ensure main content exists
     cy.get('main', { timeout: 60000 }).should('exist')
   })
