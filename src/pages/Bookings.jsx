@@ -72,40 +72,40 @@ export default function Bookings() {
   
   // Filter and sort logic
   const filteredAndSortedItems = useMemo(() => {
-  	let filtered = [...items];
-  	
-  	// Apply trusted filter
-  	if (trustedOnly && providersApiEnabled) {
-  		filtered = filtered.filter(it => it.providerId && verifiedIds.has(it.providerId));
-  	}
-  	
-  	// Apply status filter
-  	if (statusFilter !== 'all') {
-  		filtered = filtered.filter(it => it.status === statusFilter);
-  	}
-  	
-  	// Apply search
-  	if (searchTerm.trim()) {
-  		const term = searchTerm.trim().toLowerCase();
-  		filtered = filtered.filter(it => 
-  			it.name.toLowerCase().includes(term) ||
-  			it.category.toLowerCase().includes(term) ||
-  			it.status.toLowerCase().includes(term)
-  		);
-  	}
-  	
-  	// Sort
-  	if (sortBy === 'date') {
-  		filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-  	} else if (sortBy === 'price') {
-  		filtered.sort((a, b) => b.amount - a.amount);
-  	} else if (sortBy === 'status') {
-  		const order = { pending: 0, confirmed: 1, completed: 2 };
-  		filtered.sort((a, b) => order[a.status] - order[b.status]);
-  	}
-  	
-  	return filtered;
-  }, [items, trustedOnly, providersApiEnabled, verifiedIds, statusFilter, searchTerm, sortBy]);
+    let filtered = [...items];
+    
+    // Apply trusted filter
+    if (trustedOnly && providersApiEnabled) {
+      filtered = filtered.filter(it => it.providerId && verifiedIds.has(it.providerId));
+    }
+    
+    // Apply status filter
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(it => it.status === statusFilter);
+    }
+    
+    // Apply search
+    if (searchTerm.trim()) {
+      const term = searchTerm.trim().toLowerCase();
+      filtered = filtered.filter(it => 
+        it.name.toLowerCase().includes(term) ||
+        it.category.toLowerCase().includes(term) ||
+        it.status.toLowerCase().includes(term)
+      );
+    }
+    
+    // Sort
+    if (sortBy === 'date') {
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (sortBy === 'price') {
+      filtered.sort((a, b) => b.amount - a.amount);
+    } else if (sortBy === 'status') {
+      const order = { pending: 0, confirmed: 1, completed: 2 };
+      filtered.sort((a, b) => order[a.status] - order[b.status]);
+    }
+    
+    return filtered;
+  }, [items, trustedOnly, verifiedIds, statusFilter, searchTerm, sortBy]);
   
   // Export to CSV
   function exportToCSV() {

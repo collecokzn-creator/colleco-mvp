@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { BulkCSVUploader } from '../components/mvp/EnhancementStubs';
 
 export default function BulkInventoryUpload() {
   const [uploading, setUploading] = useState(false);

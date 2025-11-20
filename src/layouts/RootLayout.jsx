@@ -5,7 +5,6 @@ import MobileNav from "../components/MobileNav.jsx";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import AutoFocus from "../components/AutoFocus.jsx";
 import { Outlet } from "react-router-dom";
-import globePng from "../assets/Globeicon.png";
 import AIAgent from "../components/AIAgent.jsx";
 
 export default function RootLayout() {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { TripAlertCard } from '../components/mvp/EnhancementStubs';
 
 export default function Notifications() {
   const [alerts, setAlerts] = useState([]);

@@ -28,7 +28,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
         drawRoute();
       }
     }
-  }, [map, pickup, dropoff, driverLocation, showRoute]);
+  }, [map, pickup, dropoff, driverLocation, showRoute, updateMapMarkers, drawRoute]);
 
   function initMap() {
     if (!mapRef.current || !window.google) return;

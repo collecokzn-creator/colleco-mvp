@@ -64,7 +64,6 @@ export default function AIAgent() {
     const isMobile = window.innerWidth < 640; // sm breakpoint
     if (!isMobile) return;
     
-    const footerHeight = 64; // MobileNav h-16 = 64px
     const safeZone = 96; // 96px = bottom-24 default offset
     const viewportHeight = window.innerHeight;
     

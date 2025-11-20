@@ -20,7 +20,6 @@ export default function TransferChat({ requestId, role = 'customer' }) {
       const socket = new WebSocket(wsUrl);
       
       socket.onopen = () => {
-        console.log('[chat] WebSocket connected');
         socket.send(JSON.stringify({ type: 'join', requestId, role }));
       };
       
@@ -33,12 +32,11 @@ export default function TransferChat({ requestId, role = 'customer' }) {
             setMessages(data.messages || []);
           }
         } catch (e) {
-          console.error('[chat] parse error', e);
+          // Ignore parse errors
         }
       };
       
       socket.onerror = () => {
-        console.warn('[chat] WebSocket error, falling back to polling');
         startPolling();
       };
       
@@ -50,10 +48,9 @@ export default function TransferChat({ requestId, role = 'customer' }) {
         }
       };
     } catch (e) {
-      console.warn('[chat] WebSocket init failed, using polling', e);
       startPolling();
     }
-  }, [requestId, role]);
+  }, [requestId, role, startPolling]);
 
   useEffect(() => {
     scrollToBottom();

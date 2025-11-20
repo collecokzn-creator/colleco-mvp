@@ -242,7 +242,7 @@ export default function WorkflowPanel({ currentPage, basketCount = 0, hasItinera
             ) : (
               <button
                 key={idx}
-                onClick={() => link.action && console.log(`Action: ${link.action}`)}
+                onClick={() => link.action && link.action()}
                 className="inline-flex items-center gap-1 px-2 py-1 rounded bg-white border border-cream-border text-[11px] text-brand-brown hover:bg-brand-orange hover:text-white hover:border-brand-orange transition"
                 title={link.description}
               >

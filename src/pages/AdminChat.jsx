@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ChatBox } from '../components/mvp/EnhancementStubs';
 
 export default function AdminChat() {
   const [messages, setMessages] = useState([
