@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { vi, describe, it, expect } from 'vitest';
 
 const mockNavigate = vi.fn();
@@ -20,7 +21,7 @@ import Quotes from '../src/pages/Quotes';
 
 describe('Quotes render', () => {
   it('renders a quote item and buttons', async () => {
-    render(<Quotes />);
+    render(<MemoryRouter><Quotes /></MemoryRouter>);
   // wait for async getQuotes to resolve
   // match the client name exactly to avoid accidental matches elsewhere in the DOM
   const item = await screen.findByText(/^A$/);
