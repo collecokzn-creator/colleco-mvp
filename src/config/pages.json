@@ -205,6 +205,17 @@
                 }
               },
               {
+                "path": "/transfers",
+                "name": "Shuttle & Transfers",
+                "component": "Transfers",
+                "meta": {
+                  "title": "Shuttle & Transfers",
+                  "description": "Book instant or pre-arranged shuttle and transfer services.",
+                  "requiresAuth": false,
+                  "layout": "marketing"
+                }
+              },
+              {
                 "path": "/transfers/history",
                 "name": "Transfer History",
                 "component": "TransferHistory",
