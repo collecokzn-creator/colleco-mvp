@@ -1962,5 +1962,14 @@
       "itinerary": []
     },
     "createdAt": 1762196497875
+  },
+  "m2b1kcg6jwmi7b70lb": {
+    "id": "m2b1kcg6jwmi7b70lb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1763635758527
   }
 }
