@@ -92,8 +92,18 @@ export const UserProvider = ({ children }) => {
   const isPartner = user?.role === "partner";
   const isClient = user?.role === "client";
 
+  // Logout function
+  const logout = () => {
+    setUser(null);
+    try {
+      localStorage.removeItem("user");
+      localStorage.removeItem("user:persistence");
+      sessionStorage.removeItem("user");
+    } catch (e) {}
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, isAdmin, isPartner, isClient }}>
+    <UserContext.Provider value={{ user, setUser, isAdmin, isPartner, isClient, logout }}>
       {children}
     </UserContext.Provider>
   );
