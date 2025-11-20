@@ -76,7 +76,7 @@ export default function Analytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Upcoming Trips</p>
-                <p className="text-3xl font-bold text-green-600">{stats.upcomingTrips}</p>
+                <p className="text-3xl font-bold text-brand-orange">{stats.upcomingTrips}</p>
               </div>
               <div className="text-4xl">📅</div>
             </div>
@@ -87,7 +87,7 @@ export default function Analytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Completed</p>
-                <p className="text-3xl font-bold text-blue-600">{stats.completedTrips}</p>
+                <p className="text-3xl font-bold text-brand-russty">{stats.completedTrips}</p>
               </div>
               <div className="text-4xl">✅</div>
             </div>

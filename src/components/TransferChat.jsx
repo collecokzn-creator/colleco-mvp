@@ -127,7 +127,7 @@ export default function TransferChat({ requestId, role = 'customer' }) {
               <div
                 className={`max-w-xs px-4 py-2 rounded-lg ${
                   msg.from === role
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-brand-orange text-white'
                     : 'bg-white border text-gray-800'
                 }`}
               >
@@ -152,7 +152,7 @@ export default function TransferChat({ requestId, role = 'customer' }) {
         />
         <button
           type="submit"
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+          className="px-6 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition"
         >
           Send
         </button>

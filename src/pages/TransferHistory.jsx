@@ -87,8 +87,8 @@ export default function TransferHistory() {
                 <div className="text-right">
                   <p className="text-2xl font-bold text-brand-brown">R{transfer.price}</p>
                   <span className={`inline-block px-2 py-1 text-xs font-semibold rounded mt-1 ${
-                    transfer.status === 'completed' ? 'bg-green-100 text-green-800' :
-                    transfer.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                    transfer.status === 'completed' ? 'bg-cream-sand text-brand-brown' :
+                    transfer.status === 'cancelled' ? 'bg-amber-100 text-brand-russty' :
                     'bg-gray-100 text-gray-800'
                   }`}>
                     {transfer.status}
@@ -137,7 +137,7 @@ export default function TransferHistory() {
                   🔄 Book Again
                 </Link>
                 {transfer.status === 'completed' && !transfer.rated && (
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 transition text-sm">
+                  <button className="px-4 py-2 bg-brand-orange text-white rounded font-semibold hover:bg-brand-gold transition text-sm">
                     ⭐ Rate Driver
                   </button>
                 )}

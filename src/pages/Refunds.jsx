@@ -29,7 +29,7 @@ export default function Refunds() {
         ))}
       </div>
 
-      <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+      <div className="mt-6 p-4 bg-cream-sand rounded-xl border border-cream-border">
         <h3 className="font-semibold mb-2">Refund Process</h3>
         <ol className="text-sm space-y-1 list-decimal list-inside">
           <li>Requested - Your refund request has been submitted</li>

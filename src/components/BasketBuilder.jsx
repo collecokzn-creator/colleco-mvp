@@ -70,7 +70,7 @@ export default function BasketBuilder({
             {catalog.map((p) => (
               <motion.li
                 key={p.id}
-                className="flex items-center justify-between border rounded p-2 bg-blue-50 hover:bg-blue-100 transition"
+                className="flex items-center justify-between border rounded p-2 bg-cream-sand hover:bg-cream-hover transition"
                 whileHover={{ scale: 1.03 }}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -84,7 +84,7 @@ export default function BasketBuilder({
                     {p.price ? `R${p.price.toFixed(2)}` : "Not Priced"}
                   </div>
                 </div>
-                <button onClick={() => add(p)} className="bg-blue-700 text-white px-3 py-1 rounded shadow hover:bg-blue-900 transition">Add</button>
+                <button onClick={() => add(p)} className="bg-brand-orange text-white px-3 py-1 rounded shadow hover:bg-brand-gold transition">Add</button>
               </motion.li>
             ))}
           </ul>
@@ -125,7 +125,7 @@ export default function BasketBuilder({
                       <button onClick={() => dec(item.id)} className="px-2 border rounded">-</button>
                       <span>{item.qty ?? 1}</span>
                       <button onClick={() => inc(item.id)} className="px-2 border rounded">+</button>
-                      <button onClick={() => remove(item.id)} className="text-red-600">Remove</button>
+                      <button onClick={() => remove(item.id)} className="text-brand-russty hover:text-brand-brown">Remove</button>
                     </div>
                   </motion.li>
                 ))}
@@ -140,8 +140,8 @@ export default function BasketBuilder({
             </label>
           </div>
           <div className="flex gap-2">
-            <button onClick={onGenerateItinerary} className="bg-blue-600 text-white px-3 py-2 rounded">Generate Itinerary</button>
-            <button onClick={onGenerateQuote} className="bg-green-600 text-white px-3 py-2 rounded">Generate Quote</button>
+            <button onClick={onGenerateItinerary} className="bg-brand-orange text-white px-3 py-2 rounded hover:bg-brand-gold transition">Generate Itinerary</button>
+            <button onClick={onGenerateQuote} className="bg-brand-gold text-white px-3 py-2 rounded hover:bg-brand-orange transition">Generate Quote</button>
           </div>
         </motion.div>
       </div>

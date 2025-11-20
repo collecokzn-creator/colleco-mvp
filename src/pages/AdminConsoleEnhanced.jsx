@@ -70,7 +70,7 @@ export default function AdminConsoleEnhanced({ user, stats, bookings, partners }
                         <td>{b.guest}</td>
                         <td>{b.property}</td>
                         <td>
-                          <span className={`text-xs px-2 py-1 rounded ${b.status === "confirmed" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                          <span className={`text-xs px-2 py-1 rounded ${b.status === "confirmed" ? "bg-cream-sand text-brand-brown" : "bg-amber-100 text-brand-russty"}`}>
                             {b.status}
                           </span>
                         </td>
@@ -110,7 +110,7 @@ export default function AdminConsoleEnhanced({ user, stats, bookings, partners }
                       <div className="text-xs text-gray-500">Last Verified: {p.lastVerified ?? "—"}</div>
                     </div>
                     <div className="text-right">
-                      <div className={`text-sm px-2 py-1 rounded ${p.status === "active" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                      <div className={`text-sm px-2 py-1 rounded ${p.status === "active" ? "bg-cream-sand text-brand-brown" : "bg-amber-100 text-brand-russty"}`}>
                         {p.status}
                       </div>
                     </div>
@@ -154,7 +154,7 @@ export default function AdminConsoleEnhanced({ user, stats, bookings, partners }
                       <td>{b.property}</td>
                       <td>{b.checkin}</td>
                       <td>
-                        <span className={`text-xs px-2 py-1 rounded ${b.status === "confirmed" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                        <span className={`text-xs px-2 py-1 rounded ${b.status === "confirmed" ? "bg-cream-sand text-brand-brown" : "bg-amber-100 text-brand-russty"}`}>
                           {b.status}
                         </span>
                       </td>

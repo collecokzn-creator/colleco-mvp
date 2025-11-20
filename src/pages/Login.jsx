@@ -225,8 +225,8 @@ function Login() {
             {showPassword ? "🙈" : "👁️"}
           </button>
         </div>
-        {error && <div className="mb-3 text-red-600 font-semibold">{error}</div>}
-        {success && <div className="mb-3 text-green-700 font-semibold">{success}</div>}
+        {error && <div className="mb-3 bg-amber-100 text-brand-russty p-3 rounded font-semibold">{error}</div>}
+        {success && <div className="mb-3 bg-cream-sand text-brand-brown p-3 rounded font-semibold">{success}</div>}
         <div className="flex items-center justify-between gap-3 mt-3 mb-3">
           <label className="flex items-center gap-2 text-sm">
             <input data-e2e="keep-logged-in" type="checkbox" checked={keepLoggedIn} onChange={e => setKeepLoggedIn(e.target.checked)} />

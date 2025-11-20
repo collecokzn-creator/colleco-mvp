@@ -226,7 +226,7 @@ export default function Transfers() {
 
       {/* Multi-Day Service Toggle */}
       {bookingType === 'prearranged' && (
-        <div className="mb-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+        <div className="mb-4 p-4 bg-cream-sand border-2 border-cream-border rounded-lg">
           <label className="flex items-center gap-3 cursor-pointer">
             <input 
               type="checkbox" 
@@ -280,8 +280,8 @@ export default function Transfers() {
                 </div>
                 <p className="text-xs text-gray-500 mt-1">Select specific days for recurring service</p>
               </div>
-              <div className="p-3 bg-green-50 border border-green-200 rounded">
-                <p className="text-sm text-green-800">
+              <div className="p-3 bg-cream-sand border border-cream-border rounded">
+                <p className="text-sm text-brand-brown">
                   🎉 Multi-day discount: <strong>{serviceDays >= 7 ? '20%' : serviceDays >= 3 ? '15%' : '10%'} off</strong>
                 </p>
               </div>
@@ -320,8 +320,8 @@ export default function Transfers() {
               />
             </div>
             {nearbyDrivers.length > 0 && (
-              <div className="mt-2 p-3 bg-green-50 rounded border border-green-200">
-                <p className="text-green-800 text-sm">
+              <div className="mt-2 p-3 bg-cream-sand rounded border border-cream-border">
+                <p className="text-brand-brown text-sm">
                   ✅ Shuttles available in your area. Average ETA: {Math.min(...nearbyDrivers.map(d => d.eta || 10))} min
                 </p>
               </div>
@@ -380,7 +380,7 @@ export default function Transfers() {
                 <button
                   type="button"
                   onClick={() => setAdditionalStops(additionalStops.filter((_, i) => i !== index))}
-                  className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                  className="px-3 py-2 bg-brand-russty text-white rounded hover:bg-brand-brown transition"
                 >
                   ✕
                 </button>
@@ -388,8 +388,8 @@ export default function Transfers() {
             ))}
             
             {additionalStops.length > 0 && (
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded">
-                <p className="text-sm text-blue-800">
+              <div className="p-3 bg-cream-sand border border-cream-border rounded">
+                <p className="text-sm text-brand-brown">
                   📍 Total stops: {additionalStops.length + 2} (Pickup → {additionalStops.length} stop{additionalStops.length !== 1 ? 's' : ''} → Dropoff)
                 </p>
               </div>
@@ -399,7 +399,7 @@ export default function Transfers() {
         
         {/* Round Trip Return Details */}
         {tripType === 'round-trip' && bookingType === 'prearranged' && (
-          <div className="p-4 bg-purple-50 border-2 border-purple-200 rounded-lg space-y-3">
+          <div className="p-4 bg-amber-100 border-2 border-brand-gold rounded-lg space-y-3">
             <h3 className="font-semibold text-brand-brown flex items-center gap-2">
               🔁 Return Journey Details
             </h3>
@@ -426,8 +426,8 @@ export default function Transfers() {
                 />
               </div>
             </div>
-            <div className="p-2 bg-green-50 border border-green-200 rounded">
-              <p className="text-sm text-green-800">
+            <div className="p-2 bg-cream-sand border border-cream-border rounded">
+              <p className="text-sm text-brand-brown">
                 💰 Round trip discount: <strong>15% off</strong> total fare
               </p>
             </div>
@@ -487,11 +487,11 @@ export default function Transfers() {
           <div className="flex items-center gap-3 mb-4">
             <div className={`w-3 h-3 rounded-full ${
               status === 'searching' ? 'bg-yellow-500 animate-pulse' :
-              status === 'matched' || status === 'accepted' ? 'bg-blue-500' :
-              status === 'en-route' ? 'bg-purple-500 animate-pulse' :
-              status === 'arrived' ? 'bg-green-500' :
-              status === 'completed' ? 'bg-gray-500' :
-              'bg-red-500'
+              status === 'matched' || status === 'accepted' ? 'bg-brand-orange' :
+              status === 'en-route' ? 'bg-brand-gold animate-pulse' :
+              status === 'arrived' ? 'bg-cream-sand' :
+              status === 'completed' ? 'bg-brand-brown' :
+              'bg-brand-russty'
             }`}></div>
             <h2 className="font-bold text-lg text-brand-brown">
               {status === 'searching' && '🔍 Finding available drivers...'}
@@ -522,8 +522,8 @@ export default function Transfers() {
                     showRoute={true}
                   />
                   {request.additionalStops && request.additionalStops.length > 0 && (
-                    <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded">
-                      <p className="text-xs text-blue-800">
+                    <div className="mt-2 p-2 bg-cream-sand border border-cream-border rounded">
+                      <p className="text-xs text-brand-brown">
                         📍 Multi-stop route with {request.additionalStops.length} additional stop{request.additionalStops.length !== 1 ? 's' : ''}
                       </p>
                     </div>
@@ -536,12 +536,12 @@ export default function Transfers() {
                 <div className="mt-4 flex gap-2">
                   <button
                     onClick={() => setShowChat(!showChat)}
-                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition flex items-center justify-center gap-2"
                   >
                     💬 {showChat ? 'Hide Chat' : 'Chat with Driver'}
                   </button>
                   <button
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
+                    className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition"
                   >
                     📞 Call
                   </button>
@@ -556,20 +556,20 @@ export default function Transfers() {
               )}
               
               {status === 'accepted' && (
-                <div className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
-                  <p className="text-blue-800 text-xs">Driver is preparing to pick you up. You&apos;ll receive updates as they approach.</p>
+                <div className="mt-4 p-3 bg-cream-sand rounded border border-cream-border">
+                  <p className="text-brand-brown text-xs">Driver is preparing to pick you up. You&apos;ll receive updates as they approach.</p>
                 </div>
               )}
               
               {status === 'en-route' && (
-                <div className="mt-4 p-3 bg-purple-50 rounded border border-purple-200">
-                  <p className="text-purple-800 text-xs">Driver is en route to your pickup location. ETA: {request.driver.eta}</p>
+                <div className="mt-4 p-3 bg-amber-100 rounded border border-brand-gold">
+                  <p className="text-brand-brown text-xs">Driver is en route to your pickup location. ETA: {request.driver.eta}</p>
                 </div>
               )}
               
               {status === 'arrived' && (
-                <div className="mt-4 p-3 bg-green-50 rounded border border-green-200">
-                  <p className="text-green-800 text-xs font-semibold">Driver has arrived at your pickup location!</p>
+                <div className="mt-4 p-3 bg-cream-sand rounded border border-cream-border">
+                  <p className="text-brand-brown text-xs font-semibold">Driver has arrived at your pickup location!</p>
                 </div>
               )}
             </div>

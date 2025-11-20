@@ -37,10 +37,10 @@ export default function DriverRating({ requestId, driver, onSubmit }) {
 
   if (submitted) {
     return (
-      <div className="p-6 bg-green-50 border border-green-200 rounded-lg text-center">
-        <p className="text-2xl mb-2">✅</p>
-        <p className="font-semibold text-green-800">Thank you for your feedback!</p>
-        <p className="text-sm text-green-600 mt-1">Your rating helps us improve our service.</p>
+      <div className="p-6 bg-cream-sand border border-cream-border rounded-lg text-center">
+        <div className="text-4xl mb-2">✅</div>
+        <p className="font-semibold text-brand-brown">Thank you for your feedback!</p>
+        <p className="text-sm text-brand-russty mt-1">Your rating helps us improve our service.</p>
       </div>
     );
   }

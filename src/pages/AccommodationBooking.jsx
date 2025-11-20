@@ -26,11 +26,11 @@ export default function AccommodationBooking(){
         <label className="block">Hotel name<input value={hotelName} onChange={e=>setHotelName(e.target.value)} className="w-full p-2 border" /></label>
         <label className="block">Nights<input type="number" value={nights} onChange={e=>setNights(e.target.value)} className="w-full p-2 border" /></label>
         <label className="block">Price per night<input type="number" value={unitPrice} onChange={e=>setUnitPrice(e.target.value)} className="w-full p-2 border" /></label>
-        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Book</button>
+        <button type="submit" className="px-4 py-2 bg-brand-orange text-white rounded hover:bg-brand-gold transition">Book</button>
       </form>
       {status==='ok' && checkout && <div className="mt-4">Checkout: <a href={checkout.checkoutUrl}>{checkout.checkoutUrl}</a></div>}
-      {status==='ok' && !checkout && <div className="mt-4 text-green-700">Booking confirmed (no payment required)</div>}
-      {status==='error' && <div className="mt-4 text-red-700">Booking failed</div>}
+      {status==='ok' && !checkout && <div className="mt-4 bg-cream-sand text-brand-brown p-3 rounded">Booking confirmed (no payment required)</div>}
+      {status==='error' && <div className="mt-4 bg-amber-100 text-brand-russty p-3 rounded">Booking failed</div>}
     </div>
   );
 }

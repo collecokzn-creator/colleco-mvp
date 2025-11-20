@@ -63,14 +63,14 @@ export default function Notifications() {
         <h1 className="text-3xl font-bold">Notifications</h1>
         <div className="flex gap-3 items-center">
           {unreadCount > 0 && (
-            <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+            <span className="bg-brand-russty text-white text-xs font-bold px-2 py-1 rounded-full">
               {unreadCount} new
             </span>
           )}
           {alerts.length > 0 && (
             <button 
               onClick={clearAll}
-              className="text-sm text-red-600 hover:underline"
+              className="text-sm text-brand-russty hover:underline"
             >
               Clear All
             </button>
@@ -94,9 +94,9 @@ export default function Notifications() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`w-2 h-2 rounded-full ${
-                      alert.type === 'success' ? 'bg-green-500' :
-                      alert.type === 'warning' ? 'bg-yellow-500' :
-                      alert.type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+                      alert.type === 'success' ? 'bg-cream-sand' :
+                      alert.type === 'warning' ? 'bg-amber-100' :
+                      alert.type === 'error' ? 'bg-brand-russty' : 'bg-brand-orange'
                     }`}></span>
                     <h3 className="font-semibold">{alert.title}</h3>
                   </div>
@@ -108,7 +108,7 @@ export default function Notifications() {
                 {!alert.read && (
                   <button 
                     onClick={() => markAsRead(alert.id)}
-                    className="text-xs text-blue-600 hover:underline ml-4"
+                    className="text-xs text-brand-orange hover:underline ml-4"
                   >
                     Mark as read
                   </button>

@@ -78,8 +78,8 @@ export default function Trips() {
                         </h3>
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                           trip.status === 'confirmed' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-yellow-100 text-yellow-800'
+                            ? 'bg-cream-sand text-brand-brown' 
+                            : 'bg-amber-100 text-brand-russty'
                         }`}>
                           {trip.status}
                         </span>

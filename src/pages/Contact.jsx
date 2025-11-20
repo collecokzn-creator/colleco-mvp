@@ -42,8 +42,8 @@ export default function Contact() {
           </label>
           <div className="flex items-center gap-2">
             <button className="px-4 py-2 rounded bg-brand-orange text-white text-sm">Send</button>
-              {status==='ok' && <span className="text-green-700 text-sm">Thanks! We&apos;ll reply shortly.</span>}
-            {status==='err' && <span className="text-red-700 text-sm">Could not send right now.</span>}
+              {status==='ok' && <span className="bg-cream-sand text-brand-brown px-3 py-1 rounded text-sm">Thanks! We&apos;ll reply shortly.</span>}
+            {status==='err' && <span className="bg-amber-100 text-brand-russty px-3 py-1 rounded text-sm">Could not send right now.</span>}
           </div>
         </form>
       </div>

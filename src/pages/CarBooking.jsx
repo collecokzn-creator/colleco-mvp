@@ -25,11 +25,11 @@ export default function CarBooking(){
         <label>Vehicle Type<input value={vehicleType} onChange={e=>setVehicleType(e.target.value)} className="w-full p-2 border" /></label>
         <label>Days<input type="number" value={days} onChange={e=>setDays(e.target.value)} className="w-full p-2 border" /></label>
         <label>Price per day<input type="number" value={pricePerDay} onChange={e=>setPricePerDay(e.target.value)} className="w-full p-2 border" /></label>
-        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Hire</button>
+        <button type="submit" className="px-4 py-2 bg-brand-orange text-white rounded hover:bg-brand-gold transition">Hire</button>
       </form>
       {status==='ok' && checkout && <div className="mt-4">Checkout: <a href={checkout.checkoutUrl}>{checkout.checkoutUrl}</a></div>}
-      {status==='ok' && !checkout && <div className="mt-4 text-green-700">Booking confirmed (no payment required)</div>}
-      {status==='error' && <div className="mt-4 text-red-700">Booking failed</div>}
+      {status==='ok' && !checkout && <div className="mt-4 bg-cream-sand text-brand-brown p-3 rounded">Booking confirmed (no payment required)</div>}
+      {status==='error' && <div className="mt-4 bg-amber-100 text-brand-russty p-3 rounded">Booking failed</div>}
     </div>
   );
 }

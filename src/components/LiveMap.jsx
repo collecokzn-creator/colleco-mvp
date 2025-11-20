@@ -246,7 +246,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
           <>
             <p className="font-semibold text-gray-700">Live Tracking</p>
             {driverLocation && (
-              <p className="text-xs text-green-600">🔴 Driver location updating</p>
+              <p className="text-xs text-brand-orange">🔴 Driver location updating</p>
             )}
           </>
         )}

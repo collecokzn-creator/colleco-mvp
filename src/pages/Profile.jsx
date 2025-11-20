@@ -144,7 +144,7 @@ export default function Profile() {
           <h1 className="text-3xl font-bold text-brand-brown">My Profile</h1>
           <button
             onClick={handleLogout}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition"
+            className="px-4 py-2 bg-brand-russty text-white rounded-lg font-semibold hover:bg-brand-brown transition"
           >
             🚪 Log Out
           </button>
@@ -183,7 +183,7 @@ export default function Profile() {
                 </button>
                 <button
                   onClick={startCamera}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition"
+                  className="px-4 py-2 bg-brand-orange text-white rounded-lg text-sm font-semibold hover:bg-brand-gold transition"
                 >
                   📸 Take Photo
                 </button>
@@ -352,9 +352,9 @@ export default function Profile() {
                       <p className="text-sm text-gray-600">{booking.date} • {booking.guests || 1} guest(s)</p>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                      booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-blue-100 text-blue-800'
+                      booking.status === 'confirmed' ? 'bg-cream-sand text-brand-brown' :
+                      booking.status === 'pending' ? 'bg-amber-100 text-brand-russty' :
+                      'bg-cream-hover text-brand-brown'
                     }`}>
                       {booking.status}
                     </span>

@@ -41,7 +41,7 @@ export default function Wishlist() {
                 </Link>
                 <button 
                   onClick={() => removeItem(item.id)}
-                  className="px-3 py-2 bg-red-500 text-white rounded text-sm"
+                  className="px-3 py-2 bg-brand-russty text-white rounded text-sm hover:bg-brand-brown transition"
                 >
                   Remove
                 </button>

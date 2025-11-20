@@ -88,8 +88,8 @@ export default function PartnerTransferDashboard() {
 
       {/* Active Trip */}
       {activeRequest && (
-        <div className="mb-8 p-6 bg-blue-50 border-2 border-blue-500 rounded-lg">
-          <h2 className="text-xl font-bold mb-4 text-blue-800">🚗 Active Trip</h2>
+        <div className="mb-8 p-6 bg-cream-sand border-2 border-brand-orange rounded-lg">
+          <h2 className="text-xl font-bold mb-4 text-brand-brown">🚗 Active Trip</h2>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
               <p className="text-sm text-gray-600">Pickup</p>
@@ -113,7 +113,7 @@ export default function PartnerTransferDashboard() {
             {activeRequest.status === 'accepted' && (
               <button
                 onClick={() => updateStatus(activeRequest.id, 'en-route')}
-                className="px-4 py-2 bg-purple-600 text-white rounded font-semibold hover:bg-purple-700"
+                className="px-4 py-2 bg-brand-orange text-white rounded font-semibold hover:bg-brand-gold"
               >
                 Start Journey
               </button>
@@ -121,7 +121,7 @@ export default function PartnerTransferDashboard() {
             {activeRequest.status === 'en-route' && (
               <button
                 onClick={() => updateStatus(activeRequest.id, 'arrived')}
-                className="px-4 py-2 bg-green-600 text-white rounded font-semibold hover:bg-green-700"
+                className="px-4 py-2 bg-brand-orange text-white rounded font-semibold hover:bg-brand-gold"
               >
                 Mark as Arrived
               </button>
@@ -153,7 +153,7 @@ export default function PartnerTransferDashboard() {
                   </div>
                   <button
                     onClick={() => setActiveRequest(req)}
-                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded"
+                    className="px-3 py-1 bg-brand-orange text-white text-sm rounded hover:bg-brand-gold transition"
                   >
                     View
                   </button>
@@ -168,7 +168,7 @@ export default function PartnerTransferDashboard() {
       <div>
         <h2 className="text-xl font-bold mb-4 text-brand-brown">
           Incoming Requests {pendingRequests.length > 0 && (
-            <span className="ml-2 px-2 py-1 bg-red-500 text-white text-sm rounded-full">
+            <span className="ml-2 px-2 py-1 bg-brand-russty text-white text-sm rounded-full">
               {pendingRequests.length} new
             </span>
           )}
@@ -216,7 +216,7 @@ export default function PartnerTransferDashboard() {
                   <button
                     onClick={() => acceptRequest(req.id)}
                     disabled={loading}
-                    className="flex-1 px-4 py-2 bg-green-600 text-white rounded font-semibold hover:bg-green-700 disabled:opacity-50"
+                    className="flex-1 px-4 py-2 bg-brand-orange text-white rounded font-semibold hover:bg-brand-gold disabled:opacity-50"
                   >
                     Accept
                   </button>
@@ -228,7 +228,7 @@ export default function PartnerTransferDashboard() {
                 </div>
 
                 {req.bookingType === 'instant' && (
-                  <p className="text-xs text-red-600 mt-2">⚡ Instant request - respond quickly!</p>
+                  <p className="text-xs text-brand-russty mt-2">⚡ Instant request - respond quickly!</p>
                 )}
               </div>
             ))}
