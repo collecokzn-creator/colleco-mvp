@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { WishlistButton } from '../components/mvp/EnhancementStubs';
 
 export default function Wishlist() {
   const [items, setItems] = useState([]);

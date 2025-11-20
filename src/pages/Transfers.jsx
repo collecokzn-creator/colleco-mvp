@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
 import BookingNav from '../components/BookingNav';
 import LiveMap from '../components/LiveMap';
 import TransferChat from '../components/TransferChat';
@@ -274,7 +273,7 @@ export default function Transfers() {
               
               {status === 'accepted' && (
                 <div className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
-                  <p className="text-blue-800 text-xs">Driver is preparing to pick you up. You'll receive updates as they approach.</p>
+                  <p className="text-blue-800 text-xs">Driver is preparing to pick you up. You&apos;ll receive updates as they approach.</p>
                 </div>
               )}
               
@@ -293,7 +292,7 @@ export default function Transfers() {
           )}
           
           {status === 'searching' && (
-            <p className="text-sm text-gray-600">We're notifying all available drivers in your area. This may take a moment...</p>
+            <p className="text-sm text-gray-600">We&apos;re notifying all available drivers in your area. This may take a moment...</p>
           )}
           
           {/* Rating Component after completion */}

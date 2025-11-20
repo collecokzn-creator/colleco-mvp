@@ -119,21 +119,21 @@ export default function Bookings() {
     ]);
     const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
-  	const url = URL.createObjectURL(blob);
-  	const a = document.createElement('a');
-  	a.href = url;
-  	a.download = `bookings_${new Date().toISOString().split('T')[0]}.csv`;
-  	document.body.appendChild(a);
-  	a.click();
-  	document.body.removeChild(a);
-  	URL.revokeObjectURL(url);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `bookings_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
   
   const statusBadgeColor = (status) => {
-  	if (status === 'confirmed') return 'text-emerald-700';
-  	if (status === 'pending') return 'text-amber-600';
-  	if (status === 'completed') return 'text-gray-600';
-  	return 'text-brand-brown';
+    if (status === 'confirmed') return 'text-emerald-700';
+    if (status === 'pending') return 'text-amber-600';
+    if (status === 'completed') return 'text-gray-600';
+    return 'text-brand-brown';
   };
   
 	return (

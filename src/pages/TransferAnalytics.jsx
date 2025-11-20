@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 export default function TransferAnalytics() {
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('week'); // 'week', 'month', 'year'
 
-  useEffect(() => {
-    loadMetrics();
-  }, [timeRange]);
-
-  async function loadMetrics() {
+  const loadMetrics = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/transfers/analytics?range=${timeRange}`);
@@ -23,7 +19,11 @@ export default function TransferAnalytics() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [timeRange]);
+
+  useEffect(() => {
+    loadMetrics();
+  }, [loadMetrics]);
 
   if (loading) {
     return (

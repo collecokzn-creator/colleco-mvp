@@ -22,8 +22,8 @@ describe('siteminder wrapper retry/backoff', () => {
           return res.end(JSON.stringify({ error: 'rate_limited' }));
         }
         // subsequent: success
-        let body = '';
-        for await (const chunk of req) body += chunk;
+        let _body = '';
+        for await (const chunk of req) _body += chunk;
         res.writeHead(201, { 'content-type': 'application/json' });
         return res.end(JSON.stringify({ id: 'real-1', status: 'confirmed', createdAt: new Date().toISOString() }));
       }

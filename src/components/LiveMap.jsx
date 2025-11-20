@@ -138,7 +138,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     }
 
     setMarkers(newMarkers);
-  }, [map, pickup, dropoff, driverLocation]);
+  }, [map, pickup, dropoff, driverLocation, markers]);
 
   function geocodeAddress(address, callback) {
     if (!window.google) return;
