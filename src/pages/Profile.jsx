@@ -139,15 +139,9 @@ export default function Profile() {
     <div className="overflow-x-hidden bg-cream min-h-screen">
       <div className="max-w-5xl mx-auto px-4 py-8" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
         
-        {/* Page Title with Logout */}
-        <div className="flex items-center justify-between mb-6">
+        {/* Page Title */}
+        <div className="mb-6">
           <h1 className="text-2xl font-bold text-brand-orange">Account</h1>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 text-brand-russty text-sm hover:text-brand-brown transition"
-          >
-            Log Out
-          </button>
         </div>
         
         {/* Header Section */}
@@ -352,6 +346,16 @@ export default function Profile() {
               </div>
             </>
           )}
+        </div>
+
+        {/* Logout Button */}
+        <div className="mt-8 pt-6 border-t border-cream-border flex justify-center">
+          <button
+            onClick={handleLogout}
+            className="px-6 py-3 text-brand-russty text-sm font-medium hover:text-brand-brown transition rounded-lg hover:bg-cream-sand"
+          >
+            Log Out
+          </button>
         </div>
 
       </div>
