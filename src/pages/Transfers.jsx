@@ -25,6 +25,42 @@ export default function Transfers() {
   const [driverLocation, setDriverLocation] = useState(null);
   const [showChat, setShowChat] = useState(false);
   const [previousStatus, setPreviousStatus] = useState(null);
+  const [nearbyDrivers, setNearbyDrivers] = useState([]);
+  const [loadingNearby, setLoadingNearby] = useState(false);
+
+  // Fetch nearby available drivers based on pickup location
+  async function fetchNearbyDrivers(location) {
+    if (!location || location.length < 3) {
+      setNearbyDrivers([]);
+      return;
+    }
+    
+    setLoadingNearby(true);
+    try {
+      const res = await fetch(`/api/transfers/nearby?location=${encodeURIComponent(location)}`);
+      const data = await res.json();
+      
+      if (data.ok && data.drivers) {
+        setNearbyDrivers(data.drivers);
+      } else {
+        setNearbyDrivers([]);
+      }
+    } catch (e) {
+      console.error('[transfers] fetch nearby drivers failed', e);
+      setNearbyDrivers([]);
+    } finally {
+      setLoadingNearby(false);
+    }
+  }
+
+  // Watch pickup location and fetch nearby drivers
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchNearbyDrivers(pickup);
+    }, 500); // Debounce 500ms
+    
+    return () => clearTimeout(timer);
+  }, [pickup]);
 
   async function submitRequest(e) {
     e.preventDefault();
@@ -146,6 +182,40 @@ export default function Transfers() {
             placeholder="e.g. King Shaka Airport" 
           />
         </div>
+        
+        {/* Nearby Shuttles Map */}
+        {pickup && pickup.length >= 3 && !status && (
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-semibold text-brand-brown">
+                {loadingNearby ? '🔍 Finding nearby shuttles...' : `📍 ${nearbyDrivers.length} shuttle${nearbyDrivers.length !== 1 ? 's' : ''} available near you`}
+              </h3>
+            </div>
+            <div className="border-2 border-cream-border rounded-lg overflow-hidden">
+              <LiveMap 
+                pickup={pickup}
+                nearbyDrivers={nearbyDrivers}
+                showRoute={false}
+                height="300px"
+              />
+            </div>
+            {nearbyDrivers.length > 0 && (
+              <div className="mt-2 p-3 bg-green-50 rounded border border-green-200">
+                <p className="text-green-800 text-sm">
+                  ✅ Shuttles available in your area. Average ETA: {Math.min(...nearbyDrivers.map(d => d.eta || 10))} min
+                </p>
+              </div>
+            )}
+            {!loadingNearby && nearbyDrivers.length === 0 && (
+              <div className="mt-2 p-3 bg-yellow-50 rounded border border-yellow-200">
+                <p className="text-yellow-800 text-sm">
+                  ⚠️ No shuttles currently in this area. You can still submit a request and we&apos;ll notify nearby drivers.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+        
         <div>
           <label className="block mb-1 font-semibold">Dropoff Location</label>
           <input 

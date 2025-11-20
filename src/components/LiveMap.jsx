@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = true }) {
+export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = true, nearbyDrivers = [], height = '400px' }) {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState({ pickup: null, dropoff: null, driver: null });
+  const [nearbyMarkers, setNearbyMarkers] = useState([]);
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
 
   useEffect(() => {
@@ -29,6 +30,50 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
       }
     }
   }, [map, pickup, dropoff, driverLocation, showRoute, updateMapMarkers, drawRoute]);
+
+  // Update nearby drivers markers
+  useEffect(() => {
+    if (!map || !window.google) return;
+
+    // Clear existing nearby markers
+    nearbyMarkers.forEach(marker => marker.setMap(null));
+
+    // Create new markers for nearby drivers
+    const newNearbyMarkers = nearbyDrivers.map((driver, index) => {
+      return new window.google.maps.Marker({
+        position: { lat: driver.lat, lng: driver.lng },
+        map: map,
+        title: `${driver.name || 'Driver'} - ${driver.eta || 5} min away`,
+        icon: {
+          url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <circle cx="16" cy="16" r="14" fill="#FF9800" stroke="white" stroke-width="2"/>
+              <text x="16" y="21" font-size="16" text-anchor="middle" fill="white">🚐</text>
+            </svg>
+          `),
+          scaledSize: new window.google.maps.Size(32, 32),
+          anchor: new window.google.maps.Point(16, 16),
+        },
+        zIndex: 100 + index,
+      });
+    });
+
+    setNearbyMarkers(newNearbyMarkers);
+
+    // Fit bounds to show all nearby drivers if present
+    if (nearbyDrivers.length > 0 && pickup) {
+      const bounds = new window.google.maps.LatLngBounds();
+      nearbyDrivers.forEach(driver => {
+        bounds.extend({ lat: driver.lat, lng: driver.lng });
+      });
+      map.fitBounds(bounds);
+      // Don't zoom in too much
+      const listener = window.google.maps.event.addListener(map, 'idle', () => {
+        if (map.getZoom() > 15) map.setZoom(15);
+        window.google.maps.event.removeListener(listener);
+      });
+    }
+  }, [map, nearbyDrivers]);
 
   function initMap() {
     if (!mapRef.current || !window.google) return;
@@ -171,14 +216,23 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
   }, [directionsRenderer, pickup, dropoff]);
 
   return (
-    <div className="relative w-full h-full min-h-[400px] rounded-lg overflow-hidden border-2 border-gray-300">
+    <div className="relative w-full rounded-lg overflow-hidden border-2 border-gray-300" style={{ height }}>
       <div ref={mapRef} className="w-full h-full" />
       
       {/* Map overlay with info */}
       <div className="absolute top-4 left-4 bg-white px-4 py-2 rounded-lg shadow-lg text-sm">
-        <p className="font-semibold text-gray-700">Live Tracking</p>
-        {driverLocation && (
-          <p className="text-xs text-green-600">🔴 Driver location updating</p>
+        {nearbyDrivers.length > 0 ? (
+          <>
+            <p className="font-semibold text-gray-700">📍 Nearby Shuttles</p>
+            <p className="text-xs text-orange-600">{nearbyDrivers.length} available</p>
+          </>
+        ) : (
+          <>
+            <p className="font-semibold text-gray-700">Live Tracking</p>
+            {driverLocation && (
+              <p className="text-xs text-green-600">🔴 Driver location updating</p>
+            )}
+          </>
         )}
       </div>
     </div>
