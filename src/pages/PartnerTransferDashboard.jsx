@@ -176,7 +176,7 @@ export default function PartnerTransferDashboard() {
 
         {pendingRequests.length === 0 ? (
           <div className="p-8 bg-gray-50 rounded-lg text-center">
-            <p className="text-gray-500">No pending requests. We'll notify you when a customer needs a transfer.</p>
+            <p className="text-gray-500">No pending requests. We&apos;ll notify you when a customer needs a transfer.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 export default function Notifications() {
   const [alerts, setAlerts] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // Load alerts from localStorage or API
@@ -81,7 +80,7 @@ export default function Notifications() {
 
       {alerts.length === 0 ? (
         <div className="bg-white rounded-xl border shadow-sm p-8 text-center">
-          <p className="text-gray-500">No notifications yet. We'll notify you about important updates!</p>
+          <p className="text-gray-500">No notifications yet. We&apos;ll notify you about important updates!</p>
         </div>
       ) : (
         <div className="space-y-4">

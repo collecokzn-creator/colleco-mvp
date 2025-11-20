@@ -32,7 +32,7 @@ export default function Bookings() {
 			try { const list = await listProviders(); setProviders(list); } catch {}
 		})();
 	}, []);
-	const verifiedIds = new Set((providers||[]).filter(p => p.verified).map(p => p.id));
+	const verifiedIds = useMemo(() => new Set((providers||[]).filter(p => p.verified).map(p => p.id)), [providers]);
 	
   // Mock items with status and dates
   const items = useMemo(() => ([
@@ -109,16 +109,16 @@ export default function Bookings() {
   
   // Export to CSV
   function exportToCSV() {
-  	const headers = ['Name', 'Amount', 'Status', 'Date', 'Category'];
-  	const rows = filteredAndSortedItems.map(it => [
-  		it.name,
-  		it.amount,
-  		it.status,
-  		it.date,
-  		it.category
-  	]);
-  	const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
-  	const blob = new Blob([csv], { type: 'text/csv' });
+    const headers = ['Name', 'Amount', 'Status', 'Date', 'Category'];
+    const rows = filteredAndSortedItems.map(it => [
+      it.name,
+      it.amount,
+      it.status,
+      it.date,
+      it.category
+    ]);
+    const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
   	const url = URL.createObjectURL(blob);
   	const a = document.createElement('a');
   	a.href = url;

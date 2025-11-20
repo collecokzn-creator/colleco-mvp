@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = true }) {
   const mapRef = useRef(null);
@@ -56,7 +56,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     setDirectionsRenderer(renderer);
   }
 
-  function updateMapMarkers() {
+  const updateMapMarkers = useCallback(() => {
     if (!map || !window.google) return;
 
     // Clear existing markers
@@ -138,7 +138,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     }
 
     setMarkers(newMarkers);
-  }
+  }, [map, pickup, dropoff, driverLocation]);
 
   function geocodeAddress(address, callback) {
     if (!window.google) return;
@@ -151,7 +151,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     });
   }
 
-  function drawRoute() {
+  const drawRoute = useCallback(() => {
     if (!directionsRenderer || !window.google) return;
 
     const directionsService = new window.google.maps.DirectionsService();
@@ -168,7 +168,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
         }
       }
     );
-  }
+  }, [directionsRenderer, pickup, dropoff]);
 
   return (
     <div className="relative w-full h-full min-h-[400px] rounded-lg overflow-hidden border-2 border-gray-300">

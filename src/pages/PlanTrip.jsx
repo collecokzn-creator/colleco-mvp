@@ -1496,6 +1496,19 @@ export default function PlanTrip() {
             </div>
           )}
           <span aria-live="polite" className="sr-only">{undoMsg}</span>
+          
+          {/* Workflow Panel - shows workflow when basket has items */}
+          {basket.length > 0 && (
+            <div className="mb-4">
+              <WorkflowPanel 
+                currentPage="plan-trip"
+                basketCount={basket.length}
+                hasItinerary={false}
+                hasQuote={false}
+              />
+            </div>
+          )}
+          
           {/* Toasts container */}
           {toasts.length>0 && (
             <div className="fixed right-4 bottom-4 z-50 space-y-2">

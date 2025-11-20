@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { SupportTicketForm } from '../components/mvp/EnhancementStubs';
 
 export default function SupportTickets() {
   const [tickets, setTickets] = useState([]);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 export default function TransferChat({ requestId, role = 'customer' }) {
   const [messages, setMessages] = useState([]);
@@ -52,11 +52,7 @@ export default function TransferChat({ requestId, role = 'customer' }) {
     }
   }, [requestId, role, startPolling]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  function startPolling() {
+  const startPolling = useCallback(() => {
     const interval = setInterval(async () => {
       try {
         const res = await fetch(`/api/transfers/request/${requestId}/messages`);
@@ -70,7 +66,11 @@ export default function TransferChat({ requestId, role = 'customer' }) {
     }, 3000);
 
     return () => clearInterval(interval);
-  }
+  }, [requestId]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   function scrollToBottom() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
