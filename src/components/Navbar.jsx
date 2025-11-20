@@ -66,23 +66,13 @@ export default function Navbar() {
 				<div className="flex items-center justify-between h-16">
 				{/* Logo & Branding */}
 				<Link to="/" className="flex items-center gap-2.5 shrink-0">
-					<div className="relative">
-						<div className="absolute inset-0 bg-gradient-to-br from-brand-orange/20 to-brand-gold/20 rounded-lg blur-sm"></div>
-						<img
-							src={logoPng}
-							alt="CollEco Travel"
-							className="relative h-10 w-10 object-contain transition-all duration-300 hover:scale-110"
-							style={{
-								filter: 'drop-shadow(3px 3px 6px rgba(179, 84, 30, 0.4)) drop-shadow(-2px -2px 3px rgba(255, 255, 255, 0.9)) brightness(1.1) contrast(1.1)',
-								transform: 'perspective(200px) rotateY(-8deg) rotateX(2deg)',
-								background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,247,238,0.8))',
-								borderRadius: '8px',
-								padding: '2px'
-							}}
-							width="40"
-							height="40"
-						/>
-					</div>
+					<img
+						src={logoPng}
+						alt="CollEco Travel"
+						className="h-9 w-9 object-contain transition-transform duration-300 hover:scale-105"
+						width="36"
+						height="36"
+					/>
 					<div className="hidden sm:flex flex-col leading-tight">
 						<span className="text-base font-bold text-brand-orange">CollEco Travel</span>
 						<span className="text-[10px] text-brand-brown italic" style={{ fontFamily: 'cursive, Inter, sans-serif' }}>The Odyssey of Adventure</span>
