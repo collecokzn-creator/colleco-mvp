@@ -19,6 +19,13 @@ export default function Transfers() {
   const [time, setTime] = useState("");
   const [pax, setPax] = useState(1);
   const [bookingType, setBookingType] = useState("instant"); // "instant" or "prearranged"
+  const [tripType, setTripType] = useState("one-way"); // "one-way", "round-trip", "multi-stop"
+  const [returnDate, setReturnDate] = useState("");
+  const [returnTime, setReturnTime] = useState("");
+  const [additionalStops, setAdditionalStops] = useState([]);
+  const [multiDayService, setMultiDayService] = useState(false);
+  const [serviceDays, setServiceDays] = useState(1);
+  const [recurringDays, setRecurringDays] = useState([]);
   const [request, setRequest] = useState(null);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null); // null, 'searching', 'matched', 'accepted', 'en-route', 'arrived', 'completed'
@@ -74,7 +81,14 @@ export default function Transfers() {
         date: bookingType === 'instant' ? new Date().toISOString() : date,
         time: bookingType === 'instant' ? new Date().toISOString() : time,
         pax,
-        bookingType
+        bookingType,
+        tripType,
+        additionalStops: tripType === 'multi-stop' ? additionalStops.filter(s => s.trim()) : [],
+        returnDate: tripType === 'round-trip' ? returnDate : null,
+        returnTime: tripType === 'round-trip' ? returnTime : null,
+        multiDayService,
+        serviceDays: multiDayService ? serviceDays : 1,
+        recurringDays: multiDayService ? recurringDays : []
       };
       
       const res = await fetch('/api/transfers/request', {
@@ -144,7 +158,47 @@ export default function Transfers() {
       <BookingNav />
       <h1 className="text-3xl font-bold mb-4 text-brand-brown">Shuttle & Transfers</h1>
       
-      {/* Booking Type Toggle */}
+      {/* Trip Type Selector */}
+      <div className="mb-4">
+        <label className="block mb-2 font-semibold text-brand-brown">Trip Type</label>
+        <div className="grid grid-cols-3 gap-3">
+          <button
+            type="button"
+            onClick={() => setTripType('one-way')}
+            className={`px-4 py-3 rounded-lg font-semibold border-2 transition ${
+              tripType === 'one-way' 
+                ? 'bg-brand-orange text-white border-brand-orange' 
+                : 'bg-white text-brand-brown border-gray-300 hover:border-brand-orange'
+            }`}
+          >
+            🚗 One-way
+          </button>
+          <button
+            type="button"
+            onClick={() => setTripType('round-trip')}
+            className={`px-4 py-3 rounded-lg font-semibold border-2 transition ${
+              tripType === 'round-trip' 
+                ? 'bg-brand-orange text-white border-brand-orange' 
+                : 'bg-white text-brand-brown border-gray-300 hover:border-brand-orange'
+            }`}
+          >
+            🔁 Round Trip
+          </button>
+          <button
+            type="button"
+            onClick={() => setTripType('multi-stop')}
+            className={`px-4 py-3 rounded-lg font-semibold border-2 transition ${
+              tripType === 'multi-stop' 
+                ? 'bg-brand-orange text-white border-brand-orange' 
+                : 'bg-white text-brand-brown border-gray-300 hover:border-brand-orange'
+            }`}
+          >
+            📍 Multi-stop
+          </button>
+        </div>
+      </div>
+
+      {/* Booking Time Type Toggle */}
       <div className="mb-6 flex gap-3">
         <button
           type="button"
@@ -155,7 +209,7 @@ export default function Transfers() {
               : 'bg-white text-brand-brown border-gray-300'
           }`}
         >
-          🚗 Instant Request
+          🚀 Instant Request
         </button>
         <button
           type="button"
@@ -169,6 +223,72 @@ export default function Transfers() {
           📅 Prearranged
         </button>
       </div>
+
+      {/* Multi-Day Service Toggle */}
+      {bookingType === 'prearranged' && (
+        <div className="mb-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input 
+              type="checkbox" 
+              checked={multiDayService}
+              onChange={e => setMultiDayService(e.target.checked)}
+              className="w-5 h-5 text-brand-orange rounded"
+            />
+            <div>
+              <span className="font-semibold text-brand-brown">📆 Multi-Day Service</span>
+              <p className="text-sm text-gray-600">Book recurring shuttle service for multiple days (discounts apply)</p>
+            </div>
+          </label>
+          
+          {multiDayService && (
+            <div className="mt-4 space-y-3">
+              <div>
+                <label className="block mb-1 font-semibold text-sm">Number of Days</label>
+                <input 
+                  type="number"
+                  min={2}
+                  max={30}
+                  value={serviceDays}
+                  onChange={e => setServiceDays(Number(e.target.value))}
+                  className="w-32 border rounded px-3 py-2"
+                />
+                <span className="ml-2 text-sm text-gray-600">days</span>
+              </div>
+              <div>
+                <label className="block mb-2 font-semibold text-sm">Recurring Days (Optional)</label>
+                <div className="flex gap-2 flex-wrap">
+                  {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
+                    <button
+                      key={day}
+                      type="button"
+                      onClick={() => {
+                        if (recurringDays.includes(idx)) {
+                          setRecurringDays(recurringDays.filter(d => d !== idx));
+                        } else {
+                          setRecurringDays([...recurringDays, idx]);
+                        }
+                      }}
+                      className={`px-3 py-1 rounded text-sm font-semibold ${
+                        recurringDays.includes(idx)
+                          ? 'bg-brand-orange text-white'
+                          : 'bg-gray-200 text-gray-700'
+                      }`}
+                    >
+                      {day}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 mt-1">Select specific days for recurring service</p>
+              </div>
+              <div className="p-3 bg-green-50 border border-green-200 rounded">
+                <p className="text-sm text-green-800">
+                  🎉 Multi-day discount: <strong>{serviceDays >= 7 ? '20%' : serviceDays >= 3 ? '15%' : '10%'} off</strong>
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
       
       <form className="space-y-4" onSubmit={submitRequest}>
         <div>
@@ -227,6 +347,92 @@ export default function Transfers() {
             placeholder="e.g. Oyster Box Hotel" 
           />
         </div>
+        
+        {/* Multi-stop Journey */}
+        {tripType === 'multi-stop' && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="font-semibold text-brand-brown">Additional Stops</label>
+              <button
+                type="button"
+                onClick={() => setAdditionalStops([...additionalStops, ''])}
+                disabled={additionalStops.length >= 5}
+                className="px-3 py-1 bg-brand-orange text-white rounded text-sm font-semibold hover:bg-brand-gold transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                + Add Stop
+              </button>
+            </div>
+            
+            {additionalStops.map((stop, index) => (
+              <div key={index} className="flex gap-2 items-center">
+                <span className="text-sm font-semibold text-gray-500 w-6">{index + 1}.</span>
+                <input
+                  type="text"
+                  value={stop}
+                  onChange={e => {
+                    const newStops = [...additionalStops];
+                    newStops[index] = e.target.value;
+                    setAdditionalStops(newStops);
+                  }}
+                  className="flex-1 border rounded px-3 py-2"
+                  placeholder={`Stop ${index + 1} location`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setAdditionalStops(additionalStops.filter((_, i) => i !== index))}
+                  className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+            
+            {additionalStops.length > 0 && (
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded">
+                <p className="text-sm text-blue-800">
+                  📍 Total stops: {additionalStops.length + 2} (Pickup → {additionalStops.length} stop{additionalStops.length !== 1 ? 's' : ''} → Dropoff)
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {/* Round Trip Return Details */}
+        {tripType === 'round-trip' && bookingType === 'prearranged' && (
+          <div className="p-4 bg-purple-50 border-2 border-purple-200 rounded-lg space-y-3">
+            <h3 className="font-semibold text-brand-brown flex items-center gap-2">
+              🔁 Return Journey Details
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block mb-1 font-semibold text-sm">Return Date</label>
+                <input 
+                  type="date" 
+                  value={returnDate} 
+                  onChange={e => setReturnDate(e.target.value)} 
+                  required
+                  min={date}
+                  className="w-full border rounded px-3 py-2" 
+                />
+              </div>
+              <div>
+                <label className="block mb-1 font-semibold text-sm">Return Time</label>
+                <input 
+                  type="time" 
+                  value={returnTime} 
+                  onChange={e => setReturnTime(e.target.value)} 
+                  required
+                  className="w-full border rounded px-3 py-2" 
+                />
+              </div>
+            </div>
+            <div className="p-2 bg-green-50 border border-green-200 rounded">
+              <p className="text-sm text-green-800">
+                💰 Round trip discount: <strong>15% off</strong> total fare
+              </p>
+            </div>
+          </div>
+        )}
         
         {bookingType === 'prearranged' && (
           <>
@@ -312,8 +518,16 @@ export default function Transfers() {
                     pickup={request.pickup} 
                     dropoff={request.dropoff} 
                     driverLocation={driverLocation}
+                    waypoints={request.additionalStops || []}
                     showRoute={true}
                   />
+                  {request.additionalStops && request.additionalStops.length > 0 && (
+                    <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded">
+                      <p className="text-xs text-blue-800">
+                        📍 Multi-stop route with {request.additionalStops.length} additional stop{request.additionalStops.length !== 1 ? 's' : ''}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
               

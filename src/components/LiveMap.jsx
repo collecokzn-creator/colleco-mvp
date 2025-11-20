@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = true, nearbyDrivers = [], height = '400px' }) {
+export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = true, nearbyDrivers = [], height = '400px', waypoints = [] }) {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState({ pickup: null, dropoff: null, driver: null });
   const [nearbyMarkers, setNearbyMarkers] = useState([]);
+  const [waypointMarkers, setWaypointMarkers] = useState([]);
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
 
   useEffect(() => {
@@ -201,19 +202,34 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
 
     const directionsService = new window.google.maps.DirectionsService();
     
+    // Build waypoints array for multi-stop journeys
+    const waypointsArray = waypoints
+      .filter(w => w && w.trim())
+      .map(location => ({
+        location,
+        stopover: true
+      }));
+    
     directionsService.route(
       {
         origin: pickup,
         destination: dropoff,
+        waypoints: waypointsArray,
+        optimizeWaypoints: true, // Optimize route order
         travelMode: window.google.maps.TravelMode.DRIVING,
       },
       (result, status) => {
         if (status === 'OK') {
           directionsRenderer.setDirections(result);
+          
+          // Log optimized waypoint order if route was optimized
+          if (waypointsArray.length > 0 && result.routes[0].waypoint_order) {
+            console.log('[LiveMap] Optimized waypoint order:', result.routes[0].waypoint_order);
+          }
         }
       }
     );
-  }, [directionsRenderer, pickup, dropoff]);
+  }, [directionsRenderer, pickup, dropoff, waypoints]);
 
   return (
     <div className="relative w-full rounded-lg overflow-hidden border-2 border-gray-300" style={{ height }}>
