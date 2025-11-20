@@ -139,6 +139,17 @@ export default function Profile() {
     <div className="overflow-x-hidden bg-cream min-h-screen">
       <div className="max-w-5xl mx-auto px-4 py-8" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
         
+        {/* Page Title with Logout */}
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-brand-orange">Account</h1>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 text-brand-russty text-sm hover:text-brand-brown transition"
+          >
+            Log Out
+          </button>
+        </div>
+        
         {/* Header Section */}
         <div className="bg-white rounded-xl shadow-sm border border-cream-border p-8 mb-6">
           <div className="flex items-start justify-between">
@@ -148,7 +159,7 @@ export default function Profile() {
                   {profilePicture ? (
                     <img src={profilePicture} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl text-gray-400">
+                    <div className="w-full h-full flex items-center justify-center text-4xl text-brand-orange">
                       👤
                     </div>
                   )}
@@ -162,7 +173,7 @@ export default function Profile() {
               </div>
               
               <div>
-                <h1 className="text-2xl font-bold text-brand-brown mb-1">{formData.name}</h1>
+                <h2 className="text-xl font-bold text-brand-brown mb-1">{formData.name}</h2>
                 <p className="text-brand-russty text-sm">{formData.email}</p>
                 <div className="mt-3 flex gap-2">
                   <button
@@ -174,13 +185,6 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-            
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-brand-russty text-sm hover:text-brand-brown transition"
-            >
-              Log Out
-            </button>
           </div>
           
           <input
