@@ -491,6 +491,28 @@
               }
             },
             {
+              "path": "/trips",
+              "name": "Upcoming Trips",
+              "component": "Trips",
+              "meta": {
+                "title": "My Trips",
+                "requiresAuth": true,
+                "roles": ["client", "admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/analytics",
+              "name": "Analytics",
+              "component": "Analytics",
+              "meta": {
+                "title": "Travel Analytics",
+                "requiresAuth": true,
+                "roles": ["client", "admin", "partner"],
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/client/messages",
               "name": "Messages & Support",
               "component": "WorkspacePage",
