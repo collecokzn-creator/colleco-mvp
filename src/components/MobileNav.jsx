@@ -23,12 +23,12 @@ export default function MobileNav() {
               to={item.path}
               className={`flex flex-col items-center justify-center flex-1 h-full transition-all rounded-lg relative ${
                 isActive 
-                  ? 'text-brand-orange bg-cream-sand/40 shadow-inner after:absolute after:bottom-1 after:h-1 after:left-2 after:right-2 after:rounded-full after:bg-brand-orange/70' 
-                  : 'text-brand-brown hover:text-brand-orange hover:bg-cream-hover/30'
+                  ? 'bg-cream-sand/40 shadow-inner after:absolute after:bottom-1 after:h-1 after:left-2 after:right-2 after:rounded-full after:bg-brand-orange/70' 
+                  : 'hover:bg-cream-hover/30'
               }`}
             >
-              <span className={`text-2xl mb-0.5 ${item.iconColor || ''}`}>{item.icon}</span>
-              <span className="text-[10px] font-semibold tracking-wide">{item.label}</span>
+              <span className={`text-2xl mb-0.5 ${item.iconColor || (isActive ? 'text-brand-orange' : 'text-brand-brown')}`}>{item.icon}</span>
+              <span className={`text-[10px] font-semibold tracking-wide ${isActive ? 'text-brand-orange' : 'text-brand-brown hover:text-brand-orange'}`}>{item.label}</span>
             </Link>
           );
         })}
