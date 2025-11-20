@@ -1,9 +1,10 @@
-// Bumped to v23 – cache manifest and force update to flush stale HTML.
+// Bumped to v24 – force cache clear to fix module loading issues after updates.
 // Change log:
+// v24: Force cache clear to resolve dynamic module import failures.
 // v23: Cache manifest.webmanifest; force new install to help purge stale index.html in clients.
 // v22: Added CLIENT_UPDATE_AVAILABLE broadcast when a new SW takes control & manual CHECK_FOR_UPDATE message.
 // v21: Background sync stub & broadcast of itinerary sync results.
-const STATIC_CACHE = 'colleco-static-v23';
+const STATIC_CACHE = 'colleco-static-v24';
 const ITINERARY_JSON_PATH = '/assets/data/itinerary.json';
 const ASSETS = [
   '/',
