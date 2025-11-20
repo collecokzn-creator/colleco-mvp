@@ -53,7 +53,7 @@ export default function FeaturedPackagesSection() {
                 <span aria-hidden>→</span>
               </Link>
               <div className="flex gap-2">
-                <Link to="/book" className="flex-1 inline-flex items-center justify-center px-3 py-2 rounded-md bg-brand-gold text-white text-sm font-semibold hover:bg-brand-gold/80 transition-colors shadow-sm">
+                <Link to="/book" className="flex-1 inline-flex items-center justify-center px-3 py-2 rounded-md bg-white text-brand-gold border-2 border-brand-gold text-sm font-semibold hover:bg-cream transition-colors shadow-sm">
                   Quick Book
                 </Link>
                 <WishlistButton itemId={pkg.id} itemTitle={pkg.title} />
