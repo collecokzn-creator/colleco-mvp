@@ -198,13 +198,18 @@ function Login() {
       <div className="min-h-screen bg-gradient-to-br from-cream via-cream-sand to-cream flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-cream-border">
           <div className="text-center mb-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-brand-orange to-brand-gold rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
-              ✓
+            <div className="w-24 h-24 mx-auto mb-4">
+              <img 
+                src="/assets/Globeicon.png" 
+                alt="CollEco Travel Globe" 
+                className="w-full h-full object-contain"
+              />
             </div>
-            <h2 className="text-2xl font-bold text-brand-brown">Welcome, {effectiveUser.name}!</h2>
+            <h2 className="text-2xl font-bold text-brand-brown mb-2">Welcome to your world</h2>
+            <p className="text-xl text-brand-russty">{effectiveUser.name}</p>
           </div>
           <div className="bg-cream-sand p-6 border border-cream-border rounded-lg mb-4">
-            <p className="text-brand-russty mb-4">You are logged in as <span className="font-semibold">{effectiveUser.email}</span>.</p>
+            <p className="text-brand-russty mb-4">You are logged in and ready to explore the world.</p>
             <button
               className="w-full px-4 py-2.5 rounded-lg bg-brand-orange text-white font-semibold hover:bg-brand-gold transition-all shadow-md"
               onClick={handleLogout}
@@ -220,8 +225,12 @@ function Login() {
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8 animate-fade-in">
-          <div className="w-16 h-16 bg-gradient-to-br from-brand-orange to-brand-gold rounded-full mx-auto mb-4 flex items-center justify-center text-3xl shadow-lg">
-            🌍
+          <div className="w-20 h-20 mx-auto mb-4">
+            <img 
+              src="/assets/Globeicon.png" 
+              alt="CollEco Travel" 
+              className="w-full h-full object-contain"
+            />
           </div>
           <h1 className="text-3xl font-bold text-brand-brown mb-2">CollEco Travel</h1>
           <p className="text-brand-russty">Start your journey with us</p>
