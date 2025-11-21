@@ -143,45 +143,40 @@ function Login() {
     setSuccess("");
     
     if (!name || name.trim().length < 2) {
-      setError("Please enter your full name.");
-      return;
-    }
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    if (!phone || phone.trim().length < 10) {
-      setError("Please enter a valid phone number.");
-      return;
-    }
-    if (!country || country.trim().length < 2) {
-      setError("Please select your country.");
-      return;
-    }
-    if (!dateOfBirth) {
-      setError("Please enter your date of birth.");
+      setError("Please enter your name.");
       return;
     }
     if (!password || password.length < 6) {
       setError("Password must be at least 6 characters.");
       return;
     }
-    if (localStorage.getItem("user:" + email)) {
+    if (email && !validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (!email && !phone) {
+      setError("Please provide either an email or phone number for contact.");
+      return;
+    }
+    if (email && localStorage.getItem("user:" + email)) {
       setError("An account with this email already exists.");
       return;
     }
     
+    // Use email or phone as unique identifier
+    const identifier = email || phone;
+    
     const newUser = { 
-      email, 
+      email: email || '', 
       password, 
       name: name.trim(),
-      phone: phone.trim(),
-      country: country.trim(),
-      dateOfBirth,
+      phone: phone.trim() || '',
+      country: country.trim() || '',
+      dateOfBirth: dateOfBirth || '',
       role: 'client',
       createdAt: new Date().toISOString()
     };
-    localStorage.setItem("user:" + email, JSON.stringify(newUser));
+    localStorage.setItem("user:" + identifier, JSON.stringify(newUser));
     
     // remember chosen persistence and biometrics for subsequent login
     try { localStorage.setItem('user:persistence', keepLoggedIn ? 'local' : 'session'); } catch (e) {}
@@ -307,7 +302,7 @@ function Login() {
           {tab === "register" && (
             <>
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Full Name *</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Name *</label>
                 <input
                   type="text"
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
@@ -316,41 +311,41 @@ function Login() {
                   placeholder="e.g., Bika Collin Mkhize"
                   required
                 />
+                <p className="text-xs text-brand-russty mt-1">How you'd like to be addressed</p>
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address *</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address</label>
                 <input
                   type="email"
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
+                  placeholder="you@example.com (optional)"
                 />
+                <p className="text-xs text-brand-russty mt-1">Provide email or phone number for contact</p>
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Phone Number *</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Phone Number</label>
                 <input
                   type="tel"
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
-                  placeholder="+27 12 345 6789"
-                  required
+                  placeholder="+27 12 345 6789 (optional)"
                 />
+                <p className="text-xs text-brand-russty mt-1">Provide email or phone number for contact</p>
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Country *</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Country</label>
                 <select
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
                   value={country}
                   onChange={e => setCountry(e.target.value)}
-                  required
                 >
-                  <option value="">Select your country</option>
+                  <option value="">Select your country (optional)</option>
                   <option value="South Africa">South Africa</option>
                   <option value="Botswana">Botswana</option>
                   <option value="Zimbabwe">Zimbabwe</option>
@@ -359,21 +354,21 @@ function Login() {
                   <option value="Mozambique">Mozambique</option>
                   <option value="Kenya">Kenya</option>
                   <option value="Tanzania">Tanzania</option>
+                  <option value="Uganda">Uganda</option>
+                  <option value="Rwanda">Rwanda</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Date of Birth *</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Date of Birth</label>
                 <input
                   type="date"
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
                   value={dateOfBirth}
                   onChange={e => setDateOfBirth(e.target.value)}
-                  required
-                  max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
                 />
-                <p className="text-xs text-brand-russty mt-1">You must be at least 18 years old</p>
+                <p className="text-xs text-brand-russty mt-1">Optional - helps us personalize your experience. Minors can use parent/guardian account</p>
               </div>
 
               <div className="mb-4">
