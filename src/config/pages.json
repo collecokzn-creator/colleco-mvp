@@ -292,6 +292,18 @@
               }
             },
             {
+              "path": "/check-in",
+              "name": "Check-In",
+              "component": "CheckIn",
+              "meta": {
+                "title": "Self Check-In",
+                "description": "Scan QR code to check in or unlock your room",
+                "requiresAuth": true,
+                "roles": ["client"],
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/collaboration",
               "name": "Collaboration Hub",
               "component": "Collaboration",

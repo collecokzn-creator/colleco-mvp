@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import AutoSyncBanner from "../components/ui/AutoSyncBanner";
 import LiveStatCard from "../components/ui/LiveStatCard";
 import FeesBreakdown from "../components/payments/FeesBreakdown";
@@ -141,13 +142,22 @@ export default function Bookings() {
 			<div className="max-w-7xl mx-auto px-6 py-8 text-brand-brown">
 				<div className="flex items-center justify-between mb-2">
 					<h1 className="text-3xl font-bold">Bookings</h1>
-					<button
-						onClick={exportToCSV}
-						className="px-3 py-2 rounded border border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-white transition text-sm"
-						title="Export to CSV"
-					>
-						📥 Export
-					</button>
+					<div className="flex items-center gap-3">
+						<Link
+							to="/check-in"
+							className="px-4 py-2 rounded-lg bg-gradient-to-r from-brand-orange to-brand-gold text-white font-semibold hover:shadow-lg transition-all flex items-center gap-2"
+						>
+							<span>📱</span>
+							<span>Self Check-In</span>
+						</Link>
+						<button
+							onClick={exportToCSV}
+							className="px-3 py-2 rounded border border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-white transition text-sm"
+							title="Export to CSV"
+						>
+							📥 Export
+						</button>
+					</div>
 				</div>
 				<p className="mb-4 text-brand-brown/80">All your confirmed items in one place — always up to date.</p>
 

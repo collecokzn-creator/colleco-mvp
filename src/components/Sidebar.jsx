@@ -212,6 +212,7 @@ const SIDEBAR_CONFIG = {
           title: "Booking & Payment",
           items: [
             { name: "Bookings", icon: "CalendarCheck", route: "/client/bookings" },
+            { name: "Self Check-In", icon: "Camera", route: "/check-in" },
             { name: "Payment", icon: "Wallet", route: "/client/payment" },
             // Quick booking links moved from Navbar
             { name: "Book Stay", icon: "Briefcase", route: "/book/accommodation" },
