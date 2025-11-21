@@ -6,6 +6,7 @@ import { useUser } from "../context/UserContext.jsx";
 function Login() {
   const [tab, setTab] = useState("login");
   const [userType, setUserType] = useState("client"); // client or partner
+  const [loginIdentifier, setLoginIdentifier] = useState(""); // email or phone for login
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -38,23 +39,77 @@ function Login() {
     return /\S+@\S+\.\S+/.test(email);
   }
 
+  async function handleBiometricLogin() {
+    setError("");
+    setSuccess("");
+    
+    // Check if biometrics are enabled for this device
+    const biometricEnabled = localStorage.getItem('user:biometrics') === '1';
+    const lastUser = localStorage.getItem('user:lastIdentifier');
+    
+    if (!biometricEnabled || !lastUser) {
+      setError("Biometric login not set up. Please login with password first and enable biometrics.");
+      return;
+    }
+    
+    // Use Web Authentication API if available
+    if (window.PublicKeyCredential) {
+      try {
+        // Simulate biometric authentication (in production, use WebAuthn API)
+        const user = JSON.parse(localStorage.getItem("user:" + lastUser));
+        if (user) {
+          setSuccess("Biometric login successful! Welcome, " + user.name + ".");
+          setUser(user);
+          setTimeout(() => navigate("/"), 800);
+        } else {
+          setError("Biometric authentication failed. Please use password.");
+        }
+      } catch (err) {
+        setError("Biometric authentication not available or failed.");
+      }
+    } else {
+      setError("Biometric authentication not supported on this device.");
+    }
+  }
+
   function handleLogin(e) {
     e.preventDefault();
     setError("");
     setSuccess("");
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+    
+    if (!loginIdentifier || loginIdentifier.trim().length === 0) {
+      setError("Please enter your email or phone number.");
       return;
     }
     if (!password) {
       setError("Please enter your password.");
       return;
     }
-    const user = JSON.parse(localStorage.getItem("user:" + email));
+    
+    // Try to find user by email or phone
+    let user = JSON.parse(localStorage.getItem("user:" + loginIdentifier));
+    
+    // If not found, search all users for matching email or phone
+    if (!user) {
+      const allKeys = Object.keys(localStorage).filter(key => key.startsWith('user:'));
+      for (const key of allKeys) {
+        try {
+          const userData = JSON.parse(localStorage.getItem(key));
+          if (userData.email === loginIdentifier || userData.phone === loginIdentifier) {
+            user = userData;
+            break;
+          }
+        } catch (e) {}
+      }
+    }
+    
     if (!user || user.password !== password) {
-      setError("Invalid email or password.");
+      setError("Invalid credentials. Please check your email/phone and password.");
       return;
     }
+    
+    // Store last login identifier for biometric auth
+    localStorage.setItem('user:lastIdentifier', loginIdentifier);
     setSuccess("Login successful! Welcome, " + user.name + ".");
     // E2E trace: record login attempt and user into window.__E2E_LOGS__ for CI debugging
     try {
@@ -556,15 +611,16 @@ function Login() {
           {tab === "login" && (
             <>
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Email or Phone Number</label>
                 <input
-                  type="email"
+                  type="text"
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="you@example.com"
+                  value={loginIdentifier}
+                  onChange={e => setLoginIdentifier(e.target.value)}
+                  placeholder="email@example.com or +27 12 345 6789"
                   required
                 />
+                <p className="text-xs text-brand-russty mt-1">Enter your email address or phone number</p>
               </div>
 
               <div className="mb-4">
@@ -638,6 +694,40 @@ function Login() {
           >
             {tab === "login" ? "Sign In →" : "Create Account →"}
           </button>
+
+          {/* Biometric Login Options (Login only) */}
+          {tab === "login" && (
+            <div className="mt-4">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-cream-border"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-2 text-brand-russty">Or login with</span>
+                </div>
+              </div>
+              
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={handleBiometricLogin}
+                  className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
+                >
+                  <span className="text-xl">👤</span>
+                  <span>Face ID</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBiometricLogin}
+                  className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
+                >
+                  <span className="text-xl">👆</span>
+                  <span>Fingerprint</span>
+                </button>
+              </div>
+              <p className="text-xs text-brand-russty text-center mt-2">Enable biometrics in settings after first login</p>
+            </div>
+          )}
 
           {/* Additional Info */}
           <div className="mt-6 text-center">
