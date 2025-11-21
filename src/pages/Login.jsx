@@ -155,12 +155,12 @@ function Login() {
       setError("Password must be at least 6 characters.");
       return;
     }
-    if (email && !validateEmail(email)) {
+    if (!email || !validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
     }
-    if (!email && !phone) {
-      setError("Please provide either an email or phone number for contact.");
+    if (!phone || phone.trim().length < 5) {
+      setError("Please enter a valid phone number.");
       return;
     }
     if (!country || country.trim().length < 2) {
@@ -465,27 +465,29 @@ function Login() {
               )}
 
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address *</label>
                 <input
                   type="email"
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="you@example.com (optional)"
+                  placeholder="you@example.com"
+                  required
                 />
-                <p className="text-xs text-brand-russty mt-1">Provide email or phone number for contact</p>
+                <p className="text-xs text-brand-russty mt-1">Required for account verification and communication</p>
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Phone Number</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Phone Number *</label>
                 <input
                   type="tel"
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
-                  placeholder="+27 12 345 6789 (optional)"
+                  placeholder="+27 12 345 6789"
+                  required
                 />
-                <p className="text-xs text-brand-russty mt-1">Provide email or phone number for contact</p>
+                <p className="text-xs text-brand-russty mt-1">Required for booking confirmations and support</p>
               </div>
 
               <div className="mb-4">
