@@ -8,6 +8,9 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -147,6 +150,18 @@ function Login() {
       setError("Please enter a valid email address.");
       return;
     }
+    if (!phone || phone.trim().length < 10) {
+      setError("Please enter a valid phone number.");
+      return;
+    }
+    if (!country || country.trim().length < 2) {
+      setError("Please select your country.");
+      return;
+    }
+    if (!dateOfBirth) {
+      setError("Please enter your date of birth.");
+      return;
+    }
     if (!password || password.length < 6) {
       setError("Password must be at least 6 characters.");
       return;
@@ -156,7 +171,16 @@ function Login() {
       return;
     }
     
-    const newUser = { email, password, name: name.trim() };
+    const newUser = { 
+      email, 
+      password, 
+      name: name.trim(),
+      phone: phone.trim(),
+      country: country.trim(),
+      dateOfBirth,
+      role: 'client',
+      createdAt: new Date().toISOString()
+    };
     localStorage.setItem("user:" + email, JSON.stringify(newUser));
     
     // remember chosen persistence and biometrics for subsequent login
@@ -245,7 +269,7 @@ function Login() {
                 ? "bg-gradient-to-r from-brand-orange to-brand-gold text-white shadow-md transform scale-105" 
                 : "text-brand-russty hover:bg-cream-sand"
             }`}
-            onClick={() => { setTab("login"); setError(""); setSuccess(""); setName(""); }}
+            onClick={() => { setTab("login"); setError(""); setSuccess(""); setName(""); setPhone(""); setCountry(""); setDateOfBirth(""); }}
           >
             Login
           </button>
@@ -265,73 +289,161 @@ function Login() {
         {/* Form */}
         <form 
           data-e2e="login-form" 
-          className="bg-white rounded-2xl shadow-xl p-8 border border-cream-border" 
+          className="bg-white rounded-2xl shadow-xl p-8 border border-cream-border max-h-[80vh] overflow-y-auto" 
           onSubmit={tab === "login" ? handleLogin : handleRegister}
         >
           <div className="mb-5">
             <h2 className="text-2xl font-bold text-brand-brown mb-2">
-              {tab === "login" ? "Welcome Back" : "Create Account"}
+              {tab === "login" ? "Welcome Back" : "Create Your Account"}
             </h2>
             <p className="text-sm text-brand-russty">
               {tab === "login" 
                 ? "Sign in to continue your adventure" 
-                : "Join us and start exploring"}
+                : "Complete your profile to start your journey"}
             </p>
           </div>
 
-          {/* Name field for registration */}
+          {/* Registration fields */}
           {tab === "register" && (
-            <div className="mb-4">
-              <label className="block mb-2 text-brand-brown font-semibold text-sm">Full Name</label>
-              <input
-                type="text"
-                className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="John Doe"
-                required
-              />
-            </div>
+            <>
+              <div className="mb-4">
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Full Name *</label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder="e.g., Bika Collin Mkhize"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address *</label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Phone Number *</label>
+                <input
+                  type="tel"
+                  className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                  placeholder="+27 12 345 6789"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Country *</label>
+                <select
+                  className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                  value={country}
+                  onChange={e => setCountry(e.target.value)}
+                  required
+                >
+                  <option value="">Select your country</option>
+                  <option value="South Africa">South Africa</option>
+                  <option value="Botswana">Botswana</option>
+                  <option value="Zimbabwe">Zimbabwe</option>
+                  <option value="Namibia">Namibia</option>
+                  <option value="Zambia">Zambia</option>
+                  <option value="Mozambique">Mozambique</option>
+                  <option value="Kenya">Kenya</option>
+                  <option value="Tanzania">Tanzania</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Date of Birth *</label>
+                <input
+                  type="date"
+                  className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                  value={dateOfBirth}
+                  onChange={e => setDateOfBirth(e.target.value)}
+                  required
+                  max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                />
+                <p className="text-xs text-brand-russty mt-1">You must be at least 18 years old</p>
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Password *</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="w-full px-4 py-3 border-2 border-cream-border rounded-lg pr-12 focus:border-brand-orange focus:outline-none transition-colors"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="At least 6 characters"
+                    required
+                    aria-label="Password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(v => !v)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-pressed={showPassword}
+                    className="absolute inset-y-0 right-3 my-auto h-10 w-10 flex items-center justify-center rounded-lg hover:bg-cream-sand text-brand-russty transition-colors"
+                    title={showPassword ? "Hide" : "Show"}
+                  >
+                    {showPassword ? "🙈" : "👁️"}
+                  </button>
+                </div>
+              </div>
+            </>
           )}
 
-          {/* Email */}
-          <div className="mb-4">
-            <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address</label>
-            <input
-              type="email"
-              className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-            />
-          </div>
+          {/* Login fields */}
+          {tab === "login" && (
+            <>
+              <div className="mb-4">
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address</label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
 
-          {/* Password */}
-          <div className="mb-4">
-            <label className="block mb-2 text-brand-brown font-semibold text-sm">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                className="w-full px-4 py-3 border-2 border-cream-border rounded-lg pr-12 focus:border-brand-orange focus:outline-none transition-colors"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder={tab === "register" ? "At least 6 characters" : "Enter your password"}
-                required
-                aria-label="Password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(v => !v)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                aria-pressed={showPassword}
-                className="absolute inset-y-0 right-3 my-auto h-10 w-10 flex items-center justify-center rounded-lg hover:bg-cream-sand text-brand-russty transition-colors"
-                title={showPassword ? "Hide" : "Show"}
-              >
-                {showPassword ? "🙈" : "👁️"}
-              </button>
-            </div>
-          </div>
+              <div className="mb-4">
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="w-full px-4 py-3 border-2 border-cream-border rounded-lg pr-12 focus:border-brand-orange focus:outline-none transition-colors"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    required
+                    aria-label="Password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(v => !v)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-pressed={showPassword}
+                    className="absolute inset-y-0 right-3 my-auto h-10 w-10 flex items-center justify-center rounded-lg hover:bg-cream-sand text-brand-russty transition-colors"
+                    title={showPassword ? "Hide" : "Show"}
+                  >
+                    {showPassword ? "🙈" : "👁️"}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Error and Success Messages */}
           {error && (
