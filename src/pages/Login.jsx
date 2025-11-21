@@ -158,6 +158,10 @@ function Login() {
       setError("Please provide either an email or phone number for contact.");
       return;
     }
+    if (!country || country.trim().length < 2) {
+      setError("Please select your country for security and emergency contact purposes.");
+      return;
+    }
     if (email && localStorage.getItem("user:" + email)) {
       setError("An account with this email already exists.");
       return;
@@ -339,13 +343,14 @@ function Login() {
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Country</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">Country *</label>
                 <select
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
                   value={country}
                   onChange={e => setCountry(e.target.value)}
+                  required
                 >
-                  <option value="">Select your country (optional)</option>
+                  <option value="">Select your country</option>
                   <option value="South Africa">South Africa</option>
                   <option value="Botswana">Botswana</option>
                   <option value="Zimbabwe">Zimbabwe</option>
@@ -358,6 +363,7 @@ function Login() {
                   <option value="Rwanda">Rwanda</option>
                   <option value="Other">Other</option>
                 </select>
+                <p className="text-xs text-brand-russty mt-1">Required for emergency assistance and travel documentation</p>
               </div>
 
               <div className="mb-4">
