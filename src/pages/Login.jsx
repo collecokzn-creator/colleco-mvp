@@ -5,12 +5,17 @@ import { useUser } from "../context/UserContext.jsx";
 
 function Login() {
   const [tab, setTab] = useState("login");
+  const [userType, setUserType] = useState("client"); // client or partner
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [businessType, setBusinessType] = useState("");
+  const [businessAddress, setBusinessAddress] = useState("");
+  const [registrationNumber, setRegistrationNumber] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -162,6 +167,23 @@ function Login() {
       setError("Please select your country for security and emergency contact purposes.");
       return;
     }
+    
+    // Partner-specific validation
+    if (userType === "partner") {
+      if (!businessName || businessName.trim().length < 2) {
+        setError("Please enter your business name.");
+        return;
+      }
+      if (!businessType) {
+        setError("Please select your business type.");
+        return;
+      }
+      if (!businessAddress || businessAddress.trim().length < 5) {
+        setError("Please enter your business address.");
+        return;
+      }
+    }
+    
     if (email && localStorage.getItem("user:" + email)) {
       setError("An account with this email already exists.");
       return;
@@ -175,11 +197,20 @@ function Login() {
       password, 
       name: name.trim(),
       phone: phone.trim() || '',
-      country: country.trim() || '',
+      country: country.trim(),
       dateOfBirth: dateOfBirth || '',
-      role: 'client',
+      role: userType, // 'client' or 'partner'
       createdAt: new Date().toISOString()
     };
+    
+    // Add partner-specific fields
+    if (userType === "partner") {
+      newUser.businessName = businessName.trim();
+      newUser.businessType = businessType;
+      newUser.businessAddress = businessAddress.trim();
+      newUser.registrationNumber = registrationNumber.trim() || '';
+    }
+    
     localStorage.setItem("user:" + identifier, JSON.stringify(newUser));
     
     // remember chosen persistence and biometrics for subsequent login
@@ -268,7 +299,20 @@ function Login() {
                 ? "bg-gradient-to-r from-brand-orange to-brand-gold text-white shadow-md transform scale-105" 
                 : "text-brand-russty hover:bg-cream-sand"
             }`}
-            onClick={() => { setTab("login"); setError(""); setSuccess(""); setName(""); setPhone(""); setCountry(""); setDateOfBirth(""); }}
+            onClick={() => { 
+              setTab("login"); 
+              setError(""); 
+              setSuccess(""); 
+              setName(""); 
+              setPhone(""); 
+              setCountry(""); 
+              setDateOfBirth(""); 
+              setUserType("client");
+              setBusinessName("");
+              setBusinessType("");
+              setBusinessAddress("");
+              setRegistrationNumber("");
+            }}
           >
             Login
           </button>
@@ -279,7 +323,16 @@ function Login() {
                 ? "bg-gradient-to-r from-brand-orange to-brand-gold text-white shadow-md transform scale-105" 
                 : "text-brand-russty hover:bg-cream-sand"
             }`}
-            onClick={() => { setTab("register"); setError(""); setSuccess(""); }}
+            onClick={() => { 
+              setTab("register"); 
+              setError(""); 
+              setSuccess(""); 
+              setUserType("client");
+              setBusinessName("");
+              setBusinessType("");
+              setBusinessAddress("");
+              setRegistrationNumber("");
+            }}
           >
             Register
           </button>
@@ -305,8 +358,39 @@ function Login() {
           {/* Registration fields */}
           {tab === "register" && (
             <>
+              {/* User Type Selector */}
+              <div className="mb-6">
+                <label className="block mb-3 text-brand-brown font-semibold text-sm">I'm registering as a: *</label>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    className={`flex-1 px-4 py-3 rounded-lg font-semibold border-2 transition-all ${
+                      userType === "client"
+                        ? "bg-brand-orange text-white border-brand-orange shadow-md"
+                        : "bg-white text-brand-brown border-cream-border hover:border-brand-orange"
+                    }`}
+                    onClick={() => setUserType("client")}
+                  >
+                    ✈️ Traveler
+                  </button>
+                  <button
+                    type="button"
+                    className={`flex-1 px-4 py-3 rounded-lg font-semibold border-2 transition-all ${
+                      userType === "partner"
+                        ? "bg-brand-orange text-white border-brand-orange shadow-md"
+                        : "bg-white text-brand-brown border-cream-border hover:border-brand-orange"
+                    }`}
+                    onClick={() => setUserType("partner")}
+                  >
+                    🏢 Business Partner
+                  </button>
+                </div>
+              </div>
+
               <div className="mb-4">
-                <label className="block mb-2 text-brand-brown font-semibold text-sm">Name *</label>
+                <label className="block mb-2 text-brand-brown font-semibold text-sm">
+                  {userType === "partner" ? "Contact Name *" : "Name *"}
+                </label>
                 <input
                   type="text"
                   className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
@@ -315,8 +399,70 @@ function Login() {
                   placeholder="e.g., Bika Collin Mkhize"
                   required
                 />
-                <p className="text-xs text-brand-russty mt-1">How you'd like to be addressed</p>
+                <p className="text-xs text-brand-russty mt-1">
+                  {userType === "partner" ? "Primary contact person's name" : "How you'd like to be addressed"}
+                </p>
               </div>
+
+              {/* Partner-specific fields */}
+              {userType === "partner" && (
+                <>
+                  <div className="mb-4">
+                    <label className="block mb-2 text-brand-brown font-semibold text-sm">Business Name *</label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                      value={businessName}
+                      onChange={e => setBusinessName(e.target.value)}
+                      placeholder="e.g., Safari Adventures Ltd"
+                      required
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block mb-2 text-brand-brown font-semibold text-sm">Business Type *</label>
+                    <select
+                      className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                      value={businessType}
+                      onChange={e => setBusinessType(e.target.value)}
+                      required
+                    >
+                      <option value="">Select business type</option>
+                      <option value="Hotel">Hotel / Accommodation</option>
+                      <option value="Tour Operator">Tour Operator</option>
+                      <option value="Transport">Transport Services</option>
+                      <option value="Restaurant">Restaurant / Catering</option>
+                      <option value="Activity Provider">Activity Provider</option>
+                      <option value="Travel Agency">Travel Agency</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block mb-2 text-brand-brown font-semibold text-sm">Business Address *</label>
+                    <textarea
+                      className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                      value={businessAddress}
+                      onChange={e => setBusinessAddress(e.target.value)}
+                      placeholder="Full business address including city and postal code"
+                      rows="2"
+                      required
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block mb-2 text-brand-brown font-semibold text-sm">Registration Number</label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                      value={registrationNumber}
+                      onChange={e => setRegistrationNumber(e.target.value)}
+                      placeholder="Business/Tax registration number (optional)"
+                    />
+                    <p className="text-xs text-brand-russty mt-1">Optional - helps verify your business</p>
+                  </div>
+                </>
+              )}
 
               <div className="mb-4">
                 <label className="block mb-2 text-brand-brown font-semibold text-sm">Email Address</label>
@@ -502,6 +648,11 @@ function Login() {
                   setError("");
                   setSuccess("");
                   setName("");
+                  setUserType("client");
+                  setBusinessName("");
+                  setBusinessType("");
+                  setBusinessAddress("");
+                  setRegistrationNumber("");
                 }}
                 className="text-brand-orange font-semibold hover:text-brand-gold transition-colors"
               >
