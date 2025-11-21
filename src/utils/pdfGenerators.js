@@ -31,14 +31,36 @@ import { formatCurrency } from './currency';
 // Public path to the logo in the `public/assets` folder  
 const LOGO_PATH = '/src/assets/colleco-logo.png';
 
-// CollEco Travel Company Details
+// CollEco Travel Company Details - FULLY EDITABLE
 const COMPANY_INFO = {
   name: 'CollEco Travel',
   tagline: 'The Odyssey of Adventure',
-  email: 'hello@travelcolleco.com',
-  phone: '+27 31 000 0000',
-  website: 'www.travelcolleco.com',
-  address: 'Durban, KwaZulu-Natal, South Africa',
+  legalName: 'COLLECO SUPPLY & PROJECTS (PTY) Ltd',
+  registration: 'Reg: 2013/147893/07',
+  taxNumber: 'Tax: 9055225222',
+  csd: 'CSD: MAAA07802746',
+  // Contact details
+  email: 'collecokzn@gmail.com',
+  phone: 'Cell: 073 3994 708',
+  address: '6 Avenue Umtenweni 4234',
+  website: 'www.collecotravel.com',
+  // Banking details
+  banking: {
+    bankName: 'Capitec Business',
+    branchName: 'Relationship Suite',
+    accountType: 'Capitec Business Account',
+    accountNumber: '1052106919',
+    branchCode: '450105'
+  },
+  // Terms and conditions
+  terms: [
+    'All payments to be done electronically into provided account.',
+    'All bookings are subjected to availability.',
+    'All bookings are subjected to a non-refund cancelation policy once confirmed by the client.',
+    'All flight bookings are standard and if any changes are required there will be an additional cost. Upfront arrangements must be done for flexible bookings.',
+    'All car rentals are subject to a returnable deposit payment upon collection.',
+    'All damages and extra costs accumulated during the car hire, the driver will be liable for them.'
+  ],
   // Brand colors
   colors: {
     orange: '#F47C20',
@@ -79,13 +101,10 @@ export function generateMarketingFlyer(pkg = {}) {
   doc.save(`${(pkg.title || "package").replace(/\s+/g, "_")}_flyer.pdf`);
 }
 
-// Enhanced Quote PDF generator (backward compatible)
-// Usage patterns supported:
-// 1) generateQuotePdf(name, items, ref, showAllInQuote)
-//    where items = [{ name, price, qty }]
-// 2) generateQuotePdf(quoteObject)
-//    where quoteObject = { clientName, currency, taxRate, status, notes, items:[{title, description, unitPrice, quantity, category}], createdAt, updatedAt }
-export const generateQuotePdf = (a, b, c, d) => {
+// Enhanced Quote PDF generator matching CollEco invoice template
+// Supports both legacy and structured formats
+// All fields are editable through the quote object
+export const generateQuotePdf = async (a, b, c, d) => {
   const doc = new jsPDF();
 
   // Detect structured object form
@@ -95,255 +114,283 @@ export const generateQuotePdf = (a, b, c, d) => {
   let items;
   let ref;
   let showAllInQuote;
-  let currency = 'R'; // legacy default (Rand) from earlier implementation
-  let taxRate = 0;
+  let currency = 'R'; // default Rand
+  let taxRate = 15; // default 15% VAT
   let status = 'Draft';
   let notes = '';
   let createdAt;
   let updatedAt;
 
+  // Parse parameters
   if (structured) {
-    safeName = (a.clientName || 'Quote').trim();
+    safeName = (a.clientName || 'Client').trim();
     items = a.items || [];
     ref = a.id || a.reference || '';
-    showAllInQuote = true; // always include all structured items
+    showAllInQuote = true;
     currency = a.currency || currency;
-    taxRate = typeof a.taxRate === 'number' ? a.taxRate : 0;
+    taxRate = typeof a.taxRate === 'number' ? a.taxRate : taxRate;
     status = a.status || status;
     notes = a.notes || '';
     createdAt = a.createdAt;
     updatedAt = a.updatedAt;
-    // additional structured fields
-  var clientPhone = a.clientPhone || a.phone || '';
-  var quoteNumber = a.quoteNumber || a.referenceNumber || a.number || '';
-  var paymentTerms = a.paymentTerms || a.paymentInstructions || '';
-  var validity = a.validUntil || a.validity || a.validityDays || '';
-  var travelInfo = a.travelInfo || a.bookingDetails || null;
+    
+    // Additional editable fields
+    var invoiceNumber = a.invoiceNumber || a.quoteNumber || a.referenceNumber || '';
+    var orderNumber = a.orderNumber || '';
+    var clientAddress = a.clientAddress || '';
+    var clientVAT = a.clientVAT || '';
+    var clientPhone = a.clientPhone || a.phone || '';
+    var clientEmail = a.clientEmail || '';
+    var paymentTerms = a.paymentTerms || '';
+    var validity = a.validUntil || a.validity || '';
+    
+    // Editable company info override
+    var companyInfo = a.companyInfo || COMPANY_INFO;
+    var banking = a.banking || companyInfo.banking;
+    var terms = a.terms || companyInfo.terms;
   } else {
-    safeName = (a?.trim?.() || 'Quote');
+    safeName = (a?.trim?.() || 'Client');
     items = b || [];
     ref = c;
     showAllInQuote = d;
+    var companyInfo = COMPANY_INFO;
+    var banking = COMPANY_INFO.banking;
+    var terms = COMPANY_INFO.terms;
   }
 
-  // Normalise items for table rendering
+  // Normalize items
   const normalized = items.map(it => {
     return {
       name: it.title || it.name || 'Item',
       description: it.description || it.subtitle || '',
       qty: (it.quantity !== undefined ? it.quantity : (it.qty !== undefined ? it.qty : 1)) || 1,
       unit: (it.unitPrice !== undefined ? it.unitPrice : (it.price !== undefined ? it.price : 0)) || 0,
-      category: it.category || '',
     };
   });
 
   const filtered = showAllInQuote ? normalized : normalized.filter(i => i.unit);
 
-  doc.setFontSize(20);
-  // Header: Brand + contact (logo will be loaded and added asynchronously below)
-  doc.setFontSize(20);
-  doc.setTextColor(244, 124, 32); // CollEco Orange
-  doc.text(COMPANY_INFO.name, 10, 18);
-  doc.setTextColor(0, 0, 0); // Reset to black
-  doc.setFontSize(8);
-  doc.setFont(undefined, 'italic');
-  doc.text(COMPANY_INFO.tagline, 10, 23);
-  doc.setFont(undefined, 'normal');
-  doc.setFontSize(9);
-  doc.text(`${COMPANY_INFO.email} | ${COMPANY_INFO.phone}`, 10, 28);
-  doc.text(COMPANY_INFO.website, 10, 32);
-
-  // Header title and metadata (reserve right area for logo)
-  const pageWidth = (doc.internal && doc.internal.pageSize && (doc.internal.pageSize.width || doc.internal.pageSize.getWidth())) || 210;
-  const marginRight = 14;
-  const logoW = 40;
-  const logoH = 40;
-  const logoX = pageWidth - marginRight - logoW; // where logo's left edge will be
-  const metaX = logoX - 6; // align-right position for metadata (keeps clear of logo)
-
-  // Quotation Title with orange color
-  doc.setFontSize(18);
-  doc.setTextColor(244, 124, 32); // CollEco Orange
-  doc.text('QUOTATION', metaX, 18, { align: 'right' });
-  doc.setTextColor(0, 0, 0); // Reset to black
-  doc.setFontSize(10);
-  doc.setFontSize(11);
-  // Quote metadata block on the right — always display date and a reference/number fallback
-  const displayDate = createdAt ? new Date(createdAt) : new Date();
-  if (structured) {
-    const qnum = quoteNumber || ref || 'DRAFT';
-    doc.text(`Quote #: ${qnum}`, metaX, 26, { align: 'right' });
-    doc.text(`Date: ${displayDate.toLocaleDateString()}`, metaX, 32, { align: 'right' });
-    doc.text(`Status: ${status.toUpperCase()}`, metaX, 38, { align: 'right' });
-    if (validity) {
-      const vtext = typeof validity === 'number' ? `Valid for ${validity} days` : `Valid until ${validity}`;
-      doc.text(vtext, metaX, 44, { align: 'right' });
-    }
-  } else {
-    if (ref) doc.text(`Reference: ${ref}`, metaX, 26, { align: 'right' });
-    doc.text(`Date: ${displayDate.toLocaleDateString()}`, metaX, 32, { align: 'right' });
-  }
-
-  // Client Information Box with border
-  const clientBoxY = 50;
-  doc.setDrawColor(244, 124, 32); // Orange border
-  doc.setLineWidth(0.5);
-  doc.rect(10, clientBoxY, 90, 25); // Client info box
+  // Load logo
+  const logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
   
+  // Page setup
+  const pageWidth = doc.internal.pageSize.width || 210;
+  const pageHeight = doc.internal.pageSize.height || 297;
+  const marginLeft = 10;
+  const marginRight = 10;
+  
+  // Add logo in top right (matching template)
+  if (logoDataUrl) {
+    try {
+      const logoW = 45;
+      const logoH = 20;
+      const logoX = pageWidth - marginRight - logoW;
+      doc.addImage(logoDataUrl, 'PNG', logoX, 8, logoW, logoH);
+    } catch (e) {
+      console.warn('Logo add failed:', e);
+    }
+  }
+  
+  // INVOICE title - top left
+  doc.setFontSize(24);
+  doc.setFont(undefined, 'bold');
+  doc.text('INVOICE', marginLeft, 20);
+  doc.setFont(undefined, 'normal');
+  
+  // Date section
   doc.setFontSize(10);
   doc.setFont(undefined, 'bold');
-  doc.text('BILL TO:', 12, clientBoxY + 5);
+  doc.text('DATE', marginLeft, 30);
   doc.setFont(undefined, 'normal');
-  doc.setFontSize(11);
-  doc.text(safeName, 12, clientBoxY + 10);
-  if (structured && typeof clientPhone === 'string' && clientPhone) doc.text(`Phone: ${clientPhone}`, 12, clientBoxY + 15);
-  if (structured && a.clientEmail) doc.text(`Email: ${a.clientEmail}`, 12, clientBoxY + 20);
-
-  // Notes section if available
-  let notesHeight = 0;
-  if (structured && notes) {
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'bold');
-    doc.text('Notes:', 12, clientBoxY + 28);
-    doc.setFont(undefined, 'normal');
-    const split = doc.splitTextToSize(notes, 180);
-    doc.text(split, 12, clientBoxY + 33);
-    notesHeight = split.length * 4;
+  const displayDate = createdAt ? new Date(createdAt) : new Date();
+  doc.text(displayDate.toLocaleDateString('en-ZA'), marginLeft, 35);
+  
+  // Invoice details - top right
+  const rightColX = pageWidth / 2 + 10;
+  doc.setFontSize(14);
+  doc.setTextColor(244, 124, 32); // Orange
+  doc.setFont(undefined, 'bold');
+  doc.text(companyInfo.legalName || companyInfo.name, rightColX, 35);
+  doc.setTextColor(0, 0, 0);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(9);
+  
+  let yPos = 40;
+  if (companyInfo.registration) { doc.text(companyInfo.registration, rightColX, yPos); yPos += 4; }
+  if (companyInfo.taxNumber) { doc.text(companyInfo.taxNumber, rightColX, yPos); yPos += 4; }
+  if (companyInfo.csd) { doc.text(companyInfo.csd, rightColX, yPos); yPos += 4; }
+  if (companyInfo.phone) { doc.text(companyInfo.phone, rightColX, yPos); yPos += 4; }
+  if (companyInfo.email) {
+    doc.setTextColor(0, 0, 255);
+    doc.textWithLink(companyInfo.email, rightColX, yPos, { url: `mailto:${companyInfo.email}` });
+    doc.setTextColor(0, 0, 0);
   }
-
-  // Determine starting Y after optional notes block
-  let startY = clientBoxY + 30 + notesHeight;
-
-  // Include richer service details: description and booking attributes
+  
+  // Invoice and Order numbers
+  yPos = 50;
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('INVOICE NO', marginLeft, yPos);
+  doc.setFont(undefined, 'normal');
+  doc.text(invoiceNumber || ref || '104', marginLeft + 40, yPos);
+  
+  yPos += 5;
+  doc.setFont(undefined, 'bold');
+  doc.text('ORDER NO', marginLeft, yPos);
+  doc.setFont(undefined, 'normal');
+  doc.text(orderNumber || '852516', marginLeft + 40, yPos);
+  
+  // INVOICE TO section
+  yPos = 70;
+  doc.setFontSize(11);
+  doc.setFont(undefined, 'bold');
+  doc.text('INVOICE TO', marginLeft, yPos);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(9);
+  
+  yPos += 5;
+  doc.text(safeName, marginLeft, yPos);
+  
+  if (clientAddress) {
+    yPos += 4;
+    const addressLines = doc.splitTextToSize(clientAddress, 90);
+    doc.text(addressLines, marginLeft, yPos);
+    yPos += addressLines.length * 4;
+  }
+  
+  if (clientPhone) {
+    yPos += 4;
+    doc.text(`Phone: ${clientPhone}`, marginLeft, yPos);
+  }
+  
+  if (clientEmail) {
+    yPos += 4;
+    doc.text(`Email: ${clientEmail}`, marginLeft, yPos);
+  }
+  
+  if (clientVAT) {
+    yPos += 4;
+    doc.text(`VAT: ${clientVAT}`, marginLeft, yPos);
+  }
+  
+  // Items table
+  const tableStartY = Math.max(yPos + 10, 110);
+  
   const rows = filtered.map((item, idx) => {
-    const details = [];
-    if (item.description) details.push(item.description);
-    if (item.destination) details.push(`Dest: ${item.destination}`);
-    if (item.startDate || item.endDate) details.push(`Dates: ${item.startDate||''} - ${item.endDate||''}`);
-    if (item.roomType) details.push(`Room: ${item.roomType}`);
-    const itemLabel = `${item.name}${details.length ? '\n' + details.join(' | ') : ''}`;
-    return [idx + 1, itemLabel, item.qty, formatCurrency(item.unit, currency), formatCurrency(item.unit * item.qty, currency)];
+    const itemDesc = item.name + (item.description ? '\n' + item.description : '');
+    return [
+      idx + 1,
+      itemDesc,
+      item.qty,
+      formatCurrency(item.unit, currency),
+      formatCurrency(item.unit * item.qty, currency)
+    ];
   });
 
   autoTable(doc, {
-    startY,
-    head: [["#", "Item", "Qty", "Unit Price", "Total"]],
+    startY: tableStartY,
+    head: [['ITEM NUMBER', 'DESCRIPTION', 'QTY', 'UNIT PRICE', 'TOTAL PRICE']],
     body: rows,
+    theme: 'grid',
     headStyles: {
-      fillColor: [244, 124, 32], // CollEco Orange
-      textColor: [255, 255, 255],
-      fontSize: 10,
-      fontStyle: 'bold'
+      fillColor: [255, 255, 255],
+      textColor: [0, 0, 0],
+      fontSize: 9,
+      fontStyle: 'bold',
+      lineWidth: 0.5,
+      lineColor: [0, 0, 0]
     },
     bodyStyles: {
-      fontSize: 9
-    },
-    alternateRowStyles: {
-      fillColor: [255, 248, 241] // Cream
+      fontSize: 9,
+      lineWidth: 0.5,
+      lineColor: [0, 0, 0]
     },
     columnStyles: {
-      0: { cellWidth: 10 },
-      2: { halign: 'center', cellWidth: 15 },
-      3: { halign: 'right', cellWidth: 30 },
-      4: { halign: 'right', cellWidth: 30 }
+      0: { cellWidth: 25, halign: 'center' },
+      1: { cellWidth: 'auto' },
+      2: { cellWidth: 20, halign: 'center' },
+      3: { cellWidth: 30, halign: 'right' },
+      4: { cellWidth: 30, halign: 'right' }
     }
   });
-
+  
+  // Totals section (right-aligned)
+  let totalY = doc.lastAutoTable.finalY + 10;
+  const totalsX = pageWidth - 70;
+  
   const subtotal = filtered.reduce((s, i) => s + (i.unit * i.qty), 0);
-  const tax = taxRate ? (subtotal * (taxRate / 100)) : 0;
-  const grandTotal = subtotal + tax;
-
-  // Totals section with right alignment
-  let y = doc.lastAutoTable.finalY + 10;
-  const totalsX = pageWidth - marginRight - 60;
+  const vatAmount = (subtotal * taxRate) / 100;
+  const grandTotal = subtotal + vatAmount;
   
-  doc.setFontSize(11);
-  doc.text('Subtotal:', totalsX, y);
-  doc.text(formatCurrency(subtotal, currency), pageWidth - marginRight, y, { align: 'right' });
-  y += 6;
-  
-  if (taxRate) {
-    doc.text(`Tax (${taxRate.toFixed(2)}%):`, totalsX, y);
-    doc.text(formatCurrency(tax, currency), pageWidth - marginRight, y, { align: 'right' });
-    y += 6;
-  }
-  
-  // Grand total with orange background
-  doc.setFillColor(244, 124, 32); // Orange
-  doc.rect(totalsX - 5, y - 5, 70, 8, 'F');
-  doc.setTextColor(255, 255, 255); // White text
-  doc.setFontSize(13);
+  doc.setFontSize(10);
   doc.setFont(undefined, 'bold');
-  doc.text('TOTAL:', totalsX, y);
-  doc.text(formatCurrency(grandTotal, currency), pageWidth - marginRight, y, { align: 'right' });
-  doc.setTextColor(0, 0, 0); // Reset to black
-  doc.setFont(undefined, 'normal');
-  y += 12;
-
-  // Footer section with payment terms and contact
-  const footerY = pageWidth > 250 ? 250 : pageWidth - 40; // Position near bottom
   
-  // Separator line
-  doc.setDrawColor(230, 180, 34); // Gold
-  doc.setLineWidth(0.3);
-  doc.line(10, y, pageWidth - marginRight, y);
-  y += 6;
-
+  // Cost price row
+  doc.text('COST PRICE', totalsX - 40, totalY);
+  doc.rect(totalsX, totalY - 4, 60, 7);
+  doc.text(formatCurrency(subtotal, currency), totalsX + 55, totalY, { align: 'right' });
+  
+  // VAT row
+  totalY += 7;
+  doc.text(`VAT (${taxRate}%)`, totalsX - 40, totalY);
+  doc.rect(totalsX, totalY - 4, 60, 7);
+  doc.text(formatCurrency(vatAmount, currency), totalsX + 55, totalY, { align: 'right' });
+  
+  // Total row
+  totalY += 7;
+  doc.text('TOTAL COST', totalsX - 40, totalY);
+  doc.rect(totalsX, totalY - 4, 60, 7);
+  doc.text(formatCurrency(grandTotal, currency), totalsX + 55, totalY, { align: 'right' });
+  
+  // Banking details section
+  totalY += 15;
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('BANKING DETAILS:', marginLeft, totalY);
+  doc.setFont(undefined, 'normal');
   doc.setFontSize(9);
-  doc.setFont(undefined, 'bold');
-  doc.text('PAYMENT TERMS:', 10, y);
-  doc.setFont(undefined, 'normal');
-  y += 4;
-  if (paymentTerms) {
-    const p = doc.splitTextToSize(paymentTerms, 190);
-    doc.text(p, 10, y);
-    y += p.length * 4;
-  } else {
-    doc.text('• 50% deposit required to confirm booking', 10, y); y += 4;
-    doc.text('• Balance due 14 days before travel date', 10, y); y += 4;
-    doc.text('• Accepted payment methods: Bank transfer, Credit card', 10, y); y += 4;
-  }
   
-  y += 4;
-  doc.setFont(undefined, 'bold');
-  doc.text('CONTACT US:', 10, y);
-  doc.setFont(undefined, 'normal');
-  y += 4;
-  doc.text(`Email: ${COMPANY_INFO.email}`, 10, y); y += 4;
-  doc.text(`Phone: ${COMPANY_INFO.phone}`, 10, y); y += 4;
-  doc.text(`Website: ${COMPANY_INFO.website}`, 10, y);
+  totalY += 5;
+  doc.text(`Bank Name: ${banking.bankName}`, marginLeft, totalY);
+  totalY += 4;
+  doc.text(`Branch Name: ${banking.branchName}`, marginLeft, totalY);
+  totalY += 4;
+  doc.text(`Account Type: ${banking.accountType}`, marginLeft, totalY);
+  totalY += 4;
+  doc.text(`Account Number: ${banking.accountNumber}`, marginLeft, totalY);
+  totalY += 4;
+  doc.text(`Branch Code: ${banking.branchCode}`, marginLeft, totalY);
   
-  // Timestamps at bottom
-  if (structured) {
-    y += 6;
-    doc.setFontSize(7);
-    doc.setTextColor(128, 128, 128);
-    if (createdAt) doc.text(`Created: ${new Date(createdAt).toLocaleString()}`, 10, y);
-    if (updatedAt) doc.text(`Last updated: ${new Date(updatedAt).toLocaleString()}`, 10, y + 3);
-    doc.setTextColor(0, 0, 0);
-  }
-
-  // If travel/booking info is available, show a small booking reference line
-  if (travelInfo) {
-    y += 6;
-    try {
-      const bookingRef = travelInfo.reference || travelInfo.id || travelInfo.bookingRef || '';
-      if (bookingRef) {
-        doc.setFontSize(9);
-        doc.text(`Booking Reference: ${bookingRef}`, 10, y);
-      }
-    } catch (e) {}
-  }
-
-  // Add logo image (if available) then save. Add image synchronously here (await the fetch)
-  // fetch image but do not block: attach then/catch and save once done (matches previous behaviour)
-  fetchImageDataUrl(LOGO_PATH).then((dataUrl) => {
-    if (dataUrl) {
-      try { doc.addImage(dataUrl, 'PNG', logoX, 6, logoW, logoH); } catch (e) { /* ignore image add errors */ }
-    }
-  }).catch(() => {/* ignore */}).finally(() => {
-    doc.save(`${safeName.replace(/\s+/g, '_')}_Quote.pdf`);
+  // Terms and conditions
+  totalY += 10;
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('TERMS AND CONDITIONS:', marginLeft, totalY);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(8);
+  
+  totalY += 5;
+  terms.forEach(term => {
+    const lines = doc.splitTextToSize(term, pageWidth - marginLeft - marginRight - 10);
+    doc.text(lines, marginLeft, totalY);
+    totalY += lines.length * 3.5;
   });
+  
+  // Footer
+  const footerY = pageHeight - 20;
+  doc.setFontSize(8);
+  doc.setTextColor(128, 128, 128);
+  const footerText = `${companyInfo.address} | ${companyInfo.website} | ${companyInfo.tagline}`;
+  doc.text(footerText, pageWidth / 2, footerY, { align: 'center' });
+  
+  doc.setFontSize(9);
+  doc.setTextColor(244, 124, 32); // Orange
+  doc.text('Thank you for your business', pageWidth / 2, footerY + 5, { align: 'center' });
+  doc.setTextColor(0, 0, 0);
+  
+  // Save the PDF
+  const filename = invoiceNumber ? `Invoice_${invoiceNumber}.pdf` : `${safeName.replace(/\s+/g, '_')}_Quote.pdf`;
+  doc.save(filename);
 };
 
 // Export a quote as a data URI (async) suitable for emailing. Returns
