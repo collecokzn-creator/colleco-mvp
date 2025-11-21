@@ -28,8 +28,25 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { formatCurrency } from './currency';
 
-// Public path to the logo in the `public/assets` folder
-const LOGO_PATH = '/assets/colleco-logo.png';
+// Public path to the logo in the `public/assets` folder  
+const LOGO_PATH = '/src/assets/colleco-logo.png';
+
+// CollEco Travel Company Details
+const COMPANY_INFO = {
+  name: 'CollEco Travel',
+  tagline: 'The Odyssey of Adventure',
+  email: 'hello@travelcolleco.com',
+  phone: '+27 31 000 0000',
+  website: 'www.travelcolleco.com',
+  address: 'Durban, KwaZulu-Natal, South Africa',
+  // Brand colors
+  colors: {
+    orange: '#F47C20',
+    brown: '#3A2C1A',
+    gold: '#E6B422',
+    cream: '#FFF8F1'
+  }
+};
 
 // Helper: fetch an image and return a data URL (browser-friendly)
 async function fetchImageDataUrl(url) {
@@ -124,59 +141,78 @@ export const generateQuotePdf = (a, b, c, d) => {
 
   doc.setFontSize(20);
   // Header: Brand + contact (logo will be loaded and added asynchronously below)
-  doc.setFontSize(18);
-  doc.text('CollEco Travel', 10, 18);
+  doc.setFontSize(20);
+  doc.setTextColor(244, 124, 32); // CollEco Orange
+  doc.text(COMPANY_INFO.name, 10, 18);
+  doc.setTextColor(0, 0, 0); // Reset to black
+  doc.setFontSize(8);
+  doc.setFont(undefined, 'italic');
+  doc.text(COMPANY_INFO.tagline, 10, 23);
+  doc.setFont(undefined, 'normal');
   doc.setFontSize(9);
-  doc.text('hello@colleco.travel | +27 31 000 0000', 10, 24);
-  doc.text('www.colleco.travel', 10, 28);
+  doc.text(`${COMPANY_INFO.email} | ${COMPANY_INFO.phone}`, 10, 28);
+  doc.text(COMPANY_INFO.website, 10, 32);
 
   // Header title and metadata (reserve right area for logo)
   const pageWidth = (doc.internal && doc.internal.pageSize && (doc.internal.pageSize.width || doc.internal.pageSize.getWidth())) || 210;
   const marginRight = 14;
-  const logoW = 36;
-  const logoH = 18;
+  const logoW = 40;
+  const logoH = 40;
   const logoX = pageWidth - marginRight - logoW; // where logo's left edge will be
   const metaX = logoX - 6; // align-right position for metadata (keeps clear of logo)
 
-  doc.setFontSize(16);
-  // prefer plain text (some fonts don't render emoji predictably in jsPDF)
-  doc.text('Quotation', metaX, 18, { align: 'right' });
+  // Quotation Title with orange color
+  doc.setFontSize(18);
+  doc.setTextColor(244, 124, 32); // CollEco Orange
+  doc.text('QUOTATION', metaX, 18, { align: 'right' });
+  doc.setTextColor(0, 0, 0); // Reset to black
+  doc.setFontSize(10);
   doc.setFontSize(11);
   // Quote metadata block on the right — always display date and a reference/number fallback
   const displayDate = createdAt ? new Date(createdAt) : new Date();
   if (structured) {
-    const qnum = quoteNumber || ref || '';
-    if (qnum) doc.text(`Quote #: ${qnum}`, metaX, 26, { align: 'right' });
+    const qnum = quoteNumber || ref || 'DRAFT';
+    doc.text(`Quote #: ${qnum}`, metaX, 26, { align: 'right' });
     doc.text(`Date: ${displayDate.toLocaleDateString()}`, metaX, 32, { align: 'right' });
+    doc.text(`Status: ${status.toUpperCase()}`, metaX, 38, { align: 'right' });
     if (validity) {
       const vtext = typeof validity === 'number' ? `Valid for ${validity} days` : `Valid until ${validity}`;
-      doc.text(vtext, metaX, 38, { align: 'right' });
+      doc.text(vtext, metaX, 44, { align: 'right' });
     }
   } else {
     if (ref) doc.text(`Reference: ${ref}`, metaX, 26, { align: 'right' });
     doc.text(`Date: ${displayDate.toLocaleDateString()}`, metaX, 32, { align: 'right' });
   }
 
-  doc.setFontSize(12);
-  // Move left column content slightly lower to avoid clashing with header
-  doc.text(`Quote For: ${safeName}`, 10, 44);
-  if (structured && typeof clientPhone === 'string' && clientPhone) doc.text(`Phone: ${clientPhone}`, 10, 46);
-  if (structured && a.clientEmail) doc.text(`Email: ${a.clientEmail}`, 10, 52);
-  if (structured) {
-    doc.text(`Status: ${status}`, 10, 58);
-    if (notes) {
-      const split = doc.splitTextToSize(`Notes: ${notes}`, 190);
-      doc.text(split, 10, 64);
-    }
+  // Client Information Box with border
+  const clientBoxY = 50;
+  doc.setDrawColor(244, 124, 32); // Orange border
+  doc.setLineWidth(0.5);
+  doc.rect(10, clientBoxY, 90, 25); // Client info box
+  
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('BILL TO:', 12, clientBoxY + 5);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(11);
+  doc.text(safeName, 12, clientBoxY + 10);
+  if (structured && typeof clientPhone === 'string' && clientPhone) doc.text(`Phone: ${clientPhone}`, 12, clientBoxY + 15);
+  if (structured && a.clientEmail) doc.text(`Email: ${a.clientEmail}`, 12, clientBoxY + 20);
+
+  // Notes section if available
+  let notesHeight = 0;
+  if (structured && notes) {
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'bold');
+    doc.text('Notes:', 12, clientBoxY + 28);
+    doc.setFont(undefined, 'normal');
+    const split = doc.splitTextToSize(notes, 180);
+    doc.text(split, 12, clientBoxY + 33);
+    notesHeight = split.length * 4;
   }
 
   // Determine starting Y after optional notes block
-  let startY = 48;
-  if (structured && notes) {
-    // estimate height of notes
-    const lines = doc.splitTextToSize(`Notes: ${notes}`, 190).length;
-    startY = 46 + (lines * 6) + 4; // line height ~6
-  }
+  let startY = clientBoxY + 30 + notesHeight;
 
   // Include richer service details: description and booking attributes
   const rows = filtered.map((item, idx) => {
@@ -193,43 +229,109 @@ export const generateQuotePdf = (a, b, c, d) => {
     startY,
     head: [["#", "Item", "Qty", "Unit Price", "Total"]],
     body: rows,
+    headStyles: {
+      fillColor: [244, 124, 32], // CollEco Orange
+      textColor: [255, 255, 255],
+      fontSize: 10,
+      fontStyle: 'bold'
+    },
+    bodyStyles: {
+      fontSize: 9
+    },
+    alternateRowStyles: {
+      fillColor: [255, 248, 241] // Cream
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+      2: { halign: 'center', cellWidth: 15 },
+      3: { halign: 'right', cellWidth: 30 },
+      4: { halign: 'right', cellWidth: 30 }
+    }
   });
 
   const subtotal = filtered.reduce((s, i) => s + (i.unit * i.qty), 0);
   const tax = taxRate ? (subtotal * (taxRate / 100)) : 0;
   const grandTotal = subtotal + tax;
 
-  let y = doc.lastAutoTable.finalY + 8;
-  doc.setFontSize(12);
-  doc.text(`Subtotal: ${formatCurrency(subtotal, currency)}`, 10, y); y += 6;
-  if (taxRate) { doc.text(`Tax (${taxRate.toFixed(2)}%): ${formatCurrency(tax, currency)}`, 10, y); y += 6; }
-  doc.setFontSize(13);
-  doc.text(`Grand Total: ${formatCurrency(grandTotal, currency)}`, 10, y); y += 8;
-
-  if (structured) {
-    if (createdAt) { doc.setFontSize(8); doc.text(`Created: ${new Date(createdAt).toLocaleString()}`, 10, y); }
-    if (updatedAt) { doc.setFontSize(8); doc.text(`Updated: ${new Date(updatedAt).toLocaleString()}`, 10, y + 4); }
-  }
-
-  // Payment terms & contact at bottom
-  y += 10;
-  doc.setFontSize(10);
-  if (paymentTerms) {
-    const p = doc.splitTextToSize(`Payment Terms: ${paymentTerms}`, 190);
-    doc.text(p, 10, y);
-    y += p.length * 6;
-  } else {
-    doc.text('Payment Terms: 50% deposit, balance due 14 days before travel.', 10, y);
+  // Totals section with right alignment
+  let y = doc.lastAutoTable.finalY + 10;
+  const totalsX = pageWidth - marginRight - 60;
+  
+  doc.setFontSize(11);
+  doc.text('Subtotal:', totalsX, y);
+  doc.text(formatCurrency(subtotal, currency), pageWidth - marginRight, y, { align: 'right' });
+  y += 6;
+  
+  if (taxRate) {
+    doc.text(`Tax (${taxRate.toFixed(2)}%):`, totalsX, y);
+    doc.text(formatCurrency(tax, currency), pageWidth - marginRight, y, { align: 'right' });
     y += 6;
   }
-  doc.text('For questions contact: hello@colleco.travel | +27 31 000 0000', 10, y);
+  
+  // Grand total with orange background
+  doc.setFillColor(244, 124, 32); // Orange
+  doc.rect(totalsX - 5, y - 5, 70, 8, 'F');
+  doc.setTextColor(255, 255, 255); // White text
+  doc.setFontSize(13);
+  doc.setFont(undefined, 'bold');
+  doc.text('TOTAL:', totalsX, y);
+  doc.text(formatCurrency(grandTotal, currency), pageWidth - marginRight, y, { align: 'right' });
+  doc.setTextColor(0, 0, 0); // Reset to black
+  doc.setFont(undefined, 'normal');
+  y += 12;
+
+  // Footer section with payment terms and contact
+  const footerY = pageWidth > 250 ? 250 : pageWidth - 40; // Position near bottom
+  
+  // Separator line
+  doc.setDrawColor(230, 180, 34); // Gold
+  doc.setLineWidth(0.3);
+  doc.line(10, y, pageWidth - marginRight, y);
+  y += 6;
+
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'bold');
+  doc.text('PAYMENT TERMS:', 10, y);
+  doc.setFont(undefined, 'normal');
+  y += 4;
+  if (paymentTerms) {
+    const p = doc.splitTextToSize(paymentTerms, 190);
+    doc.text(p, 10, y);
+    y += p.length * 4;
+  } else {
+    doc.text('• 50% deposit required to confirm booking', 10, y); y += 4;
+    doc.text('• Balance due 14 days before travel date', 10, y); y += 4;
+    doc.text('• Accepted payment methods: Bank transfer, Credit card', 10, y); y += 4;
+  }
+  
+  y += 4;
+  doc.setFont(undefined, 'bold');
+  doc.text('CONTACT US:', 10, y);
+  doc.setFont(undefined, 'normal');
+  y += 4;
+  doc.text(`Email: ${COMPANY_INFO.email}`, 10, y); y += 4;
+  doc.text(`Phone: ${COMPANY_INFO.phone}`, 10, y); y += 4;
+  doc.text(`Website: ${COMPANY_INFO.website}`, 10, y);
+  
+  // Timestamps at bottom
+  if (structured) {
+    y += 6;
+    doc.setFontSize(7);
+    doc.setTextColor(128, 128, 128);
+    if (createdAt) doc.text(`Created: ${new Date(createdAt).toLocaleString()}`, 10, y);
+    if (updatedAt) doc.text(`Last updated: ${new Date(updatedAt).toLocaleString()}`, 10, y + 3);
+    doc.setTextColor(0, 0, 0);
+  }
 
   // If travel/booking info is available, show a small booking reference line
   if (travelInfo) {
     y += 6;
     try {
       const bookingRef = travelInfo.reference || travelInfo.id || travelInfo.bookingRef || '';
-      if (bookingRef) doc.setFontSize(9).text(`Booking Ref: ${bookingRef}`, 10, y);
+      if (bookingRef) {
+        doc.setFontSize(9);
+        doc.text(`Booking Reference: ${bookingRef}`, 10, y);
+      }
     } catch (e) {}
   }
 
@@ -334,36 +436,143 @@ export async function exportQuotePdfData(a) {
   }
 }
 
-export const generateItineraryPdf = (name, items, ref) => {
+export const generateItineraryPdf = async (name, items, ref) => {
   const doc = new jsPDF();
   const safeName = name?.trim() || "Itinerary";
+  
+  // Get page dimensions
+  const pageWidth = doc.internal.pageSize.width || 210;
+  const marginRight = 14;
+  
+  // Try to load logo
+  const logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
 
+  // Header with CollEco branding
   doc.setFontSize(20);
-  doc.text(`🗺️ CollEco Travel – Itinerary`, 10, 18);
-  doc.setFontSize(12);
-  doc.text(`For: ${safeName}`, 10, 28);
-  doc.text(`Reference: ${ref}`, 10, 34);
-
+  doc.setTextColor(244, 124, 32); // CollEco Orange
+  doc.text(COMPANY_INFO.name, 10, 18);
+  doc.setTextColor(0, 0, 0);
+  
+  doc.setFontSize(8);
+  doc.setFont(undefined, 'italic');
+  doc.text(COMPANY_INFO.tagline, 10, 23);
+  doc.setFont(undefined, 'normal');
+  
+  doc.setFontSize(9);
+  doc.text(`${COMPANY_INFO.email} | ${COMPANY_INFO.phone}`, 10, 28);
+  doc.text(COMPANY_INFO.website, 10, 32);
+  
+  // Add logo if available
+  if (logoDataUrl) {
+    try {
+      const logoW = 40;
+      const logoH = 40;
+      const logoX = pageWidth - marginRight - logoW;
+      doc.addImage(logoDataUrl, 'PNG', logoX, 6, logoW, logoH);
+    } catch (e) {
+      console.warn('Logo add failed:', e);
+    }
+  }
+  
+  // Itinerary title
+  doc.setFontSize(18);
+  doc.setTextColor(244, 124, 32);
+  doc.text('TRAVEL ITINERARY', pageWidth - marginRight, 18, { align: 'right' });
+  doc.setTextColor(0, 0, 0);
+  
+  // Client info box
+  const clientBoxY = 45;
+  doc.setDrawColor(244, 124, 32);
+  doc.setLineWidth(0.5);
+  doc.rect(10, clientBoxY, 90, 20);
+  
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('TRAVELER:', 12, clientBoxY + 5);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(11);
+  doc.text(safeName, 12, clientBoxY + 10);
+  if (ref) doc.text(`Reference: ${ref}`, 12, clientBoxY + 15);
+  
+  // Date and reference info (right side)
+  doc.setFontSize(10);
+  doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth - marginRight, clientBoxY + 5, { align: 'right' });
+  
+  // Itinerary table
   const rows = items.map((item, idx) => {
+    const dayInfo = item.day ? `Day ${item.day}` : '';
+    const timeInfo = item.startTime || item.time || '';
+    const location = item.location || item.destination || '';
+    
     return [
       idx + 1,
-      item.name,
-      item.startTime || "N/A",
-      item.endTime || "N/A",
-      item.description || "",
+      dayInfo,
+      timeInfo,
+      item.name || item.title || 'Activity',
+      location,
+      item.description || ''
     ];
   });
 
   autoTable(doc, {
-    startY: 48,
-    head: [["#", "Activity", "Start", "End", "Description"]],
+    startY: clientBoxY + 25,
+    head: [["#", "Day", "Time", "Activity", "Location", "Details"]],
     body: rows,
+    headStyles: {
+      fillColor: [244, 124, 32], // CollEco Orange
+      textColor: [255, 255, 255],
+      fontSize: 10,
+      fontStyle: 'bold'
+    },
+    bodyStyles: {
+      fontSize: 9
+    },
+    alternateRowStyles: {
+      fillColor: [255, 248, 241] // Cream
+    },
+    columnStyles: {
+      0: { cellWidth: 8 },
+      1: { cellWidth: 15 },
+      2: { cellWidth: 20 },
+      3: { cellWidth: 40 },
+      4: { cellWidth: 30 },
+      5: { cellWidth: 'auto', cellPadding: 2 }
+    },
     didParseCell: function (data) {
-      if (data.column.index === 4) {
+      if (data.column.index === 5) {
         data.cell.styles.cellWidth = "wrap";
       }
     },
   });
+  
+  // Footer
+  let y = doc.lastAutoTable.finalY + 10;
+  doc.setDrawColor(230, 180, 34); // Gold
+  doc.setLineWidth(0.3);
+  doc.line(10, y, pageWidth - marginRight, y);
+  
+  y += 6;
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'bold');
+  doc.text('IMPORTANT INFORMATION:', 10, y);
+  doc.setFont(undefined, 'normal');
+  y += 4;
+  doc.text('• Please arrive 15 minutes before scheduled activities', 10, y); y += 4;
+  doc.text('• Bring confirmation email and valid ID', 10, y); y += 4;
+  doc.text('• Contact us for any changes or assistance', 10, y); y += 6;
+  
+  doc.setFont(undefined, 'bold');
+  doc.text('CONTACT US:', 10, y);
+  doc.setFont(undefined, 'normal');
+  y += 4;
+  doc.text(`Email: ${COMPANY_INFO.email} | Phone: ${COMPANY_INFO.phone}`, 10, y);
+  
+  // Timestamp
+  y += 6;
+  doc.setFontSize(7);
+  doc.setTextColor(128, 128, 128);
+  doc.text(`Generated: ${new Date().toLocaleString()}`, 10, y);
+  doc.setTextColor(0, 0, 0);
 
   doc.save(`${safeName.replace(/\s+/g, "_")}_Itinerary.pdf`);
 };
