@@ -205,7 +205,7 @@ function Login() {
                 className="w-full h-full object-contain"
               />
             </div>
-            <h2 className="text-2xl font-bold text-brand-brown mb-2">Welcome to your world</h2>
+            <h2 className="text-2xl font-bold text-brand-brown mb-2">Welcome to your world of travel</h2>
             <p className="text-xl text-brand-russty">{effectiveUser.name}</p>
           </div>
           <div className="bg-cream-sand p-6 border border-cream-border rounded-lg mb-4">
