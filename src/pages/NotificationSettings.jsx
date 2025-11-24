@@ -157,9 +157,9 @@ const NotificationSettings = () => {
                   <div className="flex items-start gap-3">
                     <span className="text-2xl">✅</span>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-green-900">You're All Set!</h3>
+                      <h3 className="font-semibold text-green-900">You&apos;re All Set!</h3>
                       <p className="text-sm text-green-700 mt-1">
-                        You'll receive instant notifications for:
+                        You&apos;ll receive instant notifications for:
                       </p>
                       <ul className="text-sm text-green-700 mt-2 space-y-1">
                         <li>📋 New bookings and updates</li>
@@ -188,7 +188,7 @@ const NotificationSettings = () => {
                     <div className="flex-1">
                       <h3 className="font-semibold text-red-900">Notifications Blocked</h3>
                       <p className="text-sm text-red-700 mt-1">
-                        You've blocked notifications for CollEco. To enable them:
+                        You&apos;ve blocked notifications for CollEco. To enable them:
                       </p>
                     </div>
                   </div>

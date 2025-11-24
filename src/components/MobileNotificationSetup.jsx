@@ -258,7 +258,7 @@ const MobileNotificationSetup = ({ onComplete }) => {
               onClick={() => setCurrentStep(2)}
               className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition"
             >
-              {isInstalled ? 'Next Step' : 'I\'ve Installed the App'}
+              {isInstalled ? 'Next Step' : 'I\u2019ve Installed the App'}
             </button>
           </div>
         )}
@@ -275,7 +275,7 @@ const MobileNotificationSetup = ({ onComplete }) => {
             {!hasPermission && (
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
                 <p className="text-yellow-800 text-sm">
-                  When you tap "Enable Notifications" below, your browser will ask for permission. Make sure to tap "Allow"!
+                  When you tap &quot;Enable Notifications&quot; below, your browser will ask for permission. Make sure to tap &quot;Allow&quot;!
                 </p>
               </div>
             )}
