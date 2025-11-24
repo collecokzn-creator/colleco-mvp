@@ -20,7 +20,7 @@
     "cy:run": "cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js",
     "smoke:build": "npm run build",
     "smoke:start:stack": "concurrently -k -s first -n api,web -c blue,green \"cross-env PORT=4010 node server/server.js\" \"npx serve -s dist -l 5173\"",
-    "smoke:run": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js",
+    "smoke:run": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js",    "smoke:run:combined": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js,cypress/e2e/partner-dashboard.cy.js,cypress/e2e/partner-templates-extended.cy.js",    "smoke:all:combined": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:run:combined\"",
     "smoke:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:run\"",
     "smoke:partner": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/partner-dashboard.cy.js",
     "smoke:partner:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:partner\"",

@@ -288,6 +288,7 @@ export default function PartnerTemplates() {
                           ? 'border-brand-orange bg-brand-orange/5'
                           : 'border-cream-border hover:border-brand-orange/50'
                       }`}
+                      data-testid="template-item"
                       onClick={() => setActiveTemplate(template)}
                     >
                       <div className="flex items-start justify-between mb-2">
@@ -295,7 +296,7 @@ export default function PartnerTemplates() {
                           {template.name}
                         </span>
                         {template.isDefault && (
-                          <span className="text-xs bg-brand-gold text-white px-2 py-0.5 rounded">
+                          <span className="text-xs bg-brand-gold text-white px-2 py-0.5 rounded" data-testid="template-default-badge">
                             Default
                           </span>
                         )}
@@ -309,6 +310,7 @@ export default function PartnerTemplates() {
                             e.stopPropagation();
                             editTemplate(template);
                           }}
+                          data-testid="template-edit-btn"
                           className="text-xs px-2 py-1 bg-brand-orange text-white rounded hover:bg-brand-highlight"
                         >
                           Edit
@@ -318,6 +320,7 @@ export default function PartnerTemplates() {
                             e.stopPropagation();
                             duplicateTemplate(template);
                           }}
+                          data-testid="template-copy-btn"
                           className="text-xs px-2 py-1 bg-brand-brown text-white rounded hover:bg-brand-russty"
                         >
                           Copy
@@ -327,6 +330,7 @@ export default function PartnerTemplates() {
                             e.stopPropagation();
                             deleteTemplate(template.id);
                           }}
+                          data-testid="template-delete-btn"
                           className="text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700"
                         >
                           Delete
