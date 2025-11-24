@@ -18,7 +18,10 @@ describe('Partner Dashboard & Templates Smoke', () => {
   }
 
   function visitPartnerDashboard() {
-    cy.visit('/partner-dashboard', { onBeforeLoad: seedAuth });
+     // Use hash-based path because production build enables HashRouter (BASE_URL becomes './')
+     // so routes resolve off location.hash rather than pathname. Direct /partner-dashboard would
+     // land on Home causing missing selectors.
+     cy.visit('/#/partner-dashboard', { onBeforeLoad: seedAuth });
     // Wait for E2E readiness markers if they appear
     cy.window().then(win => {
       if (win.__E2E_MOUNTED__ !== true) {
@@ -38,6 +41,10 @@ describe('Partner Dashboard & Templates Smoke', () => {
 
   beforeEach(() => {
     visitPartnerDashboard();
+    cy.window().then(win => {
+      const comp = win.__E2E_ACTIVE_ROUTE_COMPONENT__ && win.__E2E_ACTIVE_ROUTE_COMPONENT__['/partner-dashboard'];
+      if (comp) cy.log(`resolved:/partner-dashboard->${comp}`);
+    });
   });
 
   it('renders hub heading', () => {
@@ -53,24 +60,43 @@ describe('Partner Dashboard & Templates Smoke', () => {
   });
 
   it('visits templates page and detects default template', () => {
-    cy.visit('/partner/templates', { onBeforeLoad: seedAuth });
+     cy.visit('/#/partner/templates', { onBeforeLoad: seedAuth });
     cy.contains(/Manage Invoice Templates|Default Template|Template/i, { timeout: 12000 }).should('exist');
   });
 
   it('saves a template and reload retains it', () => {
-    cy.visit('/partner/templates', { onBeforeLoad: seedAuth });
-    cy.get('input', { timeout: 10000 }).first().then($el => {
-      if ($el.length) {
-        cy.wrap($el).clear().type('Smoke Test Co');
-      }
-    });
-    cy.contains(/Save Template|Save/i, { timeout: 8000 }).click({ force: true });
-    cy.reload();
-    cy.window().then(win => {
-      const raw = win.localStorage.getItem(`partner_templates_PARTNER-SMOKE`);
-      expect(raw, 'templates persisted').to.not.equal(null);
-      const list = JSON.parse(raw);
-      expect(list.length).to.be.greaterThan(0);
-    });
+     cy.visit('/#/partner/templates', { onBeforeLoad: seedAuth });
+     // Wait for templates page heading to ensure component mounted
+     cy.contains('Invoice Templates', { timeout: 12000 });
+     // Ensure we are in editing mode: if save button absent, create or edit
+     cy.get('body').then($body => {
+       if ($body.find('[data-testid="save-template-btn"]').length === 0) {
+         if ($body.find('[data-testid="create-first-template-btn"]').length) {
+           cy.get('[data-testid="create-first-template-btn"]').click();
+         } else if ($body.find('[data-testid="create-new-template-btn"]').length) {
+           cy.get('[data-testid="create-new-template-btn"]').click();
+         } else if ($body.find('[data-testid="edit-template-btn"]').length) {
+           cy.get('[data-testid="edit-template-btn"]').click();
+         }
+       }
+     });
+     // Wait for editor to appear
+     cy.get('[data-testid="save-template-btn"]', { timeout: 12000 }).should('exist');
+     cy.get('[data-testid="company-name-input"]', { timeout: 12000 })
+       .clear()
+       .type('Smoke Test Co');
+     cy.get('[data-testid="template-name-input"]', { timeout: 12000 })
+       .clear()
+       .type('Smoke Template');
+     cy.get('[data-testid="save-template-btn"]', { timeout: 8000 }).click();
+     cy.reload();
+     cy.window().then(win => {
+       const raw = win.localStorage.getItem(`partner_templates_PARTNER-SMOKE`);
+       expect(raw, 'templates persisted').to.not.equal(null);
+       const list = JSON.parse(raw);
+       expect(list.length).to.be.greaterThan(0);
+       const found = list.find(t => t.companyInfo?.name === 'Smoke Test Co');
+       expect(found, 'saved template present').to.not.equal(undefined);
+     });
   });
 });
