@@ -250,11 +250,44 @@
             {
               "path": "/quotes",
               "name": "Quote Builder",
-              "component": "Quotes",
+              "component": "QuoteGenerator",
               "meta": {
-                "title": "Collaborative Quote Builder",
+                "title": "AI Quote & Invoice Generator",
                 "requiresAuth": true,
                 "roles": ["admin", "partner", "agent"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/templates",
+              "name": "Invoice Templates",
+              "component": "PartnerTemplates",
+              "meta": {
+                "title": "Manage Invoice Templates",
+                "requiresAuth": true,
+                "roles": ["admin", "partner"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/messages",
+              "name": "Messages",
+              "component": "MessagingCenter",
+              "meta": {
+                "title": "Messages",
+                "requiresAuth": true,
+                "roles": ["admin", "partner", "agent", "client"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/collaborations",
+              "name": "Collaborations",
+              "component": "PartnerCollaboration",
+              "meta": {
+                "title": "Partner Collaborations",
+                "requiresAuth": true,
+                "roles": ["admin", "partner"],
                 "layout": "workspace"
               }
             },
@@ -351,6 +384,16 @@
               "component": "Settings",
               "meta": {
                 "title": "Account Settings",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/settings/notifications",
+              "name": "Notification Settings",
+              "component": "NotificationSettings",
+              "meta": {
+                "title": "Notification Settings",
                 "requiresAuth": true,
                 "layout": "workspace"
               }

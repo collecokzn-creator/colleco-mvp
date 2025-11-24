@@ -42,7 +42,7 @@ export default function ApiStatusCard(){
     <div className="p-4 border border-cream-border bg-white rounded mb-4">
       <div className="flex items-center justify-between mb-2">
         <h3 className="font-semibold text-brand-brown">API Status</h3>
-        <button onClick={refresh} disabled={loading} className="text-xs px-2 py-1 border border-cream-border rounded bg-cream hover:bg-cream-hover disabled:opacity-60">{loading? 'Refreshing…' : 'Refresh'}</button>
+        <button onClick={refresh} disabled={loading} className="text-xs px-2 py-1 border border-cream-border rounded bg-cream hover:bg-cream-hover disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed">{loading? 'Refreshing…' : 'Refresh'}</button>
       </div>
       {error && <div className="text-xs text-red-600 mb-2">{error}</div>}
       <ul className="text-sm text-brand-brown/80 space-y-1">

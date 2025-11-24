@@ -153,9 +153,9 @@ export const generateQuotePdf = async (a, b, c, d) => {
     items = b || [];
     ref = c;
     showAllInQuote = d;
-    var companyInfo = COMPANY_INFO;
-    var banking = COMPANY_INFO.banking;
-    var terms = COMPANY_INFO.terms;
+    companyInfo = COMPANY_INFO;
+    banking = COMPANY_INFO.banking;
+    terms = COMPANY_INFO.terms;
   }
 
   // Normalize items
@@ -170,107 +170,195 @@ export const generateQuotePdf = async (a, b, c, d) => {
 
   const filtered = showAllInQuote ? normalized : normalized.filter(i => i.unit);
 
-  // Load logo
-  const logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
-  
   // Page setup
   const pageWidth = doc.internal.pageSize.width || 210;
   const pageHeight = doc.internal.pageSize.height || 297;
   const marginLeft = 10;
   const marginRight = 10;
   
-  // Add logo in top right (matching template)
-  if (logoDataUrl) {
-    try {
-      const logoW = 45;
-      const logoH = 20;
-      const logoX = pageWidth - marginRight - logoW;
-      doc.addImage(logoDataUrl, 'PNG', logoX, 8, logoW, logoH);
-    } catch (e) {
-      console.warn('Logo add failed:', e);
+  // Load logo (for optional use)
+  const logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
+  
+  // Use custom logo if provided
+  const customLogoData = a.customLogo || null;
+  
+  // Helper function to add CollEco header
+  const addHeader = () => {
+    // Add custom logo if available (top right corner)
+    if (customLogoData) {
+      try {
+        const logoW = 45;
+        const logoH = 20;
+        const logoX = pageWidth - marginRight - logoW;
+        doc.addImage(customLogoData, 'PNG', logoX, 8, logoW, logoH);
+      } catch (e) {
+        console.warn('Custom logo add failed:', e);
+      }
     }
-  }
+    
+    // Company name at top - centered
+    doc.setFontSize(16);
+    doc.setFont(undefined, "bold");
+    const companyName = companyInfo.name || "CollEco Travel";
+    const companyWidth = doc.getTextWidth(companyName);
+    doc.text(companyName, (pageWidth - companyWidth) / 2, 16);
+    
+    // Letterhead: Bird logo - "The Odyssey of Adventure" - Globe (centered)
+    doc.setFontSize(24);
+    const bird = "🦜";
+    doc.setFontSize(11);
+    doc.setFont(undefined, "italic");
+    const payoffLine = companyInfo.tagline || "The Odyssey of Adventure";
+    const payoffWidth = doc.getTextWidth(payoffLine);
+    doc.setFontSize(14);
+    const globe = "🌍";
+    
+    // Calculate total width of bird + payoff + globe
+    doc.setFontSize(24);
+    const birdWidth = doc.getTextWidth(bird);
+    doc.setFontSize(14);
+    const globeWidth = doc.getTextWidth(globe);
+    const spacing = 2;
+    const totalWidth = birdWidth + spacing + payoffWidth + spacing + globeWidth;
+    const startX = (pageWidth - totalWidth) / 2;
+    
+    // Draw centered elements
+    doc.setFontSize(24);
+    doc.text(bird, startX, 26);
+    
+    doc.setFontSize(11);
+    doc.setFont(undefined, "italic");
+    doc.text(payoffLine, startX + birdWidth + spacing, 26);
+    
+    doc.setFontSize(14);
+    doc.text(globe, startX + birdWidth + spacing + payoffWidth + spacing, 26);
+    
+    // Decorative line
+    doc.setDrawColor(255, 140, 0); // Orange color
+    doc.setLineWidth(0.5);
+    doc.line(14, 36, pageWidth - 14, 36);
+    
+    doc.setTextColor(0, 0, 0);
+  };
   
-  // INVOICE title - top left
-  doc.setFontSize(24);
-  doc.setFont(undefined, 'bold');
-  doc.text('INVOICE', marginLeft, 20);
+  // Helper function to add footer
+  const addFooter = () => {
+    doc.setFontSize(10);
+    doc.setFont(undefined, "bold");
+    doc.setTextColor(255, 140, 0); // Orange color
+    const websiteText = companyInfo.website || "www.travelcolleco.com";
+    const websiteWidth = doc.getTextWidth(websiteText);
+    const websiteX = (pageWidth - websiteWidth) / 2;
+    doc.text(websiteText, websiteX, pageHeight - 10);
+    
+    // Underline the website
+    doc.setDrawColor(255, 140, 0);
+    doc.setLineWidth(0.5);
+    doc.line(websiteX, pageHeight - 9, websiteX + websiteWidth, pageHeight - 9);
+    
+    doc.setTextColor(0, 0, 0);
+  };
+  
+  // Add header to first page
+  addHeader();
+  
+  // Get document type
+  const documentType = a.documentType || 'Invoice';
+  const issueDate = a.issueDate ? new Date(a.issueDate) : (createdAt ? new Date(createdAt) : new Date());
+  const dueDate = a.dueDate ? new Date(a.dueDate) : null;
+  
+  // Date section (below header)
+  doc.setFontSize(9);
   doc.setFont(undefined, 'normal');
+  doc.setTextColor(100, 100, 100);
+  const dateText = `${documentType} generated on ${issueDate.toLocaleDateString('en-GB')}`;
+  doc.text(dateText, 14, 42); // Left margin 14
+  doc.setTextColor(0, 0, 0);
   
-  // Date section
-  doc.setFontSize(10);
-  doc.setFont(undefined, 'bold');
-  doc.text('DATE', marginLeft, 30);
-  doc.setFont(undefined, 'normal');
-  const displayDate = createdAt ? new Date(createdAt) : new Date();
-  doc.text(displayDate.toLocaleDateString('en-ZA'), marginLeft, 35);
-  
-  // Invoice details - top right
-  const rightColX = pageWidth / 2 + 10;
+  // Document details section
+  let yPos = 48;
   doc.setFontSize(14);
   doc.setTextColor(244, 124, 32); // Orange
   doc.setFont(undefined, 'bold');
-  doc.text(companyInfo.legalName || companyInfo.name, rightColX, 35);
+  doc.text(documentType.toUpperCase(), 14, yPos); // Left margin 14
   doc.setTextColor(0, 0, 0);
   doc.setFont(undefined, 'normal');
-  doc.setFontSize(9);
   
-  let yPos = 40;
-  if (companyInfo.registration) { doc.text(companyInfo.registration, rightColX, yPos); yPos += 4; }
-  if (companyInfo.taxNumber) { doc.text(companyInfo.taxNumber, rightColX, yPos); yPos += 4; }
-  if (companyInfo.csd) { doc.text(companyInfo.csd, rightColX, yPos); yPos += 4; }
-  if (companyInfo.phone) { doc.text(companyInfo.phone, rightColX, yPos); yPos += 4; }
+  yPos += 6;
+  doc.setFontSize(9);
+  if (companyInfo.legalName) { doc.text(companyInfo.legalName, 14, yPos); yPos += 4; }
+  if (companyInfo.registration) { doc.text(companyInfo.registration, 14, yPos); yPos += 4; }
+  if (companyInfo.taxNumber) { doc.text(companyInfo.taxNumber, 14, yPos); yPos += 4; }
+  if (companyInfo.csd) { doc.text(companyInfo.csd, 14, yPos); yPos += 4; }
+  if (companyInfo.phone) { doc.text(companyInfo.phone, 14, yPos); yPos += 4; }
   if (companyInfo.email) {
     doc.setTextColor(0, 0, 255);
-    doc.textWithLink(companyInfo.email, rightColX, yPos, { url: `mailto:${companyInfo.email}` });
+    doc.textWithLink(companyInfo.email, 14, yPos, { url: `mailto:${companyInfo.email}` });
     doc.setTextColor(0, 0, 0);
+    yPos += 4;
   }
   
-  // Invoice and Order numbers
-  yPos = 50;
+  // Document and Order numbers
+  yPos += 2;
   doc.setFontSize(10);
   doc.setFont(undefined, 'bold');
-  doc.text('INVOICE NO', marginLeft, yPos);
+  const docLabel = documentType === 'Quotation' ? 'QUOTE NO' : 'INVOICE NO';
+  doc.text(docLabel, 14, yPos);
   doc.setFont(undefined, 'normal');
-  doc.text(invoiceNumber || ref || '104', marginLeft + 40, yPos);
+  doc.text(invoiceNumber || ref || '001', 14 + 30, yPos);
   
   yPos += 5;
   doc.setFont(undefined, 'bold');
-  doc.text('ORDER NO', marginLeft, yPos);
+  doc.text('ORDER NO', 14, yPos);
   doc.setFont(undefined, 'normal');
-  doc.text(orderNumber || '852516', marginLeft + 40, yPos);
+  doc.text(orderNumber || '-', 14 + 30, yPos);
   
-  // INVOICE TO section
-  yPos = 70;
+  yPos += 5;
+  doc.setFont(undefined, 'bold');
+  doc.text('ISSUE DATE', 14, yPos);
+  doc.setFont(undefined, 'normal');
+  doc.text(issueDate.toLocaleDateString('en-GB'), 14 + 30, yPos);
+  
+  if (dueDate && documentType === 'Invoice') {
+    yPos += 5;
+    doc.setFont(undefined, 'bold');
+    doc.text('DUE DATE', 14, yPos);
+    doc.setFont(undefined, 'normal');
+    doc.text(dueDate.toLocaleDateString('en-GB'), 14 + 30, yPos);
+  }
+  
+  // INVOICE TO / QUOTE FOR section
+  yPos += 8;
   doc.setFontSize(11);
   doc.setFont(undefined, 'bold');
-  doc.text('INVOICE TO', marginLeft, yPos);
+  const clientLabel = documentType === 'Quotation' ? 'QUOTE FOR' : 'INVOICE TO';
+  doc.text(clientLabel, 14, yPos);
   doc.setFont(undefined, 'normal');
   doc.setFontSize(9);
   
   yPos += 5;
-  doc.text(safeName, marginLeft, yPos);
+  doc.text(safeName, 14, yPos);
   
   if (clientAddress) {
     yPos += 4;
     const addressLines = doc.splitTextToSize(clientAddress, 90);
-    doc.text(addressLines, marginLeft, yPos);
+    doc.text(addressLines, 14, yPos);
     yPos += addressLines.length * 4;
   }
   
   if (clientPhone) {
     yPos += 4;
-    doc.text(`Phone: ${clientPhone}`, marginLeft, yPos);
+    doc.text(`Phone: ${clientPhone}`, 14, yPos);
   }
   
   if (clientEmail) {
     yPos += 4;
-    doc.text(`Email: ${clientEmail}`, marginLeft, yPos);
+    doc.text(`Email: ${clientEmail}`, 14, yPos);
   }
   
   if (clientVAT) {
     yPos += 4;
-    doc.text(`VAT: ${clientVAT}`, marginLeft, yPos);
+    doc.text(`VAT: ${clientVAT}`, 14, yPos);
   }
   
   // Items table
@@ -292,6 +380,7 @@ export const generateQuotePdf = async (a, b, c, d) => {
     head: [['ITEM NUMBER', 'DESCRIPTION', 'QTY', 'UNIT PRICE', 'TOTAL PRICE']],
     body: rows,
     theme: 'grid',
+    margin: { left: 14, right: 14 }, // Consistent margins
     headStyles: {
       fillColor: [255, 255, 255],
       textColor: [0, 0, 0],
@@ -311,6 +400,12 @@ export const generateQuotePdf = async (a, b, c, d) => {
       2: { cellWidth: 20, halign: 'center' },
       3: { cellWidth: 30, halign: 'right' },
       4: { cellWidth: 30, halign: 'right' }
+    },
+    didDrawPage: (data) => {
+      // Add header on each new page
+      if (data.pageNumber > 1) {
+        addHeader();
+      }
     }
   });
   
@@ -376,20 +471,15 @@ export const generateQuotePdf = async (a, b, c, d) => {
     totalY += lines.length * 3.5;
   });
   
-  // Footer
-  const footerY = pageHeight - 20;
-  doc.setFontSize(8);
-  doc.setTextColor(128, 128, 128);
-  const footerText = `${companyInfo.address} | ${companyInfo.website} | ${companyInfo.tagline}`;
-  doc.text(footerText, pageWidth / 2, footerY, { align: 'center' });
-  
-  doc.setFontSize(9);
-  doc.setTextColor(244, 124, 32); // Orange
-  doc.text('Thank you for your business', pageWidth / 2, footerY + 5, { align: 'center' });
-  doc.setTextColor(0, 0, 0);
+  // Add footer to all pages
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    addFooter();
+  }
   
   // Save the PDF
-  const filename = invoiceNumber ? `Invoice_${invoiceNumber}.pdf` : `${safeName.replace(/\s+/g, '_')}_Quote.pdf`;
+  const filename = invoiceNumber ? `Invoice_${invoiceNumber}.pdf` : `${safeName.replace(/\\s+/g, '_')}_Quote.pdf`;
   doc.save(filename);
 };
 

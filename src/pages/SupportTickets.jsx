@@ -49,7 +49,7 @@ export default function SupportTickets() {
           <button 
             type="submit"
             disabled={submitting}
-            className="mt-3 bg-brand-orange text-white p-2 rounded-xl w-full hover:bg-brand-gold transition disabled:opacity-50"
+            className="mt-3 bg-brand-orange text-white p-2 rounded-xl w-full hover:bg-brand-gold transition disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
           >
             {submitting ? 'Submitting...' : 'Submit Ticket'}
           </button>

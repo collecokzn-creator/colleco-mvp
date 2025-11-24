@@ -120,7 +120,7 @@ export default function Settings() {
           )}
           <div className="mt-3 flex gap-2">
             <button onClick={refresh} className="px-3 py-1.5 bg-white border border-cream-border text-brand-brown hover:bg-cream-sand/70">Refresh</button>
-            <button onClick={save} disabled={saving} className="px-3 py-1.5 bg-brand-orange text-white disabled:opacity-60">{saving ? 'Saving…' : 'Save'}</button>
+            <button onClick={save} disabled={saving} className="px-3 py-1.5 bg-brand-orange text-white disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">{saving ? 'Saving…' : 'Save'}</button>
           </div>
           {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
           {success && <p className="mt-2 text-sm text-green-700">{success}</p>}

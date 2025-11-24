@@ -61,6 +61,18 @@ function createRouteElement(route) {
     );
   }
 
+  // E2E diagnostics: expose which component key resolved for each route so
+  // Cypress can verify the expected component (e.g., PartnerDashboard) actually
+  // mounted instead of the fallback WorkspacePage. This helps debug why test
+  // selectors may be missing when role guards pass but component registry
+  // resolution fails. Non-invasive: only set when __E2E__ flag present.
+  try {
+    if (typeof window !== 'undefined' && window.__E2E__) {
+      if (!window.__E2E_ACTIVE_ROUTE_COMPONENT__) window.__E2E_ACTIVE_ROUTE_COMPONENT__ = {};
+      window.__E2E_ACTIVE_ROUTE_COMPONENT__[route.path] = componentKey;
+    }
+  } catch (e) {}
+
   const isWorkspaceView =
     componentKey === fallbackComponentKey || Component === fallbackComponent;
   const elementProps = isWorkspaceView

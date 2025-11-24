@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useUser } from '../context/UserContext.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Profile() {
   const { user, logout } = useUser();
@@ -23,6 +23,98 @@ export default function Profile() {
   const [travelHistory, setTravelHistory] = useState([]);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  
+  // Smart automation refs
+  const autoSaveTimerRef = useRef(null);
+  const lastFormDataRef = useRef(formData);
+  
+  // Auto-save profile edits after 3 seconds of inactivity
+  useEffect(() => {
+    if (!editing) return;
+    
+    // Clear existing timer
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+    }
+    
+    // Set new timer to auto-save
+    autoSaveTimerRef.current = setTimeout(() => {
+      // Only save if data actually changed
+      if (JSON.stringify(formData) !== JSON.stringify(lastFormDataRef.current)) {
+        const updatedUser = { ...user, ...formData, profilePicture };
+        localStorage.setItem('colleco.user', JSON.stringify(updatedUser));
+        lastFormDataRef.current = formData;
+        // Silent save - no alert
+      }
+    }, 3000);
+    
+    return () => {
+      if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+    };
+  }, [formData, editing, user, profilePicture]);
+  
+  // Smart wallet recommendations based on balance and upcoming bookings
+  const walletRecommendation = useMemo(() => {
+    const upcomingTotal = bookings.reduce((sum, b) => sum + (b.amount || 0), 0);
+    
+    if (walletBalance < upcomingTotal) {
+      const needed = upcomingTotal - walletBalance;
+      return {
+        type: 'warning',
+        message: `⚠️ Top up R${needed.toFixed(2)} for upcoming bookings`
+      };
+    }
+    
+    if (walletBalance > 10000) {
+      return {
+        type: 'info',
+        message: '💰 High balance detected. Consider using rewards points!'
+      };
+    }
+    
+    if (walletBalance === 0 && bookings.length > 0) {
+      return {
+        type: 'alert',
+        message: '💳 Add funds to wallet for quick checkout'
+      };
+    }
+    
+    return null;
+  }, [walletBalance, bookings]);
+  
+  // Travel pattern analysis
+  const travelInsights = useMemo(() => {
+    if (travelHistory.length === 0) return null;
+    
+    const totalTrips = travelHistory.length;
+    const destinations = new Set(travelHistory.map(t => t.destination));
+    const avgTripCost = travelHistory.reduce((sum, t) => sum + (t.cost || 0), 0) / totalTrips;
+    
+    let insight = '';
+    if (totalTrips >= 5) {
+      insight = `🌍 You've traveled to ${destinations.size} destinations! `;
+    }
+    if (avgTripCost > 5000) {
+      insight += '✨ Premium traveler status available.';
+    }
+    
+    return insight || null;
+  }, [travelHistory]);
+  
+  // Auto-complete nationality based on phone prefix
+  useEffect(() => {
+    if (formData.phone && !formData.nationality) {
+      const phone = formData.phone.replace(/\D/g, '');
+      
+      if (phone.startsWith('27')) {
+        setFormData(prev => ({ ...prev, nationality: 'South Africa' }));
+      } else if (phone.startsWith('1')) {
+        setFormData(prev => ({ ...prev, nationality: 'United States' }));
+      } else if (phone.startsWith('44')) {
+        setFormData(prev => ({ ...prev, nationality: 'United Kingdom' }));
+      }
+    }
+  }, [formData.phone, formData.nationality]);
 
   useEffect(() => {
     if (user) {
@@ -140,9 +232,36 @@ export default function Profile() {
       <div className="max-w-5xl mx-auto px-4 py-8" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
         
         {/* Page Title */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-brand-orange">Account</h1>
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-brand-orange">
+            Account
+            {editing && (
+              <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold" title="Auto-save enabled, changes saved automatically">
+                ✨ Smart Mode
+              </span>
+            )}
+          </h1>
         </div>
+        
+        {/* Smart Insights */}
+        {(walletRecommendation || travelInsights) && (
+          <div className="mb-6 space-y-2">
+            {walletRecommendation && (
+              <div className={`rounded-lg p-3 text-sm ${
+                walletRecommendation.type === 'warning' ? 'bg-amber-50 border border-amber-200 text-amber-800' :
+                walletRecommendation.type === 'alert' ? 'bg-red-50 border border-red-200 text-red-800' :
+                'bg-blue-50 border border-blue-200 text-blue-800'
+              }`}>
+                {walletRecommendation.message}
+              </div>
+            )}
+            {travelInsights && (
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 text-sm text-purple-800">
+                {travelInsights}
+              </div>
+            )}
+          </div>
+        )}
         
         {/* Header Section */}
         <div className="bg-white rounded-xl shadow-sm border border-cream-border p-8 mb-6">
@@ -229,10 +348,31 @@ export default function Profile() {
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                className="w-full border border-cream-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                className="w-full px-3 py-2 border border-cream-border rounded bg-white text-brand-brown"
+                placeholder="+27 XX XXX XXXX"
               />
             ) : (
-              <p className="text-brand-brown text-sm">{formData.phone || '—'}</p>
+              <p className="text-brand-brown">{formData.phone || 'Not set'}</p>
+            )}
+          </div>
+          
+          <div>
+            <label className="block text-xs font-medium text-brand-russty mb-1">
+              Nationality
+              {editing && formData.nationality && formData.phone && (
+                <span className="ml-1 text-xs text-green-600">✓ Auto-detected</span>
+              )}
+            </label>
+            {editing ? (
+              <input
+                type="text"
+                value={formData.nationality}
+                onChange={(e) => setFormData({...formData, nationality: e.target.value})}
+                className="w-full px-3 py-2 border border-cream-border rounded bg-white text-brand-brown"
+                placeholder="Country"
+              />
+            ) : (
+              <p className="text-brand-brown">{formData.nationality || 'Not set'}</p>
             )}
           </div>
           
@@ -261,20 +401,6 @@ export default function Profile() {
               />
             ) : (
               <p className="text-brand-brown text-sm">{formData.address || '—'}</p>
-            )}
-          </div>
-          
-          <div>
-            <label className="block text-xs font-medium text-brand-russty mb-1">Nationality</label>
-            {editing ? (
-              <input
-                type="text"
-                value={formData.nationality}
-                onChange={(e) => setFormData({...formData, nationality: e.target.value})}
-                className="w-full border border-cream-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-              />
-            ) : (
-              <p className="text-brand-brown text-sm">{formData.nationality || '—'}</p>
             )}
           </div>
         </div>
@@ -346,6 +472,44 @@ export default function Profile() {
               </div>
             </>
           )}
+        </div>
+
+        {/* Quick Settings */}
+        <div className="mt-6 pt-6 border-t border-cream-border">
+          <h3 className="text-sm font-semibold text-brand-brown mb-3">Settings</h3>
+          <div className="space-y-2">
+            <Link
+              to="/settings/notifications"
+              className="flex items-center justify-between p-3 bg-cream-sand rounded-lg hover:bg-cream-hover transition group"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-xl">🔔</span>
+                <div>
+                  <p className="text-sm font-medium text-brand-brown">Notifications</p>
+                  <p className="text-xs text-brand-russty">Push alerts & preferences</p>
+                </div>
+              </div>
+              <svg className="w-5 h-5 text-brand-russty group-hover:text-brand-brown transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+            
+            <Link
+              to="/settings"
+              className="flex items-center justify-between p-3 bg-cream-sand rounded-lg hover:bg-cream-hover transition group"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-xl">⚙️</span>
+                <div>
+                  <p className="text-sm font-medium text-brand-brown">Account Settings</p>
+                  <p className="text-xs text-brand-russty">Privacy & preferences</p>
+                </div>
+              </div>
+              <svg className="w-5 h-5 text-brand-russty group-hover:text-brand-brown transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
         </div>
 
         {/* Logout Button */}

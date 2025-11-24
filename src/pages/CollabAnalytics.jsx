@@ -170,7 +170,7 @@ export default function CollabAnalytics() {
             <span className="text-sm text-brand-brown/70">SLA (mins)</span>
             <input type="number" min="1" className="w-20 border rounded px-2 py-1.5" value={slaMins} onChange={e=>setSlaMins(Number(e.target.value)||0)} />
           </div>
-          <button onClick={exportCsv} className="px-3 py-1.5 rounded bg-brand-orange text-white hover:opacity-95">Export CSV</button>
+          <button onClick={exportCsv} className="px-3 py-1.5 rounded bg-brand-orange text-white hover:bg-brand-highlight">Export CSV</button>
         </div>
       </div>
 

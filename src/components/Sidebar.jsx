@@ -96,8 +96,9 @@ const SIDEBAR_CONFIG = {
         {
           title: "System Settings & API",
           items: [
-            { name: "Settings", icon: "Settings", route: "/admin/settings" },
-            { name: "API Integration", icon: "Megaphone", route: "/admin/api" },
+            { name: "System Settings", icon: "Settings", route: "/admin/settings" },
+            { name: "Notifications", icon: "Megaphone", route: "/settings/notifications" },
+            { name: "API Integration", icon: "Globe2", route: "/admin/api" },
           ],
         },
       ],
@@ -177,6 +178,13 @@ const SIDEBAR_CONFIG = {
             { name: "Performance Trends", icon: "TrendingUp", route: "/partner/performance" },
           ],
         },
+        {
+          title: "Settings",
+          items: [
+            { name: "Notifications", icon: "Megaphone", route: "/settings/notifications" },
+            { name: "Account Settings", icon: "Settings", route: "/settings" },
+          ],
+        },
       ],
     },
     client: {
@@ -221,9 +229,10 @@ const SIDEBAR_CONFIG = {
           ],
         },
         {
-          title: "Notifications & Reminders",
+          title: "Notifications & Settings",
           items: [
-            { name: "Notifications", icon: "Megaphone", route: "/client/notifications" },
+            { name: "Notification Center", icon: "Megaphone", route: "/client/notifications" },
+            { name: "Notification Settings", icon: "Settings", route: "/settings/notifications" },
             { name: "Trip Reminders", icon: "Clock3", route: "/client/reminders" },
           ],
         },

@@ -101,7 +101,7 @@ export default function PaymentButton({ items = [], currency = "USD" }) {
     <div>
       {!bookingInfo ? (
         <div>
-          <button onClick={startCheckout} disabled={loading} className="px-4 py-2 bg-brand-orange text-white rounded hover:opacity-95 disabled:opacity-60">
+          <button onClick={startCheckout} disabled={loading} className="px-4 py-2 bg-brand-orange text-white rounded hover:bg-brand-highlight disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
             {loading ? 'Creating booking…' : 'Pay securely'}
           </button>
           {error ? <div className="text-sm text-red-600 mt-1">{error}</div> : null}

@@ -1,10 +1,12 @@
-// Bumped to v24 – force cache clear to fix module loading issues after updates.
+/* global clients */
+// Bumped to v25 – Added mobile push notification support
 // Change log:
+// v25: Mobile push notifications with vibration, badge, custom icons
 // v24: Force cache clear to resolve dynamic module import failures.
 // v23: Cache manifest.webmanifest; force new install to help purge stale index.html in clients.
 // v22: Added CLIENT_UPDATE_AVAILABLE broadcast when a new SW takes control & manual CHECK_FOR_UPDATE message.
 // v21: Background sync stub & broadcast of itinerary sync results.
-const STATIC_CACHE = 'colleco-static-v24';
+const STATIC_CACHE = 'colleco-static-v25';
 const ITINERARY_JSON_PATH = '/assets/data/itinerary.json';
 const ASSETS = [
   '/',
@@ -150,6 +152,181 @@ self.addEventListener('fetch', (event) => {
       return cached || network || fetch(req);
     })());
   }
+});
+
+// ------------------------------
+// Push Notification Handlers for Mobile & Desktop
+// Handles incoming push notifications with mobile-optimized features:
+// - Vibration patterns
+// - Badge updates
+// - CollEco logo icon
+// - Action buttons
+// - Silent notifications for background updates
+
+self.addEventListener('push', (event) => {
+  let data = {
+    title: 'CollEco',
+    body: 'You have a new notification',
+    icon: '/assets/icons/colleco-logo-192.png',
+    badge: '/assets/icons/colleco-logo-72.png',
+    vibrate: [200, 100, 200], // Vibration pattern: 200ms on, 100ms off, 200ms on
+    tag: 'colleco-notification',
+    requireInteraction: false,
+    silent: false
+  };
+
+  try {
+    if (event.data) {
+      const payload = event.data.json();
+      data = { ...data, ...payload };
+    }
+  } catch (e) {
+    console.error('Push data parse error:', e);
+  }
+
+  // Customize vibration and sound based on notification type
+  const vibrationPatterns = {
+    message: [200, 100, 200], // Quick double ping
+    booking: [300, 100, 300, 100, 300], // Triple ping for important bookings
+    payment: [500, 200, 500], // Longer ping for payments
+    alert: [100, 50, 100, 50, 100, 50, 100], // Urgent rapid pattern
+    system: [200] // Single short ping
+  };
+
+  if (data.type && vibrationPatterns[data.type]) {
+    data.vibrate = vibrationPatterns[data.type];
+  }
+
+  // Add CollEco branding
+  data.icon = data.icon || '/assets/icons/colleco-logo-192.png';
+  data.badge = data.badge || '/assets/icons/colleco-logo-72.png';
+
+  // Add action buttons for interactive notifications
+  const actions = [];
+  
+  if (data.type === 'message') {
+    actions.push(
+      { action: 'reply', title: '💬 Reply', icon: '/assets/icons/colleco-logo-72.png' },
+      { action: 'view', title: '👁️ View', icon: '/assets/icons/colleco-logo-72.png' }
+    );
+  } else if (data.type === 'booking') {
+    actions.push(
+      { action: 'view', title: '📋 View Booking', icon: '/assets/icons/colleco-logo-72.png' },
+      { action: 'dismiss', title: '✓ OK', icon: '/assets/icons/colleco-logo-72.png' }
+    );
+  } else if (data.type === 'quote') {
+    actions.push(
+      { action: 'view', title: '📄 View Quote', icon: '/assets/icons/colleco-logo-72.png' },
+      { action: 'dismiss', title: '✓ OK', icon: '/assets/icons/colleco-logo-72.png' }
+    );
+  } else if (data.type === 'payment') {
+    actions.push(
+      { action: 'view', title: '💰 View Payment', icon: '/assets/icons/colleco-logo-72.png' }
+    );
+  }
+
+  if (actions.length > 0) {
+    data.actions = actions;
+  }
+
+  // Update badge count (for mobile home screen icon)
+  if (data.badge && 'setAppBadge' in navigator) {
+    navigator.setAppBadge(data.unreadCount || 1).catch(() => {});
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: data.icon,
+      badge: data.badge,
+      vibrate: data.vibrate,
+      tag: data.tag || 'colleco-notification',
+      requireInteraction: data.requireInteraction || false,
+      silent: data.silent || false,
+      actions: data.actions || [],
+      data: {
+        url: data.url || '/',
+        type: data.type,
+        id: data.id,
+        timestamp: Date.now()
+      },
+      // Mobile-specific optimizations
+      renotify: true, // Re-alert user if same tag
+      timestamp: Date.now()
+    })
+  );
+});
+
+// Handle notification click (open app to specific page)
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  const urlToOpen = event.notification.data?.url || '/';
+  const notificationType = event.notification.data?.type;
+  const notificationId = event.notification.data?.id;
+
+  // Handle action button clicks
+  if (event.action === 'reply') {
+    event.waitUntil(
+      clients.openWindow(`/messages?reply=${notificationId}`)
+    );
+    return;
+  } else if (event.action === 'view') {
+    event.waitUntil(
+      clients.openWindow(urlToOpen)
+    );
+    return;
+  } else if (event.action === 'dismiss') {
+    // Just close, already handled above
+    return;
+  }
+
+  // Default click behavior: focus existing window or open new one
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true })
+      .then((clientList) => {
+        // If app is already open, focus it and navigate
+        for (const client of clientList) {
+          if (client.url.includes(self.location.origin) && 'focus' in client) {
+            client.postMessage({
+              type: 'NOTIFICATION_CLICKED',
+              url: urlToOpen,
+              notificationType,
+              notificationId
+            });
+            return client.focus();
+          }
+        }
+        // Otherwise, open new window
+        if (clients.openWindow) {
+          return clients.openWindow(urlToOpen);
+        }
+      })
+  );
+
+  // Clear badge on notification click
+  if ('clearAppBadge' in navigator) {
+    navigator.clearAppBadge().catch(() => {});
+  }
+});
+
+// Handle notification close (track dismissed notifications)
+self.addEventListener('notificationclose', (event) => {
+  const notificationData = event.notification.data;
+  
+  // Track dismissal analytics (send to backend)
+  event.waitUntil(
+    fetch('/api/notifications/analytics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'dismissed',
+        notificationId: notificationData?.id,
+        type: notificationData?.type,
+        timestamp: Date.now()
+      })
+    }).catch(() => {}) // Silent fail for analytics
+  );
 });
 
 // ------------------------------

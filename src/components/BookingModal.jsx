@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { bookAccommodation, bookFlight, bookCar, subscribeToFlightUpdates, getFlight, checkAccommodationAvailability, createAccommodationHold } from '../api/client';
 import DateRangePicker from './DateRangePicker';
@@ -24,6 +24,88 @@ export default function BookingModal({ open, onClose, prefill }) {
   const [monitoring, setMonitoring] = useState({});
   const modalRef = useRef(null);
   const previousFocusRef = useRef(null);
+  
+  // Smart automation refs
+  const lastCalculationRef = useRef(null);
+  
+  // Auto-calculate return date for round trips (7 days after departure by default)
+  useEffect(() => {
+    if (roundTrip && startDate && !returnDate) {
+      const departure = new Date(startDate);
+      const suggestedReturn = new Date(departure);
+      suggestedReturn.setDate(suggestedReturn.getDate() + 7);
+      setReturnDate(suggestedReturn.toISOString().slice(0, 10));
+    }
+  }, [roundTrip, startDate, returnDate]);
+  
+  // Smart price suggestions based on type and duration
+  useEffect(() => {
+    if (startDate && endDate && !price) {
+      const nights = nightsOrDays();
+      let suggestedPrice = 0;
+      
+      if (type === 'accommodation') {
+        // Suggest R800-1500 per night based on room type
+        const basePrice = roomType === 'deluxe' ? 1500 : roomType === 'suite' ? 1200 : 800;
+        suggestedPrice = basePrice;
+      } else if (type === 'flight') {
+        // Suggest R2000-5000 per flight
+        suggestedPrice = 3000;
+      } else if (type === 'car') {
+        // Suggest R400-800 per day
+        suggestedPrice = 600;
+      }
+      
+      if (suggestedPrice > 0) {
+        setPrice(String(suggestedPrice));
+      }
+    }
+  }, [type, startDate, endDate, price, roomType]);
+  
+  // Auto-detect currency based on price patterns (if user enters R prefix, switch to ZAR)
+  const handlePriceChange = (value) => {
+    const cleaned = value.replace(/[^\d.]/g, '');
+    setPrice(cleaned);
+    
+    // Auto-detect ZAR if user types "R"
+    if (value.startsWith('R') || value.startsWith('r')) {
+      setCurrency('ZAR');
+    }
+  };
+  
+  // Smart date validation - warn if end date is before start date
+  const dateValidation = useMemo(() => {
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      
+      if (end < start) {
+        return { valid: false, message: '⚠️ End date must be after start date' };
+      }
+      
+      const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+      if (nights > 30) {
+        return { valid: true, message: `ℹ️ ${nights} nights is a long stay. Confirm dates are correct.` };
+      }
+    }
+    return { valid: true, message: null };
+  }, [startDate, endDate]);
+  
+  // Smart total calculation with suggestions
+  const smartTotal = useMemo(() => {
+    const total = estimatedTotal();
+    const numTotal = parseFloat(total);
+    
+    let suggestion = null;
+    if (numTotal > 10000) {
+      suggestion = 'Consider splitting payment for large bookings';
+    } else if (numTotal === 0) {
+      suggestion = 'Enter price to see estimated total';
+    }
+    
+    lastCalculationRef.current = { total, suggestion };
+    return { total, suggestion };
+  }, [startDate, endDate, price, type]);
 
   // Ensure E2E fallback title/close exist immediately when the modal is opened so
   // tests can find the elements without waiting for React rendering inside the portal.
@@ -292,6 +374,13 @@ export default function BookingModal({ open, onClose, prefill }) {
           <div>
             {/* Date range picker */}
             <DateRangePicker startDate={startDate} endDate={endDate} onStartChange={setStartDate} onEndChange={setEndDate} />
+            
+            {/* Smart date validation */}
+            {dateValidation && dateValidation.message && (
+              <div className={`mt-1 text-xs ${dateValidation.valid ? 'text-blue-600' : 'text-red-600'}`}>
+                {dateValidation.message}
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-2">
@@ -304,8 +393,13 @@ export default function BookingModal({ open, onClose, prefill }) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium">Price (per unit)</label>
-              <input value={price} onChange={(e) => setPrice(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" placeholder="0.00" />
+              <label className="block text-sm font-medium">
+                Price (per unit)
+                {price && type === 'accommodation' && (
+                  <span className="ml-1 text-xs text-green-600">✓ Auto-suggested</span>
+                )}
+              </label>
+              <input value={price} onChange={(e) => handlePriceChange(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" placeholder="0.00" />
             </div>
           </div>
 
@@ -346,12 +440,17 @@ export default function BookingModal({ open, onClose, prefill }) {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button type="submit" disabled={loading} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange text-white rounded shadow-sm hover:brightness-95 disabled:opacity-60">
+              <button type="submit" disabled={loading || !dateValidation.valid} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange text-white rounded shadow-sm hover:bg-brand-highlight disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
                 {loading ? 'Processing…' : 'Search & Book'}
               </button>
               <button type="button" onClick={() => { reset(); }} className="inline-flex items-center gap-2 px-3 py-2 border rounded text-sm text-brand-brown hover:bg-cream">Reset</button>
             </div>
-            <div className="text-sm text-brand-brown/80">Est. total: <span className="font-semibold">{currency} {estimatedTotal()}</span></div>
+            <div className="text-sm text-brand-brown/80">
+              Est. total: <span className="font-semibold">{currency} {smartTotal.total}</span>
+              {smartTotal.suggestion && (
+                <div className="text-xs text-blue-600 mt-1">💡 {smartTotal.suggestion}</div>
+              )}
+            </div>
           </div>
   </form>
     {type === 'flight' && (
@@ -359,7 +458,12 @@ export default function BookingModal({ open, onClose, prefill }) {
         <label className="inline-flex items-center gap-2"><input type="checkbox" checked={roundTrip} onChange={(e)=>setRoundTrip(e.target.checked)} /> Round-trip</label>
         {roundTrip && (
           <div className="mt-2">
-            <label className="block text-sm font-medium">Return Date</label>
+            <label className="block text-sm font-medium">
+              Return Date
+              {returnDate && startDate && new Date(returnDate) > new Date(startDate) && (
+                <span className="ml-1 text-xs text-green-600">✓ Auto-calculated (+7 days)</span>
+              )}
+            </label>
             <input type="date" value={returnDate} onChange={(e)=>setReturnDate(e.target.value)} className="mt-1 block w-48 rounded border px-2 py-1" />
           </div>
         )}

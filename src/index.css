@@ -50,6 +50,32 @@ html { overflow-y: scroll; }
 	.toast-fade, .animate-fade-in, .animate-shake { transition: none; animation: none; }
 }
 
+/* Custom Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, #D07032 0%, #D4A056 100%);
+	border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(180deg, #c56329 0%, #c1934a 100%);
+}
+
+/* Firefox scrollbar */
+.custom-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: #D07032 #f1f1f1;
+}
+
 /* Themed scrollbars (avoid dark/black lines) */
 /* WebKit browsers (Chrome, Edge, Safari) */
 *::-webkit-scrollbar { height: 8px; width: 8px; }
@@ -161,4 +187,52 @@ aside footer {
 }
 aside footer * {
 	color: var(--color-rusty) !important;
+}
+
+/* Custom checkbox styling: Orange background with white checkmark */
+input[type="checkbox"].accent-brand-orange,
+input[type="checkbox"][class*="accent-brand-orange"] {
+	accent-color: #F47C20;
+	/* Modern browsers support accent-color, but for white checkmark we need custom styling */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	width: 1rem;
+	height: 1rem;
+	border: 2px solid #E7DAC6;
+	border-radius: 0.25rem;
+	background-color: white;
+	cursor: pointer;
+	position: relative;
+	transition: all 0.2s ease;
+}
+
+input[type="checkbox"].accent-brand-orange:checked,
+input[type="checkbox"][class*="accent-brand-orange"]:checked {
+	background-color: #F47C20;
+	border-color: #F47C20;
+}
+
+input[type="checkbox"].accent-brand-orange:checked::after,
+input[type="checkbox"][class*="accent-brand-orange"]:checked::after {
+	content: '';
+	position: absolute;
+	left: 4px;
+	top: 1px;
+	width: 4px;
+	height: 8px;
+	border: solid white;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+
+input[type="checkbox"].accent-brand-orange:hover,
+input[type="checkbox"][class*="accent-brand-orange"]:hover {
+	border-color: #F47C20;
+}
+
+input[type="checkbox"].accent-brand-orange:focus,
+input[type="checkbox"][class*="accent-brand-orange"]:focus {
+	outline: 2px solid #F47C20;
+	outline-offset: 2px;
 }

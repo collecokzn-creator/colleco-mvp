@@ -12,6 +12,8 @@ const path = require('path');
 const { parsePrompt, parseFlightRequest, parseIntent } = require('./aiParser');
 const crypto = require('crypto');
 const pricingEngine = require('./pricingEngine');
+const webpush = require('web-push');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
 // --- Search suggest mock ---
 const DEFAULT_SUGGESTIONS = [
   { type: 'flight', label: 'JNB → CPT' },
@@ -191,6 +193,43 @@ const API_TOKEN = process.env.API_TOKEN || '';
 if(process.env.NODE_ENV === 'production' && !API_TOKEN){
   console.warn('[security] API_TOKEN not set in production; protected endpoints will be open.');
 }
+
+// --- Push Notification Setup ---
+const VAPID_PUBLIC_KEY = process.env.VITE_VAPID_PUBLIC_KEY;
+const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY;
+const VAPID_EMAIL = process.env.VAPID_EMAIL || 'notifications@colleco.com';
+
+if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
+  webpush.setVapidDetails(
+    `mailto:${VAPID_EMAIL}`,
+    VAPID_PUBLIC_KEY,
+    VAPID_PRIVATE_KEY
+  );
+  console.log('[push] VAPID keys configured for push notifications');
+} else {
+  console.warn('[push] VAPID keys not found. Push notifications will not work.');
+}
+
+const PUSH_SUBSCRIPTIONS_FILE = path.join(DATA_DIR, 'push_subscriptions.json');
+function loadSubscriptions() {
+  try {
+    if (fs.existsSync(PUSH_SUBSCRIPTIONS_FILE)) {
+      return JSON.parse(fs.readFileSync(PUSH_SUBSCRIPTIONS_FILE, 'utf8')) || {};
+    }
+  } catch (e) {
+    console.error('[push] Failed to load subscriptions:', e.message);
+  }
+  return {};
+}
+function saveSubscriptions() {
+  try {
+    fs.writeFileSync(PUSH_SUBSCRIPTIONS_FILE, JSON.stringify(pushSubscriptions, null, 2), 'utf8');
+  } catch (e) {
+    console.error('[push] Failed to save subscriptions:', e.message);
+  }
+}
+const pushSubscriptions = loadSubscriptions(); // userId -> [{ endpoint, keys, deviceType, isPWA, subscribedAt }]
+
 const HYBRID_LLM = process.env.HYBRID_LLM === '1';
 let llmAdapter = null;
 if(HYBRID_LLM){
@@ -262,6 +301,244 @@ app.post('/api/contact', async (req, res) => {
     fs.appendFileSync(CONTACT_LOG, JSON.stringify(entry)+"\n", 'utf8');
     return res.json({ ok:true, via:'log' });
   } catch(e){ return res.status(500).json({ error:'persist_failed' }); }
+});
+
+// --- Push Notification Endpoints ---
+
+// Subscribe to push notifications
+app.post('/api/notifications/subscribe', (req, res) => {
+  const { userId, subscription, deviceType, isPWA } = req.body || {};
+  
+  if (!userId || !subscription || !subscription.endpoint) {
+    return res.status(400).json({ error: 'missing_fields', required: ['userId', 'subscription'] });
+  }
+
+  if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
+    return res.status(503).json({ error: 'push_not_configured' });
+  }
+
+  try {
+    // Initialize user's subscription array if not exists
+    if (!pushSubscriptions[userId]) {
+      pushSubscriptions[userId] = [];
+    }
+
+    // Check if subscription already exists
+    const existingIndex = pushSubscriptions[userId].findIndex(
+      sub => sub.endpoint === subscription.endpoint
+    );
+
+    const subscriptionData = {
+      endpoint: subscription.endpoint,
+      keys: subscription.keys,
+      deviceType: deviceType || 'unknown',
+      isPWA: isPWA || false,
+      subscribedAt: Date.now(),
+      lastSentAt: null
+    };
+
+    if (existingIndex >= 0) {
+      // Update existing subscription
+      pushSubscriptions[userId][existingIndex] = subscriptionData;
+    } else {
+      // Add new subscription
+      pushSubscriptions[userId].push(subscriptionData);
+    }
+
+    saveSubscriptions();
+
+    console.log(`[push] User ${userId} subscribed (${deviceType}, PWA: ${isPWA})`);
+    
+    return res.json({ 
+      ok: true, 
+      subscriptionCount: pushSubscriptions[userId].length,
+      deviceType,
+      isPWA 
+    });
+  } catch (e) {
+    console.error('[push] Subscribe error:', e.message);
+    return res.status(500).json({ error: 'subscribe_failed', message: e.message });
+  }
+});
+
+// Unsubscribe from push notifications
+app.post('/api/notifications/unsubscribe', (req, res) => {
+  const { userId, endpoint } = req.body || {};
+
+  if (!userId || !endpoint) {
+    return res.status(400).json({ error: 'missing_fields', required: ['userId', 'endpoint'] });
+  }
+
+  try {
+    if (!pushSubscriptions[userId]) {
+      return res.json({ ok: true, message: 'no_subscriptions' });
+    }
+
+    const beforeCount = pushSubscriptions[userId].length;
+    pushSubscriptions[userId] = pushSubscriptions[userId].filter(
+      sub => sub.endpoint !== endpoint
+    );
+
+    // Remove user entry if no subscriptions left
+    if (pushSubscriptions[userId].length === 0) {
+      delete pushSubscriptions[userId];
+    }
+
+    saveSubscriptions();
+
+    const removed = beforeCount - (pushSubscriptions[userId]?.length || 0);
+    console.log(`[push] User ${userId} unsubscribed (${removed} removed)`);
+
+    return res.json({ 
+      ok: true, 
+      removed,
+      remainingCount: pushSubscriptions[userId]?.length || 0
+    });
+  } catch (e) {
+    console.error('[push] Unsubscribe error:', e.message);
+    return res.status(500).json({ error: 'unsubscribe_failed', message: e.message });
+  }
+});
+
+// Send push notification to user(s)
+app.post('/api/notifications/send', authCheck, async (req, res) => {
+  const { userId, userIds, title, body, type, url, icon, badge, vibrate, actions, unreadCount } = req.body || {};
+
+  if ((!userId && !userIds) || !title || !body) {
+    return res.status(400).json({ error: 'missing_fields', required: ['userId or userIds', 'title', 'body'] });
+  }
+
+  if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
+    return res.status(503).json({ error: 'push_not_configured' });
+  }
+
+  const targetUsers = userIds || [userId];
+  const results = {
+    sent: 0,
+    failed: 0,
+    errors: []
+  };
+
+  const payload = JSON.stringify({
+    title,
+    body,
+    type: type || 'message',
+    url: url || '/',
+    icon: icon || '/assets/icons/colleco-logo-192.png',
+    badge: badge || '/assets/icons/colleco-logo-72.png',
+    vibrate: vibrate || [200, 100, 200],
+    actions: actions || [],
+    unreadCount: unreadCount || 0,
+    timestamp: Date.now()
+  });
+
+  try {
+    for (const targetUserId of targetUsers) {
+      const userSubscriptions = pushSubscriptions[targetUserId] || [];
+
+      if (userSubscriptions.length === 0) {
+        results.errors.push({ userId: targetUserId, error: 'no_subscriptions' });
+        continue;
+      }
+
+      for (const subscription of userSubscriptions) {
+        try {
+          await webpush.sendNotification(
+            {
+              endpoint: subscription.endpoint,
+              keys: subscription.keys
+            },
+            payload
+          );
+
+          subscription.lastSentAt = Date.now();
+          results.sent++;
+        } catch (err) {
+          results.failed++;
+          
+          // Remove subscription if it's no longer valid (410 Gone or 404 Not Found)
+          if (err.statusCode === 410 || err.statusCode === 404) {
+            console.log(`[push] Removing invalid subscription for user ${targetUserId}`);
+            pushSubscriptions[targetUserId] = pushSubscriptions[targetUserId].filter(
+              sub => sub.endpoint !== subscription.endpoint
+            );
+            if (pushSubscriptions[targetUserId].length === 0) {
+              delete pushSubscriptions[targetUserId];
+            }
+          }
+
+          results.errors.push({ 
+            userId: targetUserId, 
+            endpoint: subscription.endpoint.slice(0, 50) + '...', 
+            error: err.message,
+            statusCode: err.statusCode
+          });
+        }
+      }
+    }
+
+    saveSubscriptions();
+
+    console.log(`[push] Sent notification to ${results.sent} devices (${results.failed} failed)`);
+
+    return res.json({
+      ok: true,
+      sent: results.sent,
+      failed: results.failed,
+      errors: results.errors.length > 0 ? results.errors : undefined
+    });
+  } catch (e) {
+    console.error('[push] Send error:', e.message);
+    return res.status(500).json({ error: 'send_failed', message: e.message });
+  }
+});
+
+// Get user's subscription status
+app.get('/api/notifications/subscriptions/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const userSubs = pushSubscriptions[userId] || [];
+    
+    return res.json({
+      ok: true,
+      userId,
+      subscriptionCount: userSubs.length,
+      subscriptions: userSubs.map(sub => ({
+        deviceType: sub.deviceType,
+        isPWA: sub.isPWA,
+        subscribedAt: sub.subscribedAt,
+        lastSentAt: sub.lastSentAt,
+        endpoint: sub.endpoint.slice(0, 50) + '...' // Partial endpoint for privacy
+      }))
+    });
+  } catch (e) {
+    console.error('[push] Get subscriptions error:', e.message);
+    return res.status(500).json({ error: 'query_failed', message: e.message });
+  }
+});
+
+// Notification analytics endpoint
+app.post('/api/notifications/analytics', (req, res) => {
+  const { action, type, timestamp, userId } = req.body || {};
+  
+  // Log analytics (in production, send to analytics service)
+  const analyticsEntry = {
+    action, // 'shown', 'clicked', 'dismissed'
+    type, // 'message', 'booking', 'payment', etc.
+    timestamp: timestamp || Date.now(),
+    userId: userId || 'unknown',
+    ip: req.ip
+  };
+
+  try {
+    const ANALYTICS_FILE = path.join(DATA_DIR, 'notification_analytics.jsonl');
+    fs.appendFileSync(ANALYTICS_FILE, JSON.stringify(analyticsEntry) + '\n', 'utf8');
+    return res.json({ ok: true });
+  } catch (e) {
+    console.error('[push] Analytics error:', e.message);
+    return res.status(500).json({ error: 'analytics_failed' });
+  }
 });
 
 // --- Unified Search: autosuggest placeholder ---

@@ -332,15 +332,26 @@ function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-cream-sand to-cream flex items-center justify-center p-6">
       <div className="max-w-md w-full">
-        {/* Header */}
-        <div className="text-center mb-8 animate-fade-in">
-          <div className="w-20 h-20 mx-auto mb-4">
+        {/* Header with integrated globe design */}
+        <div className="text-center mb-8 animate-fade-in relative">
+          {/* Large globe as background element */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 opacity-10 pointer-events-none -z-10">
             <img 
               src="/assets/Globeicon.png" 
-              alt="CollEco Travel" 
+              alt="" 
               className="w-full h-full object-contain"
             />
           </div>
+          
+          {/* Globe icon integrated into design */}
+          <div className="inline-block mb-4">
+            <img 
+              src="/assets/Globeicon.png" 
+              alt="CollEco Travel" 
+              className="w-24 h-24 object-contain drop-shadow-lg"
+            />
+          </div>
+          
           <h1 className="text-3xl font-bold text-brand-brown mb-2">CollEco Travel</h1>
           <p className="text-brand-russty">Start your journey with us</p>
         </div>
@@ -670,7 +681,7 @@ function Login() {
                 type="checkbox" 
                 checked={keepLoggedIn} 
                 onChange={e => setKeepLoggedIn(e.target.checked)}
-                className="w-4 h-4 text-brand-orange border-cream-border rounded focus:ring-brand-orange"
+                className="w-4 h-4 accent-brand-orange border-cream-border rounded focus:ring-brand-orange"
               />
               <span className="text-brand-russty">Keep me logged in</span>
             </label>
@@ -680,7 +691,7 @@ function Login() {
                 type="checkbox" 
                 checked={useBiometrics} 
                 onChange={e => setUseBiometrics(e.target.checked)}
-                className="w-4 h-4 text-brand-orange border-cream-border rounded focus:ring-brand-orange"
+                className="w-4 h-4 accent-brand-orange border-cream-border rounded focus:ring-brand-orange"
               />
               <span className="text-brand-russty">Biometrics</span>
             </label>
@@ -711,18 +722,18 @@ function Login() {
                 <button
                   type="button"
                   onClick={handleBiometricLogin}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
+                  className="flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-3 border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
                 >
-                  <span className="text-xl">👤</span>
-                  <span>Face ID</span>
+                  <span className="text-2xl">👤</span>
+                  <span className="text-sm sm:text-base">Face ID</span>
                 </button>
                 <button
                   type="button"
                   onClick={handleBiometricLogin}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
+                  className="flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-3 border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
                 >
-                  <span className="text-xl">👆</span>
-                  <span>Fingerprint</span>
+                  <span className="text-2xl">👆</span>
+                  <span className="text-sm sm:text-base">Fingerprint</span>
                 </button>
               </div>
               <p className="text-xs text-brand-russty text-center mt-2">Enable biometrics in settings after first login</p>

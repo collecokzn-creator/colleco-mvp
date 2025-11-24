@@ -1971,5 +1971,23 @@
       "itinerary": []
     },
     "createdAt": 1763635758527
+  },
+  "i76ho9q40smi8yis92": {
+    "id": "i76ho9q40smi8yis92",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1763735404934
+  },
+  "oxwg7futbaimidcn10h": {
+    "id": "oxwg7futbaimidcn10h",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764000982241
   }
 }

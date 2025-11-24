@@ -13,6 +13,7 @@ import MyLocationModal from "../components/MyLocationModal";
 import WeatherWidget from "../components/WeatherWidget";
 import WorkflowPanel from "../components/WorkflowPanel";
 import { useClickOutsideAndEscape } from "../hooks/useClickOutside";
+import MiniItineraryPreview from "../components/ui/MiniItineraryPreview";
 
 export default function PlanTrip() {
   useEffect(() => {
@@ -937,7 +938,7 @@ export default function PlanTrip() {
                       aria-label="Preset name"
                     />
                     <button onClick={savePreset} className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover" title="Save current filters as preset">Save</button>
-                    <button disabled={!selectedPreset} onClick={()=>deletePreset(selectedPreset)} className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover disabled:opacity-50" title="Delete selected preset">Delete</button>
+                    <button disabled={!selectedPreset} onClick={()=>deletePreset(selectedPreset)} className="text-xs px-2 py-1 rounded border border-cream-border bg-white hover:bg-cream-hover disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed" title="Delete selected preset">Delete</button>
                   </div>
                 )}
                 {/* Price / Paid/Free */}
@@ -1153,7 +1154,7 @@ export default function PlanTrip() {
                   <button
                     key={k}
                     onClick={() => updateLocationParam(k, '')}
-                    className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                    className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 transition"
                     title={`Clear ${k}`}
                     aria-label={`Clear ${k} filter: ${locFilters[k]}`}
                   >
@@ -1164,7 +1165,7 @@ export default function PlanTrip() {
               {locFilters.category ? (
                 <button
                   onClick={() => updateParam('category','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 transition"
                   title={`Clear category`}
                   aria-label={`Clear category filter: ${locFilters.category}`}
                 >
@@ -1174,7 +1175,7 @@ export default function PlanTrip() {
               {locFilters.priceMin ? (
                 <button
                   onClick={() => updateParam('priceMin','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 transition"
                   title="Clear minimum price"
                   aria-label={`Clear minimum price filter: ${locFilters.priceMin}`}
                 >
@@ -1184,7 +1185,7 @@ export default function PlanTrip() {
               {locFilters.priceMax ? (
                 <button
                   onClick={() => updateParam('priceMax','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 transition"
                   title="Clear maximum price"
                   aria-label={`Clear maximum price filter: ${locFilters.priceMax}`}
                 >
@@ -1194,7 +1195,7 @@ export default function PlanTrip() {
               {locFilters.paidOnly ? (
                 <button
                   onClick={() => updateParam('paidOnly','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-russty/30 transition"
                   title="Clear paid only"
                   aria-label={`Clear paid only filter`}
                 >
@@ -1204,7 +1205,7 @@ export default function PlanTrip() {
               {locFilters.freeOnly ? (
                 <button
                   onClick={() => updateParam('freeOnly','')}
-                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 active:scale-[0.98] transition"
+                  className="text-xs px-2 py-1 rounded-full border border-cream-border bg-cream hover:bg-cream-hover focus:outline-none focus:ring-2 focus:ring-brand-brown/30 transition"
                   title="Clear free only"
                   aria-label={`Clear free only filter`}
                 >
@@ -1213,7 +1214,7 @@ export default function PlanTrip() {
               ) : null}
               <button
                 onClick={clearLocationFilters}
-                className="text-[11px] px-2 py-1 rounded-full border border-cream-border bg-white hover:bg-cream-hover text-brand-russty/80 focus:outline-none focus:ring-2 focus:ring-brand-russty/30 active:scale-[0.98] transition"
+                className="text-[11px] px-2 py-1 rounded-full border border-cream-border bg-white hover:bg-cream-hover text-brand-russty/80 focus:outline-none focus:ring-2 focus:ring-brand-russty/30 transition"
                 title="Clear all location filters"
                 aria-label="Clear all location filters"
               >
@@ -1546,6 +1547,14 @@ export default function PlanTrip() {
               </div>
             );
           })()}
+          
+          {/* Mini Itinerary Preview */}
+          {basket.length > 0 && (
+            <div className="mb-4">
+              <MiniItineraryPreview basket={basket} />
+            </div>
+          )}
+          
           <div className="flex items-center gap-2 mb-3">
             <button
               onClick={async ()=>{

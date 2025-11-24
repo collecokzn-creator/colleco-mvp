@@ -471,12 +471,12 @@ export default function AIGeneratorPanel() {
           <label className="flex items-center gap-1 cursor-pointer"><input type="radio" name="aimode" value="stream" checked={mode==='stream'} onChange={()=>setMode('stream')} /> <span>Stream</span></label>
           <label className="flex items-center gap-1 cursor-pointer"><input type="radio" name="aimode" value="single" checked={mode==='single'} onChange={()=>setMode('single')} /> <span>Single</span></label>
         </div>
-        {mode==='single' && <button onClick={handleSingle} disabled={loading} className="px-4 py-2 rounded bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight disabled:opacity-50">{loading? 'Generating…':'Generate'}</button>}
-        {mode==='stream' && <button onClick={handleStream} disabled={active} className="px-4 py-2 rounded bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight disabled:opacity-50">{active? 'Streaming…':'Start Stream'}</button>}
+        {mode==='single' && <button onClick={handleSingle} disabled={loading} className="px-4 py-2 rounded bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">{loading? 'Generating…':'Generate'}</button>}
+        {mode==='stream' && <button onClick={handleStream} disabled={active} className="px-4 py-2 rounded bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">{active? 'Streaming…':'Start Stream'}</button>}
         {(active||loading) && <button onClick={handleCancel} className="px-3 py-2 rounded bg-brand-brown text-white text-xs font-semibold hover:bg-brand-brown/80">Cancel</button>}
         <button onClick={reset} className="px-3 py-2 rounded border border-brand-brown text-brand-brown text-xs font-semibold hover:bg-cream-hover">Clear</button>
-  <button onClick={handleApply} disabled={applied || !(phases.plan && phases.pricing)} className="px-3 py-2 rounded bg-brand-brown text-white text-xs font-semibold disabled:opacity-40">{applied? 'Saved':'Save draft for Itinerary'}</button>
-        <button onClick={handleUploadDraft} disabled={uploading || uploadedId || !(phases.plan && phases.pricing)} className="px-3 py-2 rounded bg-brand-orange text-white text-xs font-semibold disabled:opacity-40">{uploadedId? 'Uploaded':'Upload Draft'}</button>
+  <button onClick={handleApply} disabled={applied || !(phases.plan && phases.pricing)} className="px-3 py-2 rounded bg-brand-brown text-white text-xs font-semibold disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">{applied? 'Saved':'Save draft for Itinerary'}</button>
+        <button onClick={handleUploadDraft} disabled={uploading || uploadedId || !(phases.plan && phases.pricing)} className="px-3 py-2 rounded bg-brand-orange text-white text-xs font-semibold disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">{uploadedId? 'Uploaded':'Upload Draft'}</button>
         <div className="flex items-center gap-1 ml-2 text-[11px]">
           <label className="flex items-center gap-1 cursor-pointer"><input type="checkbox" checked={sessionMode} onChange={(e)=>{ if(!e.target.checked){ setSessionMode(false); setSessionId(null);} else { handleStartSession(); } }} /> Session</label>
           {sessionId && <span className="text-green-700 flex items-center gap-1">#{sessionId.slice(0,6)} {scoped && <span title="Scoped to token" className="inline-block text-[10px] px-1 py-0.5 rounded bg-brand-orange text-white">LOCK</span>}</span>}
@@ -497,7 +497,7 @@ export default function AIGeneratorPanel() {
         </label>
         <textarea value={refineText} onChange={e=>setRefineText(e.target.value)} placeholder="e.g. slow the pace; add beach and 2 more nights; swap Florence for Venice" rows={2} className="w-full p-2 rounded border border-cream-border bg-cream focus:outline-none focus:ring-1 focus:ring-brand-orange/40 text-xs resize-y" />
         <div className="flex gap-2">
-          <button onClick={handleRefine} disabled={refining || !refineText.trim()} className="px-3 py-1.5 rounded bg-brand-orange text-white text-xs font-semibold disabled:opacity-40">Refine</button>
+          <button onClick={handleRefine} disabled={refining || !refineText.trim()} className="px-3 py-1.5 rounded bg-brand-orange text-white text-xs font-semibold disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">Refine</button>
           {applied && <span className="text-[11px] text-green-700">Stored draft ready to import.</span>}
         </div>
   <p className="text-[10px] text-brand-brown/60">Tips: Keep it short and actionable — e.g., &quot;add museum&quot;, &quot;add 2 more nights&quot;, &quot;swap to family‑friendly&quot;, &quot;reduce budget by 10%&quot;.</p>

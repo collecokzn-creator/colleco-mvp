@@ -216,7 +216,7 @@ export default function PartnerTransferDashboard() {
                   <button
                     onClick={() => acceptRequest(req.id)}
                     disabled={loading}
-                    className="flex-1 px-4 py-2 bg-brand-orange text-white rounded font-semibold hover:bg-brand-gold disabled:opacity-50"
+                    className="flex-1 px-4 py-2 bg-brand-orange text-white rounded font-semibold hover:bg-brand-gold disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
                   >
                     Accept
                   </button>

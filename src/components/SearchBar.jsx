@@ -13,6 +13,48 @@ export default function SearchBar({ className = '' }){
   const [recent, setRecent] = useState(() => {
     try { return JSON.parse(localStorage.getItem('recentSearches')||'[]'); } catch { return []; }
   });
+  
+  // Smart search features
+  const searchHistoryRef = useRef([]);
+  const lastSearchTimeRef = useRef(null);
+  
+  // Auto-save search history (max 10 recent searches)
+  useEffect(() => {
+    if (q.trim() && q.length >= 3) {
+      const now = Date.now();
+      // Only track if 5 seconds passed since last search
+      if (!lastSearchTimeRef.current || (now - lastSearchTimeRef.current) > 5000) {
+        searchHistoryRef.current = [q.trim(), ...searchHistoryRef.current.slice(0, 9)];
+        try {
+          localStorage.setItem('searchHistory', JSON.stringify(searchHistoryRef.current));
+        } catch {}
+        lastSearchTimeRef.current = now;
+      }
+    }
+  }, [q]);
+  
+  // Smart query suggestions based on typing patterns
+  const smartSuggestion = useMemo(() => {
+    const query = q.toLowerCase().trim();
+    
+    if (query.includes('beach') || query.includes('ocean')) {
+      return { text: 'Cape Town beaches', icon: '🏖️' };
+    }
+    if (query.includes('safari') || query.includes('wildlife')) {
+      return { text: 'Kruger National Park', icon: '🦁' };
+    }
+    if (query.includes('mountain') || query.includes('hik')) {
+      return { text: 'Table Mountain hike', icon: '⛰️' };
+    }
+    if (query.includes('cheap') || query.includes('budget')) {
+      return { text: 'Budget-friendly packages', icon: '💰' };
+    }
+    if (query.includes('luxury') || query.includes('premium')) {
+      return { text: 'Premium experiences', icon: '✨' };
+    }
+    
+    return null;
+  }, [q]);
 
   const navLinks = useMemo(() => ([
     { label: 'Trip Planner', path: '/plan-trip', group: 'Navigate' },

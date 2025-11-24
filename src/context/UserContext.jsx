@@ -2,6 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
 
+export { UserContext };
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     // E2E override: when running under Cypress, tests may set a synchronous

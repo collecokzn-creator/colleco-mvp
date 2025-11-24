@@ -357,7 +357,7 @@ export default function Transfers() {
                 type="button"
                 onClick={() => setAdditionalStops([...additionalStops, ''])}
                 disabled={additionalStops.length >= 5}
-                className="px-3 py-1 bg-brand-orange text-white rounded text-sm font-semibold hover:bg-brand-gold transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-1 bg-brand-orange text-white rounded text-sm font-semibold hover:bg-brand-gold transition disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               >
                 + Add Stop
               </button>

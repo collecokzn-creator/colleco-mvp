@@ -99,7 +99,7 @@ export default function DriverRating({ requestId, driver, onSubmit }) {
         <button
           type="submit"
           disabled={loading || rating === 0}
-          className="w-full px-6 py-3 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-6 py-3 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
         >
           {loading ? 'Submitting...' : 'Submit Rating'}
         </button>

@@ -1,11 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { useUser } from "../context/UserContext.jsx";
 import logoPng from "../assets/colleco-logo.png";
 import SearchBar from "./SearchBar.jsx";
 
 export default function Navbar() {
 	const location = useLocation();
+	const { user, isPartner, isAdmin } = useUser();
 	const [showMobileSearch, setShowMobileSearch] = useState(false);
 	const mobileSearchRef = useRef(null);
 
@@ -110,13 +112,27 @@ export default function Navbar() {
 							</svg>
 						</button>
 
-						{/* Start Living Button */}
-						<Link
-							to="/login"
-							className="px-4 py-2 text-sm font-semibold text-white bg-brand-orange hover:bg-brand-highlight active:bg-brand-orange rounded-md shadow-sm transition-colors"
-						>
-							Start Living
-						</Link>
+						{/* User Account / Start Living Button */}
+						{user ? (
+							<Link
+								to={isPartner ? "/partner/dashboard" : isAdmin ? "/admin/dashboard" : "/profile"}
+								className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-brand-orange text-white hover:bg-brand-highlight rounded-md shadow-sm transition-colors"
+							>
+								<svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+									<path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+								</svg>
+								<span className="hidden sm:inline">
+									{isPartner ? 'Partner Hub' : isAdmin ? 'Admin Hub' : user.name || 'My Account'}
+								</span>
+							</Link>
+						) : (
+							<Link
+								to="/login"
+								className="px-4 py-2 text-sm font-semibold text-white bg-brand-orange hover:bg-brand-highlight active:bg-brand-orange rounded-md shadow-sm transition-colors"
+							>
+								Start Living
+							</Link>
+						)}
 
 						{/* Menu Toggle */}
 						<button
