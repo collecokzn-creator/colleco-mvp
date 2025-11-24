@@ -4,6 +4,7 @@
 import React from "react";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import { Link } from "react-router-dom";
+import { useUser } from "../context/UserContext.jsx";
 import { BedDouble, Mountain, UtensilsCrossed, Ticket, Car, Plane, BarChart3, CreditCard, ShieldCheck, Megaphone, BookOpen, MessageSquare, CheckCircle2 } from "lucide-react";
 import { useLocalStorageState } from "../useLocalStorageState";
 import LiveStatCard from "../components/ui/LiveStatCard";
@@ -50,31 +51,47 @@ const PARTNER_CATEGORIES = [
 
 export default function PartnerDashboard() {
   const [role, setRole] = useLocalStorageState("partnerRole", null);
+  const { user } = useUser();
 
   return (
-    <div className="overflow-x-hidden">
-      <div className="max-w-7xl mx-auto text-brand-brown">
+    <div className="min-h-screen bg-cream">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <Breadcrumbs />
-      {/* Hero / Welcome */}
-      <section className="mb-4 bg-cream-sand border border-cream-border rounded p-4">
-        <h2 className="text-xl font-bold">Welcome to the CollEco Partner Dashboard</h2>
-        <p className="text-sm text-brand-brown/80">Your hub to manage and grow with us.</p>
-      </section>
+      
+      {/* Partner Hub Header */}
+      <div className="mb-6 bg-white rounded-xl shadow-md border border-cream-border p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 data-testid="partner-hub-title" className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">
+              Partner Business Hub
+            </h1>
+            <p className="text-brand-russty">
+              Manage your products, documents, and business operations on CollEco Travel
+            </p>
+          </div>
+          <div className="hidden sm:block">
+            <div className="text-right">
+              <div className="text-sm text-brand-russty">Logged in as</div>
+              <div className="text-lg font-bold text-brand-orange">{user?.businessName || user?.name || 'Partner'}</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Auto-sync notice */}
-      <div className="mb-4"><AutoSyncBanner /></div>
+      <div className="mb-6"><AutoSyncBanner message="Your partner dashboard syncs automatically with your listings and bookings" /></div>
 
       {/* Snapshots */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
         <LiveStatCard title="Bookings this month" value="—" to="/bookings" icon={Ticket} />
         <LiveStatCard title="Revenue earned" value="—" to="/reports" icon={BarChart3} />
   <LiveStatCard title="Documents status" value={<span className="inline-flex items-center gap-2">Valid <VerifiedBadge verified /></span>} to="/compliance" icon={ShieldCheck} highlight="bg-emerald-500" />
       </section>
 
-      {/* Role chip + change */}
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-sm">Partner type:</span>
-        <span className="px-2 py-0.5 rounded bg-brand-orange/10 text-brand-brown text-sm font-semibold">
+      {/* Partner Type Selection */}
+      <div className="flex items-center gap-2 mb-6 p-4 bg-white rounded-lg shadow-sm border border-cream-border">
+        <span className="text-sm font-semibold text-brand-brown">Partner Type:</span>
+        <span className="px-3 py-1.5 rounded-lg bg-brand-orange text-white text-sm font-bold shadow-sm">
           {(() => {
             if (!role) return "Not selected";
             for (const cat of PARTNER_CATEGORIES) {
@@ -84,24 +101,28 @@ export default function PartnerDashboard() {
             return role;
           })()}
         </span>
-        <button onClick={() => setRole(null)} className="ml-2 text-xs underline hover:text-brand-orange">
-          {role ? "Change" : "Select"}
+        <button onClick={() => setRole(null)} className="ml-auto px-3 py-1.5 text-sm font-medium text-brand-orange hover:text-brand-highlight hover:bg-cream rounded-lg transition-colors">
+          {role ? "Change Type" : "Select Type"}
         </button>
       </div>
 
       {/* If no role selected, show grouped partner categories */}
       {!role && (
-        <section className="bg-cream-sand p-4 border border-cream-border rounded mb-6">
-          <p className="mb-3">Choose who you are partnering as:</p>
-          <div className="space-y-4">
+        <section className="bg-white p-6 border border-cream-border rounded-xl shadow-md mb-6">
+          <h3 className="text-xl font-bold text-brand-brown mb-4">Choose Your Partner Type</h3>
+          <p className="text-brand-russty mb-6">Select the category that best describes your business:</p>
+          <div className="space-y-6">
             {PARTNER_CATEGORIES.map((cat) => (
               <div key={cat.title}>
-                <h3 className="font-bold mb-2 text-brand-brown">{cat.title}</h3>
-                <div className="flex flex-wrap gap-2">
+                <h4 className="font-bold mb-3 text-brand-brown flex items-center gap-2">
+                  <span className="w-1 h-6 bg-brand-orange rounded"></span>
+                  {cat.title}
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {cat.items.map((item) => (
                     <button
                       key={item.key}
-                      className="px-3 py-2 rounded border border-brand-brown text-brand-brown bg-brand-brown/5 hover:bg-brand-brown/10 font-semibold text-left"
+                      className="px-4 py-3 rounded-lg border-2 border-cream-border text-brand-brown bg-cream hover:border-brand-orange hover:bg-cream-sand hover:text-brand-orange font-semibold text-left transition-all transform hover:scale-105 shadow-sm hover:shadow-md"
                       onClick={() => setRole(item.key)}
                       aria-label={`Select ${item.label}`}
                     >
@@ -179,7 +200,7 @@ export default function PartnerDashboard() {
 
 function CategoryTile({ icon: Icon, title, desc, onClick }) {
   return (
-    <button onClick={onClick} className="text-left bg-cream-sand border border-cream-border rounded p-4 hover:border-brand-orange hover:shadow-sm transition">
+    <button data-testid={`category-${title.replace(/[^a-z0-9]+/gi,'-').toLowerCase()}`} onClick={onClick} className="text-left bg-cream-sand border border-cream-border rounded p-4 hover:border-brand-orange hover:shadow-sm transition">
       <div className="flex items-center gap-2 mb-1">
         <Icon size={18} className="text-brand-orange" />
         <span className="font-semibold">{title}</span>

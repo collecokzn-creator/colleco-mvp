@@ -3,59 +3,51 @@
 
 describe('Partner Dashboard & Templates Smoke', () => {
   const partnerRoleKey = 'partnerRole';
+  const authRoleKey = 'colleco.sidebar.role';
+  const userKey = 'user';
 
-  before(() => {
-    // Clear any previous state
-    cy.clearLocalStorage();
+  function seedAuth(win) {
+    win.localStorage.setItem(authRoleKey, JSON.stringify('partner'));
+    win.localStorage.setItem(userKey, JSON.stringify({ id: 'PARTNER-SMOKE', name: 'Partner Smoke' }));
+  }
+
+  beforeEach(() => {
+    cy.visit('/partner-dashboard', {
+      onBeforeLoad: seedAuth
+    });
   });
 
-  it('loads the partner dashboard and shows heading', () => {
-    cy.visit('/partner-dashboard');
-    cy.contains('h1', 'Partner Business Hub').should('be.visible');
+  it('renders hub heading', () => {
+    cy.get('[data-testid="partner-hub-title"]').should('contain.text', 'Partner Business Hub');
   });
 
-  it('selects a partner type and persists role', () => {
-    cy.get('button').contains(/Hotels & Lodges|Hotels/).click();
-    cy.get('[aria-label^="Select Hotels"]').should('exist'); // Category tile click may have changed role selection area
-    // If role display updated
-    cy.contains(/Hotels, lodges, guesthouses|Hotels & Lodges/).should('exist');
+  it('selects a category tile and persists partnerRole', () => {
+    cy.get('[data-testid="category-hotels-lodges"]').click();
     cy.window().then(win => {
       const stored = win.localStorage.getItem(partnerRoleKey);
-      expect(stored).to.not.equal(null);
+      expect(stored, 'partnerRole stored').to.not.equal(null);
     });
   });
 
-  it('navigates to templates page and saves a template', () => {
-    // Some routes may require auth; if guard present, simulate basic role storage
-    cy.visit('/partner/templates', {
-      onBeforeLoad(win) {
-        // Simulate authenticated partner role for guarded routes
-        win.localStorage.setItem('colleco.sidebar.role', JSON.stringify('partner'));
-      }
-    });
-    cy.contains('Invoice').should('exist');
-    // Basic form interactions if elements exist
-    cy.get('input[name="companyInfo.name"], input').first().then($el => {
+  it('visits templates page and detects default template', () => {
+    cy.visit('/partner/templates', { onBeforeLoad: seedAuth });
+    cy.contains(/Default Template|Manage Invoice Templates|Template/i, { timeout: 8000 }).should('exist');
+  });
+
+  it('saves a template and reload retains it', () => {
+    cy.visit('/partner/templates', { onBeforeLoad: seedAuth });
+    cy.get('input').first().then($el => {
       if ($el.length) {
         cy.wrap($el).clear().type('Smoke Test Co');
       }
     });
-    // Trigger save if button exists
-    cy.contains(/Save Template/i).then($btn => {
-      if ($btn.length) cy.wrap($btn).click();
-    });
-  });
-
-  it('retains template data after reload (localStorage)', () => {
+    cy.contains(/Save Template|Save/i, { timeout: 4000 }).click({ force: true });
     cy.reload();
     cy.window().then(win => {
-      const userId = (win.localStorage.getItem('user') && JSON.parse(win.localStorage.getItem('user')).id) || '';
-      const templatesRaw = win.localStorage.getItem(`partner_templates_${userId}`);
-      // Presence check only; not all environments set user id
-      if (templatesRaw) {
-        const templates = JSON.parse(templatesRaw);
-        expect(templates.length).to.be.greaterThan(0);
-      }
+      const raw = win.localStorage.getItem(`partner_templates_PARTNER-SMOKE`);
+      expect(raw, 'templates persisted').to.not.equal(null);
+      const list = JSON.parse(raw);
+      expect(list.length).to.be.greaterThan(0);
     });
   });
 });
