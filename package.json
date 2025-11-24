@@ -22,6 +22,7 @@
     "smoke:start:stack": "concurrently -k -s first -n api,web -c blue,green \"cross-env PORT=4010 node server/server.js\" \"npx serve -s dist -l 5173\"",
     "smoke:run": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/smoke.cy.js",
     "smoke:all": "npm run smoke:build && start-server-and-test \"npm run smoke:start:stack\" http://localhost:4010/health \"npm run smoke:run\"",
+    "smoke:partner": "cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec cypress/e2e/partner-dashboard.cy.js",
     "ci-e2e": "powershell -File scripts/ci-e2e.ps1",
     "yaml:validate": "node scripts/yaml-validate.mjs",
     "ci-e2e:local": "cross-env API_BASE=http://127.0.0.1:4002 npx cypress run --e2e --config baseUrl=http://127.0.0.1:5173",
@@ -36,6 +37,7 @@
   "dependencies": {
     "ajv": "^8.17.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.21.1",
     "framer-motion": "^12.23.19",
     "jspdf": "^3.0.3",
@@ -47,7 +49,8 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.9.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@octokit/rest": "^22.0.0",
