@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import {
   BrowserRouter,
   HashRouter,
@@ -11,6 +11,7 @@ import RootLayout from "./layouts/RootLayout.jsx";
 import pagesConfig from "./config/pages.json";
 import { useLocalStorageState } from "./useLocalStorageState";
 import { resolveTemplateForRoute } from "./data/pageTemplates";
+import OnboardingPermissions from "./components/OnboardingPermissions.jsx";
 
 const fallbackComponentKey = "WorkspacePage";
 const pageModules = import.meta.glob("./pages/*.jsx");
@@ -84,6 +85,12 @@ function GuardedRoute({ route }) {
     } catch (e) {
       // ignore parse errors
     }
+    // Secondary E2E fallback: allow role from seeded __E2E_USER__ when sidebar role not yet persisted
+    try {
+      if (!effectiveRole && window.__E2E_USER__ && window.__E2E_USER__.role) {
+        effectiveRole = window.__E2E_USER__.role;
+      }
+    } catch (e) {}
   }
   const isAuthenticated = Boolean(effectiveRole);
   const meta = route.meta ?? {};
@@ -128,6 +135,9 @@ const NotFoundElement = (
 );
 
 export default function App() {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [activeRole] = useLocalStorageState("colleco.sidebar.role", null);
+
   useEffect(() => {
     const idle = (cb) =>
       "requestIdleCallback" in window
@@ -139,6 +149,27 @@ export default function App() {
       import("./pages/Itinerary.jsx");
     });
   }, []);
+
+  useEffect(() => {
+    // Check if onboarding has been completed
+    const onboardingCompleted = localStorage.getItem('colleco.onboarding.completed');
+    
+    // Show onboarding if:
+    // 1. User is logged in (has a role)
+    // 2. Hasn't completed onboarding before
+    // 3. App is installed as PWA or running in standalone mode
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches ||
+                  window.navigator.standalone === true;
+    
+    if (activeRole && !onboardingCompleted && isPWA) {
+      // Small delay to let the app render first
+      setTimeout(() => setShowOnboarding(true), 1000);
+    }
+  }, [activeRole]);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+  };
 
   // E2E authoritative mounted/readiness marker.
   // Set this after the root app mounts so Cypress can wait on a reliable
@@ -185,7 +216,10 @@ export default function App() {
       : undefined;
 
   return (
-    <RouterComponent basename={basename}>
+    <>
+      {showOnboarding && <OnboardingPermissions onComplete={handleOnboardingComplete} />}
+      
+      <RouterComponent basename={basename}>
       <RouteMetadataSync />
       <Suspense fallback={<div className="p-6 text-brand-brown">Loading…</div>}>
         <Routes>
@@ -206,5 +240,6 @@ export default function App() {
         </Routes>
       </Suspense>
     </RouterComponent>
+    </>
   );
 }
