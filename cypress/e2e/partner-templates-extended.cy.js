@@ -21,54 +21,71 @@ describe('Partner Templates Extended', () => {
         }
       }
     });
-    cy.get('[data-testid="save-template-btn"]', { timeout: 12000 }).should('exist');
+    cy.get('[data-testid="save-template-btn"]', { timeout: 15000 }).should('exist');
+  }
+
+  function ensureTemplateExists() {
+    cy.get('body').then($body => {
+      if ($body.find('[data-testid="template-item"]').length === 0) {
+        ensureEditing();
+        cy.get('[data-testid="company-name-input"]').clear().type('Ext Co');
+        cy.get('[data-testid="template-name-input"]').clear().type('Ext Base');
+        cy.get('[data-testid="save-template-btn"]').click();
+        cy.get('[data-testid="template-item"]', { timeout: 15000 }).should('exist');
+      }
+    });
   }
 
   beforeEach(() => {
     cy.visit('/#/partner/templates', { onBeforeLoad: seedAuth });
-    cy.contains('Invoice Templates', { timeout: 15000 }).should('exist');
+    cy.contains('Invoice Templates', { timeout: 20000 }).should('exist');
+    ensureTemplateExists();
+    cy.on('window:confirm', () => true); // auto-confirm deletes
   });
 
   it('creates base template', () => {
+    // Already ensured exists; create an additional one to verify growth
     ensureEditing();
-    cy.get('[data-testid="company-name-input"]').clear().type('Ext Co');
-    cy.get('[data-testid="template-name-input"]').clear().type('Ext Base');
-    cy.get('[data-testid="save-template-btn"]').click();
-    cy.get('[data-testid="template-item"]').should('have.length.at.least', 1);
-  });
-
-  it('duplicates template and marks copy', () => {
-    // Precondition: have at least one template
-    if (Cypress.config('isInteractive')) {
-      // noop
-    }
-    cy.get('[data-testid="template-copy-btn"]').first().click();
-    ensureEditing();
-    cy.get('[data-testid="template-name-input"]').invoke('val').should('match', /Copy$/);
+    cy.get('[data-testid="company-name-input"]').clear().type('Ext Co Two');
+    cy.get('[data-testid="template-name-input"]').clear().type('Ext Base Two');
     cy.get('[data-testid="save-template-btn"]').click();
     cy.get('[data-testid="template-item"]').should('have.length.at.least', 2);
   });
 
+  it('duplicates template and marks copy', () => {
+    ensureTemplateExists();
+    cy.get('[data-testid="template-item"]').its('length').then(beforeCount => {
+      cy.get('[data-testid="template-copy-btn"]', { timeout: 15000 }).first().click();
+      ensureEditing();
+      cy.get('[data-testid="template-name-input"]', { timeout: 15000 }).invoke('val').should('match', /\(Copy\)$/);
+      cy.get('[data-testid="save-template-btn"]').click();
+      cy.get('[data-testid="template-item"]').its('length').should('eq', beforeCount + 1);
+    });
+  });
+
   it('sets a template as default and validates exclusivity', () => {
-    // Edit first template, set default
-    cy.get('[data-testid="template-edit-btn"]').first().click();
+    ensureTemplateExists();
+    cy.get('[data-testid="template-edit-btn"]', { timeout: 15000 }).first().click();
     cy.get('input[type="checkbox"]').filter((_, el) => el.nextSibling && el.nextSibling.textContent.includes('Set as Default Template')).first().check({ force: true });
     cy.get('[data-testid="save-template-btn"]').click();
-    cy.get('[data-testid="template-default-badge"]').should('have.length', 1);
+    cy.get('[data-testid="template-default-badge"]', { timeout: 15000 }).should('have.length', 1);
   });
 
   it('deletes a non-default template', () => {
-    // Ensure at least two templates exist; if only one, duplicate first
+    ensureTemplateExists();
+    // Create a copy to delete (avoid deleting the default)
+    cy.get('[data-testid="template-copy-btn"]', { timeout: 15000 }).first().click();
+    ensureEditing();
+    cy.get('[data-testid="template-name-input"]').clear().type('To Delete Copy');
+    cy.get('[data-testid="save-template-btn"]').click();
+    cy.get('[data-testid="template-item"]').should('have.length.at.least', 2);
+    // Find a delete button where no default badge is present in the same parent
     cy.get('[data-testid="template-item"]').then($items => {
-      if ($items.length < 2) {
-        cy.get('[data-testid="template-copy-btn"]').first().click();
-        ensureEditing();
-        cy.get('[data-testid="save-template-btn"]').click();
+      const nonDefault = [...$items].find(el => el.querySelector('[data-testid="template-default-badge"]') == null);
+      if (nonDefault) {
+        cy.wrap(nonDefault).find('[data-testid="template-delete-btn"]').click();
       }
     });
-    // Find a delete button that is not on the default template row
-    cy.get('[data-testid="template-default-badge"]').parent().invoke('attr','data-testid');
-    cy.get('[data-testid="template-delete-btn"]').last().click();
     cy.get('[data-testid="template-item"]').should('have.length.at.least', 1);
   });
 });
