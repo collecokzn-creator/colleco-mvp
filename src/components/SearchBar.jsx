@@ -34,7 +34,7 @@ export default function SearchBar({ className = '' }){
   }, [q]);
   
   // Smart query suggestions based on typing patterns
-  const smartSuggestion = useMemo(() => {
+  const _smartSuggestion = useMemo(() => { // currently not rendered; reserved for UX enhancement
     const query = q.toLowerCase().trim();
     
     if (query.includes('beach') || query.includes('ocean')) {

@@ -170,7 +170,7 @@ export default function Profile() {
     }
   };
 
-  const startCamera = async () => {
+  const _startCamera = async () => { // startCamera invoked via future "Capture" button
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
       if (videoRef.current) {

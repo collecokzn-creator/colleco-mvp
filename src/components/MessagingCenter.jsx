@@ -15,7 +15,7 @@ import ChatBox from './ChatBox';
  */
 
 const MessagingCenter = () => {
-  const { user } = useContext(UserContext);
+  const { user: _user } = useContext(UserContext); // _user reserved for future API hookup
   const [conversations, setConversations] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
   const [partnerDirectory, setPartnerDirectory] = useState([]);

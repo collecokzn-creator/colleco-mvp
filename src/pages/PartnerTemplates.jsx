@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useUser } from '../context/UserContext';
 
 export default function PartnerTemplates() {
@@ -57,11 +57,7 @@ export default function PartnerTemplates() {
     }
   });
 
-  useEffect(() => {
-    loadTemplates();
-  }, [user]);
-
-  function loadTemplates() {
+  const loadTemplates = useCallback(() => {
     const savedTemplates = JSON.parse(localStorage.getItem(`partner_templates_${user?.id}`) || '[]');
     setTemplates(savedTemplates);
     
@@ -70,7 +66,9 @@ export default function PartnerTemplates() {
     if (defaultTemplate) {
       setActiveTemplate(defaultTemplate);
     }
-  }
+  }, [user?.id]);
+
+  useEffect(() => { loadTemplates(); }, [loadTemplates]);
 
   function handleLogoUpload(e) {
     const file = e.target.files[0];

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { bookAccommodation, bookFlight, bookCar, subscribeToFlightUpdates, getFlight, checkAccommodationAvailability, createAccommodationHold } from '../api/client';
 import DateRangePicker from './DateRangePicker';
@@ -95,17 +95,17 @@ export default function BookingModal({ open, onClose, prefill }) {
   const smartTotal = useMemo(() => {
     const total = estimatedTotal();
     const numTotal = parseFloat(total);
-    
+
     let suggestion = null;
     if (numTotal > 10000) {
       suggestion = 'Consider splitting payment for large bookings';
     } else if (numTotal === 0) {
       suggestion = 'Enter price to see estimated total';
     }
-    
+
     lastCalculationRef.current = { total, suggestion };
     return { total, suggestion };
-  }, [startDate, endDate, price, type, estimatedTotal]);
+  }, [estimatedTotal]);
 
   // Ensure E2E fallback title/close exist immediately when the modal is opened so
   // tests can find the elements without waiting for React rendering inside the portal.
@@ -155,17 +155,17 @@ export default function BookingModal({ open, onClose, prefill }) {
     setType('accommodation'); setStartDate(''); setEndDate(''); setName(''); setPrice(''); setResult(null); setError(null);
   };
 
-  const nightsOrDays = () => {
+  const nightsOrDays = useCallback(() => {
     if (!startDate || !endDate) return 1;
     const delta = Math.round((new Date(endDate) - new Date(startDate)) / (1000*60*60*24));
     return Math.max(1, delta);
-  };
+  }, [startDate, endDate]);
 
-  const estimatedTotal = () => {
+  const estimatedTotal = useCallback(() => {
     const p = parseFloat(price) || 0;
-    const qty = type === 'car' ? nightsOrDays() : nightsOrDays();
+    const qty = nightsOrDays();
     return (p * qty).toFixed(2);
-  };
+  }, [price, nightsOrDays]);
 
   const onSubmit = async (e) => {
     e.preventDefault();

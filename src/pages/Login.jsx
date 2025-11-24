@@ -426,7 +426,7 @@ function Login() {
             <>
               {/* User Type Selector */}
               <div className="mb-6">
-                <label className="block mb-3 text-brand-brown font-semibold text-sm">I'm registering as a: *</label>
+                <label className="block mb-3 text-brand-brown font-semibold text-sm">I&apos;m registering as a: *</label>
                 <div className="flex gap-3">
                   <button
                     type="button"

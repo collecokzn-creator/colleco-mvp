@@ -70,7 +70,7 @@ export default function MiniItineraryPreview({ basket }) {
             </div>
             
             <div className="space-y-1.5">
-              {days[day].map((item, idx) => (
+              {days[day].map((item, _idx) => (
                 <div key={item.id} className="bg-white rounded border border-cream-border p-2 text-[11px]">
                   <div className="flex items-start gap-1.5">
                     <span className="text-sm flex-shrink-0">

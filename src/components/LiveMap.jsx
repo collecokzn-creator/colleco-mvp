@@ -4,8 +4,8 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState({ pickup: null, dropoff: null, driver: null });
-  const [nearbyMarkers, setNearbyMarkers] = useState([]);
-  const [waypointMarkers, _setWaypointMarkers] = useState([]);
+  const nearbyMarkersRef = useRef([]); // use ref to avoid effect dependency loop
+  const [_waypointMarkers, _setWaypointMarkers] = useState([]); // unused currently; reserved for future waypoint visuals
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     if (!map || !window.google) return;
 
     // Clear existing nearby markers
-    nearbyMarkers.forEach(marker => marker.setMap(null));
+    nearbyMarkersRef.current.forEach(marker => marker.setMap(null));
 
     // Create new markers for nearby drivers
     const newNearbyMarkers = nearbyDrivers.map((driver, index) => {
@@ -59,7 +59,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
       });
     });
 
-    setNearbyMarkers(newNearbyMarkers);
+    nearbyMarkersRef.current = newNearbyMarkers;
 
     // Fit bounds to show all nearby drivers if present
     if (nearbyDrivers.length > 0 && pickup) {
@@ -74,7 +74,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
         window.google.maps.event.removeListener(listener);
       });
     }
-  }, [map, nearbyDrivers]);
+  }, [map, nearbyDrivers, pickup]);
 
   function initMap() {
     if (!mapRef.current || !window.google) return;

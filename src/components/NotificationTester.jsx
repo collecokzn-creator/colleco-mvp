@@ -31,17 +31,13 @@ const NotificationTester = () => {
     vibrate: [200, 100, 200]
   });
 
-  // Load subscription status
-  useEffect(() => {
-    if (user?.id) {
-      loadSubscriptionStatus();
-    }
-  }, [user]);
-
-  const loadSubscriptionStatus = async () => {
+  const loadSubscriptionStatus = React.useCallback(async () => {
+    if (!user?.id) return;
     const status = await getSubscriptionStatus(user.id);
     setSubscriptionStatus(status);
-  };
+  }, [user?.id]);
+
+  useEffect(() => { loadSubscriptionStatus(); }, [loadSubscriptionStatus]);
 
   const sendTestNotification = async (template, data = {}) => {
     setLoading(true);

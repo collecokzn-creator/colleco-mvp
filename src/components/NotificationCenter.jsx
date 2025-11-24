@@ -559,7 +559,7 @@ export class PushNotificationService {
     // This requires deferredPrompt event to be captured in main app
     if (window.deferredPrompt) {
       window.deferredPrompt.prompt();
-      const { outcome } = await window.deferredPrompt.userChoice;
+      const { outcome: _outcome } = await window.deferredPrompt.userChoice;
       window.deferredPrompt = null;
     } else {
       /* prompt not available */

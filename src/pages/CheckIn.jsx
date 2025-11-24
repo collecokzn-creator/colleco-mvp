@@ -9,8 +9,8 @@ export default function CheckIn() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [checkInStep, setCheckInStep] = useState("select"); // select, scanning, success
   const [scanMode, setScanMode] = useState(null); // checkin, door
-  const [cameraActive, setCameraActive] = useState(false);
-  const [scanResult, setScanResult] = useState(null);
+  const [_cameraActive, setCameraActive] = useState(false); // cameraActive used internally for UI toggle soon
+  const [_scanResult, setScanResult] = useState(null); // scanResult tracked after live QR integration
   const [error, setError] = useState("");
   const videoRef = useRef(null);
   const canvasRef = useRef(null);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { UserContext } from '../context/UserContext';
 import { PushNotificationService } from '../components/NotificationCenter';
 
@@ -23,30 +23,19 @@ const OnboardingPermissions = ({ onComplete }) => {
   const [skipped, setSkipped] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    checkExistingPermissions();
-  }, []);
-
-  const checkExistingPermissions = async () => {
+  const checkExistingPermissions = useCallback(async () => {
     const newPermissions = { ...permissions };
-
-    // Check notification permission
-    if ('Notification' in window) {
-      newPermissions.notifications = Notification.permission;
-    }
-
-    // Check geolocation permission
+    if ('Notification' in window) newPermissions.notifications = Notification.permission;
     if ('permissions' in navigator) {
       try {
         const locationPerm = await navigator.permissions.query({ name: 'geolocation' });
         newPermissions.location = locationPerm.state;
-      } catch (e) {
-        // Some browsers don't support permissions API for geolocation
-      }
+      } catch (e) {}
     }
-
     setPermissions(newPermissions);
-  };
+  }, [permissions]);
+
+  useEffect(() => { checkExistingPermissions(); }, [checkExistingPermissions]);
 
   const requestLocationPermission = async () => {
     setLoading(true);

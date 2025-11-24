@@ -134,30 +134,23 @@ export class WebSocketManager {
     const wsUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws?userId=${this.userId}`;
     
     this.ws = new WebSocket(wsUrl);
-
     this.ws.onopen = () => {
-      console.log('WebSocket connected');
       this.reconnectAttempts = 0;
       this.notifyStatusHandlers('connected');
     };
-
     this.ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
         this.notifyMessageHandlers(data);
       } catch (error) {
-        console.error('WebSocket message parse error:', error);
+        /* ignore malformed message */
       }
     };
-
     this.ws.onclose = () => {
-      console.log('WebSocket disconnected');
       this.notifyStatusHandlers('disconnected');
       this.attemptReconnect();
     };
-
-    this.ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
+    this.ws.onerror = () => {
       this.notifyStatusHandlers('error');
     };
   }
@@ -167,7 +160,6 @@ export class WebSocketManager {
       this.reconnectAttempts++;
       const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
       
-      console.log(`Reconnecting in ${delay}ms... (attempt ${this.reconnectAttempts})`);
       
       setTimeout(() => {
         this.connect();

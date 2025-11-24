@@ -1989,5 +1989,32 @@
       "itinerary": []
     },
     "createdAt": 1764000982241
+  },
+  "96ju297srxhmidhuluq": {
+    "id": "96ju297srxhmidhuluq",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764009733922
+  },
+  "p9a9ym8u0llmidi0ri2": {
+    "id": "p9a9ym8u0llmidi0ri2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764010021178
+  },
+  "1hbisgyo5ulmidi2dab": {
+    "id": "1hbisgyo5ulmidi2dab",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764010096068
   }
 }

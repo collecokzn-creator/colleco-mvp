@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { generateQuotePdf } from '../utils/pdfGenerators';
 import { useUser } from '../context/UserContext';
 import { parsePromptToInvoiceItems, suggestCommonItems, examplePrompts } from '../utils/aiInvoiceParser';
@@ -14,7 +14,7 @@ export default function QuoteGenerator() {
   const [partnerTemplates, setPartnerTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [customLogo, setCustomLogo] = useState(null);
-  const [showLogoUpload, setShowLogoUpload] = useState(false);
+  const [_showLogoUpload, _setShowLogoUpload] = useState(false); // legacy flag retained for future logo UX
   const autoSaveTimerRef = useRef(null);
   const [quote, setQuote] = useState({
     documentType: 'Invoice', // 'Invoice' or 'Quotation'
@@ -71,7 +71,7 @@ export default function QuoteGenerator() {
       const docNum = getNextDocumentNumber(quote.documentType);
       setQuote(prev => ({ ...prev, invoiceNumber: docNum }));
     }
-  }, [quote.clientName, quote.invoiceNumber, quote.documentType]);
+  }, [quote.clientName, quote.invoiceNumber, quote.documentType, getNextDocumentNumber]);
   
   // Auto-update status based on quote state
   useEffect(() => {
@@ -87,23 +87,19 @@ export default function QuoteGenerator() {
     loadSavedQuotes();
     loadPartnerTemplates();
     loadCustomLogo();
-  }, [user]);
+  }, [user, loadPartnerTemplates]);
 
   function loadSavedQuotes() {
     const quotes = JSON.parse(localStorage.getItem('quotes') || '[]');
     setSavedQuotes(quotes);
   }
 
-  function loadPartnerTemplates() {
+  const loadPartnerTemplates = useCallback(() => {
     const templates = JSON.parse(localStorage.getItem(`partner_templates_${user?.id}`) || '[]');
     setPartnerTemplates(templates);
-    
-    // Auto-select default template if exists
-    const defaultTemplate = templates.find(t => t.isDefault);
-    if (defaultTemplate && !selectedTemplate) {
-      setSelectedTemplate(defaultTemplate);
-    }
-  }
+    const def = templates.find(t => t.isDefault);
+    if (def && !selectedTemplate) setSelectedTemplate(def);
+  }, [user?.id, selectedTemplate]);
   
   function loadCustomLogo() {
     const saved = localStorage.getItem('custom_invoice_logo');
@@ -112,33 +108,17 @@ export default function QuoteGenerator() {
     }
   }
   
-  function getNextDocumentNumber(type) {
+  const getNextDocumentNumber = useCallback((type) => {
     const userId = user?.id || 'default';
     const counterKey = `${type.toLowerCase()}_counter_${userId}`;
     const currentCounter = parseInt(localStorage.getItem(counterKey) || '0');
     const nextCounter = currentCounter + 1;
     localStorage.setItem(counterKey, nextCounter.toString());
-    
     const prefix = type === 'Invoice' ? 'INV' : 'QUO';
     return `${prefix}-${String(nextCounter).padStart(4, '0')}`;
-  }
+  }, [user?.id]);
   
-  function calculateDueDate(issueDate, terms) {
-    if (!issueDate || !terms) return '';
-    const issue = new Date(issueDate);
-    const daysMap = {
-      'Net 7': 7,
-      'Net 15': 15,
-      'Net 30': 30,
-      'Net 60': 60,
-      'Net 90': 90,
-      'Due on Receipt': 0
-    };
-    const days = daysMap[terms] || 30;
-    const due = new Date(issue);
-    due.setDate(due.getDate() + days);
-    return due.toISOString().split('T')[0];
-  }
+  // Removed calculateDueDate (unused) – restore when payment terms logic added
   
   function handleLogoUpload(e) {
     const file = e.target.files?.[0];
@@ -885,7 +865,7 @@ export default function QuoteGenerator() {
                   <div className="text-center py-12 px-4">
                     <div className="mb-4 text-6xl opacity-20">📦</div>
                     <p className="text-brand-brown font-semibold mb-2">No items added yet</p>
-                    <p className="text-sm text-brand-russty mb-4">Use AI generation above or click "+ Add Item" to get started</p>
+                    <p className="text-sm text-brand-russty mb-4">Use AI generation above or click &quot;+ Add Item&quot; to get started</p>
                     <div className="flex justify-center gap-2">
                       <button
                         onClick={addItem}

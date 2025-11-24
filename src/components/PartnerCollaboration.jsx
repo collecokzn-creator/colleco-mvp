@@ -20,7 +20,7 @@ const PartnerCollaboration = () => {
   const { addNotification } = useContext(NotificationContext);
   
   const [collaborations, setCollaborations] = useState([]);
-  const [activeCollab, setActiveCollab] = useState(null);
+  const [_activeCollab, setActiveCollab] = useState(null); // activeCollab placeholder until selection UI implemented
   const [showNewCollab, setShowNewCollab] = useState(false);
   const [partners, setPartners] = useState([]);
   
@@ -65,8 +65,8 @@ const PartnerCollaboration = () => {
       creatorName: user.name,
       status: 'pending', // pending, active, completed, cancelled
       createdAt: new Date().toISOString(),
-      participants: collabForm.selectedPartners.map(partnerId => ({
-        partnerId,
+      participants: collabForm.selectedPartners.map(_partnerId => ({
+        partnerId: _partnerId,
         status: 'invited', // invited, accepted, declined
         role: 'collaborator'
       })),
@@ -79,7 +79,7 @@ const PartnerCollaboration = () => {
     localStorage.setItem('partner_collaborations', JSON.stringify(allCollabs));
 
     // Send notifications to invited partners
-    collabForm.selectedPartners.forEach(partnerId => {
+    collabForm.selectedPartners.forEach(_partnerId => {
       addNotification({
         type: 'collaboration',
         title: 'New Collaboration Request',
@@ -131,7 +131,7 @@ const PartnerCollaboration = () => {
     }));
   };
 
-  const calculateCommission = () => {
+  const _calculateCommission = () => { // currently unused return; kept for future commission breakdowns
     const totalRevenue = collabForm.services.reduce((sum, s) => sum + (s.cost || 0) + (s.markup || 0), 0);
     const partnerCount = collabForm.selectedPartners.length + 1; // +1 for current user
 
@@ -146,7 +146,7 @@ const PartnerCollaboration = () => {
     return collabForm.customSplit;
   };
 
-  const respondToCollaboration = (collabId, response) => {
+  const _respondToCollaboration = (collabId, response) => { // respond handler exposed via upcoming action buttons
     setCollaborations(prev =>
       prev.map(collab => {
         if (collab.id === collabId) {
@@ -181,7 +181,7 @@ const PartnerCollaboration = () => {
     });
   };
 
-  const addCollabMessage = (collabId, message) => {
+  const _addCollabMessage = (collabId, message) => { // message API integration pending
     setCollaborations(prev =>
       prev.map(collab => {
         if (collab.id === collabId) {

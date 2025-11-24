@@ -12,7 +12,7 @@ import WorkflowPanel from "../components/WorkflowPanel";
 export default function Itinerary() {
   const [trip, setTrip] = useTripState();
   const [linkQuotes] = useLocalStorageState('basketAutoSync:v1', true);
-  const { basket, updateDay: updateBasketDay, removeFromBasket } = useBasketState();
+  const { basket, updateDay: _updateBasketDay, removeFromBasket } = useBasketState(); // _updateBasketDay unused (legacy API)
   const [search, setSearch] = useState("");
   const [showSettings, setShowSettings] = useState(false);
   const [itinerarySettings, setItinerarySettings] = useLocalStorageState('itinerary_settings', {
@@ -537,7 +537,7 @@ export default function Itinerary() {
           />
           {search && (
             <p className="mt-2 text-sm text-brand-russty">
-              Showing results for "{search}" · <button onClick={() => setSearch("")} className="underline hover:no-underline text-brand-orange">Clear</button>
+              Showing results for &quot;{search}&quot; · <button onClick={() => setSearch("")} className="underline hover:no-underline text-brand-orange">Clear</button>
             </p>
           )}
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import AutoSyncBanner from "../components/ui/AutoSyncBanner";
 import LiveStatCard from "../components/ui/LiveStatCard";
@@ -38,7 +38,7 @@ export default function Bookings() {
 				const saved = localStorage.getItem('colleco.bookings');
 				if (saved) {
 					// Silent refresh - updates happen in background
-					const bookings = JSON.parse(saved);
+					const _bookings = JSON.parse(saved); // future state usage
 					// Store would update here if using state management
 				}
 			} catch {}
@@ -51,7 +51,7 @@ export default function Bookings() {
 	}, []);
 	
 	// Smart urgency detection - auto-sort pending items by date proximity
-	const smartSort = (items) => {
+	const smartSort = useCallback((items) => {
 		const now = new Date();
 		return items.sort((a, b) => {
 			// Pending items within 48 hours get priority
@@ -72,7 +72,7 @@ export default function Bookings() {
 			}
 			return 0;
 		});
-	};
+	}, [sortBy]);
 	
 	// Auto-recommendation system
 	const getSmartRecommendation = (items) => {
@@ -158,7 +158,7 @@ export default function Bookings() {
     
     // Smart sort with urgency detection
     return smartSort(filtered);
-  }, [items, trustedOnly, verifiedIds, statusFilter, searchTerm, sortBy]);
+	}, [items, trustedOnly, verifiedIds, statusFilter, searchTerm, smartSort]);
   
   // Get smart recommendation
   const recommendation = useMemo(() => {
@@ -189,7 +189,7 @@ export default function Bookings() {
     URL.revokeObjectURL(url);
   }
   
-  const statusBadgeColor = (status) => {
+	const _statusBadgeColor = (status) => { // currently not used; placeholder for future badge styling
     if (status === 'confirmed') return 'text-emerald-700';
     if (status === 'pending') return 'text-amber-600';
     if (status === 'completed') return 'text-gray-600';

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useUser } from '../context/UserContext.jsx';
 
 export default function Analytics() {
-  const { user } = useUser();
+  const { user: _user } = useUser(); // _user reserved for future personalization of analytics
   const [stats, setStats] = useState({
     totalTrips: 0,
     totalSpent: 0,

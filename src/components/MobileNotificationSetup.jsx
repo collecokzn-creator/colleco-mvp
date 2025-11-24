@@ -19,7 +19,7 @@ const MobileNotificationSetup = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isInstalled, setIsInstalled] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [_isSubscribed, _setIsSubscribed] = useState(false); // subscription state reserved for future UI (unused)
   const [deviceType, setDeviceType] = useState('unknown');
   const [showInstructions, setShowInstructions] = useState(true);
 
@@ -53,7 +53,7 @@ const MobileNotificationSetup = ({ onComplete }) => {
     }
   };
 
-  const handleInstallPWA = async () => {
+  const _handleInstallPWA = async () => { // legacy explicit install handler (unused)
     await PushNotificationService.promptInstallPWA();
     setTimeout(() => {
       checkPWAStatus();
@@ -70,7 +70,7 @@ const MobileNotificationSetup = ({ onComplete }) => {
       // Subscribe to push notifications
       try {
         await PushNotificationService.subscribeToNotifications(user.id);
-        setIsSubscribed(true);
+        _setIsSubscribed(true);
         setCurrentStep(4);
       } catch (error) {
         console.error('Subscription failed:', error);
@@ -327,7 +327,7 @@ const MobileNotificationSetup = ({ onComplete }) => {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900 mb-1">What you'll see:</h4>
+                  <h4 className="font-semibold text-gray-900 mb-1">What you&apos;ll see:</h4>
                   <ul className="text-sm text-gray-700 space-y-1">
                     <li>📱 CollEco logo on your notification bar</li>
                     <li>📳 Vibration pattern (double ping)</li>
@@ -363,10 +363,10 @@ const MobileNotificationSetup = ({ onComplete }) => {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                You're All Set! 🎉
+                You&apos;re All Set! 🎉
               </h3>
               <p className="text-gray-600">
-                CollEco is now your office in your pocket. You'll receive instant notifications for:
+                CollEco is now your office in your pocket. You&apos;ll receive instant notifications for:
               </p>
             </div>
 
@@ -427,21 +427,21 @@ const MobileNotificationSetup = ({ onComplete }) => {
           <div className="mt-4 space-y-2">
             <details className="text-sm">
               <summary className="cursor-pointer font-medium text-gray-700">
-                I don't see the install prompt
+                I don&apos;t see the install prompt
               </summary>
               <p className="mt-2 text-gray-600 pl-4">
                 {deviceType === 'ios' 
-                  ? 'On iOS, tap the Share button at the bottom of Safari and select "Add to Home Screen".'
-                  : 'On Android, look for the "Install" banner at the top or bottom of the page. If you don\'t see it, tap the menu (⋮) and select "Install app" or "Add to Home screen".'}
+                  ? 'On iOS, tap the Share button at the bottom of Safari and select &quot;Add to Home Screen&quot;.'
+                  : 'On Android, look for the &quot;Install&quot; banner at the top or bottom of the page. If you don\'t see it, tap the menu (⋮) and select &quot;Install app&quot; or &quot;Add to Home screen&quot;.'}
               </p>
             </details>
             
             <details className="text-sm">
               <summary className="cursor-pointer font-medium text-gray-700">
-                Notifications aren't working
+                Notifications aren&apos;t working
               </summary>
               <p className="mt-2 text-gray-600 pl-4">
-                Make sure you've allowed notifications in your device settings. Go to Settings → Apps → CollEco → Notifications and enable them.
+                Make sure you&apos;ve allowed notifications in your device settings. Go to Settings → Apps → CollEco → Notifications and enable them.
               </p>
             </details>
             
@@ -450,7 +450,7 @@ const MobileNotificationSetup = ({ onComplete }) => {
                 How do I customize notification sounds?
               </summary>
               <p className="mt-2 text-gray-600 pl-4">
-                On Android, long-press any CollEco notification and tap "Settings" to customize sound, vibration, and LED color. On iOS, go to Settings → Notifications → CollEco.
+                On Android, long-press any CollEco notification and tap &quot;Settings&quot; to customize sound, vibration, and LED color. On iOS, go to Settings → Notifications → CollEco.
               </p>
             </details>
           </div>

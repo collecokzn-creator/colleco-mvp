@@ -3,7 +3,7 @@ import { useUser } from '../context/UserContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
 export default function Trips() {
-  const { user } = useUser();
+  const { user: _user } = useUser(); // _user reserved for future personalization (unused now)
   const navigate = useNavigate();
   const [upcomingTrips, setUpcomingTrips] = useState([]);
   const [pastTrips, setPastTrips] = useState([]);
@@ -27,8 +27,8 @@ export default function Trips() {
     setPastTrips(travelHistory);
   }, []);
 
-  const handleViewDetails = (tripId) => {
-    navigate(`/bookings`);
+  const handleViewDetails = () => {
+    navigate('/bookings');
   };
 
   return (
@@ -104,7 +104,7 @@ export default function Trips() {
                       </div>
                     </div>
                     <button
-                      onClick={() => handleViewDetails(trip.id)}
+                      onClick={() => handleViewDetails()}
                       className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition"
                     >
                       View Details

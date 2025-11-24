@@ -17,7 +17,7 @@ const NotificationSettings = () => {
   const [isPWA, setIsPWA] = useState(false);
   const [deviceType, setDeviceType] = useState('unknown');
   const [loading, setLoading] = useState(false);
-  const [showInstructions, setShowInstructions] = useState(false);
+  const [_showInstructions, setShowInstructions] = useState(false); // instructions panel placeholder; setter used for future UI
 
   useEffect(() => {
     checkNotificationStatus();
@@ -203,7 +203,7 @@ const NotificationSettings = () => {
                         <strong className="text-gray-900">iPhone/iPad:</strong>
                         <ol className="list-decimal list-inside mt-1 ml-2 space-y-1">
                           <li>Go to Settings → Notifications → CollEco</li>
-                          <li>Toggle on "Allow Notifications"</li>
+                          <li>Toggle on &quot;Allow Notifications&quot;</li>
                           <li>Refresh this page</li>
                         </ol>
                       </div>
@@ -221,8 +221,8 @@ const NotificationSettings = () => {
                       <strong className="text-gray-900">Desktop Browser:</strong>
                       <ol className="list-decimal list-inside mt-1 ml-2 space-y-1">
                         <li>Click the 🔒 lock icon in the address bar</li>
-                        <li>Find "Notifications" in the permissions list</li>
-                        <li>Change to "Allow"</li>
+                        <li>Find &quot;Notifications&quot; in the permissions list</li>
+                        <li>Change to &quot;Allow&quot;</li>
                         <li>Refresh this page</li>
                       </ol>
                     </div>
@@ -258,7 +258,7 @@ const NotificationSettings = () => {
                 </button>
 
                 <p className="text-xs text-gray-500 text-center">
-                  We'll ask for your permission in the next step
+                  We&apos;ll ask for your permission in the next step
                 </p>
               </div>
             )}
@@ -266,7 +266,7 @@ const NotificationSettings = () => {
 
           {/* What You'll Receive */}
           <div className="border-t border-gray-200 pt-6">
-            <h2 className="font-semibold text-gray-900 mb-3">What You'll Receive</h2>
+            <h2 className="font-semibold text-gray-900 mb-3">What You&apos;ll Receive</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
                 { icon: '📋', title: 'Bookings', desc: 'New bookings and confirmations' },
