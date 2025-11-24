@@ -38,7 +38,7 @@ export async function parsePromptToInvoiceItems(prompt) {
  * Parse a single segment into an invoice item
  */
 function parseSegment(segment) {
-  const lower = segment.toLowerCase();
+  const _lower = segment.toLowerCase();
   
   // Flight patterns
   const flightPatterns = [

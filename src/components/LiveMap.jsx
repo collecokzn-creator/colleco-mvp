@@ -5,7 +5,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState({ pickup: null, dropoff: null, driver: null });
   const [nearbyMarkers, setNearbyMarkers] = useState([]);
-  const [waypointMarkers, setWaypointMarkers] = useState([]);
+  const [waypointMarkers, _setWaypointMarkers] = useState([]);
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
 
   useEffect(() => {
@@ -224,7 +224,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
           
           // Log optimized waypoint order if route was optimized
           if (waypointsArray.length > 0 && result.routes[0].waypoint_order) {
-            console.log('[LiveMap] Optimized waypoint order:', result.routes[0].waypoint_order);
+            /* optimized waypoint order available */
           }
         }
       }

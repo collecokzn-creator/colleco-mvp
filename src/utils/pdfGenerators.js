@@ -116,10 +116,10 @@ export const generateQuotePdf = async (a, b, c, d) => {
   let showAllInQuote;
   let currency = 'R'; // default Rand
   let taxRate = 15; // default 15% VAT
-  let status = 'Draft';
-  let notes = '';
+  let _status = 'Draft';
+  let _notes = '';
   let createdAt;
-  let updatedAt;
+  let _updatedAt;
 
   // Parse parameters
   if (structured) {
@@ -129,10 +129,10 @@ export const generateQuotePdf = async (a, b, c, d) => {
     showAllInQuote = true;
     currency = a.currency || currency;
     taxRate = typeof a.taxRate === 'number' ? a.taxRate : taxRate;
-    status = a.status || status;
-    notes = a.notes || '';
+    _status = a.status || _status;
+    _notes = a.notes || '';
     createdAt = a.createdAt;
-    updatedAt = a.updatedAt;
+    _updatedAt = a.updatedAt;
     
     // Additional editable fields
     var invoiceNumber = a.invoiceNumber || a.quoteNumber || a.referenceNumber || '';
@@ -141,8 +141,8 @@ export const generateQuotePdf = async (a, b, c, d) => {
     var clientVAT = a.clientVAT || '';
     var clientPhone = a.clientPhone || a.phone || '';
     var clientEmail = a.clientEmail || '';
-    var paymentTerms = a.paymentTerms || '';
-    var validity = a.validUntil || a.validity || '';
+    var _paymentTerms = a.paymentTerms || '';
+    var _validity = a.validUntil || a.validity || '';
     
     // Editable company info override
     var companyInfo = a.companyInfo || COMPANY_INFO;
@@ -177,7 +177,7 @@ export const generateQuotePdf = async (a, b, c, d) => {
   const marginRight = 10;
   
   // Load logo (for optional use)
-  const logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
+  const _logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
   
   // Use custom logo if provided
   const customLogoData = a.customLogo || null;
@@ -582,7 +582,7 @@ export const generateItineraryPdf = async (name, items, ref) => {
   const marginRight = 14;
   
   // Try to load logo
-  const logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
+  const _logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
 
   // Header with CollEco branding
   doc.setFontSize(20);
@@ -600,14 +600,14 @@ export const generateItineraryPdf = async (name, items, ref) => {
   doc.text(COMPANY_INFO.website, 10, 32);
   
   // Add logo if available
-  if (logoDataUrl) {
+  if (_logoDataUrl) {
     try {
       const logoW = 40;
       const logoH = 40;
       const logoX = pageWidth - marginRight - logoW;
-      doc.addImage(logoDataUrl, 'PNG', logoX, 6, logoW, logoH);
+      doc.addImage(_logoDataUrl, 'PNG', logoX, 6, logoW, logoH);
     } catch (e) {
-      console.warn('Logo add failed:', e);
+      /* logo add failed */
     }
   }
   

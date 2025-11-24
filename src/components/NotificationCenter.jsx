@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { UserContext } from '../context/UserContext';
+import { /* UserContext */ } from '../context/UserContext';
 import { API_BASE_URL, VAPID_PUBLIC_KEY } from '../config';
 
 /**
@@ -313,7 +313,6 @@ export const NotificationBell = ({ onClick }) => {
 export class PushNotificationService {
   static async requestPermission() {
     if (!('Notification' in window)) {
-      console.log('This browser does not support notifications');
       return false;
     }
 
@@ -352,13 +351,11 @@ export class PushNotificationService {
     const hasPermission = await this.requestPermission();
     
     if (!hasPermission) {
-      console.warn('Push notification permission not granted');
       return null;
     }
 
     // Get service worker registration
     if (!('serviceWorker' in navigator)) {
-      console.warn('Service Worker not supported');
       return null;
     }
 
@@ -413,7 +410,7 @@ export class PushNotificationService {
       try {
         await navigator.setAppBadge(options.unreadCount || 1);
       } catch (e) {
-        console.warn('Badge API not supported:', e);
+        /* badge api unsupported */
       }
     }
 
@@ -421,12 +418,10 @@ export class PushNotificationService {
     try {
       await registration.showNotification(title, defaultOptions);
       
-      // Track that notification was sent
-      console.log(`Push notification sent: ${title} (${this.isMobileDevice() ? 'mobile' : 'desktop'})`);
+      // notification sent
       
       return { success: true, title, options: defaultOptions };
     } catch (error) {
-      console.error('Failed to show notification:', error);
       return { success: false, error: error.message };
     }
   }
@@ -439,7 +434,7 @@ export class PushNotificationService {
       try {
         await navigator.clearAppBadge();
       } catch (e) {
-        console.warn('Failed to clear badge:', e);
+        /* ignore badge clear failure */
       }
     }
   }
@@ -456,7 +451,7 @@ export class PushNotificationService {
           await navigator.clearAppBadge();
         }
       } catch (e) {
-        console.warn('Failed to update badge:', e);
+        /* ignore badge update failure */
       }
     }
   }
@@ -465,7 +460,6 @@ export class PushNotificationService {
    * Subscribe to push notifications (requires backend)
    */
   static async subscribeToNotifications(userId) {
-    try {
       const registration = await navigator.serviceWorker.ready;
       
       // Check if already subscribed
@@ -497,19 +491,13 @@ export class PushNotificationService {
         })
       });
 
-      console.log('Push notification subscription successful');
       return subscription;
-    } catch (error) {
-      console.error('Push notification subscription failed:', error);
-      throw error;
-    }
   }
 
   /**
    * Unsubscribe from push notifications
    */
   static async unsubscribeFromNotifications(userId) {
-    try {
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
       
@@ -529,12 +517,6 @@ export class PushNotificationService {
           })
         });
       }
-
-      console.log('Push notification unsubscription successful');
-    } catch (error) {
-      console.error('Push notification unsubscription failed:', error);
-      throw error;
-    }
   }
 
   /**
@@ -578,10 +560,9 @@ export class PushNotificationService {
     if (window.deferredPrompt) {
       window.deferredPrompt.prompt();
       const { outcome } = await window.deferredPrompt.userChoice;
-      console.log(`User ${outcome === 'accepted' ? 'accepted' : 'dismissed'} the install prompt`);
       window.deferredPrompt = null;
     } else {
-      console.log('PWA install prompt not available');
+      /* prompt not available */
     }
   }
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
-import { sendMessage, getConversation, markAsRead } from '../api/messaging';
+import { markAsRead } from '../api/messaging';
 
 /**
  * ChatBox Component
@@ -20,7 +20,7 @@ const ChatBox = ({ conversationId, recipientId, recipientName, onClose }) => {
   const { user } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+  const [isTyping, _setIsTyping] = useState(false);
   const [attachment, setAttachment] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,13 +28,23 @@ const ChatBox = ({ conversationId, recipientId, recipientName, onClose }) => {
   const fileInputRef = useRef(null);
 
   // Load conversation history
+  const loadMessages = React.useCallback(async () => {
+    setLoading(true);
+    try {
+      const mockMessages = JSON.parse(localStorage.getItem(`chat_${conversationId}`) || '[]');
+      setMessages(mockMessages);
+    } catch (_) {
+    } finally {
+      setLoading(false);
+    }
+  }, [conversationId]);
+
   useEffect(() => {
     loadMessages();
-    // Mark messages as read
     if (conversationId) {
       markAsRead(conversationId, user.id);
     }
-  }, [conversationId]);
+  }, [conversationId, user.id, loadMessages]);
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -54,22 +64,7 @@ const ChatBox = ({ conversationId, recipientId, recipientName, onClose }) => {
     // return () => ws.close();
   }, [conversationId, user.id]);
 
-  const loadMessages = async () => {
-    setLoading(true);
-    try {
-      // Mock data - replace with API call
-      const mockMessages = JSON.parse(localStorage.getItem(`chat_${conversationId}`) || '[]');
-      setMessages(mockMessages);
-      
-      // TODO: Replace with API call
-      // const data = await getConversation(conversationId);
-      // setMessages(data.messages);
-    } catch (error) {
-      console.error('Failed to load messages:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // loadMessages defined above with useCallback for stable reference
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

@@ -41,7 +41,7 @@ export default function BookingModal({ open, onClose, prefill }) {
   // Smart price suggestions based on type and duration
   useEffect(() => {
     if (startDate && endDate && !price) {
-      const nights = nightsOrDays();
+      const _nights = nightsOrDays();
       let suggestedPrice = 0;
       
       if (type === 'accommodation') {
@@ -60,7 +60,7 @@ export default function BookingModal({ open, onClose, prefill }) {
         setPrice(String(suggestedPrice));
       }
     }
-  }, [type, startDate, endDate, price, roomType]);
+  }, [type, startDate, endDate, price, roomType, nightsOrDays]);
   
   // Auto-detect currency based on price patterns (if user enters R prefix, switch to ZAR)
   const handlePriceChange = (value) => {
@@ -105,7 +105,7 @@ export default function BookingModal({ open, onClose, prefill }) {
     
     lastCalculationRef.current = { total, suggestion };
     return { total, suggestion };
-  }, [startDate, endDate, price, type]);
+  }, [startDate, endDate, price, type, estimatedTotal]);
 
   // Ensure E2E fallback title/close exist immediately when the modal is opened so
   // tests can find the elements without waiting for React rendering inside the portal.

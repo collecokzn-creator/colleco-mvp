@@ -251,7 +251,7 @@ export const NotificationHelpers = {
   /**
    * Notify all partners in a collaboration
    */
-  async notifyCollaborators({ collaborationId, partners, excludePartnerId, notification }) {
+  async notifyCollaborators({ _collaborationId, partners, excludePartnerId, notification }) {
     const partnerIds = partners
       .filter(p => p.id !== excludePartnerId)
       .map(p => p.id);
