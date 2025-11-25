@@ -607,7 +607,6 @@ export default function QuoteGenerator() {
             {/* Invoice Info */}
             <div className="bg-white rounded-xl shadow-sm p-6 border border-cream-border hover:shadow-md transition-shadow">
               <h3 className="text-lg font-bold text-brand-brown mb-4 flex items-center gap-2">
-                <span className="text-brand-orange">📄</span>
                 Document Information
               </h3>
               <div className="space-y-4">
@@ -644,14 +643,14 @@ export default function QuoteGenerator() {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-brand-brown mb-1">Issue Date</label>
                     <input
                       type="date"
                       value={quote.issueDate}
                       onChange={e => setQuote({...quote, issueDate: e.target.value})}
-                      className="w-full px-3 py-2 border border-cream-border rounded-lg focus:border-brand-orange focus:outline-none"
+                      className="w-full px-3 py-2 border border-cream-border rounded-lg focus:border-brand-orange focus:outline-none text-sm"
                     />
                   </div>
                   <div>
@@ -660,7 +659,7 @@ export default function QuoteGenerator() {
                       type="date"
                       value={quote.dueDate}
                       onChange={e => setQuote({...quote, dueDate: e.target.value})}
-                      className="w-full px-3 py-2 border border-cream-border rounded-lg focus:border-brand-orange focus:outline-none"
+                      className="w-full px-3 py-2 border border-cream-border rounded-lg focus:border-brand-orange focus:outline-none text-sm"
                     />
                   </div>
                 </div>
@@ -838,7 +837,11 @@ export default function QuoteGenerator() {
 
                 {quote.items.length === 0 && (
                   <div className="text-center py-12 px-4">
-                    <div className="mb-4 text-6xl opacity-20">📦</div>
+                    <div className="mb-4 flex justify-center">
+                      <svg className="w-16 h-16 text-brand-orange opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                      </svg>
+                    </div>
                     <p className="text-brand-brown font-semibold mb-2">No items added yet</p>
                     <p className="text-sm text-brand-russty mb-4">Use AI generation above or click &quot;+ Add Item&quot; to get started</p>
                     <div className="flex justify-center gap-2">
@@ -852,7 +855,6 @@ export default function QuoteGenerator() {
             {/* Totals */}
             <div className="bg-white rounded-xl shadow-sm p-6 border border-cream-border">
               <h3 className="text-lg font-bold text-brand-brown mb-4 flex items-center gap-2">
-                <span className="text-brand-orange">💰</span>
                 Totals
               </h3>
               <div className="space-y-2">

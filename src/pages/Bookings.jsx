@@ -203,12 +203,12 @@ export default function Bookings() {
 				<div className="mb-6 sm:mb-8">
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-3">
 					<div>
-						<h1 className="text-3xl sm:text-4xl font-bold text-brand-brown flex items-center gap-3">
-							Bookings
-							<span className="inline-flex items-center gap-1 text-xs bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 px-3 py-1.5 rounded-full font-semibold border border-green-200 shadow-sm" title="Auto-refresh, smart sorting, and intelligent recommendations enabled">
-								<span className="hidden sm:inline">Smart Mode</span>
-							</span>
-						</h1>
+					<h1 className="text-3xl sm:text-4xl font-bold text-brand-brown flex items-center gap-3">
+						Bookings
+						<span className="inline-flex items-center gap-1 text-xs bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 px-3 py-1.5 rounded-full font-semibold border border-green-200 shadow-sm" title="Auto-refresh, smart sorting, and intelligent recommendations enabled">
+							Smart Mode
+						</span>
+					</h1>
 							<p className="mt-2 text-brand-russty text-sm sm:text-base">All your confirmed items in one place — always up to date.</p>
 						</div>
 						<div className="flex items-center gap-2 sm:gap-3">
