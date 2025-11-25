@@ -382,7 +382,7 @@ export default function QuoteGenerator() {
             </p>
           </div>
           <div className="flex gap-3 flex-wrap">
-            <Button as={Link} to="/partner/templates" variant="outline" size="md">🎨 Manage Templates</Button>
+            <Button as={Link} to="/partner/templates" variant="outline" size="md">Manage Templates</Button>
             <Button variant="secondary" size="md" onClick={newQuote}>+ New Quote</Button>
           </div>
         </div>
@@ -422,7 +422,6 @@ export default function QuoteGenerator() {
         <div className="mb-6 bg-white rounded-xl p-5 border border-cream-border shadow-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-2xl">🖼️</span>
               <div>
                 <h3 className="font-bold text-brand-brown">Custom Logo</h3>
                 <p className="text-xs text-brand-russty">Upload your logo for invoices (optional)</p>
@@ -452,7 +451,7 @@ export default function QuoteGenerator() {
                     className="hidden"
                   />
                   <label htmlFor="logoUpload" className="cursor-pointer">
-                    <Button as="span" variant="primary" size="sm">📤 Upload Logo</Button>
+                    <Button as="span" variant="primary" size="sm">Upload Logo</Button>
                   </label>
                   <span className="text-xs text-brand-russty">Max 2MB • PNG, JPG, SVG</span>
                 </>
@@ -527,7 +526,6 @@ export default function QuoteGenerator() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h2 className="text-xl font-bold text-brand-brown flex items-center gap-2">
-                    <span className="text-2xl">✨</span>
                     <span>AI-Powered Generation</span>
                   </h2>
                   <p className="text-sm text-brand-russty mt-2">
@@ -542,13 +540,13 @@ export default function QuoteGenerator() {
                   onChange={e => setAiPrompt(e.target.value)}
                   className="w-full px-4 py-3 border-2 border-brand-orange/30 rounded-lg focus:border-brand-orange focus:outline-none"
                   rows="4"
-                  placeholder="Example: Flight from Durban to Cape Town on FlySafair for R4,500, 3 nights hotel accommodation at R1,200 per night, airport transfer for R450"
+                  placeholder="Flight from Durban to Cape Town on FlySafair for R4,500, 3 nights hotel accommodation at R1,200 per night, airport transfer for R450"
                 />
                 <button
                   onClick={() => setShowExamples(!showExamples)}
                   className="absolute top-2 right-2 text-xs text-brand-orange hover:text-brand-brown"
                 >
-                  💡 Examples
+                  Examples
                 </button>
               </div>
 
@@ -620,8 +618,8 @@ export default function QuoteGenerator() {
                     onChange={e => setQuote({...quote, documentType: e.target.value, invoiceNumber: ''})}
                     className="w-full px-3 py-2 border-2 border-brand-orange/30 rounded-lg focus:border-brand-orange focus:outline-none bg-white font-semibold"
                   >
-                    <option value="Invoice">📄 Invoice</option>
-                    <option value="Quotation">💼 Quotation</option>
+                    <option value="Invoice">Invoice</option>
+                    <option value="Quotation">Quotation</option>
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
