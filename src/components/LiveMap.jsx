@@ -8,74 +8,6 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
   const [_waypointMarkers, _setWaypointMarkers] = useState([]); // unused currently; reserved for future waypoint visuals
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
 
-  useEffect(() => {
-    // Load Google Maps script
-    if (!window.google) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY'}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-      
-      script.onload = () => initMap();
-    } else {
-      initMap();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (map && window.google) {
-      updateMapMarkers();
-      if (showRoute && pickup && dropoff) {
-        drawRoute();
-      }
-    }
-  }, [map, pickup, dropoff, driverLocation, showRoute, updateMapMarkers, drawRoute]);
-
-  // Update nearby drivers markers
-  useEffect(() => {
-    if (!map || !window.google) return;
-
-    // Clear existing nearby markers
-    nearbyMarkersRef.current.forEach(marker => marker.setMap(null));
-
-    // Create new markers for nearby drivers
-    const newNearbyMarkers = nearbyDrivers.map((driver, index) => {
-      return new window.google.maps.Marker({
-        position: { lat: driver.lat, lng: driver.lng },
-        map: map,
-        title: `${driver.name || 'Driver'} - ${driver.eta || 5} min away`,
-        icon: {
-          url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <circle cx="16" cy="16" r="14" fill="#FF9800" stroke="white" stroke-width="2"/>
-              <text x="16" y="21" font-size="16" text-anchor="middle" fill="white">🚐</text>
-            </svg>
-          `),
-          scaledSize: new window.google.maps.Size(32, 32),
-          anchor: new window.google.maps.Point(16, 16),
-        },
-        zIndex: 100 + index,
-      });
-    });
-
-    nearbyMarkersRef.current = newNearbyMarkers;
-
-    // Fit bounds to show all nearby drivers if present
-    if (nearbyDrivers.length > 0 && pickup) {
-      const bounds = new window.google.maps.LatLngBounds();
-      nearbyDrivers.forEach(driver => {
-        bounds.extend({ lat: driver.lat, lng: driver.lng });
-      });
-      map.fitBounds(bounds);
-      // Don't zoom in too much
-      const listener = window.google.maps.event.addListener(map, 'idle', () => {
-        if (map.getZoom() > 15) map.setZoom(15);
-        window.google.maps.event.removeListener(listener);
-      });
-    }
-  }, [map, nearbyDrivers, pickup]);
-
   function initMap() {
     if (!mapRef.current || !window.google) return;
 
@@ -100,6 +32,17 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     });
     
     setDirectionsRenderer(renderer);
+  }
+
+  function geocodeAddress(address, callback) {
+    if (!window.google) return;
+    
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ address: address }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        callback(results[0].geometry.location);
+      }
+    });
   }
 
   const updateMapMarkers = useCallback(() => {
@@ -186,17 +129,6 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     setMarkers(newMarkers);
   }, [map, pickup, dropoff, driverLocation, markers]);
 
-  function geocodeAddress(address, callback) {
-    if (!window.google) return;
-    
-    const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode({ address: address }, (results, status) => {
-      if (status === 'OK' && results[0]) {
-        callback(results[0].geometry.location);
-      }
-    });
-  }
-
   const drawRoute = useCallback(() => {
     if (!directionsRenderer || !window.google) return;
 
@@ -231,6 +163,74 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     );
   }, [directionsRenderer, pickup, dropoff, waypoints]);
 
+  useEffect(() => {
+    // Load Google Maps script
+    if (!window.google) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY'}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+      
+      script.onload = () => initMap();
+    } else {
+      initMap();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (map && window.google) {
+      updateMapMarkers();
+      if (showRoute && pickup && dropoff) {
+        drawRoute();
+      }
+    }
+  }, [map, pickup, dropoff, driverLocation, showRoute, updateMapMarkers, drawRoute]);
+
+  // Update nearby drivers markers
+  useEffect(() => {
+    if (!map || !window.google) return;
+
+    // Clear existing nearby markers
+    nearbyMarkersRef.current.forEach(marker => marker.setMap(null));
+
+    // Create new markers for nearby drivers
+    const newNearbyMarkers = nearbyDrivers.map((driver, index) => {
+      return new window.google.maps.Marker({
+        position: { lat: driver.lat, lng: driver.lng },
+        map: map,
+        title: `${driver.name || 'Driver'} - ${driver.eta || 5} min away`,
+        icon: {
+          url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <circle cx="16" cy="16" r="14" fill="#FF9800" stroke="white" stroke-width="2"/>
+              <text x="16" y="21" font-size="16" text-anchor="middle" fill="white">🚐</text>
+            </svg>
+          `),
+          scaledSize: new window.google.maps.Size(32, 32),
+          anchor: new window.google.maps.Point(16, 16),
+        },
+        zIndex: 100 + index,
+      });
+    });
+
+    nearbyMarkersRef.current = newNearbyMarkers;
+
+    // Fit bounds to show all nearby drivers if present
+    if (nearbyDrivers.length > 0 && pickup) {
+      const bounds = new window.google.maps.LatLngBounds();
+      nearbyDrivers.forEach(driver => {
+        bounds.extend({ lat: driver.lat, lng: driver.lng });
+      });
+      map.fitBounds(bounds);
+      // Don't zoom in too much
+      const listener = window.google.maps.event.addListener(map, 'idle', () => {
+        if (map.getZoom() > 15) map.setZoom(15);
+        window.google.maps.event.removeListener(listener);
+      });
+    }
+  }, [map, nearbyDrivers, pickup]);
+
   return (
     <div className="relative w-full rounded-lg overflow-hidden border-2 border-gray-300" style={{ height }}>
       <div ref={mapRef} className="w-full h-full" />
@@ -239,7 +239,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
       <div className="absolute top-4 left-4 bg-white px-4 py-2 rounded-lg shadow-lg text-sm">
         {nearbyDrivers.length > 0 ? (
           <>
-            <p className="font-semibold text-gray-700">📍 Nearby Shuttles</p>
+            <p className="font-semibold text-gray-700">�� Nearby Shuttles</p>
             <p className="text-xs text-orange-600">{nearbyDrivers.length} available</p>
           </>
         ) : (

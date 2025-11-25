@@ -7,20 +7,14 @@ import { requestNotificationPermission, notifyTransferStatus } from '../utils/no
 import Button from '../components/ui/Button.jsx';
 
 export default function Transfers() {
-  React.useEffect(() => {
-    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    // Request notification permission on load
-    requestNotificationPermission();
-  }, []);
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [pax, setPax] = useState(1);
   const [bookingType, setBookingType] = useState("instant"); // "instant" or "prearranged"
-  const [tripType, setTripType] = useState("one-way"); // "one-way", "round-trip", "multi-stop"
+  const [isRoundTrip, setIsRoundTrip] = useState(false);
+  const [isMultiStop, setIsMultiStop] = useState(false);
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
   const [additionalStops, setAdditionalStops] = useState([]);
@@ -35,6 +29,14 @@ export default function Transfers() {
   const [previousStatus, setPreviousStatus] = useState(null);
   const [nearbyDrivers, setNearbyDrivers] = useState([]);
   const [loadingNearby, setLoadingNearby] = useState(false);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Request notification permission on load
+    requestNotificationPermission();
+  }, []);
 
   // Auto-update serviceDays based on selected recurring days when multi-day service active
   React.useEffect(() => {
@@ -92,10 +94,11 @@ export default function Transfers() {
         time: bookingType === 'instant' ? new Date().toISOString() : time,
         pax,
         bookingType,
-        tripType,
-        additionalStops: tripType === 'multi-stop' ? additionalStops.filter(s => s.trim()) : [],
-        returnDate: tripType === 'round-trip' ? returnDate : null,
-        returnTime: tripType === 'round-trip' ? returnTime : null,
+        isRoundTrip,
+        isMultiStop,
+        additionalStops: isMultiStop ? additionalStops.filter(s => s.trim()) : [],
+        returnDate: isRoundTrip ? returnDate : null,
+        returnTime: isRoundTrip ? returnTime : null,
         multiDayService,
         serviceDays: multiDayService ? serviceDays : 1,
         recurringDays: multiDayService ? recurringDays : []
@@ -172,118 +175,68 @@ export default function Transfers() {
         <p className="mt-2 text-sm sm:text-base text-brand-russty max-w-prose">Request instant or scheduled transport, multi-stop journeys, and monitor live driver progress.</p>
       </div>
 
-      {/* Trip Configuration Card */}
+      {/* Booking Type Selection */}
       <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-6">
-        <h2 className="text-lg font-bold text-brand-brown mb-4">Trip Configuration</h2>
-        
-        {/* Trip Type */}
-        <div className="mb-6">
-          <label className="block mb-3 text-sm font-semibold text-brand-brown">Trip Type</label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <button
-              type="button"
-              onClick={() => setTripType('one-way')}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                tripType === 'one-way'
-                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
-                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
-              }`}
-            >
-              <div className="text-center">
-                <div className="text-sm font-semibold text-brand-brown">One-way</div>
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => setTripType('round-trip')}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                tripType === 'round-trip'
-                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
-                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
-              }`}
-            >
-              <div className="text-center">
-                <div className="text-sm font-semibold text-brand-brown">Round Trip</div>
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => setTripType('multi-stop')}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                tripType === 'multi-stop'
-                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
-                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
-              }`}
-            >
-              <div className="text-center">
-                <div className="text-sm font-semibold text-brand-brown">Multi-stop</div>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {/* Booking Type */}
-        <div>
-          <label className="block mb-3 text-sm font-semibold text-brand-brown">Booking Type</label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setBookingType('instant')}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                bookingType === 'instant'
-                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
-                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
-              }`}
-            >
-              <div className="text-center">
-                <div className="text-sm font-semibold text-brand-brown">Instant Request</div>
-                <div className="text-xs text-brand-russty mt-1">Book now</div>
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => setBookingType('prearranged')}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                bookingType === 'prearranged'
-                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
-                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
-              }`}
-            >
-              <div className="text-center">
-                <div className="text-sm font-semibold text-brand-brown">Prearranged</div>
-                <div className="text-xs text-brand-russty mt-1">Schedule ahead</div>
-              </div>
-            </button>
-          </div>
+        <h2 className="text-lg font-bold text-brand-brown mb-4">Booking Type</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => setBookingType('instant')}
+            className={`p-4 rounded-lg border-2 transition-all ${
+              bookingType === 'instant'
+                ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
+                : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
+            }`}
+          >
+            <div className="text-center">
+              <div className="text-sm font-semibold text-brand-brown">Instant Request</div>
+              <div className="text-xs text-brand-russty mt-1">Book now</div>
+            </div>
+          </button>
+          <button
+            type="button"
+            onClick={() => setBookingType('prearranged')}
+            className={`p-4 rounded-lg border-2 transition-all ${
+              bookingType === 'prearranged'
+                ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
+                : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
+            }`}
+          >
+            <div className="text-center">
+              <div className="text-sm font-semibold text-brand-brown">Prearranged</div>
+              <div className="text-xs text-brand-russty mt-1">Schedule ahead</div>
+            </div>
+          </button>
         </div>
       </div>
 
-      {/* Multi-Day Service Toggle */}
+      {/* Multi-Day Service */}
       {bookingType === 'prearranged' && (
-        <div className="mb-4 p-4 bg-cream-sand border-2 border-cream-border rounded-lg">
-          <label className="flex items-center gap-3 cursor-pointer">
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-6">
+          <h3 className="text-lg font-bold text-brand-brown mb-4">Multi-Day Service</h3>
+          <label className="flex items-center gap-3 cursor-pointer mb-6">
             <input 
               type="checkbox" 
               checked={multiDayService}
               onChange={e => setMultiDayService(e.target.checked)}
-              className="w-5 h-5 accent-brand-orange text-brand-orange rounded"
+              className="w-5 h-5 accent-brand-orange rounded"
             />
             <div>
-              <span className="font-semibold text-brand-brown">📆 Multi-Day Service</span>
-              <p className="text-sm text-gray-600">Book recurring shuttle service for multiple days (discounts apply)</p>
+              <span className="font-semibold text-brand-brown">Enable Multi-Day Booking</span>
+              <p className="text-sm text-brand-russty">Book recurring shuttle service for multiple days (discounts apply)</p>
             </div>
           </label>
           
           {multiDayService && (
-            <div className="mt-4 space-y-3">
+            <div className="space-y-5 pt-4 border-t border-cream-border">
               <div>
-                <label className="block mb-1 font-semibold text-sm">Number of Days</label>
+                <label className="block mb-2 text-sm font-semibold text-brand-brown">Number of Days</label>
                 {recurringDays.length > 0 ? (
                   <div className="flex items-center gap-2">
-                    <div className="px-3 py-2 rounded border-2 border-brand-orange bg-brand-orange/5 text-brand-brown font-semibold w-32 text-center">
+                    <div className="px-4 py-2 rounded-lg border-2 border-brand-orange bg-brand-orange/5 text-brand-brown font-semibold w-20 text-center">
                       {serviceDays}
                     </div>
-                    <span className="text-sm text-gray-600">auto from selected days</span>
+                    <span className="text-sm text-brand-russty">auto from selected days</span>
                   </div>
                 ) : (
                   <input 
@@ -292,12 +245,12 @@ export default function Transfers() {
                     max={30}
                     value={serviceDays}
                     onChange={e => setServiceDays(Number(e.target.value))}
-                    className="w-32 border rounded px-3 py-2"
+                    className="w-32 border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
                   />
                 )}
               </div>
               <div>
-                <label className="block mb-2 font-semibold text-sm">Recurring Days (Optional)</label>
+                <label className="block mb-3 text-sm font-semibold text-brand-brown">Recurring Days <span className="text-brand-russty font-normal">(Optional)</span></label>
                 <div className="flex gap-2 flex-wrap">
                   {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
                     <button
@@ -310,21 +263,21 @@ export default function Transfers() {
                           setRecurringDays([...recurringDays, idx]);
                         }
                       }}
-                      className={`px-3 py-1 rounded text-sm font-semibold ${
+                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                         recurringDays.includes(idx)
-                          ? 'bg-brand-orange text-white'
-                          : 'bg-gray-200 text-gray-700'
+                          ? 'bg-brand-orange text-white shadow-sm'
+                          : 'border-2 border-cream-border text-brand-brown hover:border-brand-orange/50 hover:bg-cream'
                       }`}
                     >
                       {day}
                     </button>
                   ))}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Select specific days for recurring service</p>
+                <p className="text-xs text-brand-russty mt-2">Select specific days for recurring service</p>
               </div>
-              <div className="p-3 bg-cream-sand border border-cream-border rounded">
-                <p className="text-sm text-brand-brown">
-                  🎉 Multi-day discount: <strong>{serviceDays >= 7 ? '20%' : serviceDays >= 3 ? '15%' : '10%'} off</strong>
+              <div className="p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+                <p className="text-sm text-green-800">
+                  <strong>Multi-day discount:</strong> {serviceDays >= 7 ? '20%' : serviceDays >= 3 ? '15%' : '10%'} off
                 </p>
               </div>
             </div>
@@ -333,68 +286,90 @@ export default function Transfers() {
       )}
       
       <form className="space-y-6" onSubmit={submitRequest}>
-        <div>
-          <label className="block mb-1 font-semibold">Pickup Location</label>
-          <input 
-            type="text" 
-            value={pickup} 
-            onChange={e => setPickup(e.target.value)} 
-            required 
-            className="w-full border rounded px-3 py-2" 
-            placeholder="e.g. King Shaka Airport" 
-          />
-        </div>
-        
-        {/* Nearby Shuttles Map */}
-        {pickup && pickup.length >= 3 && !status && (
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-brand-brown">
-                {loadingNearby ? '🔍 Finding nearby shuttles...' : `📍 ${nearbyDrivers.length} shuttle${nearbyDrivers.length !== 1 ? 's' : ''} available near you`}
-              </h3>
-            </div>
-            <div className="border-2 border-cream-border rounded-lg overflow-hidden">
-              <LiveMap 
-                pickup={pickup}
-                nearbyDrivers={nearbyDrivers}
-                showRoute={false}
-                height="300px"
+        {/* Journey Details Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
+          <h2 className="text-lg font-bold text-brand-brown mb-6">Journey Details</h2>
+          
+          <div className="space-y-5">
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Location</label>
+              <input 
+                type="text" 
+                value={pickup} 
+                onChange={e => setPickup(e.target.value)} 
+                required 
+                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+                placeholder="e.g. King Shaka Airport" 
               />
             </div>
-            {nearbyDrivers.length > 0 && (
-              <div className="mt-2 p-3 bg-cream-sand rounded border border-cream-border">
-                <p className="text-brand-brown text-sm">
-                  ✅ Shuttles available in your area. Average ETA: {Math.min(...nearbyDrivers.map(d => d.eta || 10))} min
-                </p>
+            
+            {/* Nearby Shuttles Map */}
+            {pickup && pickup.length >= 3 && !status && (
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-brand-brown">
+                  {loadingNearby ? 'Finding nearby shuttles...' : `${nearbyDrivers.length} shuttle${nearbyDrivers.length !== 1 ? 's' : ''} available near you`}
+                </h3>
+                <div className="border-2 border-cream-border rounded-lg overflow-hidden">
+                  <LiveMap 
+                    pickup={pickup}
+                    nearbyDrivers={nearbyDrivers}
+                    showRoute={false}
+                    height="300px"
+                  />
+                </div>
+                {nearbyDrivers.length > 0 && (
+                  <div className="p-3 bg-green-50 border-2 border-green-200 rounded-lg">
+                    <p className="text-green-800 text-sm">
+                      <strong>Shuttles available in your area.</strong> Average ETA: {Math.min(...nearbyDrivers.map(d => d.eta || 10))} min
+                    </p>
+                  </div>
+                )}
+                {!loadingNearby && nearbyDrivers.length === 0 && (
+                  <div className="p-3 bg-yellow-50 border-2 border-yellow-200 rounded-lg">
+                    <p className="text-yellow-800 text-sm">
+                      <strong>No shuttles currently in this area.</strong> You can still submit a request and we'll notify nearby drivers.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
-            {!loadingNearby && nearbyDrivers.length === 0 && (
-              <div className="mt-2 p-3 bg-yellow-50 rounded border border-yellow-200">
-                <p className="text-yellow-800 text-sm">
-                  ⚠️ No shuttles currently in this area. You can still submit a request and we&apos;ll notify nearby drivers.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-        
-        <div className="pt-2">
-          <label className="block mb-1 font-semibold">Dropoff Location</label>
-          <input 
-            type="text" 
-            value={dropoff} 
-            onChange={e => setDropoff(e.target.value)} 
-            required 
-            className="w-full border rounded px-3 py-2" 
-            placeholder="e.g. Oyster Box Hotel" 
-          />
-        </div>
-        
-        {/* Multi-stop Journey */}
-        {tripType === 'multi-stop' && (
-          <div className="space-y-3">
+            
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-brand-brown">Dropoff Location</label>
+              <input 
+                type="text" 
+                value={dropoff} 
+                onChange={e => setDropoff(e.target.value)} 
+                required 
+                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+                placeholder="e.g. Oyster Box Hotel" 
+              />
+            </div>
+
+            {/* Multi-stop Journey Checkbox */}
+            <div className="pt-2">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  checked={isMultiStop}
+                  onChange={e => {
+                    setIsMultiStop(e.target.checked);
+                    if (!e.target.checked) setAdditionalStops([]);
+                  }}
+                  className="w-5 h-5 accent-brand-orange rounded"
+                />
+                <div>
+                  <span className="font-semibold text-brand-brown">Add Multiple Stops</span>
+                  <p className="text-sm text-brand-russty">Visit multiple locations in one trip</p>
+                </div>
+              </label>
+            </div>
+            
+            {/* Multi-stop Journey */}
+            {isMultiStop && (
+          <div className="space-y-4 pt-4 border-t border-cream-border">
             <div className="flex items-center justify-between">
-              <label className="font-semibold text-brand-brown">Additional Stops</label>
+              <label className="text-sm font-semibold text-brand-brown">Additional Stops</label>
               <Button
                 type="button"
                 size="sm"
@@ -405,7 +380,7 @@ export default function Transfers() {
             
             {additionalStops.map((stop, index) => (
               <div key={index} className="flex gap-2 items-center">
-                <span className="text-sm font-semibold text-gray-500 w-6">{index + 1}.</span>
+                <span className="text-sm font-semibold text-brand-russty w-6">{index + 1}.</span>
                 <input
                   type="text"
                   value={stop}
@@ -414,7 +389,7 @@ export default function Transfers() {
                     newStops[index] = e.target.value;
                     setAdditionalStops(newStops);
                   }}
-                  className="flex-1 border rounded px-3 py-2"
+                  className="flex-1 border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
                   placeholder={`Stop ${index + 1} location`}
                 />
                 <Button
@@ -427,88 +402,107 @@ export default function Transfers() {
             ))}
             
             {additionalStops.length > 0 && (
-              <div className="p-3 bg-cream-sand border border-cream-border rounded">
-                <p className="text-sm text-brand-brown">
-                  📍 Total stops: {additionalStops.length + 2} (Pickup → {additionalStops.length} stop{additionalStops.length !== 1 ? 's' : ''} → Dropoff)
+              <div className="p-3 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>Total stops:</strong> {additionalStops.length + 2} (Pickup → {additionalStops.length} stop{additionalStops.length !== 1 ? 's' : ''} → Dropoff)
                 </p>
               </div>
             )}
           </div>
         )}
-        
-        {/* Round Trip Return Details */}
-        {tripType === 'round-trip' && bookingType === 'prearranged' && (
-          <div className="p-4 bg-amber-100 border-2 border-brand-gold rounded-lg space-y-3">
-            <h3 className="font-semibold text-brand-brown flex items-center gap-2">
-              🔁 Return Journey Details
-            </h3>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block mb-1 font-semibold text-sm">Return Date</label>
-                <input 
-                  type="date" 
-                  value={returnDate} 
-                  onChange={e => setReturnDate(e.target.value)} 
-                  required
-                  min={date}
-                  className="w-full border rounded px-3 py-2" 
-                />
-              </div>
-              <div>
-                <label className="block mb-1 font-semibold text-sm">Return Time</label>
-                <input 
-                  type="time" 
-                  value={returnTime} 
-                  onChange={e => setReturnTime(e.target.value)} 
-                  required
-                  className="w-full border rounded px-3 py-2" 
-                />
-              </div>
-            </div>
-            <div className="p-2 bg-cream-sand border border-cream-border rounded">
-              <p className="text-sm text-brand-brown">
-                💰 Round trip discount: <strong>15% off</strong> total fare
-              </p>
+
+            {/* Date & Time for Prearranged */}
+            {bookingType === 'prearranged' && (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                  <div>
+                    <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Date</label>
+                    <input 
+                      type="date" 
+                      value={date} 
+                      onChange={e => setDate(e.target.value)} 
+                      required 
+                      className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Time</label>
+                    <input 
+                      type="time" 
+                      value={time} 
+                      onChange={e => setTime(e.target.value)} 
+                      required 
+                      className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+                    />
+                  </div>
+                </div>
+
+                {/* Round Trip Checkbox */}
+                <div className="pt-2">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={isRoundTrip}
+                      onChange={e => setIsRoundTrip(e.target.checked)}
+                      className="w-5 h-5 accent-brand-orange rounded"
+                    />
+                    <div>
+                      <span className="font-semibold text-brand-brown">Round Trip</span>
+                      <p className="text-sm text-brand-russty">Add a return journey (15% discount)</p>
+                    </div>
+                  </label>
+                </div>
+
+                {/* Return Journey Details */}
+                {isRoundTrip && (
+                  <div className="space-y-4 pt-4 border-t border-cream-border">
+                    <h3 className="text-sm font-bold text-brand-brown">Return Journey</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Date</label>
+                        <input 
+                          type="date" 
+                          value={returnDate} 
+                          onChange={e => setReturnDate(e.target.value)} 
+                          required
+                          min={date}
+                          className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Time</label>
+                        <input 
+                          type="time" 
+                          value={returnTime} 
+                          onChange={e => setReturnTime(e.target.value)} 
+                          required
+                          className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+                        />
+                      </div>
+                    </div>
+                    <div className="p-3 bg-green-50 border-2 border-green-200 rounded-lg">
+                      <p className="text-sm text-green-800">
+                        <strong>Round trip discount:</strong> 15% off total fare
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+            
+            <div className="pt-2">
+              <label className="block mb-2 text-sm font-semibold text-brand-brown">Passengers</label>
+              <input 
+                type="number" 
+                min={1} 
+                max={12} 
+                value={pax} 
+                onChange={e => setPax(Number(e.target.value))} 
+                required 
+                className="w-32 border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+              />
             </div>
           </div>
-        )}
-        
-        {bookingType === 'prearranged' && (
-          <>
-            <div>
-              <label className="block mb-1 font-semibold">Date</label>
-              <input 
-                type="date" 
-                value={date} 
-                onChange={e => setDate(e.target.value)} 
-                required 
-                className="w-full border rounded px-3 py-2" 
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-semibold">Time</label>
-              <input 
-                type="time" 
-                value={time} 
-                onChange={e => setTime(e.target.value)} 
-                required 
-                className="w-full border rounded px-3 py-2" 
-              />
-            </div>
-          </>
-        )}
-        
-        <div className="pt-2">
-          <label className="block mb-1 font-semibold">Passengers</label>
-          <input 
-            type="number" 
-            min={1} 
-            max={12} 
-            value={pax} 
-            onChange={e => setPax(Number(e.target.value))} 
-            required 
-            className="w-24 border rounded px-3 py-2" 
-          />
         </div>
         
         <Button 
@@ -632,3 +626,4 @@ export default function Transfers() {
     </div>
   );
 }
+
