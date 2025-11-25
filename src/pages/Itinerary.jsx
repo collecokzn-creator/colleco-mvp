@@ -3,6 +3,7 @@ import ItineraryDay from "../components/ui/ItineraryDay";
 import ExperienceCard from "../components/ui/ExperienceCard";
 import MemoryNote from "../components/ui/MemoryNote";
 import LiveTripProgress from "../components/ui/LiveTripProgress";
+import WeatherWidget from "../components/WeatherWidget";
 import jsPDF from "jspdf";
 import { useTripState, setMemory, computeProgress } from "../utils/useTripState";
 import { useBasketState } from "../utils/useBasketState";
@@ -15,6 +16,10 @@ export default function Itinerary() {
   const { basket, updateDay: _updateBasketDay, removeFromBasket } = useBasketState(); // _updateBasketDay unused (legacy API)
   const [search, setSearch] = useState("");
   const [showSettings, setShowSettings] = useState(false);
+  const [tripLocation, setTripLocation] = useLocalStorageState('trip_location', {
+    city: 'Durban',
+    country: 'South Africa'
+  });
   const [itinerarySettings, setItinerarySettings] = useLocalStorageState('itinerary_settings', {
     companyName: 'CollEco Travel',
     tagline: 'The Odyssey of Adventure',
@@ -459,6 +464,31 @@ export default function Itinerary() {
                     placeholder="www.travelcolleco.com"
                   />
                 </div>
+                <div className="border-t border-cream-border pt-4">
+                  <h3 className="text-sm font-semibold text-brand-brown mb-3">Trip Location (for weather)</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-brand-brown/70 mb-1">City</label>
+                      <input
+                        type="text"
+                        value={tripLocation.city}
+                        onChange={e => setTripLocation({...tripLocation, city: e.target.value})}
+                        className="w-full px-3 py-2 border border-cream-border rounded-lg focus:border-brand-orange focus:outline-none"
+                        placeholder="Durban"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-brand-brown/70 mb-1">Country</label>
+                      <input
+                        type="text"
+                        value={tripLocation.country}
+                        onChange={e => setTripLocation({...tripLocation, country: e.target.value})}
+                        className="w-full px-3 py-2 border border-cream-border rounded-lg focus:border-brand-orange focus:outline-none"
+                        placeholder="South Africa"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
               
               {/* Right Column - Logo Upload */}
@@ -572,7 +602,13 @@ export default function Itinerary() {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {dayKeys.map((day) => (
+                  {dayKeys.map((day) => {
+                    // Calculate date for this day (starting from today)
+                    const startDate = new Date();
+                    const currentDate = new Date(startDate);
+                    currentDate.setDate(startDate.getDate() + (Number(day) - 1));
+                    
+                    return (
                     <div key={day} className="border-2 border-cream-border rounded-xl p-5 bg-gradient-to-br from-white to-cream/10">
                       <ItineraryDay day={day}>
                         <div className="flex items-center justify-between mb-4">
@@ -581,6 +617,16 @@ export default function Itinerary() {
                             {(filteredDays[day] || []).length} {(filteredDays[day] || []).length === 1 ? 'item' : 'items'}
                           </span>
                         </div>
+
+                        {/* Weather Forecast */}
+                        {tripLocation.city && (
+                          <div className="mb-4">
+                            <WeatherWidget 
+                              city={tripLocation.city} 
+                              country={tripLocation.country}
+                            />
+                          </div>
+                        )}
 
                         <div className="space-y-3">
                           {(filteredDays[day] || []).map((item, idx) => (
@@ -617,7 +663,8 @@ export default function Itinerary() {
                         </div>
                       </ItineraryDay>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
