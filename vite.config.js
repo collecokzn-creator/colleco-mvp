@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // Use a function form to access mode/env, ensuring VITE_* vars are loaded consistently
 export default defineConfig(({ mode }) => {
@@ -10,7 +11,16 @@ export default defineConfig(({ mode }) => {
   const DEV_PORT = Number(env.PORT || env.VITE_PORT || 5180)
 
   return {
-    plugins: [react()],
+    plugins: [
+      react(),
+      // Bundle analysis: generates dist/bundle-stats.html on build
+      mode === 'production' && visualizer({ 
+        open: false, 
+        filename: 'dist/bundle-stats.html',
+        gzipSize: true,
+        brotliSize: true
+      })
+    ].filter(Boolean),
     resolve: {
       dedupe: ['react', 'react-dom']
     },
