@@ -416,7 +416,7 @@ export default function Itinerary() {
                 onClick={addDay}
                 className="px-4 py-2 rounded-lg bg-gradient-to-r from-brand-orange to-brand-gold text-white hover:shadow-lg font-semibold transition-all shadow-sm"
               >
-                + Add Day
+                Add Day
               </button>
             </div>
           </div>
@@ -570,7 +570,7 @@ export default function Itinerary() {
                     onClick={addDay}
                     className="px-6 py-3 bg-brand-orange text-white rounded-xl font-semibold hover:bg-brand-highlight transition-all shadow-sm hover:shadow-md"
                   >
-                    + Create First Day
+                    Create First Day
                   </button>
                 </div>
               ) : (

@@ -56,7 +56,7 @@ export default function Quotes() {
               <h1 className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">Quotes</h1>
               <p className="text-brand-russty">Manage client quotations and pricing</p>
             </div>
-            <Button onClick={() => navigate('/quote/new')} variant="primary" size="md">+ New Quote</Button>
+            <Button onClick={() => navigate('/quote/new')} variant="primary" size="md">New Quote</Button>
           </div>
         </div>
 

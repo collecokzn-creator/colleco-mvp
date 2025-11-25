@@ -258,7 +258,7 @@ export default function PartnerTemplates() {
                 onClick={newTemplate}
                 data-testid="create-new-template-btn"
                 size="md"
-              >+ Create Template</Button>
+              >Create Template</Button>
               {activeTemplate && !isEditing && (
                 <Button
                   variant="outline"
@@ -610,7 +610,7 @@ export default function PartnerTemplates() {
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-bold text-brand-brown">Terms & Conditions</h3>
-                    <Button onClick={addTerm} size="sm">+ Add Term</Button>
+                    <Button onClick={addTerm} size="sm">Add Term</Button>
                   </div>
                   <div className="space-y-3">
                     {templateForm.terms.map((term, index) => (

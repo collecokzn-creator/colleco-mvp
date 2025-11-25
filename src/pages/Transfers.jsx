@@ -313,7 +313,7 @@ export default function Transfers() {
                 size="sm"
                 onClick={() => setAdditionalStops([...additionalStops, ''])}
                 disabled={additionalStops.length >= 5}
-              >+ Add Stop</Button>
+              >Add Stop</Button>
             </div>
             
             {additionalStops.map((stop, index) => (

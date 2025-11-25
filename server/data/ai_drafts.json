@@ -2043,5 +2043,41 @@
       "itinerary": []
     },
     "createdAt": 1764057037619
+  },
+  "bejsw1mvqlkmieeszwb": {
+    "id": "bejsw1mvqlkmieeszwb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764065086139
+  },
+  "4f1pl13nspamieewp6u": {
+    "id": "4f1pl13nspamieewp6u",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764065258886
+  },
+  "9a6pum8yp66mieeyt8f": {
+    "id": "9a6pum8yp66mieeyt8f",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764065357440
+  },
+  "p1anz5527omiefq8i2": {
+    "id": "p1anz5527omiefq8i2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764066636938
   }
 }

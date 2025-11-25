@@ -383,7 +383,7 @@ export default function QuoteGenerator() {
           </div>
           <div className="flex gap-3 flex-wrap">
             <Button as={Link} to="/partner/templates" variant="outline" size="md">Manage Templates</Button>
-            <Button variant="secondary" size="md" onClick={newQuote}>+ New Quote</Button>
+            <Button variant="secondary" size="md" onClick={newQuote}>New Quote</Button>
           </div>
         </div>
 
@@ -770,7 +770,7 @@ export default function QuoteGenerator() {
                   <span className="text-brand-orange">{quote.documentType === 'Invoice' ? '📄' : '💼'}</span>
                   {quote.documentType === 'Invoice' ? 'Invoice' : 'Quotation'} Items
                 </h3>
-                <Button variant="primary" size="sm" onClick={addItem}>+ Add Item</Button>
+                <Button variant="primary" size="sm" onClick={addItem}>Add Item</Button>
               </div>
 
               <div className="space-y-4 max-h-96 overflow-y-auto custom-scrollbar pr-2">
@@ -843,9 +843,9 @@ export default function QuoteGenerator() {
                       </svg>
                     </div>
                     <p className="text-brand-brown font-semibold mb-2">No items added yet</p>
-                    <p className="text-sm text-brand-russty mb-4">Use AI generation above or click &quot;+ Add Item&quot; to get started</p>
+                    <p className="text-sm text-brand-russty mb-4">Use AI generation above or click &quot;Add Item&quot; to get started</p>
                     <div className="flex justify-center gap-2">
-                      <Button variant="primary" size="sm" onClick={addItem}>+ Add First Item</Button>
+                      <Button variant="primary" size="sm" onClick={addItem}>Add First Item</Button>
                     </div>
                   </div>
                 )}

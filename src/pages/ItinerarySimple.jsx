@@ -169,7 +169,7 @@ export default function Itinerary() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Button variant="outline" onClick={handleExport}>📄 Export PDF</Button>
-            <Button variant="secondary" onClick={addDay}>+ Add Day</Button>
+            <Button variant="secondary" onClick={addDay}>Add Day</Button>
           </div>
         </div>
 
@@ -213,7 +213,7 @@ export default function Itinerary() {
                   <p className="text-sm text-brand-russty mb-4">
                     {linkQuotes ? 'Add products to your basket on Trip Planner to get started.' : 'Click "Add Day" to create your first day.'}
                   </p>
-                  <Button size="lg" onClick={addDay}>+ Create First Day</Button>
+                  <Button size="lg" onClick={addDay}>Create First Day</Button>
                 </div>
               ) : (
                 <div className="space-y-6">
