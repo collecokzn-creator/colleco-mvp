@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "id": "quote.itinerary.basic",
+      "name": "Basic Itinerary",
+      "description": "Generates a day-by-day outline for a multi-day trip",
+      "category": "itinerary",
+      "enabled": true,
+      "deprecated": false,
+      "modelHints": {"maxTokens": 800, "temperature": 0.4, "topP": 0.9},
+      "inputSchema": {
+        "type": "object",
+        "required": ["origin", "destination", "travelDates", "partySize"],
+        "properties": {
+          "origin": {"type": "string"},
+          "destination": {"type": "string"},
+          "travelDates": {"type": "object", "properties": {"start": {"type": "string"}, "end": {"type": "string"}}},
+          "partySize": {"type": "integer", "minimum": 1},
+          "interests": {"type": "array", "items": {"type": "string"}},
+          "budgetLevel": {"type": "string", "enum": ["low", "medium", "high"]}
+        }
+      },
+      "prompt": {
+        "system": "You are a professional travel planning assistant for CollEco producing concise, safe itineraries.",
+        "userTemplate": "Create a {days}-day itinerary from {origin} to {destination} for {partySize} people. Interests: {interests}. Budget: {budgetLevel}. Include daily structure and brief activity descriptions.",
+        "postProcessing": {"stripDisclaimers": true, "enforceMaxDays": true}
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": ["days", "items"],
+        "properties": {
+          "days": {"type": "integer"},
+          "items": {"type": "array", "items": {"type": "object", "required": ["day", "title", "activities"], "properties": {"day": {"type": "integer"}, "title": {"type": "string"}, "activities": {"type": "array", "items": {"type": "string"}}}}}
+        }
+      },
+      "safety": {"blockedTerms": ["violence", "adult"], "maxRuntimeMs": 60000, "allowHTML": false},
+      "metricsTags": ["itinerary", "v1"],
+      "examples": [
+        {"input": {"origin": "Durban", "destination": "Cape Town", "travelDates": {"start": "2025-12-01", "end": "2025-12-04"}, "partySize": 2, "interests": ["food", "nature"], "budgetLevel": "medium"}, "expectedKeys": ["days", "items"]}
+      ]
+    }
+  ]
+}
