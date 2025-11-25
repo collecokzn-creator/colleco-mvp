@@ -198,7 +198,7 @@ export default function Bookings() {
   };
   
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-cream via-white to-cream-sand">
+		<div className="min-h-screen bg-gradient-to-br from-cream via-white to-cream-sand overflow-x-hidden">
 			<div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 				{/* Professional Header */}
 				<div className="mb-6 sm:mb-8">
@@ -290,7 +290,7 @@ export default function Bookings() {
 								onClick={() => setStatusFilter(status)}
 								className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
 									statusFilter === status
-										? 'bg-gradient-to-r from-brand-orange to-brand-gold text-white shadow-md transform scale-105'
+										? 'bg-brand-orange text-white shadow-md'
 										: 'bg-cream border-2 border-cream-border text-brand-brown hover:border-brand-orange hover:bg-cream-sand'
 								}`}
 							>
@@ -373,9 +373,9 @@ export default function Bookings() {
 				)}
 				
 				{filteredAndSortedItems.length > 0 && (
-					<div className="mt-6 sm:mt-8 pt-6 border-t-2 border-cream-border">
+					<div className="mt-6 sm:mt-8 pt-6 border-t-2 border-cream-border overflow-x-auto">
 						<h4 className="text-lg font-bold text-brand-brown mb-4">Payment Summary</h4>
-						<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+						<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 min-w-0">
 							<div className="lg:col-span-2">
 								<FeesBreakdown items={filteredAndSortedItems} currency="USD" />
 							</div>

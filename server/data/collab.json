@@ -922,10 +922,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Cancelled",
+        "status": "Delayed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058317768
+        "updatedAt": 1764059166600
       }
     ],
     "customer": {
@@ -934,7 +934,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762159062773,
-    "updatedAt": 1764058317768,
+    "updatedAt": 1764059166600,
     "pricing": {
       "items": [
         {
@@ -1187,10 +1187,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058287726
+        "updatedAt": 1764059156585
       }
     ],
     "customer": {
@@ -1199,7 +1199,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762187073441,
-    "updatedAt": 1764058287726,
+    "updatedAt": 1764059156585,
     "pricing": {
       "items": [
         {
@@ -1452,10 +1452,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "In-Flight",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058337786
+        "updatedAt": 1764059186627
       }
     ],
     "customer": {
@@ -1464,7 +1464,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762187485600,
-    "updatedAt": 1764058337786,
+    "updatedAt": 1764059186627,
     "pricing": {
       "items": [
         {
@@ -1720,7 +1720,7 @@
         "status": "Boarding",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058317777
+        "updatedAt": 1764059036447
       }
     ],
     "customer": {
@@ -1729,7 +1729,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762187616000,
-    "updatedAt": 1764058317777,
+    "updatedAt": 1764059036447,
     "pricing": {
       "items": [
         {
@@ -1920,7 +1920,7 @@
         "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058277708
+        "updatedAt": 1764059176651
       }
     ],
     "customer": {
@@ -1929,7 +1929,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762187909835,
-    "updatedAt": 1764058277708,
+    "updatedAt": 1764059176651,
     "pricing": {
       "items": [
         {
@@ -2182,10 +2182,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Delayed",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058267701
+        "updatedAt": 1764059116546
       }
     ],
     "customer": {
@@ -2194,7 +2194,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762188082762,
-    "updatedAt": 1764058267701,
+    "updatedAt": 1764059116546,
     "pricing": {
       "items": [
         {
@@ -2447,10 +2447,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Boarding",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058287730
+        "updatedAt": 1764059026450
       }
     ],
     "customer": {
@@ -2459,7 +2459,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762193377185,
-    "updatedAt": 1764058287730,
+    "updatedAt": 1764059026450,
     "pricing": {
       "items": [
         {
@@ -2777,10 +2777,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Boarding",
+        "status": "Completed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058227590
+        "updatedAt": 1764059146586
       }
     ],
     "customer": {
@@ -2789,7 +2789,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762196254754,
-    "updatedAt": 1764058227590,
+    "updatedAt": 1764059146586,
     "pricing": {
       "items": [
         {
@@ -2977,10 +2977,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Completed",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058257635
+        "updatedAt": 1764059026458
       }
     ],
     "customer": {
@@ -2989,7 +2989,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762196483257,
-    "updatedAt": 1764058257635,
+    "updatedAt": 1764059026458,
     "pricing": {
       "items": [
         {
@@ -3310,10 +3310,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Departed",
+        "status": "Landed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058327776
+        "updatedAt": 1764059206631
       }
     ],
     "customer": {
@@ -3322,7 +3322,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1763635748743,
-    "updatedAt": 1764058327776,
+    "updatedAt": 1764059206631,
     "pricing": {
       "items": [
         {
@@ -3578,7 +3578,7 @@
         "status": "Completed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058327780
+        "updatedAt": 1764059156591
       }
     ],
     "customer": {
@@ -3587,7 +3587,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764000982633,
-    "updatedAt": 1764058327780,
+    "updatedAt": 1764059156591,
     "pricing": {
       "items": [
         {
@@ -3840,10 +3840,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058317781
+        "updatedAt": 1764059206634
       }
     ],
     "customer": {
@@ -3852,7 +3852,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764009726592,
-    "updatedAt": 1764058317781,
+    "updatedAt": 1764059206634,
     "pricing": {
       "items": [
         {
@@ -4040,10 +4040,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Departed",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058337788
+        "updatedAt": 1764059106589
       }
     ],
     "customer": {
@@ -4052,7 +4052,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764010012146,
-    "updatedAt": 1764058337788,
+    "updatedAt": 1764059106589,
     "pricing": {
       "items": [
         {
@@ -4305,10 +4305,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Cancelled",
+        "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1764058177542
+        "updatedAt": 1764058826320
       }
     ],
     "customer": {
@@ -4317,7 +4317,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764010091597,
-    "updatedAt": 1764058177542,
+    "updatedAt": 1764058826320,
     "pricing": {
       "items": [
         {
