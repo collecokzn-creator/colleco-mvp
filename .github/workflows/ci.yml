@@ -27,6 +27,7 @@ jobs:
         run: npm run lint --if-present
       - name: Test (Vitest w/ coverage)
         run: npx vitest run --coverage --reporter=default
+        continue-on-error: false
       - name: Build
         run: npm run build
       - name: Upload coverage artifact
