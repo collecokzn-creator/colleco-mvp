@@ -363,7 +363,7 @@ export default function PartnerTemplates() {
                           type="checkbox"
                           checked={templateForm.isDefault}
                           onChange={e => setTemplateForm({...templateForm, isDefault: e.target.checked})}
-                          className="w-5 h-5 text-brand-orange focus:ring-brand-orange"
+                          className="w-5 h-5 text-brand-orange focus:ring-brand-orange accent-brand-orange"
                         />
                         <span className="text-sm font-semibold text-brand-brown">Set as Default Template</span>
                       </label>
@@ -623,11 +623,11 @@ export default function PartnerTemplates() {
                           rows="2"
                           placeholder="e.g., Payment terms: 50% deposit required..."
                         />
-                        <Button
+                        <button
                           onClick={() => removeTerm(index)}
-                          variant="danger"
-                          size="xs"
-                        >✕</Button>
+                          className="text-brand-orange hover:text-brand-brown transition-colors px-2 py-1 text-lg font-bold"
+                          aria-label="Remove term"
+                        >✕</button>
                       </div>
                     ))}
                   </div>
@@ -697,7 +697,7 @@ export default function PartnerTemplates() {
                             ...templateForm,
                             layout: {...templateForm.layout, showLogo: e.target.checked}
                           })}
-                          className="w-5 h-5"
+                          className="w-5 h-5 accent-brand-orange"
                         />
                         <span className="text-sm">Show Logo</span>
                       </label>
@@ -709,7 +709,7 @@ export default function PartnerTemplates() {
                             ...templateForm,
                             layout: {...templateForm.layout, showBanking: e.target.checked}
                           })}
-                          className="w-5 h-5"
+                          className="w-5 h-5 accent-brand-orange"
                         />
                         <span className="text-sm">Show Banking Details</span>
                       </label>
@@ -721,7 +721,7 @@ export default function PartnerTemplates() {
                             ...templateForm,
                             layout: {...templateForm.layout, showTerms: e.target.checked}
                           })}
-                          className="w-5 h-5"
+                          className="w-5 h-5 accent-brand-orange"
                         />
                         <span className="text-sm">Show Terms & Conditions</span>
                       </label>
