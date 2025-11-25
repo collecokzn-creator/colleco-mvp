@@ -44,7 +44,7 @@ export default function PromotionsSection() {
             </div>
             <p className="mt-2 text-sm text-brand-russty/80">{p.desc}</p>
             <div className="mt-4">
-              <Link to={p.cta.to} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-orange/90">
+              <Link to={p.cta.to} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight">
                 {p.cta.label}
                 <span aria-hidden>→</span>
               </Link>

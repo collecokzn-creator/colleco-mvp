@@ -40,11 +40,11 @@ export default function Analytics() {
   }, []);
 
   return (
-    <div className="overflow-x-hidden bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto p-6">
+    <div className="overflow-x-hidden bg-cream min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-brand-brown">Travel Analytics</h1>
-          <p className="text-gray-600 mt-2">Track your travel statistics and insights</p>
+          <p className="text-brand-russty mt-2">Track your travel statistics and insights</p>
         </div>
 
         {/* Stats Grid */}

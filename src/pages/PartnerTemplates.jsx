@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useUser } from '../context/UserContext';
+import Button from '../components/ui/Button.jsx';
 
 export default function PartnerTemplates() {
   const { user } = useUser();
@@ -243,21 +244,30 @@ export default function PartnerTemplates() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-brand-brown mb-2">Invoice Templates</h1>
-            <p className="text-brand-russty">Create and manage your branded invoice templates</p>
+    <div className="bg-cream min-h-screen overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        {/* Hero */}
+        <div className="mb-8">
+          <div className="flex items-start justify-between gap-6 flex-wrap">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-brand-brown">Invoice Templates</h1>
+              <p className="mt-2 text-sm sm:text-base text-brand-russty max-w-prose">Centralize your branding, legal details, banking and terms for fast quote & invoice generation.</p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <Button
+                onClick={newTemplate}
+                data-testid="create-new-template-btn"
+                size="md"
+              >+ Create Template</Button>
+              {activeTemplate && !isEditing && (
+                <Button
+                  variant="outline"
+                  size="md"
+                  onClick={() => editTemplate(activeTemplate)}
+                >✏️ Edit Active</Button>
+              )}
+            </div>
           </div>
-          <button
-            onClick={newTemplate}
-            data-testid="create-new-template-btn"
-            className="px-6 py-3 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-highlight transition-colors"
-          >
-            + Create New Template
-          </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -269,13 +279,11 @@ export default function PartnerTemplates() {
                 {templates.length === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-sm text-brand-russty mb-3">No templates yet</p>
-                    <button
+                    <Button
                       onClick={newTemplate}
                       data-testid="create-first-template-btn"
-                      className="text-sm px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-brand-highlight"
-                    >
-                      Create First Template
-                    </button>
+                      size="sm"
+                    >Create First Template</Button>
                   </div>
                 ) : (
                   templates.map(template => (
@@ -303,36 +311,24 @@ export default function PartnerTemplates() {
                         {template.companyInfo.name}
                       </div>
                       <div className="flex gap-1">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            editTemplate(template);
-                          }}
+                        <Button
+                          onClick={(e) => { e.stopPropagation(); editTemplate(template); }}
                           data-testid="template-edit-btn"
-                          className="text-xs px-2 py-1 bg-brand-orange text-white rounded hover:bg-brand-highlight"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            duplicateTemplate(template);
-                          }}
+                          variant="primary"
+                          size="xs"
+                        >Edit</Button>
+                        <Button
+                          onClick={(e) => { e.stopPropagation(); duplicateTemplate(template); }}
                           data-testid="template-copy-btn"
-                          className="text-xs px-2 py-1 bg-brand-brown text-white rounded hover:bg-brand-russty"
-                        >
-                          Copy
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            deleteTemplate(template.id);
-                          }}
+                          variant="secondary"
+                          size="xs"
+                        >Copy</Button>
+                        <Button
+                          onClick={(e) => { e.stopPropagation(); deleteTemplate(template.id); }}
                           data-testid="template-delete-btn"
-                          className="text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700"
-                        >
-                          Delete
-                        </button>
+                          variant="danger"
+                          size="xs"
+                        >Delete</Button>
                       </div>
                     </div>
                   ))
@@ -614,12 +610,7 @@ export default function PartnerTemplates() {
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-bold text-brand-brown">Terms & Conditions</h3>
-                    <button
-                      onClick={addTerm}
-                      className="px-4 py-2 bg-brand-orange text-white rounded-lg text-sm font-semibold hover:bg-brand-highlight"
-                    >
-                      + Add Term
-                    </button>
+                    <Button onClick={addTerm} size="sm">+ Add Term</Button>
                   </div>
                   <div className="space-y-3">
                     {templateForm.terms.map((term, index) => (
@@ -630,14 +621,13 @@ export default function PartnerTemplates() {
                           onChange={e => updateTerm(index, e.target.value)}
                           className="flex-1 px-3 py-2 border border-cream-border rounded-lg focus:border-brand-orange focus:outline-none"
                           rows="2"
-                          placeholder="Enter term or condition..."
+                          placeholder="e.g., Payment terms: 50% deposit required..."
                         />
-                        <button
+                        <Button
                           onClick={() => removeTerm(index)}
-                          className="text-red-500 hover:text-red-700 font-bold px-2"
-                        >
-                          ✕
-                        </button>
+                          variant="danger"
+                          size="xs"
+                        >✕</Button>
                       </div>
                     ))}
                   </div>
@@ -741,19 +731,15 @@ export default function PartnerTemplates() {
 
                 {/* Actions */}
                 <div className="flex gap-3 sticky bottom-4">
-                  <button
+                  <Button
                     onClick={() => setIsEditing(false)}
-                    className="px-6 py-3 bg-white border-2 border-brand-brown text-brand-brown rounded-lg font-semibold hover:bg-cream-sand transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
+                    variant="secondary"
+                  >Cancel</Button>
+                  <Button
                     onClick={saveTemplate}
                     data-testid="save-template-btn"
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-brand-orange to-brand-gold text-white rounded-lg font-semibold hover:shadow-lg transition-all"
-                  >
-                    💾 Save Template
-                  </button>
+                    fullWidth
+                  >💾 Save Template</Button>
                 </div>
               </div>
             ) : activeTemplate ? (
@@ -761,13 +747,11 @@ export default function PartnerTemplates() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-2xl font-bold text-brand-brown">{activeTemplate.name}</h3>
-                  <button
+                  <Button
                     onClick={() => editTemplate(activeTemplate)}
                     data-testid="edit-template-btn"
-                    className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-highlight"
-                  >
-                    ✏️ Edit Template
-                  </button>
+                    size="sm"
+                  >✏️ Edit Template</Button>
                 </div>
 
                 {/* Preview */}
@@ -872,12 +856,7 @@ export default function PartnerTemplates() {
                 <p className="text-brand-russty mb-6">
                   Create your first branded invoice template to get started
                 </p>
-                <button
-                  onClick={newTemplate}
-                  className="px-6 py-3 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-highlight transition-colors"
-                >
-                  Create Template
-                </button>
+                <Button onClick={newTemplate} size="lg">Create Template</Button>
               </div>
             )}
           </div>

@@ -242,7 +242,7 @@ const NotificationTester = () => {
                     value={customNotification.title}
                     onChange={(e) => setCustomNotification(prev => ({ ...prev, title: e.target.value }))}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D2691E] focus:border-transparent"
-                    placeholder="Enter notification title"
+                    placeholder="e.g., New Booking Confirmed"
                   />
                 </div>
 
@@ -256,7 +256,7 @@ const NotificationTester = () => {
                     onChange={(e) => setCustomNotification(prev => ({ ...prev, body: e.target.value }))}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D2691E] focus:border-transparent"
                     rows={3}
-                    placeholder="Enter notification message"
+                    placeholder="e.g., Your booking for Cape Town has been confirmed!"
                   />
                 </div>
 

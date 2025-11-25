@@ -3,6 +3,7 @@ import { generateQuotePdf } from '../utils/pdfGenerators';
 import { useUser } from '../context/UserContext';
 import { parsePromptToInvoiceItems, suggestCommonItems, examplePrompts } from '../utils/aiInvoiceParser';
 import { Link } from 'react-router-dom';
+import Button from "../components/ui/Button.jsx";
 
 export default function QuoteGenerator() {
   const { user } = useUser();
@@ -65,6 +66,24 @@ export default function QuoteGenerator() {
     };
   }, [quote]);
   
+  // Define getNextDocumentNumber before useEffect to avoid initialization error
+  const getNextDocumentNumber = useCallback((type) => {
+    const userId = user?.id || 'default';
+    const counterKey = `${type.toLowerCase()}_counter_${userId}`;
+    const currentCounter = parseInt(localStorage.getItem(counterKey) || '0');
+    const nextCounter = currentCounter + 1;
+    localStorage.setItem(counterKey, nextCounter.toString());
+    const prefix = type === 'Invoice' ? 'INV' : 'QUO';
+    return `${prefix}-${String(nextCounter).padStart(4, '0')}`;
+  }, [user?.id]);
+
+  const loadPartnerTemplates = useCallback(() => {
+    const templates = JSON.parse(localStorage.getItem(`partner_templates_${user?.id}`) || '[]');
+    setPartnerTemplates(templates);
+    const def = templates.find(t => t.isDefault);
+    if (def && !selectedTemplate) setSelectedTemplate(def);
+  }, [user?.id, selectedTemplate]);
+  
   // Auto-generate invoice/quote number when client name is added
   useEffect(() => {
     if (quote.clientName && !quote.invoiceNumber) {
@@ -93,13 +112,6 @@ export default function QuoteGenerator() {
     const quotes = JSON.parse(localStorage.getItem('quotes') || '[]');
     setSavedQuotes(quotes);
   }
-
-  const loadPartnerTemplates = useCallback(() => {
-    const templates = JSON.parse(localStorage.getItem(`partner_templates_${user?.id}`) || '[]');
-    setPartnerTemplates(templates);
-    const def = templates.find(t => t.isDefault);
-    if (def && !selectedTemplate) setSelectedTemplate(def);
-  }, [user?.id, selectedTemplate]);
   
   function loadCustomLogo() {
     const saved = localStorage.getItem('custom_invoice_logo');
@@ -107,16 +119,6 @@ export default function QuoteGenerator() {
       setCustomLogo(saved);
     }
   }
-  
-  const getNextDocumentNumber = useCallback((type) => {
-    const userId = user?.id || 'default';
-    const counterKey = `${type.toLowerCase()}_counter_${userId}`;
-    const currentCounter = parseInt(localStorage.getItem(counterKey) || '0');
-    const nextCounter = currentCounter + 1;
-    localStorage.setItem(counterKey, nextCounter.toString());
-    const prefix = type === 'Invoice' ? 'INV' : 'QUO';
-    return `${prefix}-${String(nextCounter).padStart(4, '0')}`;
-  }, [user?.id]);
   
   // Removed calculateDueDate (unused) – restore when payment terms logic added
   
@@ -367,7 +369,7 @@ export default function QuoteGenerator() {
 
   return (
     <div className="min-h-screen bg-cream">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex-1">
@@ -380,24 +382,14 @@ export default function QuoteGenerator() {
             </p>
           </div>
           <div className="flex gap-3 flex-wrap">
-            <Link
-              to="/partner/templates"
-              className="px-4 py-2 bg-white border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange/5 transition-colors"
-            >
-              🎨 Manage Templates
-            </Link>
-            <button
-              onClick={newQuote}
-              className="px-4 py-2 bg-brand-brown text-white rounded-lg font-semibold hover:bg-brand-russty transition-colors"
-            >
-              + New Quote
-            </button>
+            <Button as={Link} to="/partner/templates" variant="outline" size="md">🎨 Manage Templates</Button>
+            <Button variant="secondary" size="md" onClick={newQuote}>+ New Quote</Button>
           </div>
         </div>
 
         {/* Template Selector */}
         {partnerTemplates.length > 0 && (
-          <div className="mb-6 bg-gradient-to-r from-brand-gold/10 to-brand-orange/10 rounded-xl p-5 border border-brand-gold/30 shadow-sm">
+          <div className="mb-6 bg-white rounded-xl p-5 border border-cream-border shadow-sm">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="font-semibold text-brand-brown text-sm">📋 Template:</span>
@@ -407,7 +399,7 @@ export default function QuoteGenerator() {
                     const template = partnerTemplates.find(t => t.id === e.target.value);
                     setSelectedTemplate(template || null);
                   }}
-                  className="px-4 py-2 border-2 border-brand-gold/50 rounded-lg focus:border-brand-orange focus:outline-none bg-white"
+                  className="px-4 py-2 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none bg-white"
                 >
                   <option value="">CollEco Default</option>
                   {partnerTemplates.map(template => (
@@ -459,11 +451,8 @@ export default function QuoteGenerator() {
                     onChange={handleLogoUpload}
                     className="hidden"
                   />
-                  <label
-                    htmlFor="logoUpload"
-                    className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-highlight transition-colors cursor-pointer"
-                  >
-                    📤 Upload Logo
+                  <label htmlFor="logoUpload" className="cursor-pointer">
+                    <Button as="span" variant="primary" size="sm">📤 Upload Logo</Button>
                   </label>
                   <span className="text-xs text-brand-russty">Max 2MB • PNG, JPG, SVG</span>
                 </>
@@ -475,7 +464,7 @@ export default function QuoteGenerator() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Saved Quotes Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-md p-5 sticky top-4 border border-cream-border">
+            <div className="bg-white rounded-xl shadow-sm p-5 sticky [top:calc(var(--header-h)+var(--banner-h))] border border-cream-border">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-brand-brown">📂 Saved Quotes</h3>
                 <span className="text-xs text-brand-russty bg-cream-sand px-2 py-1 rounded-full">{savedQuotes.length}</span>
@@ -517,9 +506,9 @@ export default function QuoteGenerator() {
                         </span>
                         <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
                           sq.status === 'Paid' ? 'bg-green-100 text-green-700' :
-                          sq.status === 'Sent' ? 'bg-blue-100 text-blue-700' :
-                          sq.status === 'Accepted' ? 'bg-purple-100 text-purple-700' :
-                          'bg-gray-100 text-gray-700'
+                          sq.status === 'Sent' ? 'bg-brand-orange/10 text-brand-orange' :
+                          sq.status === 'Accepted' ? 'bg-brand-brown/10 text-brand-brown' :
+                          'bg-cream-sand text-brand-brown'
                         }`}>
                           {sq.status || 'Draft'}
                         </span>
@@ -534,7 +523,7 @@ export default function QuoteGenerator() {
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
             {/* AI Generation Section */}
-            <div className="bg-gradient-to-br from-brand-orange/10 via-brand-gold/10 to-brand-orange/5 rounded-xl p-6 border border-brand-orange/30 shadow-sm">
+            <div className="bg-white rounded-xl p-6 border border-brand-orange/30 shadow-sm">
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h2 className="text-xl font-bold text-brand-brown flex items-center gap-2">
@@ -557,7 +546,7 @@ export default function QuoteGenerator() {
                 />
                 <button
                   onClick={() => setShowExamples(!showExamples)}
-                  className="absolute top-2 right-2 text-xs text-brand-orange hover:text-brand-highlight"
+                  className="absolute top-2 right-2 text-xs text-brand-orange hover:text-brand-brown"
                 >
                   💡 Examples
                 </button>
@@ -581,19 +570,12 @@ export default function QuoteGenerator() {
               )}
 
               <div className="flex gap-3 mt-3">
-                <button
-                  onClick={handleAIGeneration}
-                  disabled={loading}
-                  className="flex-1 px-6 py-2.5 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-highlight transition-colors disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
-                >
-                  {loading ? 'Generating...' : '✨ Generate Invoice Items'}
-                </button>
-                <button
-                  onClick={() => setShowSuggestions(!showSuggestions)}
-                  className="px-6 py-2.5 bg-white border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange/5 transition-colors"
-                >
-                  📋 Quick Add
-                </button>
+                <div className="flex-1">
+                  <Button fullWidth variant="primary" size="md" onClick={handleAIGeneration} disabled={loading}>
+                    {loading ? 'Generating...' : 'Generate Invoice Items'}
+                  </Button>
+                </div>
+                <Button variant="outline" size="md" onClick={() => setShowSuggestions(!showSuggestions)}>Quick Add</Button>
               </div>
 
               {showSuggestions && (
@@ -788,27 +770,22 @@ export default function QuoteGenerator() {
             <div className="bg-white rounded-xl shadow-sm p-6 border border-cream-border hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-brand-brown flex items-center gap-2">
-                  <span className="text-brand-orange">📦</span>
-                  Invoice Items
+                  <span className="text-brand-orange">{quote.documentType === 'Invoice' ? '📄' : '💼'}</span>
+                  {quote.documentType === 'Invoice' ? 'Invoice' : 'Quotation'} Items
                 </h3>
-                <button
-                  onClick={addItem}
-                  className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-highlight transition-colors text-sm"
-                >
-                  + Add Item
-                </button>
+                <Button variant="primary" size="sm" onClick={addItem}>+ Add Item</Button>
               </div>
 
               <div className="space-y-4 max-h-96 overflow-y-auto custom-scrollbar pr-2">
                 {quote.items.map((item, index) => (
-                  <div key={index} className="border-2 border-cream-border rounded-xl p-4 bg-gradient-to-br from-white to-cream/20 hover:border-brand-orange/50 transition-all group">
+                  <div key={index} className="border-2 border-cream-border rounded-xl p-4 bg-white hover:border-brand-orange/50 transition-all group">
                     <div className="flex justify-between items-start mb-3">
                       <span className="text-sm font-semibold text-brand-brown bg-cream-sand px-3 py-1 rounded-full">
                         #{index + 1}
                       </span>
                       <button
                         onClick={() => removeItem(index)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full w-6 h-6 flex items-center justify-center transition-all group-hover:opacity-100 opacity-60"
+                        className="text-red-600 hover:text-red-700 rounded-full w-6 h-6 flex items-center justify-center transition-colors"
                         title="Remove item"
                       >
                         ✕
@@ -852,7 +829,7 @@ export default function QuoteGenerator() {
                         </div>
                         <div>
                           <label className="block text-xs font-semibold text-brand-russty mb-1">Total</label>
-                          <div className="px-2 py-2 bg-gradient-to-br from-cream-sand to-cream rounded-lg text-sm font-bold text-brand-brown border border-brand-orange/20">
+                          <div className="px-2 py-2 bg-cream-sand rounded-lg text-sm font-bold text-brand-brown border border-cream-border">
                             {quote.currency}{(item.quantity * item.unitPrice).toFixed(2)}
                           </div>
                         </div>
@@ -867,12 +844,7 @@ export default function QuoteGenerator() {
                     <p className="text-brand-brown font-semibold mb-2">No items added yet</p>
                     <p className="text-sm text-brand-russty mb-4">Use AI generation above or click &quot;+ Add Item&quot; to get started</p>
                     <div className="flex justify-center gap-2">
-                      <button
-                        onClick={addItem}
-                        className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-highlight transition-colors text-sm shadow-sm"
-                      >
-                        + Add First Item
-                      </button>
+                      <Button variant="primary" size="sm" onClick={addItem}>+ Add First Item</Button>
                     </div>
                   </div>
                 )}
@@ -880,7 +852,7 @@ export default function QuoteGenerator() {
             </div>
 
             {/* Totals */}
-            <div className="bg-gradient-to-br from-white to-cream-sand/30 rounded-xl shadow-md p-6 border-2 border-brand-orange/20">
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-cream-border">
               <h3 className="text-lg font-bold text-brand-brown mb-4 flex items-center gap-2">
                 <span className="text-brand-orange">💰</span>
                 Totals
@@ -894,7 +866,7 @@ export default function QuoteGenerator() {
                   <span className="text-brand-brown">VAT ({quote.taxRate}%):</span>
                   <span className="font-semibold">{quote.currency}{totals.vat.toFixed(2)}</span>
                 </div>
-                <div className="pt-2 border-t-2 border-brand-orange flex justify-between">
+                <div className="pt-2 border-t border-cream-border flex justify-between">
                   <span className="text-brand-brown font-bold text-lg">Total:</span>
                   <span className="font-bold text-lg text-brand-orange">{quote.currency}{totals.total.toFixed(2)}</span>
                 </div>
@@ -903,24 +875,16 @@ export default function QuoteGenerator() {
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={saveQuote}
-                className="flex-1 px-6 py-3 bg-white border-2 border-brand-brown text-brand-brown rounded-xl font-semibold hover:bg-cream-sand hover:border-brand-orange transition-all shadow-sm hover:shadow-md"
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <span>💾</span>
-                  <span>Save Quote</span>
-                </span>
-              </button>
-              <button
-                onClick={generatePDF}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-brand-orange to-brand-gold text-white rounded-xl font-semibold hover:shadow-xl transition-all transform hover:scale-[1.02]"
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <span>📄</span>
-                  <span>Generate PDF</span>
-                </span>
-              </button>
+              <div className="flex-1">
+                <Button fullWidth variant="secondary" size="lg" onClick={saveQuote}>
+                  Save Quote
+                </Button>
+              </div>
+              <div className="flex-1">
+                <Button fullWidth variant="primary" size="lg" onClick={generatePDF}>
+                  Generate PDF
+                </Button>
+              </div>
             </div>
           </div>
             </div>

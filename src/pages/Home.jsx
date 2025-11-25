@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Button from "../components/ui/Button.jsx";
 import useInViewOnce from "../utils/useInViewOnce";
 import PromotionsSection from "../components/PromotionsSection";
 import FeaturedPackagesSection from "../components/FeaturedPackagesSection";
@@ -51,15 +52,15 @@ export default function Home() {
               Making trip planning effortless for friends, teams, partners, and individuals who love to explore.
             </p>
             <div className="mt-5 flex flex-wrap gap-3 items-center">
-              <Link to="/book" className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-brand-orange text-white font-semibold shadow hover:bg-brand-highlight" data-e2e="open-booking">
+              <Button as={Link} to="/book" variant="primary" size="md" data-e2e="open-booking" aria-label="Book now">
                 Book Now
-              </Link>
-              <Link to="/plan-trip" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-cream-border text-brand-brown bg-white/80 hover:bg-cream">
+              </Button>
+              <Button as={Link} to="/plan-trip" variant="secondary" size="md" aria-label="Plan a trip">
                 Plan a Trip
-              </Link>
-              <Link to="/ai" className="inline-flex items-center gap-2 px-5 py-2 rounded-md border border-cream-border text-brand-brown bg-white/80 hover:bg-white">
+              </Button>
+              <Button as={Link} to="/ai" variant="outline" size="md" aria-label="Try Trip Assist AI">
                 Try Trip Assist
-              </Link>
+              </Button>
             </div>
             <p className="mt-3 text-xs text-brand-brown/70">No credit card required · Free to get started</p>
             {(hasDraft || hasBasket) && (
@@ -71,8 +72,8 @@ export default function Home() {
                   {hasDraft && hasBasket ? 'You have a draft and items in your basket.' : hasDraft ? 'You have an AI-generated draft ready.' : 'You have items in your basket.'}
                 </p>
                 <div className="flex gap-2">
-                  {hasDraft && <Link to="/itinerary" className="px-3 py-1.5 rounded bg-brand-orange text-white text-xs font-semibold hover:bg-brand-highlight">View Draft</Link>}
-                  {hasBasket && <Link to="/plan-trip" className="px-3 py-1.5 rounded border border-brand-orange text-brand-brown text-xs font-semibold hover:bg-cream-hover">My Basket</Link>}
+                  {hasDraft && <Button as={Link} to="/itinerary" size="xs" variant="primary">View Draft</Button>}
+                  {hasBasket && <Button as={Link} to="/plan-trip" size="xs" variant="outline">My Basket</Button>}
                 </div>
               </div>
             )}
@@ -233,15 +234,9 @@ export default function Home() {
             <p className="text-base text-brand-brown/90">Jump into the planner or let Trip Assist suggest a perfect first draft.</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-center sm:justify-start">
-            <Link to="/plan-trip" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-white text-brand-orange font-bold border-2 border-brand-orange hover:bg-brand-orange hover:text-white transition-all shadow-md">
-              🗺️ Plan a Trip
-            </Link>
-            <Link to="/ai" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-brand-gold text-white font-bold hover:bg-brand-gold/90 transition-colors shadow-md">
-              ✨ Try Trip Assist
-            </Link>
-            <Link to="/book" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-brand-russty text-white font-bold hover:bg-brand-russty/90 transition-colors shadow-md" data-e2e="open-booking">
-              🚀 Book Now
-            </Link>
+            <Button as={Link} to="/plan-trip" variant="secondary" size="lg">🗺️ Plan a Trip</Button>
+            <Button as={Link} to="/ai" variant="primary" size="lg">✨ Try Trip Assist</Button>
+            <Button as={Link} to="/book" variant="outline" size="lg" data-e2e="open-booking">🚀 Book Now</Button>
           </div>
         </div>
       </section>

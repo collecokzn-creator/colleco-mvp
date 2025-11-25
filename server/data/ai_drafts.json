@@ -2016,5 +2016,32 @@
       "itinerary": []
     },
     "createdAt": 1764010096068
+  },
+  "pcolbsaeqsmidjfpu6": {
+    "id": "pcolbsaeqsmidjfpu6",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764012398478
+  },
+  "iyjeso93y7midjsnax": {
+    "id": "iyjeso93y7midjsnax",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764013001722
+  },
+  "abh0lsyza8wmiea0hmb": {
+    "id": "abh0lsyza8wmiea0hmb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764057037619
   }
 }

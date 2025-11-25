@@ -125,16 +125,14 @@ export default function Navbar() {
 									{isPartner ? 'Partner Hub' : isAdmin ? 'Admin Hub' : user.name || 'My Account'}
 								</span>
 							</Link>
-						) : (
-							<Link
-								to="/login"
-								className="px-4 py-2 text-sm font-semibold text-white bg-brand-orange hover:bg-brand-highlight active:bg-brand-orange rounded-md shadow-sm transition-colors"
-							>
-								Start Living
-							</Link>
-						)}
-
-						{/* Menu Toggle */}
+					) : (
+						<Link
+							to="/login"
+							className="px-4 py-2 text-sm font-semibold text-white bg-brand-orange hover:bg-brand-highlight active:opacity-100 rounded-md shadow-sm transition-colors"
+						>
+							Start Living
+						</Link>
+					)}						{/* Menu Toggle */}
 						<button
 							type="button"
 							onClick={toggleSidebar}

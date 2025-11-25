@@ -368,7 +368,7 @@ export default function BookingModal({ open, onClose, prefill }) {
 
           <div>
             <label className="block text-sm font-medium">Name / Destination</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" placeholder={type === 'flight' ? 'Destination or airline' : 'Hotel name / Vehicle type'} />
+            <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block w-full rounded border px-2 py-1" placeholder={type === 'flight' ? 'e.g., Dubai, Emirates Airways' : type === 'hotel' ? 'e.g., Sea View Hotel' : 'e.g., Luxury Sedan, Safari Jeep'} />
           </div>
 
           <div>

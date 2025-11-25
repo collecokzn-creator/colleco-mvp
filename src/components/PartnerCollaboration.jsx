@@ -414,7 +414,7 @@ const PartnerCollaboration = () => {
                       <div className="grid grid-cols-2 gap-3">
                         <input
                           type="text"
-                          placeholder="Service type (e.g., Hotel, Transport)"
+                          placeholder="e.g., 4-Star Hotel, Airport Transfer, Safari Tour"
                           value={service.type}
                           onChange={(e) => updateService(service.id, 'type', e.target.value)}
                           className="px-3 py-2 border rounded-lg text-sm"

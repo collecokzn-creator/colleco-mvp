@@ -116,7 +116,7 @@ const NotificationSettings = () => {
     <div className="max-w-3xl mx-auto p-6">
       <div className="bg-white rounded-lg shadow-lg">
         {/* Header */}
-        <div className="border-b border-gray-200 px-6 py-4">
+        <div className="border-b border-cream-border px-6 py-4">
           <h1 className="text-2xl font-bold text-gray-900">🔔 Notification Settings</h1>
           <p className="text-sm text-gray-600 mt-1">
             Manage your push notifications and stay updated on bookings, messages, and payments
@@ -126,7 +126,7 @@ const NotificationSettings = () => {
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Current Status */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <div className="bg-cream-sand border border-cream-border rounded-lg p-4">
             <h2 className="font-semibold text-gray-900 mb-3">Current Status</h2>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -194,7 +194,7 @@ const NotificationSettings = () => {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <div className="bg-cream-sand border border-cream-border rounded-lg p-4">
                   <h3 className="font-semibold text-gray-900 mb-2">How to Enable:</h3>
                   
                   {deviceType === 'mobile' ? (
@@ -265,7 +265,7 @@ const NotificationSettings = () => {
           </div>
 
           {/* What You'll Receive */}
-          <div className="border-t border-gray-200 pt-6">
+          <div className="border-t border-cream-border pt-6">
             <h2 className="font-semibold text-gray-900 mb-3">What You&apos;ll Receive</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[

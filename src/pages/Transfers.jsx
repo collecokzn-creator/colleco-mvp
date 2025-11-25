@@ -4,6 +4,7 @@ import LiveMap from '../components/LiveMap';
 import TransferChat from '../components/TransferChat';
 import DriverRating from '../components/DriverRating';
 import { requestNotificationPermission, notifyTransferStatus } from '../utils/notifications';
+import Button from '../components/ui/Button.jsx';
 
 export default function Transfers() {
   React.useEffect(() => {
@@ -153,75 +154,29 @@ export default function Transfers() {
   }
 
   return (
-    <div className="overflow-x-hidden">
-      <div className="max-w-6xl mx-auto px-6 py-8">
+    <div className="bg-cream min-h-screen overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       <BookingNav />
-      <h1 className="text-3xl font-bold mb-4 text-brand-brown">Shuttle & Transfers</h1>
+      {/* Hero */}
+      <div className="mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-brand-brown">Shuttle & Transfers</h1>
+        <p className="mt-2 text-sm sm:text-base text-brand-russty max-w-prose">Request instant or scheduled transport, multi-stop journeys, and monitor live driver progress.</p>
+      </div>
       
       {/* Trip Type Selector */}
-      <div className="mb-4">
+      <div className="mb-6">
         <label className="block mb-2 font-semibold text-brand-brown">Trip Type</label>
         <div className="grid grid-cols-3 gap-3">
-          <button
-            type="button"
-            onClick={() => setTripType('one-way')}
-            className={`px-4 py-3 rounded-lg font-semibold border-2 transition ${
-              tripType === 'one-way' 
-                ? 'bg-brand-orange text-white border-brand-orange' 
-                : 'bg-white text-brand-brown border-gray-300 hover:border-brand-orange'
-            }`}
-          >
-            🚗 One-way
-          </button>
-          <button
-            type="button"
-            onClick={() => setTripType('round-trip')}
-            className={`px-4 py-3 rounded-lg font-semibold border-2 transition ${
-              tripType === 'round-trip' 
-                ? 'bg-brand-orange text-white border-brand-orange' 
-                : 'bg-white text-brand-brown border-gray-300 hover:border-brand-orange'
-            }`}
-          >
-            🔁 Round Trip
-          </button>
-          <button
-            type="button"
-            onClick={() => setTripType('multi-stop')}
-            className={`px-4 py-3 rounded-lg font-semibold border-2 transition ${
-              tripType === 'multi-stop' 
-                ? 'bg-brand-orange text-white border-brand-orange' 
-                : 'bg-white text-brand-brown border-gray-300 hover:border-brand-orange'
-            }`}
-          >
-            📍 Multi-stop
-          </button>
+          <Button size="lg" variant={tripType==='one-way'?'primary':'outline'} onClick={() => setTripType('one-way')}>🚗 One-way</Button>
+          <Button size="lg" variant={tripType==='round-trip'?'primary':'outline'} onClick={() => setTripType('round-trip')}>🔁 Round Trip</Button>
+          <Button size="lg" variant={tripType==='multi-stop'?'primary':'outline'} onClick={() => setTripType('multi-stop')}>📍 Multi-stop</Button>
         </div>
       </div>
 
       {/* Booking Time Type Toggle */}
-      <div className="mb-6 flex gap-3">
-        <button
-          type="button"
-          onClick={() => setBookingType('instant')}
-          className={`flex-1 px-4 py-2 rounded font-semibold border-2 transition ${
-            bookingType === 'instant' 
-              ? 'bg-brand-orange text-white border-brand-orange' 
-              : 'bg-white text-brand-brown border-gray-300'
-          }`}
-        >
-          🚀 Instant Request
-        </button>
-        <button
-          type="button"
-          onClick={() => setBookingType('prearranged')}
-          className={`flex-1 px-4 py-2 rounded font-semibold border-2 transition ${
-            bookingType === 'prearranged' 
-              ? 'bg-brand-orange text-white border-brand-orange' 
-              : 'bg-white text-brand-brown border-gray-300'
-          }`}
-        >
-          📅 Prearranged
-        </button>
+      <div className="mb-8 flex gap-3">
+        <Button className="flex-1" variant={bookingType==='instant'?'primary':'outline'} onClick={() => setBookingType('instant')}>🚀 Instant Request</Button>
+        <Button className="flex-1" variant={bookingType==='prearranged'?'primary':'outline'} onClick={() => setBookingType('prearranged')}>📅 Prearranged</Button>
       </div>
 
       {/* Multi-Day Service Toggle */}
@@ -290,7 +245,7 @@ export default function Transfers() {
         </div>
       )}
       
-      <form className="space-y-4" onSubmit={submitRequest}>
+      <form className="space-y-6" onSubmit={submitRequest}>
         <div>
           <label className="block mb-1 font-semibold">Pickup Location</label>
           <input 
@@ -336,7 +291,7 @@ export default function Transfers() {
           </div>
         )}
         
-        <div>
+        <div className="pt-2">
           <label className="block mb-1 font-semibold">Dropoff Location</label>
           <input 
             type="text" 
@@ -353,14 +308,12 @@ export default function Transfers() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <label className="font-semibold text-brand-brown">Additional Stops</label>
-              <button
+              <Button
                 type="button"
+                size="sm"
                 onClick={() => setAdditionalStops([...additionalStops, ''])}
                 disabled={additionalStops.length >= 5}
-                className="px-3 py-1 bg-brand-orange text-white rounded text-sm font-semibold hover:bg-brand-gold transition disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
-              >
-                + Add Stop
-              </button>
+              >+ Add Stop</Button>
             </div>
             
             {additionalStops.map((stop, index) => (
@@ -377,13 +330,12 @@ export default function Transfers() {
                   className="flex-1 border rounded px-3 py-2"
                   placeholder={`Stop ${index + 1} location`}
                 />
-                <button
+                <Button
                   type="button"
+                  size="sm"
+                  variant="danger"
                   onClick={() => setAdditionalStops(additionalStops.filter((_, i) => i !== index))}
-                  className="px-3 py-2 bg-brand-russty text-white rounded hover:bg-brand-brown transition"
-                >
-                  ✕
-                </button>
+                >✕</Button>
               </div>
             ))}
             
@@ -459,7 +411,7 @@ export default function Transfers() {
           </>
         )}
         
-        <div>
+        <div className="pt-2">
           <label className="block mb-1 font-semibold">Passengers</label>
           <input 
             type="number" 
@@ -472,18 +424,18 @@ export default function Transfers() {
           />
         </div>
         
-        <button 
+        <Button 
           type="submit" 
-          className="bg-brand-orange text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-brand-gold transition" 
+          fullWidth
           disabled={loading}
         >
           {loading ? "Sending Request..." : bookingType === 'instant' ? "Request Now" : "Schedule Transfer"}
-        </button>
+        </Button>
       </form>
       
       {/* Status Updates */}
       {status && (
-        <div className="mt-6 p-4 border-2 rounded-lg bg-white">
+        <div className="mt-10 p-5 border border-cream-border rounded-lg bg-white shadow-sm">
           <div className="flex items-center gap-3 mb-4">
             <div className={`w-3 h-3 rounded-full ${
               status === 'searching' ? 'bg-yellow-500 animate-pulse' :
@@ -534,17 +486,13 @@ export default function Transfers() {
               {/* Chat Button */}
               {(status === 'accepted' || status === 'en-route' || status === 'arrived') && (
                 <div className="mt-4 flex gap-2">
-                  <button
+                  <Button
+                    className="flex-1"
                     onClick={() => setShowChat(!showChat)}
-                    className="flex-1 px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition flex items-center justify-center gap-2"
                   >
                     💬 {showChat ? 'Hide Chat' : 'Chat with Driver'}
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-gold transition"
-                  >
-                    📞 Call
-                  </button>
+                  </Button>
+                  <Button variant="outline">📞 Call</Button>
                 </div>
               )}
               

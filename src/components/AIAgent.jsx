@@ -225,7 +225,7 @@ function AIAgentInput({ onSend }) {
         value={v}
         onChange={e => setV(e.target.value)}
         className="border border-cream-border rounded px-2 py-1 flex-1 bg-white text-brand-russty placeholder-brand-brown/50"
-        placeholder="Type your message..."
+        placeholder="Ask me anything... (e.g., Plan a 5-day Cape Town trip)"
         onKeyDown={e => e.key === 'Enter' && v.trim() && (onSend(v), setV(''))}
         aria-label="Type your message"
       />

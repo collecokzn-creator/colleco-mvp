@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useUser } from '../context/UserContext.jsx';
 import { useNavigate, Link } from 'react-router-dom';
+import Button from '../components/ui/Button.jsx';
 
 export default function Profile() {
   const { user, logout } = useUser();
@@ -231,16 +232,17 @@ export default function Profile() {
     <div className="overflow-x-hidden bg-cream min-h-screen">
       <div className="max-w-5xl mx-auto px-4 py-8" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
         
-        {/* Page Title */}
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-brand-orange">
+        {/* Hero */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-brand-brown flex items-center">
             Account
             {editing && (
-              <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold" title="Auto-save enabled, changes saved automatically">
+              <span className="ml-3 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold" title="Auto-save enabled, changes saved automatically">
                 ✨ Smart Mode
               </span>
             )}
           </h1>
+          <p className="mt-2 text-sm sm:text-base text-brand-russty max-w-prose">Manage your profile, wallet balance, bookings activity and personalization settings.</p>
         </div>
         
         {/* Smart Insights */}
@@ -289,12 +291,13 @@ export default function Profile() {
                 <h2 className="text-xl font-bold text-brand-brown mb-1">{formData.name}</h2>
                 <p className="text-brand-russty text-sm">{formData.email}</p>
                 <div className="mt-3 flex gap-2">
-                  <button
+                  <Button
+                    size="xs"
+                    variant={editing ? 'primary' : 'subtle'}
                     onClick={() => editing ? handleSaveProfile() : setEditing(true)}
-                    className="px-3 py-1.5 bg-cream-sand text-brand-brown rounded text-xs font-medium hover:bg-cream-hover transition"
                   >
                     {editing ? '💾 Save' : '✏️ Edit Profile'}
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -316,23 +319,20 @@ export default function Profile() {
                 <video ref={videoRef} autoPlay className="w-full rounded-lg mb-4 bg-black"></video>
                 <canvas ref={canvasRef} className="hidden"></canvas>
                 <div className="flex gap-3">
-                  <button
+                  <Button
+                    className="flex-1"
                     onClick={capturePhoto}
-                    className="flex-1 px-4 py-2.5 bg-brand-orange text-white rounded-lg font-medium hover:bg-brand-gold transition"
-                  >
-                    Capture
-                  </button>
-                  <button
+                  >Capture</Button>
+                  <Button
+                    className="flex-1"
+                    variant="subtle"
                     onClick={() => {
                       const stream = videoRef.current.srcObject;
                       const tracks = stream.getTracks();
                       tracks.forEach(track => track.stop());
                       setShowCamera(false);
                     }}
-                    className="flex-1 px-4 py-2.5 bg-cream-sand text-brand-brown rounded-lg font-medium hover:bg-cream-hover transition"
-                  >
-                    Cancel
-                  </button>
+                  >Cancel</Button>
                 </div>
               </div>
             </div>
@@ -406,22 +406,20 @@ export default function Profile() {
         </div>
 
         {/* Wallet & Quick Stats */}
-        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-brand-brown">Wallet</h3>
-            <button className="text-xs text-brand-orange hover:text-brand-gold transition">View History</button>
+            <Button variant="ghost" size="xs">View History</Button>
           </div>
           <div className="flex items-baseline gap-2 mb-4">
             <span className="text-3xl font-bold text-brand-brown">R {walletBalance.toFixed(2)}</span>
             <span className="text-sm text-brand-russty">Available Balance</span>
           </div>
-          <button className="w-full py-2.5 bg-brand-orange text-white rounded-lg text-sm font-medium hover:bg-brand-gold transition">
-            Add Funds
-          </button>
+          <Button fullWidth size="md">Add Funds</Button>
         </div>
 
         {/* Bookings Overview */}
-        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-brand-brown">Recent Activity</h3>
             <a href="/bookings" className="text-xs text-brand-orange hover:text-brand-gold transition">View All</a>
@@ -448,9 +446,7 @@ export default function Profile() {
           ) : (
             <div className="text-center py-8">
               <p className="text-sm text-brand-russty mb-3">No active bookings</p>
-              <a href="/plan-trip" className="inline-block px-4 py-2 bg-cream-sand text-brand-brown rounded-lg text-sm font-medium hover:bg-cream-hover transition">
-                Plan a Trip
-              </a>
+              <Button as="a" href="/plan-trip" variant="subtle" size="sm">Plan a Trip</Button>
             </div>
           )}
           
@@ -514,12 +510,7 @@ export default function Profile() {
 
         {/* Logout Button */}
         <div className="mt-8 pt-6 border-t border-cream-border flex justify-center">
-          <button
-            onClick={handleLogout}
-            className="px-6 py-3 text-brand-russty text-sm font-medium hover:text-brand-brown transition rounded-lg hover:bg-cream-sand"
-          >
-            Log Out
-          </button>
+          <Button onClick={handleLogout} variant="ghost" size="md">Log Out</Button>
         </div>
 
       </div>

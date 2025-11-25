@@ -54,7 +54,7 @@ export default function Builder({ basket, setBasket, catalog, itineraryName, set
       <h2 className="text-xl font-bold mb-4">🛠️ Basket Builder</h2>
       <input
         className="w-full mb-4 p-2 border rounded"
-        placeholder="Enter a client or destination name..."
+        placeholder="e.g., John Smith, Cape Town Vacation"
         value={itineraryName}
         onChange={(e) => setItineraryName(e.target.value)}
       />

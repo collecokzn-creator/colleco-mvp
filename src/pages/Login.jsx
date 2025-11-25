@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import Button from "../components/ui/Button.jsx";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
 
@@ -304,8 +305,8 @@ function Login() {
 
   if (effectiveUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-cream via-cream-sand to-cream flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-cream-border">
+      <div className="min-h-screen bg-cream flex items-center justify-center px-4 py-8">
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-8 border border-cream-border">
           <div className="text-center mb-6">
             <div className="w-24 h-24 mx-auto mb-4">
               <img 
@@ -319,10 +320,7 @@ function Login() {
           </div>
           <div className="bg-cream-sand p-6 border border-cream-border rounded-lg mb-4">
             <p className="text-brand-russty mb-4">You are logged in and ready to explore the world.</p>
-            <button
-              className="w-full px-4 py-2.5 rounded-lg bg-brand-orange text-white font-semibold hover:bg-brand-gold transition-all shadow-md"
-              onClick={handleLogout}
-            >Logout</button>
+            <div className="w-full"><Button fullWidth variant="primary" size="md" onClick={handleLogout}>Logout</Button></div>
           </div>
         </div>
       </div>
@@ -330,40 +328,32 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-cream-sand to-cream flex items-center justify-center p-6">
+    <div className="min-h-screen bg-cream flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full">
         {/* Header with integrated globe design */}
-        <div className="text-center mb-8 animate-fade-in relative">
-          {/* Large globe as background element */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 opacity-10 pointer-events-none -z-10">
-            <img 
-              src="/assets/Globeicon.png" 
-              alt="" 
-              className="w-full h-full object-contain"
-            />
+        <div className="mb-8">
+          <div className="bg-white rounded-2xl px-6 pt-10 pb-6 text-center">
+            {/* Globe icon */}
+            <div className="inline-block mb-4">
+              <img
+                src="/assets/Globeicon.png"
+                alt="CollEco Travel"
+                className="w-24 h-24 object-contain"
+              />
+            </div>
+            <h1 className="text-3xl font-bold text-brand-brown mb-2">CollEco Travel</h1>
+            <p className="text-brand-russty">Start your journey with us</p>
           </div>
-          
-          {/* Globe icon integrated into design */}
-          <div className="inline-block mb-4">
-            <img 
-              src="/assets/Globeicon.png" 
-              alt="CollEco Travel" 
-              className="w-24 h-24 object-contain drop-shadow-lg"
-            />
-          </div>
-          
-          <h1 className="text-3xl font-bold text-brand-brown mb-2">CollEco Travel</h1>
-          <p className="text-brand-russty">Start your journey with us</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex mb-6 gap-3 bg-white p-2 rounded-xl shadow-md">
+        <div className="flex mb-6 gap-3 bg-white p-2 rounded-xl shadow-sm border border-cream-border">
           <button
             data-e2e="login-tab"
-            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${
+            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-colors ${
               tab === "login" 
-                ? "bg-gradient-to-r from-brand-orange to-brand-gold text-white shadow-md transform scale-105" 
-                : "text-brand-russty hover:bg-cream-sand"
+                ? "bg-brand-orange text-white" 
+                : "text-brand-brown bg-white border border-cream-border hover:border-brand-orange"
             }`}
             onClick={() => { 
               setTab("login"); 
@@ -384,10 +374,10 @@ function Login() {
           </button>
           <button
             data-e2e="register-tab"
-            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${
+            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-colors ${
               tab === "register" 
-                ? "bg-gradient-to-r from-brand-orange to-brand-gold text-white shadow-md transform scale-105" 
-                : "text-brand-russty hover:bg-cream-sand"
+                ? "bg-brand-orange text-white" 
+                : "text-brand-brown bg-white border border-cream-border hover:border-brand-orange"
             }`}
             onClick={() => { 
               setTab("register"); 
@@ -407,7 +397,7 @@ function Login() {
         {/* Form */}
         <form 
           data-e2e="login-form" 
-          className="bg-white rounded-2xl shadow-xl p-8 border border-cream-border max-h-[80vh] overflow-y-auto" 
+          className="bg-white rounded-2xl shadow-sm p-8 border border-cream-border max-h-[80vh] overflow-y-auto" 
           onSubmit={tab === "login" ? handleLogin : handleRegister}
         >
           <div className="mb-5">
@@ -430,9 +420,9 @@ function Login() {
                 <div className="flex gap-3">
                   <button
                     type="button"
-                    className={`flex-1 px-4 py-3 rounded-lg font-semibold border-2 transition-all ${
+                    className={`flex-1 px-4 py-3 rounded-lg font-semibold border-2 transition-colors ${
                       userType === "client"
-                        ? "bg-brand-orange text-white border-brand-orange shadow-md"
+                        ? "bg-brand-orange text-white border-brand-orange"
                         : "bg-white text-brand-brown border-cream-border hover:border-brand-orange"
                     }`}
                     onClick={() => setUserType("client")}
@@ -441,9 +431,9 @@ function Login() {
                   </button>
                   <button
                     type="button"
-                    className={`flex-1 px-4 py-3 rounded-lg font-semibold border-2 transition-all ${
+                    className={`flex-1 px-4 py-3 rounded-lg font-semibold border-2 transition-colors ${
                       userType === "partner"
-                        ? "bg-brand-orange text-white border-brand-orange shadow-md"
+                        ? "bg-brand-orange text-white border-brand-orange"
                         : "bg-white text-brand-brown border-cream-border hover:border-brand-orange"
                     }`}
                     onClick={() => setUserType("partner")}
@@ -642,7 +632,7 @@ function Login() {
                     className="w-full px-4 py-3 border-2 border-cream-border rounded-lg pr-12 focus:border-brand-orange focus:outline-none transition-colors"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    placeholder="Enter your password"
+                    placeholder="Enter your password (e.g., SecurePass123)"
                     required
                     aria-label="Password"
                   />
@@ -698,13 +688,7 @@ function Login() {
           </div>
 
           {/* Submit Button */}
-          <button
-            data-e2e="submit"
-            type="submit"
-            className="w-full px-6 py-3.5 rounded-lg bg-gradient-to-r from-brand-orange to-brand-gold text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all"
-          >
-            {tab === "login" ? "Sign In →" : "Create Account →"}
-          </button>
+          <Button data-e2e="submit" type="submit" fullWidth variant="primary" size="lg">{tab === "login" ? "Sign In →" : "Create Account →"}</Button>
 
           {/* Biometric Login Options (Login only) */}
           {tab === "login" && (
@@ -719,22 +703,14 @@ function Login() {
               </div>
               
               <div className="mt-4 grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={handleBiometricLogin}
-                  className="flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-3 border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
-                >
+                <Button type="button" variant="outline" size="md" onClick={handleBiometricLogin} className="flex flex-col sm:flex-row items-center justify-center gap-2">
                   <span className="text-2xl">👤</span>
                   <span className="text-sm sm:text-base">Face ID</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleBiometricLogin}
-                  className="flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-3 border-2 border-brand-orange text-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
-                >
+                </Button>
+                <Button type="button" variant="outline" size="md" onClick={handleBiometricLogin} className="flex flex-col sm:flex-row items-center justify-center gap-2">
                   <span className="text-2xl">👆</span>
                   <span className="text-sm sm:text-base">Fingerprint</span>
-                </button>
+                </Button>
               </div>
               <p className="text-xs text-brand-russty text-center mt-2">Enable biometrics in settings after first login</p>
             </div>

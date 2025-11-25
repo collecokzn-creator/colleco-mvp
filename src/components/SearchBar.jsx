@@ -240,7 +240,7 @@ export default function SearchBar({ className = '' }){
             else if(e.key==='Enter'){ e.preventDefault(); go(filtered[activeIdx]); }
             else if(e.key==='Escape'){ setOpen(false); }
           }}
-          placeholder="Search destinations, hotels, experiences…"
+          placeholder="Search: Cape Town, Safari, Hotels, Beach Resorts… (press / to focus)"
           className="flex-1 outline-none text-sm bg-transparent placeholder:text-brand-russty/50 text-brand-brown"
           aria-label="Global search"
         />

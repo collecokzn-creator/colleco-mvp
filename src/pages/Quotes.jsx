@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '../utils/currency';
 import { generateQuotePdf } from '../utils/pdfGenerators';
 import WorkflowPanel from '../components/WorkflowPanel';
+import Button from '../components/ui/Button.jsx';
 import * as api from '../api/quotes';
 import globeIcon from '../assets/Globeicon.png';
 
@@ -18,7 +19,13 @@ export default function Quotes() {
     return () => { mounted = false; };
   }, []);
 
-  const computeTotals = (_q) => ({ subtotal: 0, tax: 0, total: 0 });
+  const computeTotals = (q) => {
+    const subtotal = (q?.items || []).reduce((sum, item) => sum + (item.quantity || 0) * (item.unitPrice || 0), 0);
+    const taxRate = q?.taxRate || 0;
+    const tax = subtotal * (taxRate / 100);
+    const total = subtotal + tax;
+    return { subtotal, tax, total };
+  };
 
   async function handleDelete(id) {
     if(!window.confirm('Are you sure you want to delete this quote?')) return;
@@ -39,51 +46,46 @@ export default function Quotes() {
   }
 
   return (
-    <div className="overflow-x-hidden bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto p-6">
+    <div className="overflow-x-hidden bg-cream min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-brand-brown">Quotes</h1>
-              <p className="text-gray-600 mt-2">Manage client quotations and pricing</p>
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex-1">
+              <h1 className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">Quotes</h1>
+              <p className="text-brand-russty">Manage client quotations and pricing</p>
             </div>
-            <button 
-              onClick={() => navigate('/quote/new')} 
-              className="px-6 py-2.5 rounded-lg bg-brand-orange text-white font-semibold hover:bg-brand-orange/90 transition-colors shadow-sm"
-            >
-              + New Quote
-            </button>
+            <Button onClick={() => navigate('/quote/new')} variant="primary" size="md">+ New Quote</Button>
           </div>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-cream-border p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Quotes</p>
+                <p className="text-sm text-brand-russty">Total Quotes</p>
                 <p className="text-3xl font-bold text-brand-orange">{quotes.length}</p>
               </div>
               <img src={globeIcon} alt="" className="w-12 h-12" />
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-cream-border p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Accepted</p>
+                <p className="text-sm text-brand-russty">Accepted</p>
                 <p className="text-3xl font-bold text-brand-orange">{quotes.filter(q => q.status === 'accepted').length}</p>
               </div>
               <div className="text-4xl">✓</div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-cream-border p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Pending</p>
+                <p className="text-sm text-brand-russty">Pending</p>
                 <p className="text-3xl font-bold text-brand-orange">{quotes.filter(q => q.status === 'sent').length}</p>
               </div>
               <div className="text-4xl">📤</div>
@@ -100,19 +102,14 @@ export default function Quotes() {
         {loading ? (
           <div className="text-center py-12">
             <div className="inline-block w-12 h-12 border-4 border-brand-orange border-t-transparent rounded-full animate-spin"></div>
-            <p className="mt-4 text-gray-600">Loading quotes...</p>
+            <p className="mt-4 text-brand-russty">Loading quotes...</p>
           </div>
         ) : quotes.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
+          <div className="bg-white rounded-lg shadow-sm border border-cream-border p-12 text-center">
             <img src={globeIcon} alt="" className="w-20 h-20 mx-auto mb-4 opacity-50" />
             <h3 className="text-xl font-semibold text-brand-brown mb-2">No quotes yet</h3>
-            <p className="text-gray-600 mb-6">Create your first quote to get started</p>
-            <button 
-              onClick={() => navigate('/quote/new')} 
-              className="px-6 py-2.5 rounded-lg bg-brand-orange text-white font-semibold hover:bg-brand-orange/90 transition-colors"
-            >
-              Create Quote
-            </button>
+            <p className="text-brand-russty mb-6">Create your first quote to get started</p>
+            <Button onClick={() => navigate('/quote/new')} variant="primary" size="md">Create Quote</Button>
           </div>
         ) : (
           <div className="space-y-4">
@@ -120,14 +117,14 @@ export default function Quotes() {
               const { subtotal: _subtotal, tax: _tax, total } = computeTotals(q);
               const getStatusStyle = (status) => {
                 const s = status?.toLowerCase();
-                if (s === 'accepted') return 'bg-green-100 text-green-800';
-                if (s === 'sent') return 'bg-blue-100 text-blue-800';
-                if (s === 'rejected') return 'bg-red-100 text-red-800';
-                return 'bg-gray-100 text-gray-800';
+                if (s === 'accepted' || s === 'paid') return 'bg-green-100 text-green-800';
+                if (s === 'sent') return 'bg-brand-orange/10 text-brand-orange';
+                if (s === 'rejected' || s === 'cancelled') return 'bg-red-100 text-red-800';
+                return 'bg-cream-sand text-brand-brown';
               };
               
               return (
-                <div key={q.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <div key={q.id} className="bg-white rounded-lg shadow-sm border border-cream-border p-6 hover:shadow-md transition-shadow">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     
                     {/* Quote Info */}
@@ -139,14 +136,14 @@ export default function Quotes() {
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(q.status)}`}>
                           {q.status || 'Draft'}
                         </span>
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-brand-russty">
                           {q.items?.length || 0} {q.items?.length === 1 ? 'item' : 'items'}
                         </span>
                         <span className="text-sm font-semibold text-brand-orange">
                           {formatCurrency(total, q.currency)}
                         </span>
                       </div>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-brand-russty">
                         Updated {new Date(q.updatedAt).toLocaleDateString('en-US', { 
                           year: 'numeric', 
                           month: 'short', 
@@ -157,30 +154,10 @@ export default function Quotes() {
 
                     {/* Actions */}
                     <div className="flex flex-wrap gap-2">
-                      <button 
-                        onClick={() => navigate('/quote/new?edit=' + q.id)} 
-                        className="px-4 py-2 rounded-lg bg-brand-orange text-white font-medium hover:bg-brand-orange/90 transition-colors text-sm"
-                      >
-                        Open
-                      </button>
-                      <button 
-                        onClick={() => generateQuotePdf(q)} 
-                        className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors text-sm"
-                      >
-                        PDF
-                      </button>
-                      <button 
-                        onClick={() => handleClone(q.id)} 
-                        className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors text-sm"
-                      >
-                        Clone
-                      </button>
-                      <button 
-                        onClick={() => handleDelete(q.id)} 
-                        className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors text-sm"
-                      >
-                        Delete
-                      </button>
+                      <Button onClick={() => navigate('/quote/new?edit=' + q.id)} variant="primary" size="sm">Open</Button>
+                      <Button onClick={() => generateQuotePdf(q)} variant="outline" size="sm">PDF</Button>
+                      <Button onClick={() => handleClone(q.id)} variant="secondary" size="sm">Clone</Button>
+                      <Button onClick={() => handleDelete(q.id)} variant="danger" size="sm">Delete</Button>
                     </div>
                   </div>
                 </div>

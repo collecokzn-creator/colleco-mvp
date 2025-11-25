@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Button from "../components/ui/Button.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import AutoSyncBanner from "../components/ui/AutoSyncBanner";
 import LiveTripProgress from "../components/ui/LiveTripProgress";
@@ -85,7 +86,7 @@ export default function PlanTrip() {
         className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative"
         tabIndex={-1}
       >
-        <button className="absolute top-2 right-2 text-brand-russty" onClick={() => setDirectBookingOpen(false)} aria-label="Close">&times;</button>
+        <button className="absolute top-2 right-2 text-brand-russty hover:text-brand-orange transition" onClick={() => setDirectBookingOpen(false)} aria-label="Close">&times;</button>
         <h2 id="direct-booking-title" className="text-xl font-bold text-brand-rusty mb-3">Direct Booking</h2>
         {!selectedProduct ? (
           <>
@@ -123,8 +124,10 @@ export default function PlanTrip() {
               onChange={e => { const v = e.target.value; setBookingDate(v); try { localStorage.setItem('directBooking:lastDate', v); } catch {} }}
               className="w-full border rounded px-3 py-2 mb-3"
             />
-            <button
-              className="w-full bg-brand-orange text-white font-bold py-2 rounded mb-2"
+            <Button
+              fullWidth
+              variant="primary"
+              size="md"
               onClick={() => {
                 try { showToast('Payment initiated', 'success'); } catch {}
                 const params = new URLSearchParams({ item: selectedProduct.title, date: bookingDate });
@@ -133,7 +136,7 @@ export default function PlanTrip() {
               disabled={!bookingDate || !selectedProduct}
             >
               Proceed to Payment
-            </button>
+            </Button>
             <button className="w-full text-xs text-brand-russty underline" onClick={() => setSelectedProduct(null)}>
               &larr; Back to search
             </button>
@@ -693,7 +696,7 @@ export default function PlanTrip() {
   }, []);
   return (
   <div className="overflow-x-hidden">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-brand-russty">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-brand-russty">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="text-3xl font-bold mb-1">Trip Planner</h2>
@@ -729,15 +732,9 @@ export default function PlanTrip() {
                   <div className="font-semibold text-base text-brand-brown">Book Direct</div>
                   <p className="text-sm text-brand-brown/80 mt-2 mb-4">Book and pay instantly for any product.</p>
                 </div>
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold shadow hover:bg-brand-highlight transition relative z-10 self-start"
-                  onClick={() => navigate('/book')}
-                  aria-label="Open Direct Booking"
-                  style={{ marginTop: 'auto' }}
-                >
-                  Book Now
-                </button>
+                <div className="relative z-10 self-start" style={{ marginTop: 'auto' }}>
+                  <Button as={Link} to="/book" variant="primary" size="sm" aria-label="Open Direct Booking">Book Now</Button>
+                </div>
               </div>
             </div>
       {/* Toasts aria-live region for accessibility */}
@@ -837,15 +834,12 @@ export default function PlanTrip() {
                     }}
                   />
                 {smartSuggestion && (
-                  <button
-                    type="button"
-                    onClick={applySmartSearch}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-xs px-2 py-1 rounded bg-brand-orange text-white hover:bg-brand-orange/90 focus:outline-none focus:ring-2 focus:ring-brand-orange/30 inline-flex items-center gap-1"
-                    aria-label="Apply smart filters suggestion"
-                  >
-                    <span>🔎</span>
-                    <span className="hidden sm:inline truncate max-w-[6rem]">{smartSuggestion.text}</span>
-                  </button>
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs inline-flex items-center gap-1" aria-label="Apply smart filters suggestion">
+                    <Button variant="primary" size="xs" onClick={applySmartSearch}>
+                      <span>🔎</span>
+                      <span className="hidden sm:inline truncate max-w-[6rem]">{smartSuggestion.text}</span>
+                    </Button>
+                  </div>
                 )}
               </div>
               
@@ -1599,7 +1593,7 @@ export default function PlanTrip() {
             >Copy summary</button>
             <span aria-live="polite" className="sr-only">{copySummaryStatus==='ok' ? 'Basket summary copied' : (copySummaryStatus==='err' ? 'Copy failed' : '')}</span>
           </div>
-          <Link to="/quote/new" state={{ fromBasket: true }} className={`block text-center px-3 py-2 rounded text-sm font-medium border ${paidItems.length? 'bg-brand-orange text-cream border-brand-orange hover:bg-brand-orange/90':'bg-cream-sand text-brand-russty/50 border-cream-border cursor-not-allowed'}`}>Create Quote ({paidItems.length})</Link>
+          <Link to="/quote/new" state={{ fromBasket: true }} className={`block text-center px-3 py-2 rounded text-sm font-medium border ${paidItems.length? 'bg-brand-orange text-cream border-brand-orange hover:bg-brand-highlight':'bg-cream-sand text-brand-russty/50 border-cream-border cursor-not-allowed'}`}>Create Quote ({paidItems.length})</Link>
         </div>
         )}
       </div>

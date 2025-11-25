@@ -32,16 +32,16 @@ export default function Trips() {
   };
 
   return (
-    <div className="overflow-x-hidden bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto p-6">
+    <div className="overflow-x-hidden bg-cream min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-brand-brown">My Trips</h1>
-          <p className="text-gray-600 mt-2">Manage your upcoming and past travel experiences</p>
+          <p className="text-brand-russty mt-2">Manage your upcoming and past travel experiences</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6 border-b border-gray-200">
+        <div className="flex gap-4 mb-6 border-b border-cream-border">
           <button
             onClick={() => setActiveTab('upcoming')}
             className={`px-6 py-3 font-semibold transition-colors ${

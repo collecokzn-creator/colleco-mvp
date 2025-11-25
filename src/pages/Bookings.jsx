@@ -4,6 +4,7 @@ import AutoSyncBanner from "../components/ui/AutoSyncBanner";
 import LiveStatCard from "../components/ui/LiveStatCard";
 import FeesBreakdown from "../components/payments/FeesBreakdown";
 import PaymentButton from "../components/payments/PaymentButton";
+import Button from "../components/ui/Button.jsx";
 import { totalPaid } from "../utils/payments";
 import PaymentsHistory from "../components/payments/PaymentsHistory";
 import VerifiedBadge from "../components/ui/VerifiedBadge";
@@ -198,7 +199,7 @@ export default function Bookings() {
   
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-cream via-white to-cream-sand">
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+			<div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 				{/* Professional Header */}
 				<div className="mb-6 sm:mb-8">
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-3">
@@ -220,14 +221,10 @@ export default function Bookings() {
 								<span className="text-lg">📱</span>
 								<span className="text-sm sm:text-base">Check-In</span>
 							</Link>
-							<button
-								onClick={exportToCSV}
-								className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border-2 border-brand-orange text-brand-orange font-semibold hover:bg-brand-orange hover:text-white transition-all text-sm sm:text-base"
-								title="Export to CSV"
-							>
+							<Button variant="outline" size="md" onClick={exportToCSV} title="Export to CSV" className="inline-flex items-center justify-center gap-2">
 								<span>📥</span>
 								<span className="hidden sm:inline">Export</span>
-							</button>
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -369,7 +366,7 @@ export default function Bookings() {
 										<span className={`px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap ${
 											item.status === 'confirmed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
 											item.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
-											'bg-gray-50 text-gray-700 border border-gray-200'
+											'bg-white text-brand-russty border border-cream-border'
 										}`}>
 											{item.status.charAt(0).toUpperCase() + item.status.slice(1)}
 										</span>

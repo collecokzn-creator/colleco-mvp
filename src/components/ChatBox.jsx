@@ -312,7 +312,7 @@ const ChatBox = ({ conversationId, recipientId, recipientName, onClose }) => {
                 handleSendMessage(e);
               }
             }}
-            placeholder="Type a message..."
+            placeholder="Type your message here... (e.g., When can we depart?)"
             rows="1"
             className="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           />

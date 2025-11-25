@@ -68,7 +68,7 @@ const DirectBooking = () => {
           name="package"
           value={form.package}
           onChange={handleChange}
-          placeholder="Package Name/Type"
+          placeholder="e.g., 3-Day Safari Package, Beach Getaway"
           required
           className="w-full border rounded px-3 py-2"
         />

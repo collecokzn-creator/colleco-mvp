@@ -77,7 +77,7 @@ export default function AdminConsoleEnhanced({ user, stats, bookings, partners }
                         <td>{b.total}</td>
                         <td className="text-right">
                           {b.status !== "confirmed" && (
-                            <button onClick={() => confirmBooking(b.id)} className="text-xs px-2 py-1 rounded bg-brand-orange text-white hover:bg-brand-orange/90">Confirm</button>
+                            <button onClick={() => confirmBooking(b.id)} className="text-xs px-2 py-1 rounded bg-brand-orange text-white hover:bg-brand-highlight">Confirm</button>
                           )}
                         </td>
                       </tr>
@@ -118,7 +118,7 @@ export default function AdminConsoleEnhanced({ user, stats, bookings, partners }
 
                   <div className="mt-4 flex gap-2">
                     {p.status !== "active" && (
-                      <button onClick={() => approvePartner(p.id)} className="px-3 py-1 rounded bg-brand-orange text-white text-sm hover:bg-brand-orange/90">Approve</button>
+                      <button onClick={() => approvePartner(p.id)} className="px-3 py-1 rounded bg-brand-orange text-white text-sm hover:bg-brand-highlight">Approve</button>
                     )}
                     <button onClick={() => setAlerts((a) => [...a, { id: Date.now(), text: `Requested details for ${p.name}` }])} className="px-3 py-1 rounded border text-sm">Request Info</button>
                     <button onClick={() => setAlerts((a) => [...a, { id: Date.now(), text: `Opened partner profile ${p.name}` }])} className="px-3 py-1 rounded bg-white text-sm">Open</button>
@@ -161,7 +161,7 @@ export default function AdminConsoleEnhanced({ user, stats, bookings, partners }
                       <td>{b.total}</td>
                       <td className="text-right">
                         <div className="flex gap-2 justify-end">
-                          <button onClick={() => confirmBooking(b.id)} className="text-xs px-2 py-1 rounded bg-brand-orange text-white hover:bg-brand-orange/90">Confirm</button>
+                          <button onClick={() => confirmBooking(b.id)} className="text-xs px-2 py-1 rounded bg-brand-orange text-white hover:bg-brand-highlight">Confirm</button>
                           <button onClick={() => setAlerts((a) => [...a, { id: Date.now(), text: `Viewing booking ${b.id}` }])} className="text-xs px-2 py-1 rounded border">View</button>
                         </div>
                       </td>

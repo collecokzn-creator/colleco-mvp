@@ -8,6 +8,7 @@ import { useTripState, setMemory, computeProgress } from "../utils/useTripState"
 import { useBasketState } from "../utils/useBasketState";
 import { useLocalStorageState } from "../useLocalStorageState";
 import WorkflowPanel from "../components/WorkflowPanel";
+import Button from '../components/ui/Button.jsx';
 
 export default function Itinerary() {
   const [trip, setTrip] = useTripState();
@@ -158,27 +159,17 @@ export default function Itinerary() {
   const dayKeys = Object.keys(filteredDays).sort((a, b) => Number(a) - Number(b));
 
   return (
-    <div className="w-full min-h-screen bg-cream">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+    <div className="w-full min-h-screen bg-cream overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        {/* Hero */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">✈️ Trip Itinerary</h1>
             <p className="text-brand-russty text-sm sm:text-base">Plan each day and capture memories</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button 
-              onClick={handleExport}
-              className="px-4 py-2 rounded-lg border-2 border-brand-orange text-brand-orange hover:bg-brand-orange/5 font-semibold transition-all shadow-sm hover:shadow-md"
-            >
-              📄 Export PDF
-            </button>
-            <button 
-              onClick={addDay}
-              className="px-4 py-2 rounded-lg bg-brand-brown text-white hover:bg-brand-russty font-semibold transition-all shadow-sm hover:shadow-md"
-            >
-              + Add Day
-            </button>
+            <Button variant="outline" onClick={handleExport}>📄 Export PDF</Button>
+            <Button variant="secondary" onClick={addDay}>+ Add Day</Button>
           </div>
         </div>
 
@@ -222,12 +213,7 @@ export default function Itinerary() {
                   <p className="text-sm text-brand-russty mb-4">
                     {linkQuotes ? 'Add products to your basket on Trip Planner to get started.' : 'Click "Add Day" to create your first day.'}
                   </p>
-                  <button
-                    onClick={addDay}
-                    className="px-6 py-3 bg-brand-orange text-white rounded-xl font-semibold hover:bg-brand-highlight transition-all shadow-sm hover:shadow-md"
-                  >
-                    + Create First Day
-                  </button>
+                  <Button size="lg" onClick={addDay}>+ Create First Day</Button>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -254,13 +240,13 @@ export default function Itinerary() {
                                   From Basket
                                 </span>
                               )}
-                              <button
+                              <Button
                                 onClick={() => removeItem(day, item.id)}
-                                className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                                variant="danger"
+                                size="xs"
+                                className="absolute right-2 top-2 w-6 h-6 !p-0"
                                 title="Remove item"
-                              >
-                                ✕
-                              </button>
+                              >✕</Button>
                             </div>
                           ))}
                         </div>

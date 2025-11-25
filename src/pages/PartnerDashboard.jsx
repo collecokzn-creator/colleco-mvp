@@ -2,6 +2,7 @@
 // API-first design; future: wire to modular API calls (products, compliance, payouts),
 // add compliance status indicators and document expiry notifications.
 import React from "react";
+import Button from "../components/ui/Button.jsx";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import { Link } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
@@ -54,12 +55,12 @@ export default function PartnerDashboard() {
   const { user } = useUser();
 
   return (
-    <div className="min-h-screen bg-cream">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <div className="min-h-screen bg-cream overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       <Breadcrumbs />
       
       {/* Partner Hub Header */}
-      <div className="mb-6 bg-white rounded-xl shadow-md border border-cream-border p-6">
+      <div className="mb-8 bg-white rounded-xl shadow-sm border border-cream-border p-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 data-testid="partner-hub-title" className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">
@@ -79,17 +80,17 @@ export default function PartnerDashboard() {
       </div>
 
       {/* Auto-sync notice */}
-      <div className="mb-6"><AutoSyncBanner message="Your partner dashboard syncs automatically with your listings and bookings" /></div>
+      <div className="mb-8"><AutoSyncBanner message="Your partner dashboard syncs automatically with your listings and bookings" /></div>
 
       {/* Snapshots */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
         <LiveStatCard title="Bookings this month" value="—" to="/bookings" icon={Ticket} />
         <LiveStatCard title="Revenue earned" value="—" to="/reports" icon={BarChart3} />
   <LiveStatCard title="Documents status" value={<span className="inline-flex items-center gap-2">Valid <VerifiedBadge verified /></span>} to="/compliance" icon={ShieldCheck} highlight="bg-emerald-500" />
       </section>
 
       {/* Partner Type Selection */}
-      <div className="flex items-center gap-2 mb-6 p-4 bg-white rounded-lg shadow-sm border border-cream-border">
+      <div className="flex items-center gap-2 mb-8 p-4 bg-white rounded-lg shadow-sm border border-cream-border">
         <span className="text-sm font-semibold text-brand-brown">Partner Type:</span>
         <span className="px-3 py-1.5 rounded-lg bg-brand-orange text-white text-sm font-bold shadow-sm">
           {(() => {
@@ -101,14 +102,14 @@ export default function PartnerDashboard() {
             return role;
           })()}
         </span>
-        <button onClick={() => setRole(null)} className="ml-auto px-3 py-1.5 text-sm font-medium text-brand-orange hover:text-brand-highlight hover:bg-cream rounded-lg transition-colors">
-          {role ? "Change Type" : "Select Type"}
-        </button>
+        <div className="ml-auto">
+          <Button variant="outline" size="xs" onClick={() => setRole(null)}>{role ? "Change Type" : "Select Type"}</Button>
+        </div>
       </div>
 
       {/* If no role selected, show grouped partner categories */}
       {!role && (
-        <section className="bg-white p-6 border border-cream-border rounded-xl shadow-md mb-6">
+        <section className="bg-white p-6 border border-cream-border rounded-xl shadow-sm mb-8">
           <h3 className="text-xl font-bold text-brand-brown mb-4">Choose Your Partner Type</h3>
           <p className="text-brand-russty mb-6">Select the category that best describes your business:</p>
           <div className="space-y-6">
@@ -120,14 +121,9 @@ export default function PartnerDashboard() {
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {cat.items.map((item) => (
-                    <button
-                      key={item.key}
-                      className="px-4 py-3 rounded-lg border-2 border-cream-border text-brand-brown bg-cream hover:border-brand-orange hover:bg-cream-sand hover:text-brand-orange font-semibold text-left transition-all transform hover:scale-105 shadow-sm hover:shadow-md"
-                      onClick={() => setRole(item.key)}
-                      aria-label={`Select ${item.label}`}
-                    >
-                      {item.label}
-                    </button>
+                    <div key={item.key} className="transform hover:scale-105 transition-all shadow-sm hover:shadow-md" aria-label={`Select ${item.label}`}>
+                      <Button variant="secondary" size="sm" className="w-full justify-start" onClick={() => setRole(item.key)}>{item.label}</Button>
+                    </div>
                   ))}
                 </div>
               </div>

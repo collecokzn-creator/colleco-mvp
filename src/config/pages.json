@@ -597,7 +597,7 @@
             {
               "path": "/partner/dashboard",
               "name": "Partner Dashboard",
-              "component": "WorkspacePage",
+              "component": "PartnerDashboard",
               "meta": {
                 "title": "Partner Overview",
                 "role": "partner",
