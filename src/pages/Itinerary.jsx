@@ -387,7 +387,7 @@ export default function Itinerary() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl sm:text-4xl font-bold text-brand-brown">✈️ Trip Itinerary</h1>
+                <h1 className="text-3xl sm:text-4xl font-bold text-brand-brown">Trip Itinerary</h1>
                 <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold" title="Auto-save, smart ordering, and AI draft detection enabled">
                   Smart Mode
                 </span>
@@ -395,26 +395,23 @@ export default function Itinerary() {
               <p className="text-brand-russty text-sm sm:text-base">
                 {dayKeys.length} day{dayKeys.length > 1 ? 's' : ''} • {totalItems} activit{totalItems === 1 ? 'y' : 'ies'} planned
               </p>
-              <div className="mt-2 text-xs text-brand-russty/60">
-                💡 Tip: Items auto-organize by time. Use search to find activities quickly.
-              </div>
             </div>
             <div className="flex flex-wrap gap-3">
               <button 
                 onClick={() => setShowSettings(!showSettings)}
-                className="px-4 py-2 rounded-lg border-2 border-brand-gold text-brand-brown hover:bg-brand-gold/10 font-semibold transition-all shadow-sm"
+                className="px-4 py-2 rounded-lg border-2 border-cream-border text-brand-brown hover:border-brand-orange hover:bg-cream font-semibold transition-all shadow-sm"
               >
-                ⚙️ Settings
+                Settings
               </button>
               <button 
                 onClick={handleExport}
                 className="px-4 py-2 rounded-lg border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white font-semibold transition-all shadow-sm hover:shadow-md"
               >
-                📄 Export PDF
+                Export PDF
               </button>
               <button 
                 onClick={addDay}
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-brand-orange to-brand-gold text-white hover:shadow-lg font-semibold transition-all shadow-sm"
+                className="px-4 py-2 rounded-lg bg-brand-orange text-white hover:bg-brand-highlight font-semibold transition-all shadow-sm hover:shadow-md"
               >
                 Add Day
               </button>
