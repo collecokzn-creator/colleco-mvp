@@ -841,7 +841,7 @@ export default function PartnerTemplates() {
                 </div>
 
                 <div className="mt-6 p-4 bg-brand-orange/10 rounded-lg">
-                  <h4 className="font-bold text-brand-brown mb-2">✨ Template Ready!</h4>
+                  <h4 className="font-bold text-brand-brown mb-2">Template Ready!</h4>
                   <p className="text-sm text-brand-russty">
                     This template will be used when generating quotes and invoices. 
                     All your branding, company details, and banking information are saved.

@@ -238,7 +238,7 @@ export default function Profile() {
             Account
             {editing && (
               <span className="ml-3 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold" title="Auto-save enabled, changes saved automatically">
-                ✨ Smart Mode
+                Smart Mode
               </span>
             )}
           </h1>

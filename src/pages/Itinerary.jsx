@@ -389,7 +389,7 @@ export default function Itinerary() {
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl sm:text-4xl font-bold text-brand-brown">✈️ Trip Itinerary</h1>
                 <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold" title="Auto-save, smart ordering, and AI draft detection enabled">
-                  ✨ Smart Mode
+                  Smart Mode
                 </span>
               </div>
               <p className="text-brand-russty text-sm sm:text-base">

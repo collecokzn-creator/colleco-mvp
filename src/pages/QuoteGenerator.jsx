@@ -377,7 +377,7 @@ export default function QuoteGenerator() {
             <p className="text-brand-russty text-sm sm:text-base">
               Create professional invoices with AI assistance or manually
               <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold" title="Auto-save, auto-numbering, and smart status updates enabled">
-                ✨ Smart Mode
+                Smart Mode
               </span>
             </p>
           </div>
