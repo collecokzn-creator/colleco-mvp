@@ -162,21 +162,91 @@ export default function Transfers() {
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-brand-brown">Shuttle & Transfers</h1>
         <p className="mt-2 text-sm sm:text-base text-brand-russty max-w-prose">Request instant or scheduled transport, multi-stop journeys, and monitor live driver progress.</p>
       </div>
-      
-      {/* Trip Type Selector */}
-      <div className="mb-6">
-        <label className="block mb-2 font-semibold text-brand-brown">Trip Type</label>
-        <div className="grid grid-cols-3 gap-3">
-          <Button size="lg" variant={tripType==='one-way'?'primary':'outline'} onClick={() => setTripType('one-way')}>🚗 One-way</Button>
-          <Button size="lg" variant={tripType==='round-trip'?'primary':'outline'} onClick={() => setTripType('round-trip')}>🔁 Round Trip</Button>
-          <Button size="lg" variant={tripType==='multi-stop'?'primary':'outline'} onClick={() => setTripType('multi-stop')}>📍 Multi-stop</Button>
-        </div>
-      </div>
 
-      {/* Booking Time Type Toggle */}
-      <div className="mb-8 flex gap-3">
-        <Button className="flex-1" variant={bookingType==='instant'?'primary':'outline'} onClick={() => setBookingType('instant')}>🚀 Instant Request</Button>
-        <Button className="flex-1" variant={bookingType==='prearranged'?'primary':'outline'} onClick={() => setBookingType('prearranged')}>📅 Prearranged</Button>
+      {/* Trip Configuration Card */}
+      <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-6">
+        <h2 className="text-lg font-bold text-brand-brown mb-4">Trip Configuration</h2>
+        
+        {/* Trip Type */}
+        <div className="mb-6">
+          <label className="block mb-3 text-sm font-semibold text-brand-brown">Trip Type</label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button
+              type="button"
+              onClick={() => setTripType('one-way')}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                tripType === 'one-way'
+                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
+                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
+              }`}
+            >
+              <div className="text-center">
+                <div className="text-sm font-semibold text-brand-brown">One-way</div>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setTripType('round-trip')}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                tripType === 'round-trip'
+                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
+                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
+              }`}
+            >
+              <div className="text-center">
+                <div className="text-sm font-semibold text-brand-brown">Round Trip</div>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setTripType('multi-stop')}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                tripType === 'multi-stop'
+                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
+                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
+              }`}
+            >
+              <div className="text-center">
+                <div className="text-sm font-semibold text-brand-brown">Multi-stop</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Booking Type */}
+        <div>
+          <label className="block mb-3 text-sm font-semibold text-brand-brown">Booking Type</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => setBookingType('instant')}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                bookingType === 'instant'
+                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
+                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
+              }`}
+            >
+              <div className="text-center">
+                <div className="text-sm font-semibold text-brand-brown">Instant Request</div>
+                <div className="text-xs text-brand-russty mt-1">Book now</div>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setBookingType('prearranged')}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                bookingType === 'prearranged'
+                  ? 'border-brand-orange bg-brand-orange/5 shadow-sm'
+                  : 'border-cream-border hover:border-brand-orange/50 hover:bg-cream'
+              }`}
+            >
+              <div className="text-center">
+                <div className="text-sm font-semibold text-brand-brown">Prearranged</div>
+                <div className="text-xs text-brand-russty mt-1">Schedule ahead</div>
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Multi-Day Service Toggle */}
