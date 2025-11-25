@@ -8,7 +8,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
   const [_waypointMarkers, _setWaypointMarkers] = useState([]); // unused currently; reserved for future waypoint visuals
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
 
-  function initMap() {
+  const initMap = useCallback(() => {
     if (!mapRef.current || !window.google) return;
 
     const mapInstance = new window.google.maps.Map(mapRef.current, {
@@ -32,7 +32,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     });
     
     setDirectionsRenderer(renderer);
-  }
+  }, []);
 
   function geocodeAddress(address, callback) {
     if (!window.google) return;
@@ -176,7 +176,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     } else {
       initMap();
     }
-  }, []);
+  }, [initMap]);
 
   useEffect(() => {
     if (map && window.google) {
