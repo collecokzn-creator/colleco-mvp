@@ -203,27 +203,22 @@ export default function Bookings() {
 				{/* Professional Header */}
 				<div className="mb-6 sm:mb-8">
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-3">
-						<div>
-							<h1 className="text-3xl sm:text-4xl font-bold text-brand-brown flex items-center gap-3">
-								Bookings
-								<span className="inline-flex items-center gap-1 text-xs bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 px-3 py-1.5 rounded-full font-semibold border border-green-200 shadow-sm" title="Auto-refresh, smart sorting, and intelligent recommendations enabled">
-									<span className="text-sm">✨</span>
-									<span className="hidden sm:inline">Smart Mode</span>
-								</span>
-							</h1>
+					<div>
+						<h1 className="text-3xl sm:text-4xl font-bold text-brand-brown flex items-center gap-3">
+							Bookings
+							<span className="inline-flex items-center gap-1 text-xs bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 px-3 py-1.5 rounded-full font-semibold border border-green-200 shadow-sm" title="Auto-refresh, smart sorting, and intelligent recommendations enabled">
+								<span className="hidden sm:inline">Smart Mode</span>
+							</span>
+						</h1>
 							<p className="mt-2 text-brand-russty text-sm sm:text-base">All your confirmed items in one place — always up to date.</p>
 						</div>
 						<div className="flex items-center gap-2 sm:gap-3">
-							<Link
-								to="/check-in"
-								className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-gradient-to-r from-brand-orange to-brand-gold text-white font-semibold hover:shadow-lg transform hover:scale-105 transition-all"
-							>
-								<span className="text-lg">📱</span>
-								<span className="text-sm sm:text-base">Check-In</span>
+							<Link to="/check-in">
+								<Button variant="primary" size="md">Check-In</Button>
 							</Link>
-							<Button variant="outline" size="md" onClick={exportToCSV} title="Export to CSV" className="inline-flex items-center justify-center gap-2">
-								<span>📥</span>
+							<Button variant="outline" size="md" onClick={exportToCSV} title="Export to CSV">
 								<span className="hidden sm:inline">Export</span>
+								<span className="sm:hidden">CSV</span>
 							</Button>
 						</div>
 					</div>
@@ -313,8 +308,8 @@ export default function Bookings() {
 				</label>
 			</section>
 
-			<section className="bg-white rounded-xl shadow-md border border-cream-border p-4 sm:p-6">
-				<div className="flex items-center justify-between mb-4 sm:mb-6">
+			<section className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
+				<div className="flex items-center justify-between mb-6">
 					<h3 className="text-xl font-bold text-brand-brown">Your Bookings</h3>
 					<span className="px-3 py-1 bg-brand-orange/10 text-brand-orange rounded-full text-sm font-semibold">
 						{filteredAndSortedItems.length} {filteredAndSortedItems.length === 1 ? 'item' : 'items'}
@@ -322,7 +317,7 @@ export default function Bookings() {
 				</div>
 				
 				{/* Booking Progress Tracker */}
-				<div className="mb-4 sm:mb-6 bg-cream rounded-lg">
+				<div className="mb-6">
 					<BookingStatusBar stage="Confirmed" />
 				</div>
 				
@@ -335,34 +330,34 @@ export default function Bookings() {
 						)}
 					</div>
 				) : (
-					<div className="space-y-3 sm:space-y-4">
+					<div className="space-y-4">
 						{filteredAndSortedItems.map((item, idx) => (
-							<div key={idx} className="group bg-gradient-to-r from-cream to-white border-2 border-cream-border hover:border-brand-orange rounded-xl p-4 sm:p-5 transition-all hover:shadow-lg">
-								<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+							<div key={idx} className="bg-white border border-cream-border hover:border-brand-orange rounded-xl p-5 transition-all hover:shadow-md">
+								<div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
 									<div className="flex-1">
-										<div className="flex items-start gap-2 mb-2">
-											<h4 className="font-bold text-brand-brown text-base sm:text-lg">
+										<div className="flex items-start gap-2 mb-3">
+											<h4 className="font-bold text-brand-brown text-lg">
 												{item.name}
 											</h4>
 											{providersApiEnabled ? <VerifiedBadge verified={verifiedIds.has(item.providerId)} /> : null}
 										</div>
-										<div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-brand-russty">
-											<span className="inline-flex items-center gap-1">
-												<span>📅</span>
-												{new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-											</span>
-											<span className="text-cream-border">•</span>
-											<span className="inline-flex items-center gap-1 font-semibold text-brand-orange">
-												<span>💰</span>
-												${item.amount}
-											</span>
-											<span className="text-cream-border">•</span>
-											<span className="px-2 py-0.5 bg-cream-sand rounded text-xs font-medium">
-												{item.category}
-											</span>
+										<div className="flex flex-col gap-2">
+											<div className="flex items-center gap-2 text-sm text-brand-russty">
+												<span className="font-medium">Date:</span>
+												<span>{new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+											</div>
+											<div className="flex items-center gap-2">
+												<span className="text-sm font-medium text-brand-russty">Amount:</span>
+												<span className="font-bold text-brand-orange">${item.amount}</span>
+											</div>
+											<div className="flex items-center gap-2">
+												<span className="px-3 py-1 bg-cream-sand text-brand-brown rounded-lg text-xs font-semibold">
+													{item.category}
+												</span>
+											</div>
 										</div>
 									</div>
-									<div className="flex sm:flex-col items-center gap-2">
+									<div className="flex items-start">
 										<span className={`px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap ${
 											item.status === 'confirmed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
 											item.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
