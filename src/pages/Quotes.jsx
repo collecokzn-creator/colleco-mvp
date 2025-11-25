@@ -68,7 +68,6 @@ export default function Quotes() {
                 <p className="text-sm text-brand-russty">Total Quotes</p>
                 <p className="text-3xl font-bold text-brand-orange">{quotes.length}</p>
               </div>
-              <img src={globeIcon} alt="" className="w-12 h-12" />
             </div>
           </div>
           
@@ -78,7 +77,6 @@ export default function Quotes() {
                 <p className="text-sm text-brand-russty">Accepted</p>
                 <p className="text-3xl font-bold text-brand-orange">{quotes.filter(q => q.status === 'accepted').length}</p>
               </div>
-              <div className="text-4xl">✓</div>
             </div>
           </div>
           
@@ -88,7 +86,6 @@ export default function Quotes() {
                 <p className="text-sm text-brand-russty">Pending</p>
                 <p className="text-3xl font-bold text-brand-orange">{quotes.filter(q => q.status === 'sent').length}</p>
               </div>
-              <div className="text-4xl">📤</div>
             </div>
           </div>
         </div>
@@ -106,7 +103,7 @@ export default function Quotes() {
           </div>
         ) : quotes.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm border border-cream-border p-12 text-center">
-            <img src={globeIcon} alt="" className="w-20 h-20 mx-auto mb-4 opacity-50" />
+            <div className="text-6xl mb-4 opacity-20">📋</div>
             <h3 className="text-xl font-semibold text-brand-brown mb-2">No quotes yet</h3>
             <p className="text-brand-russty mb-6">Create your first quote to get started</p>
             <Button onClick={() => navigate('/quote/new')} variant="primary" size="md">Create Quote</Button>

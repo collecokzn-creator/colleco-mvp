@@ -220,13 +220,6 @@ export default function Bookings() {
 					</div>
 				</div>
 
-				{/* Smart Recommendation */}
-				{recommendation && (
-					<div className="mb-4 sm:mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-brand-orange rounded-lg p-4 shadow-sm">
-						<p className="text-sm sm:text-base text-brand-brown font-medium">{recommendation}</p>
-					</div>
-				)}
-
 			<div className="mb-3"><AutoSyncBanner message="Bookings sync with partners automatically — no manual refresh needed." /></div>
 
 			{/* Workflow Panel */}
