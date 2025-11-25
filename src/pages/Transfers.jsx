@@ -36,6 +36,15 @@ export default function Transfers() {
   const [nearbyDrivers, setNearbyDrivers] = useState([]);
   const [loadingNearby, setLoadingNearby] = useState(false);
 
+  // Auto-update serviceDays based on selected recurring days when multi-day service active
+  React.useEffect(() => {
+    if (multiDayService) {
+      if (recurringDays.length > 0) {
+        setServiceDays(recurringDays.length);
+      }
+    }
+  }, [recurringDays, multiDayService]);
+
   // Fetch nearby available drivers based on pickup location
   async function fetchNearbyDrivers(location) {
     if (!location || location.length < 3) {
@@ -257,7 +266,7 @@ export default function Transfers() {
               type="checkbox" 
               checked={multiDayService}
               onChange={e => setMultiDayService(e.target.checked)}
-              className="w-5 h-5 text-brand-orange rounded"
+              className="w-5 h-5 accent-brand-orange text-brand-orange rounded"
             />
             <div>
               <span className="font-semibold text-brand-brown">📆 Multi-Day Service</span>
@@ -269,15 +278,23 @@ export default function Transfers() {
             <div className="mt-4 space-y-3">
               <div>
                 <label className="block mb-1 font-semibold text-sm">Number of Days</label>
-                <input 
-                  type="number"
-                  min={2}
-                  max={30}
-                  value={serviceDays}
-                  onChange={e => setServiceDays(Number(e.target.value))}
-                  className="w-32 border rounded px-3 py-2"
-                />
-                <span className="ml-2 text-sm text-gray-600">days</span>
+                {recurringDays.length > 0 ? (
+                  <div className="flex items-center gap-2">
+                    <div className="px-3 py-2 rounded border-2 border-brand-orange bg-brand-orange/5 text-brand-brown font-semibold w-32 text-center">
+                      {serviceDays}
+                    </div>
+                    <span className="text-sm text-gray-600">auto from selected days</span>
+                  </div>
+                ) : (
+                  <input 
+                    type="number"
+                    min={2}
+                    max={30}
+                    value={serviceDays}
+                    onChange={e => setServiceDays(Number(e.target.value))}
+                    className="w-32 border rounded px-3 py-2"
+                  />
+                )}
               </div>
               <div>
                 <label className="block mb-2 font-semibold text-sm">Recurring Days (Optional)</label>
