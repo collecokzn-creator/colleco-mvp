@@ -2079,5 +2079,23 @@
       "itinerary": []
     },
     "createdAt": 1764066636938
+  },
+  "sc1v0pmv61lmiet79bl": {
+    "id": "sc1v0pmv61lmiet79bl",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764089266161
+  },
+  "xbg5z2yncqmmif1xmwp": {
+    "id": "xbg5z2yncqmmif1xmwp",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764103933754
   }
 }

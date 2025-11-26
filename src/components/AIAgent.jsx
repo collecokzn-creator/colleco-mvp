@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Mic, MicOff } from "lucide-react";
 import logoPng from "../assets/colleco-logo.png";
+import voiceAgent from "../utils/voiceAgent";
+import { getZolaResponse } from "../utils/zolaConversation";
 
 // --- SMART AUTOMATION & GAMIFICATION STUBS ---
 // TODO: Integrate real AI backend for natural language, auto-suggest, and learning.
@@ -51,12 +54,54 @@ export default function AIAgent() {
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState(null); // 'client' | 'partner' | 'admin'
   const [messages, setMessages] = useState([
-    { from: 'system', text: '👋 Hi! I’m your CollEco AI Concierge. Are you a client, partner, or admin?' }
+    { from: 'system', text: '👋 Hi! I\'m your CollEco AI Concierge. Are you a client, partner, or admin?' }
   ]);
   // Example: user preferences, trip readiness, partner compliance, etc.
   const [progress, setProgress] = useState({ badge: 'Bronze', readiness: 40 });
+  const [isListening, setIsListening] = useState(false);
   const dragScopeRef = useRef(null);
   const messagesRef = useRef(null);
+
+  // Listen for voice responses from voiceAgent
+  useEffect(() => {
+    const handleVoiceResponse = (event) => {
+      setMessages(prev => [...prev, {
+        from: 'system',
+        text: event.detail.text
+      }]);
+    };
+
+    window.addEventListener('colleco:voice-response', handleVoiceResponse);
+
+    return () => {
+      window.removeEventListener('colleco:voice-response', handleVoiceResponse);
+    };
+  }, []);
+
+  const toggleVoice = () => {
+    if (isListening) {
+      voiceAgent.stopListening();
+      setIsListening(false);
+    } else {
+      const started = voiceAgent.startListening();
+      if (started) {
+        setIsListening(true);
+        if (!open) setOpen(true); // Open panel when voice starts
+         // Set up callback for voice input
+         voiceAgent.onTranscript = (text) => {
+           // Add user message
+           setMessages(m => [...m, { from: 'user', text }]);
+           // Get Zola's response
+           setTimeout(() => {
+             const reply = getZolaResponse(text);
+             setMessages(m => [...m, { from: 'agent', text: reply }]);
+             // Speak the response
+             voiceAgent.speak(reply, { skipHistory: true });
+           }, 300);
+         };
+      }
+    }
+  };
 
   // Snap above footer on mobile when dragged near bottom
   const handleDragEnd = (event, info) => {
@@ -133,7 +178,7 @@ export default function AIAgent() {
   const send = (text) => {
     setMessages(m => [...m, { from: 'user', text }]);
     setTimeout(() => {
-      const reply = smartReply(text);
+      const reply = getZolaResponse(text);
       setMessages(m => [...m, { from: 'agent', text: reply }]);
     }, 600);
   };
@@ -166,8 +211,20 @@ export default function AIAgent() {
               <img src={logoPng} alt="CollEco" className="h-6 w-6" />
               <span className="absolute -left-3 top-0 h-full w-1 bg-brand-orange rounded-full" aria-hidden></span>
             </span>
-            <span className="text-brand-russty">CollEco AI Concierge</span>
-            <button onClick={() => setOpen(false)} className="ml-auto rounded-full bg-brand-orange text-white px-2 py-1 text-sm font-semibold hover:bg-brand-brown" aria-label="Close chat">
+            <span className="text-brand-russty">Zola · AI Concierge</span>
+            <button 
+              onClick={toggleVoice}
+              className={`rounded-full px-2 py-1 text-sm font-semibold transition-colors ${
+                isListening 
+                  ? 'bg-red-500 text-white hover:bg-red-600 animate-pulse' 
+                  : 'bg-brand-orange text-white hover:bg-orange-600'
+              }`}
+              aria-label={isListening ? 'Stop listening' : 'Start voice input'}
+              title={isListening ? 'Stop voice' : 'Voice input'}
+            >
+              {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+            </button>
+            <button onClick={() => setOpen(false)} className="rounded-full bg-brand-orange text-white px-2 py-1 text-sm font-semibold hover:bg-brand-brown" aria-label="Close chat">
               ✕
             </button>
           </div>

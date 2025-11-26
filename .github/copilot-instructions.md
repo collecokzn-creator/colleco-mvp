@@ -24,6 +24,7 @@ CollEco Travel is a React + Vite SPA with an Express backend for travel collabor
 ### State Management
 - **localStorage-first**: Primary state persistence via `src/useLocalStorageState.js` custom hook
 - **Collaboration store**: `src/utils/collabStore.js` manages threads, messages, attachments with event bus pattern
+- **Voice assistant**: `src/utils/voiceAgent.js` singleton for voice-powered booking with Web Speech API
 - **No Redux/Zustand**: Intentionally kept lightweight with React context and localStorage
 
 ### Backend API Patterns
@@ -171,6 +172,7 @@ $env:TICKETMASTER_API_KEY="key"; $env:SEATGEEK_CLIENT_ID="id"; npm run server
 - **CI**: `docs/ci.md` (workflow overview)
 - **Siteminder**: `docs/siteminder_integration_contract.md` (booking provider contract)
 - **Communications**: `docs/COMMUNICATION_SYSTEM.md` (collab workspace design)
+- **Voice Assistant**: `docs/VOICE_COMMANDS_QUICK_REFERENCE.md` (voice booking commands and NLP)
 
 ## Anti-Patterns to Avoid
 

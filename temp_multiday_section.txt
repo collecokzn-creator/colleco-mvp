@@ -1,0 +1,83 @@
+
+>       {/* Multi-Day Service Toggle */}
+        {bookingType === 'prearranged' && (
+          <div className="mb-4 p-4 bg-cream-sand border-2 border-cream-border rounded-lg">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input 
+                type="checkbox" 
+                checked={multiDayService}
+                onChange={e => setMultiDayService(e.target.checked)}
+                className="w-5 h-5 accent-brand-orange text-brand-orange rounded"
+              />
+              <div>
+                <span className="font-semibold text-brand-brown">📆 Multi-Day Service</span>
+                <p className="text-sm text-gray-600">Book recurring shuttle service for multiple days (discounts apply)</p>
+              </div>
+            </label>
+            
+            {multiDayService && (
+              <div className="mt-4 space-y-3">
+                <div>
+                  <label className="block mb-1 font-semibold text-sm">Number of Days</label>
+                  {recurringDays.length > 0 ? (
+                    <div className="flex items-center gap-2">
+                      <div className="px-3 py-2 rounded border-2 border-brand-orange bg-brand-orange/5 text-brand-brown font-semibold w-32 text-center">
+                        {serviceDays}
+                      </div>
+                      <span className="text-sm text-gray-600">auto from selected days</span>
+                    </div>
+                  ) : (
+                    <input 
+                      type="number"
+                      min={2}
+                      max={30}
+                      value={serviceDays}
+                      onChange={e => setServiceDays(Number(e.target.value))}
+                      className="w-32 border rounded px-3 py-2"
+                    />
+                  )}
+                </div>
+                <div>
+                  <label className="block mb-2 font-semibold text-sm">Recurring Days (Optional)</label>
+                  <div className="flex gap-2 flex-wrap">
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
+                      <button
+                        key={day}
+                        type="button"
+                        onClick={() => {
+                          if (recurringDays.includes(idx)) {
+                            setRecurringDays(recurringDays.filter(d => d !== idx));
+                          } else {
+                            setRecurringDays([...recurringDays, idx]);
+                          }
+                        }}
+                        className={`px-3 py-1 rounded text-sm font-semibold ${
+                          recurringDays.includes(idx)
+                            ? 'bg-brand-orange text-white'
+                            : 'bg-gray-200 text-gray-700'
+                        }`}
+                      >
+                        {day}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Select specific days for recurring service</p>
+                </div>
+                <div className="p-3 bg-cream-sand border border-cream-border rounded">
+                  <p className="text-sm text-brand-brown">
+                    🎉 Multi-day discount: <strong>{serviceDays >= 7 ? '20%' : serviceDays >= 3 ? '15%' : '10%'} off</strong>
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        
+        <form className="space-y-6" onSubmit={submitRequest}>
+          <div>
+            <label className="block mb-1 font-semibold">Pickup Location</label>
+            <input 
+              type="text" 
+              value={pickup} 
+              onChange={e => setPickup(e.target.value)} 
+

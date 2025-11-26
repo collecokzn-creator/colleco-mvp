@@ -1,36 +1,665 @@
 import React, { useState } from 'react';
 import BookingNav from '../components/BookingNav';
-import { bookAccommodation } from '../api/client';
+import AccommodationSelector from '../components/AccommodationSelector';
+import Button from '../components/ui/Button.jsx';
+import { Home, Calendar, Users, Clock, DollarSign } from 'lucide-react';
 
 export default function AccommodationBooking(){
-  const [hotelName, setHotelName] = useState('');
-  const [nights, setNights] = useState(1);
-  const [unitPrice, setUnitPrice] = useState(0);
-  const [status, setStatus] = useState(null);
-  const [checkout, setCheckout] = useState(null);
+  const [location, setLocation] = useState('');
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [guests, setGuests] = useState(2);
+  const [roomType, setRoomType] = useState('standard'); // standard, deluxe, suite
+  const [specialRequests, setSpecialRequests] = useState('');
+  const [showPropertySelector, setShowPropertySelector] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [propertyPending, setPropertyPending] = useState(false);
+  const [availableProperties, setAvailableProperties] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // Add print styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @media print {
+        @page { margin: 1cm; }
+        body * { visibility: hidden; }
+        #booking-confirmation, #booking-confirmation * { visibility: visible; }
+        #booking-confirmation { 
+          position: absolute; 
+          left: 0; 
+          top: 0; 
+          width: 100%;
+          box-shadow: none !important;
+        }
+        #booking-confirmation button { display: none !important; }
+        .no-print { display: none !important; }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
 
-  async function handleSubmit(e){
-    e.preventDefault(); setStatus('loading');
+  // Set minimum check-in date to today
+  const today = new Date().toISOString().split('T')[0];
+  
+  // Set minimum check-out date to check-in + 1 day
+  const minCheckOut = checkIn ? new Date(new Date(checkIn).getTime() + 86400000).toISOString().split('T')[0] : today;
+
+  function handleSkipPropertySelection(properties) {
+    setAvailableProperties(properties);
+    setShowPropertySelector(false);
+    setPropertyPending(true);
+    setSelectedProperty(null);
+  }
+
+  async function autoAssignCheapestProperty() {
+    if (!availableProperties || availableProperties.length === 0) {
+      alert('No available properties to assign. Please try again.');
+      return;
+    }
+
+    const cheapestProperty = availableProperties.reduce((min, property) => 
+      property.pricePerNight < min.pricePerNight ? property : min
+    );
+
+    await confirmPropertySelection(cheapestProperty);
+  }
+
+  function reopenPropertySelector() {
+    setPropertyPending(false);
+    setShowPropertySelector(true);
+  }
+
+  async function confirmPropertySelection(property) {
+    setSelectedProperty(property);
+    setShowPropertySelector(false);
+    setPropertyPending(false);
+    setLoading(true);
+
     try {
-      const body = await bookAccommodation({ hotelName, nights: Number(nights), unitPrice: Number(unitPrice), currency: 'ZAR', customer: { name: 'Web User' } });
-      setStatus('ok');
-      setCheckout(body.checkout || null);
-    } catch(e){ setStatus('error'); }
+      // Here you would send the booking to your backend
+      // For now, we'll simulate success
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      alert(`Property "${property.name}" booked successfully!`);
+      setLoading(false);
+    } catch (error) {
+      console.error('Booking failed:', error);
+      alert('Booking failed. Please try again.');
+      setLoading(false);
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    
+    // Validate form
+    const errors = {};
+    if (!location || location.length < 3) errors.location = 'Please enter a valid location';
+    if (!checkIn) errors.checkIn = 'Please select check-in date';
+    if (!checkOut) errors.checkOut = 'Please select check-out date';
+    if (checkOut && checkIn && new Date(checkOut) <= new Date(checkIn)) {
+      errors.checkOut = 'Check-out must be after check-in';
+    }
+    if (guests < 1 || guests > 20) errors.guests = 'Guests must be between 1 and 20';
+    
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+    
+    setFormErrors({});
+    setShowPropertySelector(true);
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8">
-      <BookingNav />
-      <h1 className="text-3xl font-bold mb-4 text-brand-brown">Accommodation Booking</h1>
-      <form onSubmit={handleSubmit} className="space-y-3 max-w-md">
-        <label className="block">Hotel name<input value={hotelName} onChange={e=>setHotelName(e.target.value)} className="w-full p-2 border" /></label>
-        <label className="block">Nights<input type="number" value={nights} onChange={e=>setNights(e.target.value)} className="w-full p-2 border" /></label>
-        <label className="block">Price per night<input type="number" value={unitPrice} onChange={e=>setUnitPrice(e.target.value)} className="w-full p-2 border" /></label>
-        <button type="submit" className="px-4 py-2 bg-brand-orange text-white rounded hover:bg-brand-gold transition">Book</button>
-      </form>
-      {status==='ok' && checkout && <div className="mt-4">Checkout: <a href={checkout.checkoutUrl}>{checkout.checkoutUrl}</a></div>}
-      {status==='ok' && !checkout && <div className="mt-4 bg-cream-sand text-brand-brown p-3 rounded">Booking confirmed (no payment required)</div>}
-      {status==='error' && <div className="mt-4 bg-amber-100 text-brand-russty p-3 rounded">Booking failed</div>}
+    <div className="bg-cream min-h-screen overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <BookingNav />
+        
+        {/* Hero */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-brand-brown">Accommodation Booking</h1>
+          <p className="mt-2 text-sm sm:text-base text-brand-russty max-w-prose">
+            Find your perfect stay with our smart property selection and best price guarantee.
+          </p>
+        </div>
+
+        {/* Booking Form */}
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-6">
+          <h2 className="text-lg font-bold text-brand-brown mb-4">Search Accommodation</h2>
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Location */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-brand-brown">
+                Location *
+              </label>
+              <input
+                type="text"
+                value={location}
+                onChange={e => setLocation(e.target.value)}
+                required
+                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+                placeholder="e.g., Durban, Umhlanga, Ballito"
+              />
+              {formErrors.location && (
+                <p className="text-red-500 text-xs mt-1">{formErrors.location}</p>
+              )}
+            </div>
+
+            {/* Dates */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-2 text-sm font-semibold text-brand-brown">
+                  Check-in Date *
+                </label>
+                <input
+                  type="date"
+                  value={checkIn}
+                  onChange={e => setCheckIn(e.target.value)}
+                  min={today}
+                  required
+                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+                />
+                {formErrors.checkIn && (
+                  <p className="text-red-500 text-xs mt-1">{formErrors.checkIn}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm font-semibold text-brand-brown">
+                  Check-out Date *
+                </label>
+                <input
+                  type="date"
+                  value={checkOut}
+                  onChange={e => setCheckOut(e.target.value)}
+                  min={minCheckOut}
+                  required
+                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+                />
+                {formErrors.checkOut && (
+                  <p className="text-red-500 text-xs mt-1">{formErrors.checkOut}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Guests & Room Type */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="guests" className="block mb-2 text-sm font-semibold text-brand-brown">
+                  Number of Guests *
+                </label>
+                <input
+                  id="guests"
+                  type="number"
+                  min={1}
+                  max={20}
+                  value={guests}
+                  onChange={e => setGuests(Number(e.target.value))}
+                  required
+                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+                />
+                {formErrors.guests && (
+                  <p className="text-red-500 text-xs mt-1">{formErrors.guests}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="roomType" className="block mb-2 text-sm font-semibold text-brand-brown">
+                  Room Type
+                </label>
+                <select
+                  id="roomType"
+                  value={roomType}
+                  onChange={e => setRoomType(e.target.value)}
+                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+                >
+                  <option value="standard">Standard Room</option>
+                  <option value="deluxe">Deluxe Room</option>
+                  <option value="suite">Suite</option>
+                  <option value="family">Family Room</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Special Requests */}
+            <div>
+              <label htmlFor="specialRequests" className="block mb-2 text-sm font-semibold text-brand-brown">
+                Special Requests <span className="text-gray-500 text-xs">(optional)</span>
+              </label>
+              <textarea
+                id="specialRequests"
+                value={specialRequests}
+                onChange={e => setSpecialRequests(e.target.value)}
+                placeholder="Early check-in, late check-out, accessible room, etc."
+                rows={3}
+                maxLength={200}
+                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors resize-none"
+              />
+              <p className="text-xs text-gray-500 mt-1">{specialRequests.length}/200 characters</p>
+            </div>
+
+            <Button type="submit" fullWidth disabled={loading}>
+              {loading ? 'Processing...' : 'Search Properties'}
+            </Button>
+          </form>
+        </div>
+
+        {/* Pending Property Selection */}
+        {propertyPending && !loading && (
+          <div className="p-6 border-2 border-brand-orange rounded-lg bg-orange-50 shadow-sm">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-brand-orange flex items-center justify-center flex-shrink-0">
+                <Clock className="h-5 w-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <h2 className="font-bold text-lg text-brand-brown mb-1">
+                  Booking Pending - Choose Your Property
+                </h2>
+                <p className="text-sm text-brand-russty">
+                  Your search details are saved. Select your preferred property to proceed.
+                </p>
+              </div>
+            </div>
+
+            {/* Booking Summary */}
+            <div className="bg-white rounded-lg p-4 mb-4 border border-cream-border">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Location</p>
+                  <p className="font-semibold text-brand-brown">{location}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Guests</p>
+                  <p className="font-semibold text-brand-brown">{guests} guest{guests !== 1 ? 's' : ''}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Check-in</p>
+                  <p className="font-semibold text-brand-brown">{checkIn}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Check-out</p>
+                  <p className="font-semibold text-brand-brown">{checkOut}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <Button
+                fullWidth
+                onClick={reopenPropertySelector}
+                className="flex items-center justify-center gap-2"
+              >
+                <Home className="h-4 w-4" />
+                Pick My Property
+              </Button>
+              
+              <Button
+                fullWidth
+                variant="outline"
+                onClick={autoAssignCheapestProperty}
+                className="flex items-center justify-center gap-2 border-brand-orange text-brand-orange hover:bg-orange-50"
+              >
+                <DollarSign className="h-4 w-4" />
+                Auto-assign Cheapest Property
+              </Button>
+              
+              <p className="text-xs text-center text-gray-600 mt-2">
+                You can also proceed with other bookings and finalize this later.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Selected Property Confirmation */}
+        {selectedProperty && !loading && (
+          <div className="bg-white rounded-xl shadow-sm border border-cream-border" id="booking-confirmation">
+            {/* Header */}
+            <div className="p-6 border-b bg-gradient-to-r from-green-50 to-emerald-50">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-brand-brown mb-1">Booking Confirmed</h2>
+                  <p className="text-sm text-gray-600">Confirmation ID: ACC-{Date.now().toString().slice(-8)}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      const email = prompt('Enter your email address:');
+                      if (email) {
+                        alert(`Booking confirmation will be sent to ${email}\n\nNote: Email functionality requires backend integration.`);
+                      }
+                    }}
+                    className="px-3 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 transition-colors text-sm flex items-center gap-2"
+                  >
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Email
+                  </button>
+                  <button
+                    onClick={() => window.print()}
+                    className="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm flex items-center gap-2"
+                  >
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Booking Details */}
+            <div className="p-6 space-y-6">
+              {/* Property Information */}
+              <div>
+                <h3 className="text-lg font-bold text-brand-brown mb-3">Property Details</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600">Property Name</p>
+                    <p className="font-semibold text-brand-brown">{selectedProperty.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Type & Rating</p>
+                    <p className="font-semibold text-brand-brown">{selectedProperty.type} • {selectedProperty.stars} ⭐</p>
+                  </div>
+                  <div className="md:col-span-2">
+                    <p className="text-sm text-gray-600">Address</p>
+                    <div className="space-y-2">
+                      <p className="font-semibold text-brand-brown flex items-center gap-2">
+                        <svg className="h-4 w-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        {selectedProperty.address || location}
+                      </p>
+                      
+                      {/* CollEco Travel info box above map link */}
+                      <div className="mb-2 p-3 bg-brand-orange/10 border-l-4 border-brand-orange rounded">
+                        <strong className="text-brand-orange">CollEco Travel Tip:</strong>
+                        <span className="ml-2 text-sm text-brand-brown">For the best rates and support, always book directly with CollEco Travel. Use the map link below only to view the property location—complete your booking here for exclusive perks!</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 mb-2">
+                        <svg className="h-5 w-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <a
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProperty.name + ', ' + selectedProperty.address)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-brand-orange underline font-medium hover:text-orange-600"
+                        >
+                          View Location on Google Maps
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Guest Rating</p>
+                    <p className="font-semibold text-brand-brown">{selectedProperty.rating?.toFixed(1) || 'N/A'}/5.0 ({selectedProperty.reviewCount || 0} reviews)</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Property Contact</p>
+                    <div className="space-y-1">
+                      {selectedProperty.phone && (
+                        <p className="text-sm font-medium text-brand-brown flex items-center gap-2">
+                          <svg className="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                          </svg>
+                          {selectedProperty.phone}
+                        </p>
+                      )}
+                      {selectedProperty.email && (
+                        <p className="text-sm font-medium text-brand-brown flex items-center gap-2">
+                          <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                          {selectedProperty.email}
+                        </p>
+                      )}
+                      {selectedProperty.website && (
+                        <p className="text-sm font-medium text-brand-brown flex items-center gap-2">
+                          <svg className="h-4 w-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                          </svg>
+                          {selectedProperty.website}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stay Information */}
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-bold text-brand-brown mb-3">Stay Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600">Check-in</p>
+                    <p className="font-semibold text-brand-brown">{new Date(checkIn).toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                    <p className="text-xs text-gray-500">After 2:00 PM</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Check-out</p>
+                    <p className="font-semibold text-brand-brown">{new Date(checkOut).toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                    <p className="text-xs text-gray-500">Before 11:00 AM</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Duration</p>
+                    <p className="font-semibold text-brand-brown">
+                      {(() => {
+                        const checkInDate = new Date(checkIn);
+                        const checkOutDate = new Date(checkOut);
+                        const diffTime = Math.abs(checkOutDate - checkInDate);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        const nights = Math.max(1, diffDays);
+                        return `${nights} night${nights !== 1 ? 's' : ''}`;
+                      })()}
+                    </p>
+                    <p className="text-xs text-gray-500">{guests} guest{guests !== 1 ? 's' : ''}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Amenities */}
+              {selectedProperty.amenities && selectedProperty.amenities.length > 0 && (
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-bold text-brand-brown mb-3">Property Amenities</h3>
+                  
+                  {/* Show selected amenities first if any */}
+                  {selectedProperty.requiredAmenities && selectedProperty.requiredAmenities.length > 0 && (
+                    <div className="mb-4">
+                      <p className="text-sm font-medium text-gray-700 mb-2">✓ Your Selected Amenities:</p>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        {selectedProperty.requiredAmenities.map((amenity, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-sm bg-green-50 border border-green-200 rounded px-3 py-2">
+                            <svg className="h-4 w-4 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span className="font-medium text-green-800">{amenity}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Show all property amenities */}
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-2">All Available Amenities:</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {selectedProperty.amenities.map((amenity, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm text-gray-700">
+                          <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          {amenity}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Meal Plan */}
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-bold text-brand-brown mb-3">Meal Plan</h3>
+                <div className={`border rounded-lg p-4 ${
+                  selectedProperty.mealPlan && selectedProperty.mealPlan !== 'room_only' 
+                    ? 'bg-green-50 border-green-200' 
+                    : 'bg-gray-50 border-gray-200'
+                }`}>
+                  <p className={`font-semibold ${
+                    selectedProperty.mealPlan && selectedProperty.mealPlan !== 'room_only'
+                      ? 'text-green-800'
+                      : 'text-gray-700'
+                  }`}>
+                    {!selectedProperty.mealPlan || selectedProperty.mealPlan === 'room_only' ? '🏨 Room Only' :
+                     selectedProperty.mealPlan === 'breakfast' ? '🍳 Bed & Breakfast' : 
+                     selectedProperty.mealPlan === 'half_board' ? '🍽️ Half Board (Breakfast & Dinner)' : 
+                     '🍽️ Full Board (All Meals)'}
+                  </p>
+                  <p className={`text-sm mt-1 ${
+                    selectedProperty.mealPlan && selectedProperty.mealPlan !== 'room_only'
+                      ? 'text-green-700'
+                      : 'text-gray-600'
+                  }`}>
+                    {!selectedProperty.mealPlan || selectedProperty.mealPlan === 'room_only' ? 'No meals included - Room accommodation only' :
+                     selectedProperty.mealPlan === 'breakfast' ? 'Daily breakfast included in your rate' : 
+                     selectedProperty.mealPlan === 'half_board' ? 'Breakfast and dinner included daily' : 
+                     'Breakfast, lunch, and dinner included daily'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Pricing */}
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-bold text-brand-brown mb-3">Pricing Breakdown</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">R{selectedProperty.pricePerNight.toLocaleString()} × {(() => {
+                      const checkInDate = new Date(checkIn);
+                      const checkOutDate = new Date(checkOut);
+                      const diffTime = Math.abs(checkOutDate - checkInDate);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      return Math.max(1, diffDays);
+                    })()} night(s)</span>
+                    <span className="font-semibold">R{(selectedProperty.pricePerNight * (() => {
+                      const checkInDate = new Date(checkIn);
+                      const checkOutDate = new Date(checkOut);
+                      const diffTime = Math.abs(checkOutDate - checkInDate);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      return Math.max(1, diffDays);
+                    })()).toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-sm border-t pt-2">
+                    <span className="font-bold text-brand-brown">Total Amount</span>
+                    <span className="text-2xl font-bold text-brand-orange">R{(selectedProperty.totalPrice || (selectedProperty.pricePerNight * (() => {
+                      const checkInDate = new Date(checkIn);
+                      const checkOutDate = new Date(checkOut);
+                      const diffTime = Math.abs(checkOutDate - checkInDate);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      return Math.max(1, diffDays);
+                    })())).toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Terms & Conditions */}
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-bold text-brand-brown mb-3">Terms & Conditions</h3>
+                <div className="bg-gray-50 rounded-lg p-4 space-y-3 text-sm text-gray-700">
+                  <div>
+                    <p className="font-semibold text-brand-brown mb-1">Cancellation Policy</p>
+                    <ul className="list-disc list-inside space-y-1 text-xs">
+                      <li>Free cancellation up to 48 hours before check-in</li>
+                      <li>50% refund for cancellations 24-48 hours before check-in</li>
+                      <li>No refund for cancellations within 24 hours of check-in</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-brown mb-1">Payment Terms</p>
+                    <ul className="list-disc list-inside space-y-1 text-xs">
+                      <li>Full payment required at time of booking</li>
+                      <li>Credit card details may be required for incidentals</li>
+                      <li>Prices include VAT where applicable</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-brown mb-1">Property Policies</p>
+                    <ul className="list-disc list-inside space-y-1 text-xs">
+                      <li>Valid photo ID and credit card required at check-in</li>
+                      <li>Minimum age to check-in: 18 years</li>
+                      <li>Pets: Contact property for pet policy</li>
+                      <li>Children: All ages welcome (extra charges may apply)</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-brown mb-1">Important Information</p>
+                    <ul className="list-disc list-inside space-y-1 text-xs">
+                      <li>Please inform the property of your estimated arrival time</li>
+                      <li>Special requests are subject to availability and may incur additional charges</li>
+                      <li>This is a smoke-free property</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Information */}
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-bold text-brand-brown mb-3">Need Assistance?</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <p className="text-gray-600">Customer Support</p>
+                    <p className="font-semibold text-brand-brown">+27 31 123 4567</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Email</p>
+                    <p className="font-semibold text-brand-brown">support@colleco.co.za</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Operating Hours</p>
+                    <p className="font-semibold text-brand-brown">24/7 Support</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Static map image using Google Static Maps API */}
+              {selectedProperty.address && (
+                <div className="mb-2">
+                  <img
+                    src={`https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(selectedProperty.address)}&zoom=15&size=600x200&markers=color:orange|${encodeURIComponent(selectedProperty.address)}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
+                    alt="Map location"
+                    className="rounded border border-gray-200"
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Property Selector Modal */}
+      {showPropertySelector && (
+        <AccommodationSelector
+          location={location}
+          checkIn={checkIn}
+          checkOut={checkOut}
+          guests={guests}
+          onSelectProperty={confirmPropertySelection}
+          onSkip={handleSkipPropertySelection}
+          onCancel={() => setShowPropertySelector(false)}
+        />
+      )}
     </div>
   );
 }

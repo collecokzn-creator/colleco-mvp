@@ -586,6 +586,32 @@ const multer = require('multer');
 const upload = multer({ dest: path.join(DATA_DIR, 'uploads') });
 const INVENTORY_UPLOADS_FILE = path.join(DATA_DIR, 'bulk_inventory_uploads.jsonl');
 
+// --- Transfer: Nearby Drivers endpoint ---
+app.get('/api/transfers/nearby', (req, res) => {
+  try {
+    const { location } = req.query;
+    if (!location || location.length < 3) {
+      return res.json({ ok: true, drivers: [] });
+    }
+    
+    // Mock nearby drivers for demo
+    const mockDrivers = [
+      { id: 'd1', name: 'John Sipho', lat: -29.9617, lng: 30.9274, eta: 5, vehicle: 'Toyota Quantum', rating: 4.8 },
+      { id: 'd2', name: 'Sarah Naidoo', lat: -29.8850, lng: 31.0450, eta: 8, vehicle: 'Mercedes Sprinter', rating: 4.9 },
+      { id: 'd3', name: 'Michael Dube', lat: -29.8320, lng: 31.0220, eta: 12, vehicle: 'VW Caravelle', rating: 4.7 },
+    ];
+    
+    // Filter to 2-3 nearby based on location hash
+    const hash = location.toLowerCase().charCodeAt(0) % 3;
+    const nearby = mockDrivers.slice(0, hash + 1);
+    
+    return res.json({ ok: true, drivers: nearby });
+  } catch (e) {
+    console.error('[transfers/nearby] error', e);
+    return res.status(500).json({ ok: false, error: 'nearby_failed' });
+  }
+});
+
 app.post('/api/inventory/bulk-upload', upload.single('file'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ ok: false, error: 'no_file_uploaded' });
@@ -621,10 +647,100 @@ app.post('/api/inventory/bulk-upload', upload.single('file'), (req, res) => {
 
 // --- Transfer Request Endpoints ---
 
+// POST /api/transfers/estimate - Get price estimate for a transfer
+app.post('/api/transfers/estimate', (req, res) => {
+  try {
+    const { pickup, dropoff, vehicleType = 'sedan', pax = 1, luggage = 1, isRoundTrip = false, additionalStops = [] } = req.body;
+    
+    // Simple distance-based pricing (in production, use Google Distance Matrix API)
+    const baseFare = {
+      sedan: 50,
+      suv: 80,
+      van: 120,
+      luxury: 150
+    };
+    
+    // Mock distance calculation (in km)
+    const hashCode = (pickup + dropoff).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const baseDistance = 10 + (hashCode % 40); // 10-50km
+    const stopDistance = additionalStops.length * 5; // 5km per additional stop
+    const totalDistance = baseDistance + stopDistance;
+    
+    // Calculate price: base fare + (R8/km for sedan, R10/km for SUV/Van, R15/km for luxury)
+    const perKmRate = {
+      sedan: 8,
+      suv: 10,
+      van: 10,
+      luxury: 15
+    };
+    
+    let amount = baseFare[vehicleType] + (totalDistance * perKmRate[vehicleType]);
+    
+    // Add 20% for round trip
+    if (isRoundTrip) {
+      amount = amount * 1.2;
+    }
+    
+    // Add R10 per luggage piece over 2
+    if (luggage > 2) {
+      amount += (luggage - 2) * 10;
+    }
+    
+    // Round to nearest R10
+    amount = Math.round(amount / 10) * 10;
+    
+    const duration = Math.round(totalDistance / 0.8); // Assume 50km/h average speed
+    
+    return res.json({
+      ok: true,
+      estimate: {
+        amount,
+        distance: totalDistance.toFixed(1),
+        duration: `${duration} min`,
+        breakdown: {
+          baseFare: baseFare[vehicleType],
+          distanceFare: Math.round(totalDistance * perKmRate[vehicleType]),
+          roundTripMultiplier: isRoundTrip ? 1.2 : 1,
+          luggageFee: luggage > 2 ? (luggage - 2) * 10 : 0
+        }
+      }
+    });
+  } catch (e) {
+    console.error('[transfers] estimate failed', e);
+    return res.status(500).json({ ok: false, error: 'estimate_failed' });
+  }
+});
+
+// POST /api/transfers/request/:id/cancel - Cancel a transfer request
+app.post('/api/transfers/request/:id/cancel', (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const request = store._transferRequests[requestId];
+    
+    if (!request) {
+      return res.status(404).json({ ok: false, error: 'request_not_found' });
+    }
+    
+    // Only allow cancellation if not completed
+    if (request.status === 'completed') {
+      return res.status(400).json({ ok: false, error: 'cannot_cancel_completed' });
+    }
+    
+    request.status = 'cancelled';
+    request.cancelledAt = Date.now();
+    saveStore();
+    
+    return res.json({ ok: true, message: 'Request cancelled successfully' });
+  } catch (e) {
+    console.error('[transfers] cancel failed', e);
+    return res.status(500).json({ ok: false, error: 'cancel_failed' });
+  }
+});
+
 // POST /api/transfers/request - Create a new transfer request
 app.post('/api/transfers/request', (req, res) => {
   try {
-    const { pickup, dropoff, date, time, pax, bookingType } = req.body || {};
+    const { pickup, dropoff, date, time, pax, bookingType, isRoundTrip, isMultiStop, additionalStops, returnDate, returnTime, multiDayService, serviceDays, recurringDays } = req.body || {};
     if (!pickup || !dropoff) {
       return res.status(400).json({ ok: false, error: 'pickup_dropoff_required' });
     }
@@ -638,12 +754,21 @@ app.post('/api/transfers/request', (req, res) => {
       time: time || new Date().toISOString(),
       pax: Number(pax || 1),
       bookingType: bookingType || 'instant',
+      isRoundTrip: Boolean(isRoundTrip),
+      isMultiStop: Boolean(isMultiStop),
+      additionalStops: additionalStops || [],
+      returnDate,
+      returnTime,
+      multiDayService: Boolean(multiDayService),
+      serviceDays: Number(serviceDays || 1),
+      recurringDays: recurringDays || [],
       status: 'searching',
       price: calculateTransferPrice(pickup, dropoff, pax),
       createdAt: Date.now(),
       customerIp: req.ip,
       driver: null,
-      partnerId: null
+      partnerId: null,
+      driverLocation: null
     };
     
     store._transferRequests[requestId] = request;
@@ -655,11 +780,29 @@ app.post('/api/transfers/request', (req, res) => {
       console.error('[transfers] persist failed', e);
     }
     
-    // Auto-match after 2 seconds (simulate matching)
+    // Auto-match after 2 seconds and assign driver with location
     setTimeout(() => {
       if (store._transferRequests[requestId] && store._transferRequests[requestId].status === 'searching') {
+        const mockDriver = {
+          name: 'John Sipho',
+          vehicle: 'Toyota Quantum',
+          plate: 'ND 123-456',
+          rating: 4.8,
+          phone: '+27 82 555 1234',
+          eta: '8 min'
+        };
         store._transferRequests[requestId].status = 'matched';
+        store._transferRequests[requestId].driver = mockDriver;
+        store._transferRequests[requestId].driverLocation = { lat: -29.9617, lng: 30.9274 };
         saveStore();
+        
+        // Auto-accept after another 3 seconds
+        setTimeout(() => {
+          if (store._transferRequests[requestId] && store._transferRequests[requestId].status === 'matched') {
+            store._transferRequests[requestId].status = 'accepted';
+            saveStore();
+          }
+        }, 3000);
       }
     }, 2000);
     
@@ -2452,6 +2595,1073 @@ app.get('/api/ai/config', authCheck, (req,res)=>{
   const llmProvider = (process.env.LLM_PROVIDER || (process.env.AZURE_OPENAI_API_KEY ? 'azure-openai' : (process.env.OPENAI_API_KEY ? 'openai' : 'stub')));
   const llmModel = process.env.OPENAI_MODEL || process.env.AZURE_OPENAI_DEPLOYMENT || undefined;
   res.json({ hybridLLM: HYBRID_LLM, rateLimit, metricsHistoryMax: METRICS_HISTORY_MAX, snapshotIntervalMs: 10_000, llm: { provider: llmProvider, model: llmModel } });
+});
+
+// --- Partner Verification Endpoints ---
+const partnerApplications = {}; // id -> application data
+const businessTravelerAccounts = {}; // id -> business account data
+const businessBookings = []; // Business traveler bookings
+const businessTravelers = {}; // accountId -> array of travelers
+
+app.post('/api/partners/apply', (req, res) => {
+  const applicationId = `APP-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
+  const application = {
+    id: applicationId,
+    ...req.body,
+    status: 'pending_documents',
+    submittedAt: new Date().toISOString(),
+    documents: [],
+    documentsComplete: false
+  };
+  partnerApplications[applicationId] = application;
+  res.status(201).json({ ok: true, applicationId, application });
+});
+
+// --- Business Traveler Endpoints ---
+app.post('/api/business-travelers/register', (req, res) => {
+  const accountId = `BIZ-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
+  const account = {
+    id: accountId,
+    ...req.body,
+    accountType: 'business_traveler',
+    status: 'active',
+    createdAt: new Date().toISOString(),
+    settings: {
+      requiresApprovalWorkflow: req.body.requiresApprovalWorkflow || false,
+      centralizedBilling: req.body.centralizedBilling !== false,
+      paymentMethod: req.body.paymentMethod || 'invoice'
+    }
+  };
+  businessTravelerAccounts[accountId] = account;
+  businessTravelers[accountId] = [];
+  res.status(201).json({ ok: true, accountId, account });
+});
+
+app.get('/api/business-travelers/stats', (req, res) => {
+  // Mock stats - in production, aggregate from database
+  res.json({
+    totalBookings: 24,
+    activeTrips: 3,
+    totalSpend: 456780,
+    activeTravelers: 12,
+    pendingApprovals: 2,
+    avgTripCost: 19032
+  });
+});
+
+app.get('/api/business-travelers/bookings/recent', (req, res) => {
+  // Mock recent bookings
+  res.json([
+    {
+      id: 1,
+      travelerName: 'John Doe',
+      destination: 'Cape Town',
+      bookingRef: 'BIZ-2025-001',
+      amount: 18500,
+      bookedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+      id: 2,
+      travelerName: 'Sarah Smith',
+      destination: 'Johannesburg',
+      bookingRef: 'BIZ-2025-002',
+      amount: 12300,
+      bookedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+      id: 3,
+      travelerName: 'Michael Johnson',
+      destination: 'Durban',
+      bookingRef: 'BIZ-2025-003',
+      amount: 9800,
+      bookedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+    }
+  ]);
+});
+
+app.get('/api/business-travelers/trips/upcoming', (req, res) => {
+  // Mock upcoming trips
+  const now = new Date();
+  res.json([
+    {
+      id: 1,
+      bookingRef: 'BIZ-2025-001',
+      destination: 'Cape Town - V&A Waterfront',
+      travelerName: 'John Doe',
+      startDate: new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+      endDate: new Date(now.getTime() + 13 * 24 * 60 * 60 * 1000).toISOString(),
+      status: 'confirmed',
+      totalAmount: 18500,
+      services: { flight: true, accommodation: true, transport: true }
+    },
+    {
+      id: 2,
+      bookingRef: 'BIZ-2025-004',
+      destination: 'Kruger National Park',
+      travelerName: 'Sarah Smith',
+      startDate: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+      endDate: new Date(now.getTime() + 8 * 24 * 60 * 60 * 1000).toISOString(),
+      status: 'pending_approval',
+      totalAmount: 28900,
+      services: { flight: false, accommodation: true, transport: true }
+    },
+    {
+      id: 3,
+      bookingRef: 'BIZ-2025-005',
+      destination: 'Johannesburg - Sandton',
+      travelerName: 'Michael Johnson',
+      startDate: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+      endDate: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+      status: 'confirmed',
+      totalAmount: 8500,
+      services: { flight: true, accommodation: true, transport: false }
+    }
+  ]);
+});
+
+app.get('/api/business-travelers/travelers/top', (req, res) => {
+  // Mock top travelers
+  res.json([
+    { id: 1, name: 'John Doe', trips: 8, department: 'Sales', totalSpend: 124500 },
+    { id: 2, name: 'Sarah Smith', trips: 6, department: 'Marketing', totalSpend: 98200 },
+    { id: 3, name: 'Michael Johnson', trips: 5, department: 'Operations', totalSpend: 76800 },
+    { id: 4, name: 'Emily Davis', trips: 4, department: 'HR', totalSpend: 54300 },
+    { id: 5, name: 'David Wilson', trips: 3, department: 'Finance', totalSpend: 42100 }
+  ]);
+});
+
+app.get('/api/business-travelers/spend/by-category', (req, res) => {
+  // Mock spend by category
+  res.json([
+    { name: 'Flights', amount: 198500 },
+    { name: 'Accommodation', amount: 156200 },
+    { name: 'Ground Transport', amount: 67800 },
+    { name: 'Meals & Entertainment', amount: 24280 },
+    { name: 'Other', amount: 10000 }
+  ]);
+});
+
+// --- Admin: Manage Business Accounts ---
+app.get('/api/admin/business-accounts', (req, res) => {
+  // Mock business accounts list
+  const mockAccounts = [
+    {
+      id: 'BIZ-001',
+      businessName: 'TechCorp Solutions',
+      businessType: 'corporate',
+      companySize: '201-500',
+      contactName: 'Jane Smith',
+      email: 'jane.smith@techcorp.com',
+      phone: '+27 11 234 5678',
+      status: 'active',
+      totalSpend: 456780,
+      activeTravelers: 12,
+      totalBookings: 24,
+      createdAt: new Date('2024-08-15').toISOString()
+    },
+    {
+      id: 'BIZ-002',
+      businessName: 'Green Energy NGO',
+      businessType: 'ngo',
+      companySize: '11-50',
+      contactName: 'Michael Johnson',
+      email: 'mjohnson@greenenergy.org',
+      phone: '+27 21 987 6543',
+      status: 'active',
+      totalSpend: 128500,
+      activeTravelers: 5,
+      totalBookings: 8,
+      createdAt: new Date('2024-10-20').toISOString()
+    },
+    {
+      id: 'BIZ-003',
+      businessName: 'StartupHub Ventures',
+      businessType: 'startup',
+      companySize: '1-10',
+      contactName: 'Sarah Davis',
+      email: 'sarah@startuphub.co.za',
+      phone: '+27 82 555 1234',
+      status: 'pending',
+      totalSpend: 45300,
+      activeTravelers: 3,
+      totalBookings: 4,
+      createdAt: new Date('2025-01-10').toISOString()
+    }
+  ];
+  res.json(mockAccounts);
+});
+
+app.get('/api/admin/business-accounts/stats', (req, res) => {
+  res.json({
+    totalAccounts: 18,
+    activeAccounts: 15,
+    totalRevenue: 1245600,
+    pendingApprovals: 3
+  });
+});
+
+app.get('/api/admin/business-accounts/:id', (req, res) => {
+  // Mock single account detail
+  const mockAccount = {
+    id: req.params.id,
+    businessName: 'TechCorp Solutions',
+    registrationNumber: '2024/123456/07',
+    businessType: 'corporate',
+    companySize: '201-500',
+    industry: 'Technology',
+    contactName: 'Jane Smith',
+    contactTitle: 'Travel Manager',
+    email: 'jane.smith@techcorp.com',
+    phone: '+27 11 234 5678',
+    billingAddress: '123 Business Street',
+    city: 'Johannesburg',
+    province: 'Gauteng',
+    country: 'South Africa',
+    taxNumber: '9876543210',
+    status: 'active',
+    totalSpend: 456780,
+    totalBookings: 24,
+    activeTravelers: 12,
+    createdAt: new Date('2024-08-15').toISOString(),
+    settings: {
+      requiresApprovalWorkflow: true,
+      centralizedBilling: true,
+      paymentMethod: 'invoice'
+    }
+  };
+  res.json(mockAccount);
+});
+
+app.get('/api/admin/business-accounts/:id/travelers', (req, res) => {
+  // Mock travelers for account
+  res.json([
+    { id: 1, name: 'John Doe', email: 'john.doe@techcorp.com', department: 'Sales', trips: 8, totalSpend: 124500 },
+    { id: 2, name: 'Sarah Smith', email: 'sarah.smith@techcorp.com', department: 'Marketing', trips: 6, totalSpend: 98200 },
+    { id: 3, name: 'Michael Johnson', email: 'michael.j@techcorp.com', department: 'Operations', trips: 5, totalSpend: 76800 }
+  ]);
+});
+
+app.get('/api/admin/business-accounts/:id/bookings', (req, res) => {
+  // Mock bookings for account
+  const now = new Date();
+  res.json([
+    {
+      id: 1,
+      bookingRef: 'BIZ-2025-001',
+      destination: 'Cape Town - V&A Waterfront',
+      travelerName: 'John Doe',
+      startDate: new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+      endDate: new Date(now.getTime() + 13 * 24 * 60 * 60 * 1000).toISOString(),
+      status: 'confirmed',
+      totalAmount: 18500,
+      services: { flight: true, accommodation: true, transport: true }
+    },
+    {
+      id: 2,
+      bookingRef: 'BIZ-2025-002',
+      destination: 'Johannesburg - Sandton',
+      travelerName: 'Sarah Smith',
+      startDate: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+      endDate: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      status: 'completed',
+      totalAmount: 12300,
+      services: { flight: true, accommodation: true, transport: false }
+    }
+  ]);
+});
+
+app.get('/api/admin/business-accounts/:id/analytics', (req, res) => {
+  res.json({
+    spendByCategory: [
+      { name: 'Flights', amount: 198500 },
+      { name: 'Accommodation', amount: 156200 },
+      { name: 'Ground Transport', amount: 67800 },
+      { name: 'Meals & Entertainment', amount: 24280 }
+    ]
+  });
+});
+
+app.patch('/api/admin/business-accounts/:id/status', (req, res) => {
+  const { status } = req.body;
+  // In production, update database
+  res.json({ ok: true, accountId: req.params.id, status });
+});
+
+app.get('/api/admin/business-accounts/:id/export', (req, res) => {
+  // Mock CSV export
+  const csv = `Business Name,Contact,Email,Total Spend,Status
+TechCorp Solutions,Jane Smith,jane.smith@techcorp.com,456780,active`;
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', `attachment; filename=account-${req.params.id}.csv`);
+  res.send(csv);
+});
+
+// --- Workflow Automation & AI Features ---
+app.post('/api/workflows/auto-approve', (req, res) => {
+  const { bookingId, amount, businessAccountId } = req.body;
+  
+  // Auto-approval logic based on threshold
+  const autoApproveThreshold = 5000;
+  const autoApproved = amount <= autoApproveThreshold;
+  
+  res.json({
+    ok: true,
+    bookingId,
+    autoApproved,
+    status: autoApproved ? 'approved' : 'pending_approval',
+    approver: autoApproved ? 'system' : 'manager',
+    reason: autoApproved ? 'Within auto-approval threshold' : 'Requires manager approval',
+    approvalDeadline: autoApproved ? null : new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+  });
+});
+
+app.post('/api/workflows/smart-booking-defaults', (req, res) => {
+  const { travelerId } = req.body;
+  
+  // Mock smart defaults based on traveler history
+  res.json({
+    ok: true,
+    defaults: {
+      accommodationType: 'hotel',
+      roomType: 'standard',
+      mealPlan: 'bed_breakfast',
+      suggestedDuration: 3,
+      suggestedBudget: { min: 8000, max: 15000 }
+    },
+    recommendations: {
+      destinations: ['Cape Town', 'Johannesburg', 'Durban'],
+      insights: [
+        {
+          type: 'budget_optimization',
+          message: 'Book 14 days in advance to save up to 15%'
+        }
+      ]
+    }
+  });
+});
+
+app.post('/api/workflows/generate-invoice', (req, res) => {
+  const { businessAccountId, period } = req.body;
+  
+  const invoiceNumber = `INV-${businessAccountId.substring(0, 4)}-${Date.now()}`;
+  
+  res.json({
+    ok: true,
+    invoice: {
+      invoiceNumber,
+      businessAccountId,
+      period,
+      lineItems: [
+        { description: 'Business Travel - January 2025', amount: 45600, tax: 6840, total: 52440 }
+      ],
+      subtotal: 45600,
+      tax: 6840,
+      total: 52440,
+      dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+      paymentTerms: '30 days',
+      aiOptimizations: [
+        {
+          type: 'volume_discount',
+          message: 'Qualify for 10% discount on bookings over R50k',
+          potentialSaving: 4560
+        }
+      ]
+    }
+  });
+});
+
+app.post('/api/workflows/suggest-traveler', (req, res) => {
+  const { tripDetails } = req.body;
+  
+  // Mock traveler suggestion
+  res.json({
+    ok: true,
+    recommended: {
+      id: 1,
+      name: 'John Doe',
+      department: 'Sales',
+      score: 85,
+      reasoning: 'Department match, familiar with destination'
+    },
+    alternatives: [
+      { id: 2, name: 'Sarah Smith', department: 'Marketing', score: 65 },
+      { id: 3, name: 'Michael Johnson', department: 'Operations', score: 55 }
+    ]
+  });
+});
+
+// --- Pick My Ride API ---
+app.post('/api/transfers/available-rides', (req, res) => {
+  const { pickup, dropoff, vehicleType, passengers } = req.body;
+  
+  // Generate diverse ride options with different brands, drivers, prices, ratings
+  const brands = [
+    { id: 'uber', name: 'Uber', isPremium: false },
+    { id: 'bolt', name: 'Bolt', isPremium: false },
+    { id: 'indrive', name: 'inDrive', isPremium: false },
+    { id: 'didi', name: 'DiDi', isPremium: false },
+    { id: 'executive', name: 'Executive Transfers', isPremium: true },
+    { id: 'luxury', name: 'Luxury Rides SA', isPremium: true },
+    { id: 'coastal', name: 'Coastal Shuttles', isPremium: false },
+    { id: 'city', name: 'City Cabs', isPremium: false }
+  ];
+
+  const drivers = [
+    {
+      id: 'DRV001',
+      name: 'Thabo Mkhize',
+      photo: null,
+      isVerified: true,
+      isSuperDriver: true,
+      languages: ['English', 'Zulu', 'Afrikaans'],
+      specialties: ['Airport Transfers', 'Long Distance'],
+      rating: 4.9,
+      totalReviews: 342,
+      completedTrips: 1250
+    },
+    {
+      id: 'DRV002',
+      name: 'Sarah van der Merwe',
+      photo: null,
+      isVerified: true,
+      isSuperDriver: false,
+      languages: ['English', 'Afrikaans'],
+      specialties: ['Corporate Travel', 'City Tours'],
+      rating: 4.8,
+      totalReviews: 215,
+      completedTrips: 890
+    },
+    {
+      id: 'DRV003',
+      name: 'Sipho Ndlovu',
+      photo: null,
+      isVerified: true,
+      isSuperDriver: true,
+      languages: ['English', 'Zulu'],
+      specialties: ['Budget Friendly', 'Flexible Schedule'],
+      rating: 4.7,
+      totalReviews: 456,
+      completedTrips: 1580
+    },
+    {
+      id: 'DRV004',
+      name: 'Fatima Patel',
+      photo: null,
+      isVerified: true,
+      isSuperDriver: false,
+      languages: ['English', 'Hindi'],
+      specialties: ['Family Friendly', 'Safe Driver'],
+      rating: 4.9,
+      totalReviews: 189,
+      completedTrips: 720
+    },
+    {
+      id: 'DRV005',
+      name: 'John Smith',
+      photo: null,
+      isVerified: true,
+      isSuperDriver: true,
+      languages: ['English'],
+      specialties: ['Luxury Service', 'Executive'],
+      rating: 5.0,
+      totalReviews: 98,
+      completedTrips: 320
+    },
+    {
+      id: 'DRV006',
+      name: 'Nomsa Dlamini',
+      photo: null,
+      isVerified: true,
+      isSuperDriver: false,
+      languages: ['English', 'Zulu', 'Xhosa'],
+      specialties: ['Tourism', 'Local Expert'],
+      rating: 4.6,
+      totalReviews: 287,
+      completedTrips: 950
+    },
+    {
+      id: 'DRV007',
+      name: 'Mohammed Ali',
+      photo: null,
+      isVerified: true,
+      isSuperDriver: false,
+      languages: ['English', 'Arabic'],
+      specialties: ['Night Shifts', 'Reliable'],
+      rating: 4.8,
+      totalReviews: 134,
+      completedTrips: 560
+    },
+    {
+      id: 'DRV008',
+      name: 'Linda Ngubane',
+      photo: null,
+      isVerified: true,
+      isSuperDriver: true,
+      languages: ['English', 'Zulu'],
+      specialties: ['Women Safety', 'Professional'],
+      rating: 4.9,
+      totalReviews: 267,
+      completedTrips: 1100
+    }
+  ];
+
+  const vehicles = [
+    { model: 'Toyota Corolla', color: 'Silver', plate: 'CA 123-456', features: ['AC', 'USB Charging'] },
+    { model: 'VW Polo', color: 'White', plate: 'CA 789-012', features: ['AC', 'Music'] },
+    { model: 'BMW 3 Series', color: 'Black', plate: 'CA 345-678', features: ['AC', 'Leather', 'WiFi'] },
+    { model: 'Mercedes E-Class', color: 'Silver', plate: 'CA 901-234', features: ['AC', 'Leather', 'WiFi', 'Water'] },
+    { model: 'Toyota Fortuner', color: 'Grey', plate: 'CA 567-890', features: ['AC', '4x4', 'Spacious'] },
+    { model: 'Honda Accord', color: 'Blue', plate: 'CA 234-567', features: ['AC', 'Comfort'] },
+    { model: 'Nissan Almera', color: 'Red', plate: 'CA 678-901', features: ['AC', 'Economy'] },
+    { model: 'Audi A4', color: 'White', plate: 'CA 012-345', features: ['AC', 'Premium', 'Sound System'] }
+  ];
+
+  const reviews = [
+    { author: 'David M.', comment: 'Excellent service, very professional and on time!' },
+    { author: 'Zanele K.', comment: 'Great driver, made me feel safe and comfortable.' },
+    { author: 'Peter J.', comment: 'Best ride I\'ve had in a long time. Highly recommend!' },
+    { author: 'Ayesha P.', comment: 'Friendly and knowledgeable about the area.' },
+    { author: 'Chris B.', comment: 'Clean vehicle, smooth ride, good conversation.' },
+    { author: 'Nomthandazo S.', comment: 'Always on time, courteous and professional.' },
+    { author: 'Raj K.', comment: 'Affordable and reliable, will book again!' },
+    { author: 'Emma W.', comment: 'Made my airport transfer stress-free.' }
+  ];
+
+  // Calculate base price based on distance estimate
+  const basePrice = 850; // Base for the route
+  
+  // Generate 8 ride options with varying prices and attributes
+  const rides = drivers.map((driver, index) => {
+    const brand = brands[index % brands.length];
+    const vehicle = vehicles[index];
+    const review = reviews[index];
+    
+    // Price variation based on brand and driver quality
+    let priceMultiplier = 1.0;
+    if (brand.isPremium) priceMultiplier += 0.3;
+    if (driver.isSuperDriver) priceMultiplier += 0.15;
+    if (driver.rating >= 4.9) priceMultiplier += 0.1;
+    
+    // Add some randomness for market dynamics
+    priceMultiplier += (Math.random() * 0.2 - 0.1); // ±10%
+    
+    const price = Math.round(basePrice * priceMultiplier);
+    
+    // Determine if popular based on stats
+    const isPopular = driver.completedTrips > 1000 && driver.rating >= 4.8;
+    
+    return {
+      id: `RIDE-${Date.now()}-${index}`,
+      brand,
+      driver,
+      vehicle,
+      price,
+      rating: driver.rating,
+      totalReviews: driver.totalReviews,
+      completedTrips: driver.completedTrips,
+      estimatedArrival: 5 + Math.floor(Math.random() * 15), // 5-20 minutes
+      isPopular,
+      latestReview: review
+    };
+  });
+
+  res.json({
+    ok: true,
+    rides,
+    pickup,
+    dropoff,
+    requestedVehicleType: vehicleType
+  });
+});
+
+// POST /api/accommodation/available-properties - Get available accommodation options
+app.post('/api/accommodation/available-properties', (req, res) => {
+  const { location, checkIn, checkOut, guests } = req.body;
+  
+  const propertyTypes = ['Hotel', 'Guesthouse', 'B&B', 'Lodge', 'Resort'];
+  const propertyNames = [
+    'The Oyster Box', 'Beverly Hills Hotel', 'Southern Sun', 'Protea Hotel', 
+    'Garden Court', 'African Pride', 'City Lodge', 'Premier Hotel',
+    'Coastlands Musgrave', 'Quarters Hotel', 'Durban Hilton', 'Holiday Inn'
+  ];
+  const locations = [
+    'Umhlanga Rocks, Durban', 'Durban Beachfront', 'Gateway, Umhlanga', 
+    'Ballito, KZN', 'Durban North', 'Morningside, Durban', 
+    'Westville, Durban', 'Pinetown, Durban'
+  ];
+  const amenitiesList = [
+    ['Free WiFi', 'Pool', 'Breakfast', 'Parking', 'Restaurant', 'Gym', 'Spa', 'Room Service'],
+    ['Free WiFi', 'Pool', 'Breakfast', 'Parking', 'Bar'],
+    ['Free WiFi', 'Breakfast', 'Parking', 'Garden', 'BBQ'],
+    ['Free WiFi', 'Pool', 'Breakfast', 'Parking', 'Restaurant', 'Gym', 'Beach Access'],
+    ['Free WiFi', 'Pool', 'Breakfast', 'Parking', 'Conference Room', 'Business Center'],
+    ['Free WiFi', 'Breakfast', 'Parking', 'Pet Friendly', 'Laundry']
+  ];
+
+  // Base price per night
+  const basePrice = 1200;
+
+  // Generate 10-12 property options
+  const propertyCount = 10 + Math.floor(Math.random() * 3);
+  const properties = Array.from({ length: propertyCount }, (_, index) => {
+    const stars = 3 + Math.floor(Math.random() * 3); // 3-5 stars
+    const type = propertyTypes[index % propertyTypes.length];
+    const name = propertyNames[index % propertyNames.length];
+    const address = locations[index % locations.length];
+    const amenities = amenitiesList[index % amenitiesList.length];
+    
+    // Price variation based on stars and type
+    let priceMultiplier = 0.5 + (stars / 5) * 1.5; // 3 stars ~= 1.4x, 5 stars ~= 2.0x
+    if (type === 'Resort' || type === 'Lodge') priceMultiplier += 0.3;
+    if (amenities.includes('Spa')) priceMultiplier += 0.2;
+    
+    // Random market variation
+    priceMultiplier += (Math.random() * 0.3 - 0.15);
+    
+    const pricePerNight = Math.round(basePrice * priceMultiplier / 50) * 50; // Round to nearest 50
+    
+    // Calculate total based on nights
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    const nights = Math.max(1, Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)));
+    const totalPrice = pricePerNight * nights;
+    
+    const rating = 3.5 + Math.random() * 1.5; // 3.5-5.0
+    const reviewCount = 50 + Math.floor(Math.random() * 950); // 50-1000 reviews
+    
+    const isPremier = stars === 5 && rating >= 4.7;
+    const ecoFriendly = Math.random() > 0.7;
+    const isPopular = reviewCount > 500 && rating >= 4.5;
+    
+    // Determine available meal plans (higher star properties offer more options)
+    const mealPlans = ['room_only'];
+    if (stars >= 3) mealPlans.push('breakfast');
+    if (stars >= 4) mealPlans.push('half_board');
+    if (stars >= 4 && (type === 'Hotel' || type === 'Resort')) mealPlans.push('full_board');
+    
+    // Generate property contact details
+    const areaCode = '031'; // Durban area code
+    const phoneNumber = `+27 ${areaCode} ${Math.floor(100 + Math.random() * 900)} ${Math.floor(1000 + Math.random() * 9000)}`;
+    const emailDomain = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const propertyEmail = `reservations@${emailDomain}.co.za`;
+    const website = `www.${emailDomain}.co.za`;
+    
+    return {
+      id: `PROP-${Date.now()}-${index}`,
+      name,
+      type,
+      stars,
+      address,
+      rating: Number(rating.toFixed(1)),
+      reviewCount,
+      pricePerNight,
+      totalPrice,
+      amenities,
+      mealPlans, // Available meal plan options for this property
+      isPremier,
+      ecoFriendly,
+      isPopular,
+      imageUrl: null, // Client can use placeholder
+      checkIn,
+      checkOut,
+      nights,
+      // Property contact details
+      phone: phoneNumber,
+      email: propertyEmail,
+      website: website
+    };
+  });
+
+  res.json({
+    ok: true,
+    properties,
+    location,
+    checkIn,
+    checkOut,
+    guests
+  });
+});
+
+// POST /api/carhire/available-cars - Get available car hire options
+app.post('/api/carhire/available-cars', (req, res) => {
+  const { pickupLocation, dropoffLocation, pickupDate, dropoffDate } = req.body;
+  
+  const carData = [
+    { make: 'Toyota', model: 'Corolla', year: 2023, category: 'Compact', seats: 5, luggage: 2, transmission: 'Automatic', fuelType: 'Petrol' },
+    { make: 'VW', model: 'Polo', year: 2024, category: 'Economy', seats: 5, luggage: 2, transmission: 'Manual', fuelType: 'Petrol' },
+    { make: 'Nissan', model: 'X-Trail', year: 2023, category: 'SUV', seats: 7, luggage: 4, transmission: 'Automatic', fuelType: 'Diesel' },
+    { make: 'Hyundai', model: 'i20', year: 2024, category: 'Economy', seats: 5, luggage: 2, transmission: 'Manual', fuelType: 'Petrol' },
+    { make: 'Toyota', model: 'Fortuner', year: 2023, category: 'SUV', seats: 7, luggage: 5, transmission: 'Automatic', fuelType: 'Diesel' },
+    { make: 'BMW', model: '3 Series', year: 2024, category: 'Luxury', seats: 5, luggage: 3, transmission: 'Automatic', fuelType: 'Petrol' },
+    { make: 'Mercedes', model: 'C-Class', year: 2023, category: 'Luxury', seats: 5, luggage: 3, transmission: 'Automatic', fuelType: 'Petrol' },
+    { make: 'Renault', model: 'Kwid', year: 2024, category: 'Economy', seats: 4, luggage: 1, transmission: 'Manual', fuelType: 'Petrol' },
+    { make: 'Kia', model: 'Sportage', year: 2023, category: 'SUV', seats: 5, luggage: 4, transmission: 'Automatic', fuelType: 'Diesel' },
+    { make: 'Honda', model: 'Civic', year: 2024, category: 'Compact', seats: 5, luggage: 2, transmission: 'Automatic', fuelType: 'Petrol' },
+    { make: 'Tesla', model: 'Model 3', year: 2024, category: 'Luxury', seats: 5, luggage: 2, transmission: 'Automatic', fuelType: 'Electric' },
+    { make: 'Toyota', model: 'Prius', year: 2023, category: 'Compact', seats: 5, luggage: 2, transmission: 'Automatic', fuelType: 'Hybrid' }
+  ];
+
+  const featuresList = [
+    ['AC', 'GPS', 'Bluetooth', 'USB'],
+    ['AC', 'Bluetooth', 'USB'],
+    ['AC', 'GPS', 'Bluetooth', 'USB', 'Cruise Control'],
+    ['AC', 'USB'],
+    ['AC', 'GPS', 'Bluetooth', 'USB', 'Leather Seats', '4x4'],
+    ['AC', 'GPS', 'Bluetooth', 'USB', 'Leather Seats', 'Sunroof'],
+    ['AC', 'GPS', 'Bluetooth', 'USB', 'Leather Seats', 'Premium Sound'],
+    ['AC'],
+    ['AC', 'GPS', 'Bluetooth', 'USB', 'Parking Sensors'],
+    ['AC', 'Bluetooth', 'USB', 'Apple CarPlay'],
+    ['AC', 'GPS', 'Bluetooth', 'USB', 'Autopilot', 'Premium Sound'],
+    ['AC', 'GPS', 'Bluetooth', 'USB', 'Eco Mode']
+  ];
+
+  // Base price per day
+  const basePrice = 350;
+
+  const cars = carData.map((car, index) => {
+    const features = featuresList[index % featuresList.length];
+    
+    // Price multipliers
+    let priceMultiplier = 1.0;
+    if (car.category === 'Luxury') priceMultiplier = 2.5;
+    else if (car.category === 'SUV') priceMultiplier = 1.8;
+    else if (car.category === 'Compact') priceMultiplier = 1.2;
+    else if (car.category === 'Economy') priceMultiplier = 0.8;
+    
+    if (car.transmission === 'Automatic') priceMultiplier += 0.2;
+    if (car.fuelType === 'Electric') priceMultiplier += 0.4;
+    if (car.fuelType === 'Hybrid') priceMultiplier += 0.3;
+    if (car.year >= 2024) priceMultiplier += 0.15;
+    
+    // Random variation
+    priceMultiplier += (Math.random() * 0.2 - 0.1);
+    
+    const pricePerDay = Math.round(basePrice * priceMultiplier / 10) * 10;
+    
+    // Calculate rental days
+    const pickupDt = new Date(pickupDate);
+    const dropoffDt = new Date(dropoffDate);
+    const days = Math.max(1, Math.ceil((dropoffDt - pickupDt) / (1000 * 60 * 60 * 24)));
+    const totalPrice = pricePerDay * days;
+    
+    const rating = 3.8 + Math.random() * 1.2; // 3.8-5.0
+    const reviewCount = 30 + Math.floor(Math.random() * 470); // 30-500
+    const safetyRating = 4 + Math.floor(Math.random() * 2); // 4-5
+    
+    const isPremium = car.category === 'Luxury' && car.year >= 2023;
+    const insuranceIncluded = Math.random() > 0.5;
+    const isPopular = reviewCount > 300 && rating >= 4.5;
+    
+    return {
+      id: `CAR-${Date.now()}-${index}`,
+      make: car.make,
+      model: car.model,
+      year: car.year,
+      category: car.category,
+      seats: car.seats,
+      luggage: car.luggage,
+      transmission: car.transmission,
+      fuelType: car.fuelType,
+      features,
+      pricePerDay,
+      totalPrice,
+      days,
+      rating: Number(rating.toFixed(1)),
+      reviewCount,
+      safetyRating,
+      isPremium,
+      insuranceIncluded,
+      isPopular,
+      imageUrl: null
+    };
+  });
+
+  res.json({
+    ok: true,
+    cars,
+    pickupLocation,
+    dropoffLocation,
+    pickupDate,
+    dropoffDate
+  });
+});
+
+// POST /api/flights/search - Search for available flights
+app.post('/api/flights/search', (req, res) => {
+  const { from, to, departDate, returnDate, passengers } = req.body;
+  
+  const airlines = [
+    { name: 'South African Airways', code: 'SA', rating: 4.2, reviewCount: 12500 },
+    { name: 'British Airways', code: 'BA', rating: 4.5, reviewCount: 25000 },
+    { name: 'Emirates', code: 'EK', rating: 4.8, reviewCount: 45000 },
+    { name: 'FlySafair', code: 'FA', rating: 4.1, reviewCount: 8500 },
+    { name: 'Airlink', code: 'SA', rating: 4.3, reviewCount: 6200 },
+    { name: 'Kulula', code: 'MN', rating: 4.0, reviewCount: 9800 },
+    { name: 'Mango', code: 'JE', rating: 3.9, reviewCount: 7200 },
+    { name: 'Qatar Airways', code: 'QR', rating: 4.7, reviewCount: 38000 }
+  ];
+
+  const cabinClasses = ['economy', 'economy', 'economy', 'premium_economy', 'business', 'economy'];
+  const amenitiesOptions = [
+    ['WiFi', 'Meals', 'Entertainment', 'Checked Baggage'],
+    ['Meals', 'Checked Baggage'],
+    ['WiFi', 'Entertainment', 'Checked Baggage'],
+    ['WiFi', 'Meals', 'Entertainment', 'Checked Baggage', 'Power Outlets'],
+    ['Checked Baggage'],
+    ['WiFi', 'Meals', 'Entertainment', 'Checked Baggage', 'Priority Boarding', 'Lounge Access']
+  ];
+
+  // Base price for route
+  const basePrice = 2500;
+
+  // Generate 8-12 flight options
+  const flightCount = 8 + Math.floor(Math.random() * 5);
+  const flights = Array.from({ length: flightCount }, (_, index) => {
+    const airline = airlines[index % airlines.length];
+    const stops = Math.floor(Math.random() * 3); // 0-2 stops
+    const cabin = cabinClasses[index % cabinClasses.length];
+    const amenities = amenitiesOptions[index % amenitiesOptions.length];
+    
+    // Duration varies by stops
+    const baseDuration = 90 + Math.floor(Math.random() * 60); // 90-150 min base
+    const durationMinutes = baseDuration + (stops * 120); // +2hrs per stop
+    
+    // Price multipliers
+    let priceMultiplier = 1.0;
+    if (stops === 0) priceMultiplier += 0.3; // Direct flights cost more
+    if (cabin === 'premium_economy') priceMultiplier = 1.8;
+    if (cabin === 'business') priceMultiplier = 3.5;
+    if (cabin === 'first') priceMultiplier = 5.0;
+    if (airline.rating >= 4.5) priceMultiplier += 0.2;
+    
+    // Random variation
+    priceMultiplier += (Math.random() * 0.3 - 0.15);
+    
+    const price = Math.round(basePrice * priceMultiplier * passengers / 100) * 100;
+    const pricePerPerson = Math.round(price / passengers);
+    
+    // Generate departure time
+    const departTime = new Date(departDate);
+    departTime.setHours(6 + Math.floor(Math.random() * 16)); // 6am-10pm
+    departTime.setMinutes(Math.floor(Math.random() * 12) * 5); // 0,5,10...55
+    
+    // Calculate arrival
+    const arrivalTime = new Date(departTime.getTime() + durationMinutes * 60000);
+    
+    const isPremium = airline.rating >= 4.5 && (cabin === 'business' || cabin === 'first');
+    const baggageIncluded = amenities.includes('Checked Baggage');
+    const refundable = Math.random() > 0.6;
+    
+    return {
+      id: `FLIGHT-${Date.now()}-${index}`,
+      airline,
+      flightNumber: `${airline.code}${Math.floor(1000 + Math.random() * 8999)}`,
+      from,
+      to,
+      departureTime: departTime.toISOString(),
+      arrivalTime: arrivalTime.toISOString(),
+      durationMinutes,
+      stops,
+      cabin,
+      amenities,
+      price,
+      pricePerPerson,
+      passengers,
+      isPremium,
+      baggageIncluded,
+      refundable,
+      seatsAvailable: 4 + Math.floor(Math.random() * 20)
+    };
+  });
+
+  // Sort by recommended (direct flights, shorter duration, better ratings first)
+  flights.sort((a, b) => {
+    const scoreA = (3 - a.stops) * 100 - a.durationMinutes + a.airline.rating * 50;
+    const scoreB = (3 - b.stops) * 100 - b.durationMinutes + b.airline.rating * 50;
+    return scoreB - scoreA;
+  });
+
+  res.json({
+    ok: true,
+    flights,
+    from,
+    to,
+    departDate,
+    returnDate,
+    passengers
+  });
+});
+
+// --- Smart Notifications API ---
+app.post('/api/notifications/email', (req, res) => {
+  const { to, subject, body, priority } = req.body;
+  
+  console.log(`📧 Email notification: ${to} - ${subject} (${priority})`);
+  
+  // Mock email sending
+  res.json({
+    ok: true,
+    messageId: `email-${Date.now()}`,
+    deliveredAt: new Date().toISOString()
+  });
+});
+
+app.post('/api/notifications/sms', (req, res) => {
+  const { to, message } = req.body;
+  
+  console.log(`📱 SMS notification: ${to} - ${message}`);
+  
+  // Mock SMS sending
+  res.json({
+    ok: true,
+    messageId: `sms-${Date.now()}`,
+    deliveredAt: new Date().toISOString()
+  });
+});
+
+app.get('/api/notifications/preferences', (req, res) => {
+  // Mock user preferences
+  res.json({
+    ok: true,
+    preferences: {
+      channels: { in_app: true, email: true, push: true, sms: false },
+      quietHours: { enabled: true, start: '22:00', end: '07:00' }
+    }
+  });
+});
+
+app.patch('/api/notifications/preferences', (req, res) => {
+  const { preferences } = req.body;
+  
+  console.log('📋 Updated notification preferences:', preferences);
+  
+  res.json({ ok: true, preferences });
+});
+
+app.post('/api/partners/:id/documents', (req, res) => {
+  const app = partnerApplications[req.params.id];
+  if (!app) return res.status(404).json({ error: 'Application not found' });
+  
+  // Mock document upload (in production, handle file upload with multer/similar)
+  const doc = {
+    id: `DOC-${Date.now()}`,
+    type: req.body.type,
+    label: req.body.label || req.body.type,
+    url: `/uploads/documents/${req.params.id}/${req.body.type}.pdf`,
+    uploadedAt: new Date().toISOString(),
+    status: 'pending_review'
+  };
+  
+  app.documents.push(doc);
+  res.json({ ok: true, document: doc, url: doc.url, uploadedAt: doc.uploadedAt });
+});
+
+app.get('/api/partners/:id/status', (req, res) => {
+  const app = partnerApplications[req.params.id];
+  if (!app) return res.status(404).json({ error: 'Application not found' });
+  res.json(app);
+});
+
+app.post('/api/partners/:id/submit-for-review', (req, res) => {
+  const app = partnerApplications[req.params.id];
+  if (!app) return res.status(404).json({ error: 'Application not found' });
+  
+  app.status = 'under_review';
+  app.documentsComplete = true;
+  app.submittedForReviewAt = new Date().toISOString();
+  
+  res.json({ ok: true, message: 'Application submitted for review', application: app });
+});
+
+app.patch('/api/partners/:id/verify', authCheck, (req, res) => {
+  // Admin-only endpoint to approve/reject applications
+  const app = partnerApplications[req.params.id];
+  if (!app) return res.status(404).json({ error: 'Application not found' });
+  
+  const { action, reason } = req.body;
+  
+  if (action === 'approve') {
+    app.status = 'approved';
+    app.approvedAt = new Date().toISOString();
+    app.approvedBy = req.user?.id || 'admin';
+  } else if (action === 'reject') {
+    app.status = 'rejected';
+    app.rejectedAt = new Date().toISOString();
+    app.rejectionReason = reason;
+  } else if (action === 'hold') {
+    app.status = 'on_hold';
+    app.holdReason = reason;
+  }
+  
+  res.json({ ok: true, application: app });
+});
+
+// --- Booking & Itinerary Endpoints ---
+const bookings = {}; // Mock bookings store
+const itineraries = {}; // Mock itineraries store
+
+app.get('/api/bookings/upcoming', (req, res) => {
+  const now = new Date();
+  const upcomingBookings = Object.values(bookings).filter(b => 
+    new Date(b.startDate) > now && b.status !== 'cancelled'
+  );
+  res.json({ ok: true, bookings: upcomingBookings });
+});
+
+app.get('/api/bookings/all', (req, res) => {
+  res.json({ ok: true, bookings: Object.values(bookings) });
+});
+
+app.get('/api/bookings/:id', (req, res) => {
+  const booking = bookings[req.params.id];
+  if (!booking) return res.status(404).json({ error: 'Booking not found' });
+  res.json({ ok: true, booking });
+});
+
+app.get('/api/itineraries/saved', (req, res) => {
+  res.json({ ok: true, itineraries: Object.values(itineraries) });
+});
+
+app.post('/api/itineraries', (req, res) => {
+  const id = req.body.id || `ITN-${Date.now()}`;
+  const itinerary = { ...req.body, id };
+  itineraries[id] = itinerary;
+  res.status(201).json({ ok: true, itinerary });
+});
+
+app.get('/api/itineraries/:id', (req, res) => {
+  const itinerary = itineraries[req.params.id];
+  if (!itinerary) return res.status(404).json({ error: 'Itinerary not found' });
+  res.json({ ok: true, itinerary });
+});
+
+app.delete('/api/itineraries/:id', (req, res) => {
+  if (!itineraries[req.params.id]) return res.status(404).json({ error: 'Itinerary not found' });
+  delete itineraries[req.params.id];
+  res.json({ ok: true, message: 'Itinerary deleted' });
+});
+
+app.get('/api/activity/recent', (req, res) => {
+  // Mock recent activity
+  res.json({ 
+    ok: true, 
+    activities: [
+      { type: 'booking', title: 'Booking Confirmed', description: 'Kruger Safari - 5 days', timeAgo: '2 hours ago' },
+      { type: 'itinerary', title: 'Itinerary Saved', description: 'Cape Town Explorer', timeAgo: '1 day ago' }
+    ] 
+  });
+});
+
+app.get('/api/travelers/stats', (req, res) => {
+  // Mock traveler stats
+  res.json({ 
+    ok: true, 
+    totalTrips: Object.values(bookings).filter(b => b.status !== 'cancelled').length,
+    countriesVisited: 5,
+    totalSpent: 125000,
+    rewardsPoints: 3500
+  });
 });
 
 // --- AI Sessions ---

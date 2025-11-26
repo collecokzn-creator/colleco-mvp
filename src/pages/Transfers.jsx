@@ -3,8 +3,10 @@ import BookingNav from '../components/BookingNav';
 import LiveMap from '../components/LiveMap';
 import TransferChat from '../components/TransferChat';
 import DriverRating from '../components/DriverRating';
+import RideSelector from '../components/RideSelector';
 import { requestNotificationPermission, notifyTransferStatus } from '../utils/notifications';
 import Button from '../components/ui/Button.jsx';
+import { Clock, Car, DollarSign } from 'lucide-react';
 
 export default function Transfers() {
   const [pickup, setPickup] = useState("");
@@ -12,6 +14,10 @@ export default function Transfers() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [pax, setPax] = useState(1);
+  const [vehicleType, setVehicleType] = useState("sedan"); // sedan, suv, van, luxury
+  const [luggage, setLuggage] = useState(1);
+  const [specialRequirements, setSpecialRequirements] = useState("");
+  const [estimatedPrice, setEstimatedPrice] = useState(null);
   const [bookingType, setBookingType] = useState("instant"); // "instant" or "prearranged"
   const [isRoundTrip, setIsRoundTrip] = useState(false);
   const [isMultiStop, setIsMultiStop] = useState(false);
@@ -29,6 +35,12 @@ export default function Transfers() {
   const [previousStatus, setPreviousStatus] = useState(null);
   const [nearbyDrivers, setNearbyDrivers] = useState([]);
   const [loadingNearby, setLoadingNearby] = useState(false);
+  const [routeInfo, setRouteInfo] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
+  const [showRideSelector, setShowRideSelector] = useState(false);
+  const [selectedRide, setSelectedRide] = useState(null);
+  const [ridePending, setRidePending] = useState(false);
+  const [availableRides, setAvailableRides] = useState([]);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
@@ -81,8 +93,112 @@ export default function Transfers() {
     return () => clearTimeout(timer);
   }, [pickup]);
 
+  // Estimate price when route details change
+  React.useEffect(() => {
+    if (pickup && dropoff && pickup.length > 3 && dropoff.length > 3) {
+      const timer = setTimeout(() => {
+        estimatePrice();
+      }, 800);
+      return () => clearTimeout(timer);
+    } else {
+      setEstimatedPrice(null);
+    }
+  }, [pickup, dropoff, vehicleType, pax, luggage, isRoundTrip, additionalStops]);
+
+  async function estimatePrice() {
+    try {
+      const stops = additionalStops.filter(s => s.trim());
+      const res = await fetch('/api/transfers/estimate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pickup, dropoff, vehicleType, pax, luggage, isRoundTrip, additionalStops: stops })
+      });
+      const data = await res.json();
+      if (data.ok && data.estimate) {
+        setEstimatedPrice(data.estimate);
+      }
+    } catch (e) {
+      console.error('[transfers] price estimation failed', e);
+    }
+  }
+
+  async function cancelRequest() {
+    if (!request?.id) return;
+    
+    const confirmed = confirm('Are you sure you want to cancel this transfer request?');
+    if (!confirmed) return;
+    
+    try {
+      const res = await fetch(`/api/transfers/request/${request.id}/cancel`, {
+        method: 'POST'
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setStatus(null);
+        setRequest(null);
+        setDriverLocation(null);
+        alert('Transfer request cancelled successfully.');
+      }
+    } catch (e) {
+      console.error('[transfers] cancel failed', e);
+      alert('Failed to cancel request. Please try again.');
+    }
+  }
+
   async function submitRequest(e) {
     e.preventDefault();
+    
+    // Validate form
+    const errors = {};
+    if (!pickup || pickup.length < 3) errors.pickup = 'Please enter a valid pickup location';
+    if (!dropoff || dropoff.length < 3) errors.dropoff = 'Please enter a valid dropoff location';
+    if (bookingType === 'prearranged' && !date) errors.date = 'Please select a date';
+    if (bookingType === 'prearranged' && !time) errors.time = 'Please select a time';
+    if (pax < 1 || pax > 12) errors.pax = 'Passengers must be between 1 and 12';
+    if (luggage < 0 || luggage > 20) errors.luggage = 'Luggage count must be between 0 and 20';
+    
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+    
+    setFormErrors({});
+    
+    // Show ride selector for user to pick their preferred ride
+    setShowRideSelector(true);
+  }
+
+  function handleSkipRideSelection(rides) {
+    // User chose to skip ride selection for now
+    setAvailableRides(rides);
+    setShowRideSelector(false);
+    setRidePending(true);
+    setSelectedRide(null);
+  }
+
+  async function autoAssignCheapestRide() {
+    if (!availableRides || availableRides.length === 0) {
+      alert('No available rides to assign. Please try again.');
+      return;
+    }
+
+    // Find the cheapest ride
+    const cheapestRide = availableRides.reduce((min, ride) => 
+      ride.price < min.price ? ride : min
+    );
+
+    await confirmRideSelection(cheapestRide);
+  }
+
+  function reopenRideSelector() {
+    setRidePending(false);
+    setShowRideSelector(true);
+  }
+
+  async function confirmRideSelection(ride) {
+    setSelectedRide(ride);
+    setShowRideSelector(false);
+    setRidePending(false);
     setLoading(true);
     setStatus('searching');
     
@@ -93,6 +209,9 @@ export default function Transfers() {
         date: bookingType === 'instant' ? new Date().toISOString() : date,
         time: bookingType === 'instant' ? new Date().toISOString() : time,
         pax,
+        vehicleType,
+        luggage,
+        specialRequirements: specialRequirements.trim(),
         bookingType,
         isRoundTrip,
         isMultiStop,
@@ -101,7 +220,18 @@ export default function Transfers() {
         returnTime: isRoundTrip ? returnTime : null,
         multiDayService,
         serviceDays: multiDayService ? serviceDays : 1,
-        recurringDays: multiDayService ? recurringDays : []
+        recurringDays: multiDayService ? recurringDays : [],
+        // Include selected ride details
+        selectedRide: {
+          rideId: ride.id,
+          driverId: ride.driver.id,
+          driverName: ride.driver.name,
+          brandId: ride.brand.id,
+          brandName: ride.brand.name,
+          vehicleModel: ride.vehicle.model,
+          vehiclePlate: ride.vehicle.plate,
+          agreedPrice: ride.price
+        }
       };
       
       const res = await fetch('/api/transfers/request', {
@@ -346,7 +476,7 @@ export default function Transfers() {
               />
             </div>
 
-            {/* Multi-stop Journey Checkbox */}
+            {/* Multi-stop Journey Checkbox - Available for all booking types */}
             <div className="pt-2">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input 
@@ -411,6 +541,22 @@ export default function Transfers() {
           </div>
         )}
 
+            {/* Round Trip Checkbox - Available for all booking types */}
+            <div className="pt-2">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  checked={isRoundTrip}
+                  onChange={e => setIsRoundTrip(e.target.checked)}
+                  className="w-5 h-5 accent-brand-orange rounded"
+                />
+                <div>
+                  <span className="font-semibold text-brand-brown">Round Trip</span>
+                  <p className="text-sm text-brand-russty">Add a return journey (15% discount)</p>
+                </div>
+              </label>
+            </div>
+
             {/* Date & Time for Prearranged */}
             {bookingType === 'prearranged' && (
               <>
@@ -437,57 +583,42 @@ export default function Transfers() {
                   </div>
                 </div>
 
-                {/* Round Trip Checkbox */}
-                <div className="pt-2">
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input 
-                      type="checkbox" 
-                      checked={isRoundTrip}
-                      onChange={e => setIsRoundTrip(e.target.checked)}
-                      className="w-5 h-5 accent-brand-orange rounded"
-                    />
-                    <div>
-                      <span className="font-semibold text-brand-brown">Round Trip</span>
-                      <p className="text-sm text-brand-russty">Add a return journey (15% discount)</p>
-                    </div>
-                  </label>
-                </div>
-
-                {/* Return Journey Details */}
-                {isRoundTrip && (
-                  <div className="space-y-4 pt-4 border-t border-cream-border">
-                    <h3 className="text-sm font-bold text-brand-brown">Return Journey</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Date</label>
-                        <input 
-                          type="date" 
-                          value={returnDate} 
-                          onChange={e => setReturnDate(e.target.value)} 
-                          required
-                          min={date}
-                          className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
-                        />
-                      </div>
-                      <div>
-                        <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Time</label>
-                        <input 
-                          type="time" 
-                          value={returnTime} 
-                          onChange={e => setReturnTime(e.target.value)} 
-                          required
-                          className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
-                        />
-                      </div>
-                    </div>
-                    <div className="p-3 bg-green-50 border-2 border-green-200 rounded-lg">
-                      <p className="text-sm text-green-800">
-                        <strong>Round trip discount:</strong> 15% off total fare
-                      </p>
-                    </div>
-                  </div>
-                )}
               </>
+            )}
+
+            {/* Return Journey Details - Available when Round Trip is checked */}
+            {isRoundTrip && (
+              <div className="space-y-4 pt-4 border-t border-cream-border">
+                <h3 className="text-sm font-bold text-brand-brown">Return Journey</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Date</label>
+                    <input 
+                      type="date" 
+                      value={returnDate} 
+                      onChange={e => setReturnDate(e.target.value)} 
+                      required={bookingType === 'prearranged'}
+                      min={date}
+                      className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Time</label>
+                    <input 
+                      type="time" 
+                      value={returnTime} 
+                      onChange={e => setReturnTime(e.target.value)} 
+                      required={bookingType === 'prearranged'}
+                      className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
+                    />
+                  </div>
+                </div>
+                <div className="p-3 bg-green-50 border-2 border-green-200 rounded-lg">
+                  <p className="text-sm text-green-800">
+                    <strong>Round trip discount:</strong> 15% off total fare
+                  </p>
+                </div>
+              </div>
             )}
             
             <div className="pt-2">
@@ -503,6 +634,80 @@ export default function Transfers() {
               />
             </div>
           </div>
+
+          {/* Vehicle Type Selection */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-brand-brown">
+              Vehicle Type *
+            </label>
+            <select
+              value={vehicleType}
+              onChange={e => setVehicleType(e.target.value)}
+              required
+              className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+              aria-label="Select vehicle type"
+            >
+              <option value="sedan">Sedan (1-4 passengers)</option>
+              <option value="suv">SUV (1-6 passengers)</option>
+              <option value="van">Van/Minibus (7-12 passengers)</option>
+              <option value="luxury">Luxury Sedan (1-4 passengers)</option>
+            </select>
+          </div>
+
+          {/* Luggage Count */}
+          <div className="flex gap-4">
+            <div className="flex-1 space-y-2">
+              <label htmlFor="luggage" className="block text-sm font-medium text-brand-brown">
+                Luggage Pieces
+              </label>
+              <input 
+                id="luggage"
+                type="number" 
+                min={0}
+                max={20}
+                value={luggage}
+                onChange={e => setLuggage(Number(e.target.value))}
+                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+                aria-label="Number of luggage pieces"
+              />
+            </div>
+          </div>
+
+          {/* Special Requirements */}
+          <div className="space-y-2">
+            <label htmlFor="specialRequirements" className="block text-sm font-medium text-brand-brown">
+              Special Requirements <span className="text-gray-500 text-xs">(optional)</span>
+            </label>
+            <textarea
+              id="specialRequirements"
+              value={specialRequirements}
+              onChange={e => setSpecialRequirements(e.target.value)}
+              placeholder="Child seat, wheelchair accessible, pet friendly, etc."
+              rows={2}
+              maxLength={200}
+              className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors resize-none"
+              aria-label="Special requirements for the transfer"
+            />
+            <p className="text-xs text-gray-500">{specialRequirements.length}/200 characters</p>
+          </div>
+
+          {/* Price Estimate */}
+          {estimatedPrice && (
+            <div className="p-4 bg-cream-sand border-2 border-brand-orange rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-brand-brown font-medium">Estimated Price</p>
+                  <p className="text-xs text-gray-600 mt-1">Final price may vary based on traffic and actual route</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-brand-orange">R{estimatedPrice.amount}</p>
+                  {estimatedPrice.distance && (
+                    <p className="text-xs text-gray-600">{estimatedPrice.distance} km • {estimatedPrice.duration}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         
         <Button 
@@ -513,6 +718,79 @@ export default function Transfers() {
           {loading ? "Sending Request..." : bookingType === 'instant' ? "Request Now" : "Schedule Transfer"}
         </Button>
       </form>
+      
+      {/* Pending Transfer - Awaiting Ride Selection */}
+      {ridePending && !status && (
+        <div className="mt-10 p-6 border-2 border-brand-orange rounded-lg bg-orange-50 shadow-sm">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-brand-orange flex items-center justify-center flex-shrink-0">
+              <Clock className="h-5 w-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <h2 className="font-bold text-lg text-brand-brown mb-1">
+                Transfer Pending - Finalize Your Ride
+              </h2>
+              <p className="text-sm text-brand-russty">
+                Your transfer details are saved. Choose your preferred ride to proceed.
+              </p>
+            </div>
+          </div>
+
+          {/* Transfer Summary */}
+          <div className="bg-white rounded-lg p-4 mb-4 border border-cream-border">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Pickup</p>
+                <p className="font-semibold text-brand-brown">{pickup}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Dropoff</p>
+                <p className="font-semibold text-brand-brown">{dropoff}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Passengers</p>
+                <p className="font-semibold text-brand-brown">{pax} passenger{pax !== 1 ? 's' : ''}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Vehicle Type</p>
+                <p className="font-semibold text-brand-brown capitalize">{vehicleType}</p>
+              </div>
+              {estimatedPrice && (
+                <div className="col-span-full">
+                  <p className="text-xs text-gray-500 mb-1">Estimated Price Range</p>
+                  <p className="font-bold text-brand-orange text-lg">R{estimatedPrice.amount}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="space-y-3">
+            <Button
+              fullWidth
+              onClick={reopenRideSelector}
+              className="flex items-center justify-center gap-2"
+            >
+              <Car className="h-4 w-4" />
+              Pick My Ride
+            </Button>
+            
+            <Button
+              fullWidth
+              variant="outline"
+              onClick={autoAssignCheapestRide}
+              className="flex items-center justify-center gap-2 border-brand-orange text-brand-orange hover:bg-orange-50"
+            >
+              <DollarSign className="h-4 w-4" />
+              Auto-assign Cheapest Ride
+            </Button>
+            
+            <p className="text-xs text-center text-gray-600 mt-2">
+              You can also proceed with other bookings and finalize this transfer later.
+            </p>
+          </div>
+        </div>
+      )}
       
       {/* Status Updates */}
       {status && (
@@ -541,11 +819,16 @@ export default function Transfers() {
             <div className="space-y-2 text-sm">
               <p><span className="font-semibold">Driver:</span> {request.driver.name}</p>
               <p><span className="font-semibold">Vehicle:</span> {request.driver.vehicle} ({request.driver.plate})</p>
+              <p><span className="font-semibold">Vehicle Type:</span> {vehicleType.charAt(0).toUpperCase() + vehicleType.slice(1)}</p>
+              <p><span className="font-semibold">Passengers:</span> {pax} | <span className="font-semibold">Luggage:</span> {luggage} pieces</p>
               <p><span className="font-semibold">ETA:</span> {request.driver.eta || 'Calculating...'}</p>
               <p><span className="font-semibold">Price:</span> R{request.price}</p>
+              {specialRequirements && (
+                <p><span className="font-semibold">Special Requirements:</span> {specialRequirements}</p>
+              )}
               
               {/* Live Map */}
-              {(status === 'accepted' || status === 'en-route' || status === 'arrived') && (
+              {(status === 'matched' || status === 'accepted' || status === 'en-route' || status === 'arrived') && (
                 <div className="mt-4">
                   <LiveMap 
                     pickup={request.pickup} 
@@ -553,7 +836,16 @@ export default function Transfers() {
                     driverLocation={driverLocation}
                     waypoints={request.additionalStops || []}
                     showRoute={true}
+                    onRouteInfo={setRouteInfo}
                   />
+                  {routeInfo && (
+                    <div className="mt-2 p-3 bg-white border border-cream-border rounded">
+                      <div className="text-xs text-brand-brown flex gap-4 flex-wrap">
+                        <span><span className="font-semibold">Distance:</span> {(routeInfo.distanceMeters/1000).toFixed(1)} km</span>
+                        <span><span className="font-semibold">Duration:</span> {routeInfo.durationText || `${Math.round(routeInfo.durationSeconds/60)} min`}</span>
+                      </div>
+                    </div>
+                  )}
                   {request.additionalStops && request.additionalStops.length > 0 && (
                     <div className="mt-2 p-2 bg-cream-sand border border-cream-border rounded">
                       <p className="text-xs text-brand-brown">
@@ -561,6 +853,20 @@ export default function Transfers() {
                       </p>
                     </div>
                   )}
+                </div>
+              )}
+              
+              {/* Action Buttons */}
+              {(status === 'searching' || status === 'matched') && (
+                <div className="mt-4">
+                  <Button
+                    variant="outline"
+                    fullWidth
+                    onClick={cancelRequest}
+                    className="border-red-500 text-red-600 hover:bg-red-50"
+                  >
+                    ❌ Cancel Request
+                  </Button>
                 </div>
               )}
               
@@ -623,6 +929,19 @@ export default function Transfers() {
         </div>
       )}
     </div>
+
+    {/* Ride Selector Modal */}
+    {showRideSelector && (
+      <RideSelector
+        pickup={pickup}
+        dropoff={dropoff}
+        vehicleType={vehicleType}
+        passengers={pax}
+        onSelectRide={confirmRideSelection}
+        onSkip={handleSkipRideSelection}
+        onCancel={() => setShowRideSelector(false)}
+      />
+    )}
     </div>
   );
 }

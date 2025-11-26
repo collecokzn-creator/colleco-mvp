@@ -420,6 +420,90 @@
               }
             },
             {
+              "path": "/partner/onboarding",
+              "name": "Partner Onboarding",
+              "component": "PartnerOnboarding",
+              "meta": {
+                "title": "Join CollEco Partner Network",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/partner/verification",
+              "name": "Partner Verification",
+              "component": "PartnerVerification",
+              "meta": {
+                "title": "Document Verification",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/partner/application-status",
+              "name": "Application Status",
+              "component": "PartnerApplicationStatus",
+              "meta": {
+                "title": "Partner Application Status",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/business/register",
+              "name": "Business Traveler Registration",
+              "component": "BusinessTravelerRegistration",
+              "meta": {
+                "title": "Register Business Travel Account",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/business-dashboard",
+              "name": "Business Dashboard",
+              "component": "BusinessDashboard",
+              "meta": {
+                "title": "Business Travel Dashboard",
+                "requiresAuth": true,
+                "roles": ["client"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/traveler-dashboard",
+              "name": "Traveler Dashboard",
+              "component": "TravelerDashboard",
+              "meta": {
+                "title": "My Travel Dashboard",
+                "requiresAuth": true,
+                "roles": ["client"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/my-trips",
+              "name": "My Trips",
+              "component": "MyTrips",
+              "meta": {
+                "title": "My Trips & Bookings",
+                "requiresAuth": true,
+                "roles": ["client"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/saved-itineraries",
+              "name": "Saved Itineraries",
+              "component": "SavedItineraries",
+              "meta": {
+                "title": "Saved Itineraries",
+                "requiresAuth": true,
+                "roles": ["client"],
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/admin-console",
               "name": "Admin Console",
               "component": "AdminConsole",
@@ -427,6 +511,28 @@
                 "title": "Admin Console",
                 "requiresAuth": true,
                 "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/business-accounts",
+              "name": "Manage Business Accounts",
+              "component": "ManageBusinessAccounts",
+              "meta": {
+                "title": "Manage Business Travel Accounts",
+                "requiresAuth": true,
+                "roles": ["admin", "partner"],
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/business-accounts/:accountId",
+              "name": "Business Account Detail",
+              "component": "BusinessAccountDetail",
+              "meta": {
+                "title": "Business Account Details",
+                "requiresAuth": true,
+                "roles": ["admin", "partner"],
                 "layout": "workspace"
               }
             },

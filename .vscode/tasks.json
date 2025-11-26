@@ -57,6 +57,20 @@
 			"type": "shell",
 			"command": "npm run build",
 			"group": "build"
+		},
+		{
+			"label": "Backend Server",
+			"type": "shell",
+			"command": "npm run server",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Frontend Dev Server",
+			"type": "shell",
+			"command": "npm run dev",
+			"isBackground": true,
+			"problemMatcher": []
 		}
 	]
 }
