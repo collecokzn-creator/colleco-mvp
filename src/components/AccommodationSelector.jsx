@@ -725,15 +725,22 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
               ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
               : 'space-y-4'
             }>
-              {filteredProperties.map(property => (
+              {filteredProperties.map((property, idx) => (
                 <div
                   key={property.id}
+                  tabIndex={0}
                   className={`border-2 rounded-xl bg-white transition-all cursor-pointer ${
                     selectedProperty?.id === property.id
                       ? 'border-brand-orange shadow-lg'
                       : 'border-gray-200 hover:border-brand-orange hover:shadow-md'
                   } ${viewMode === 'list' ? 'flex gap-4 p-4' : 'p-4'}`}
                   onClick={() => setSelectedProperty(property)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedProperty(property);
+                    }
+                  }}
                 >
                   {/* Property Image Placeholder */}
                   <div className={`bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex-shrink-0 ${
