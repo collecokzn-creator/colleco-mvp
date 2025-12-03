@@ -641,17 +641,17 @@ export default function AccommodationBooking(){
                   </div>
                 </div>
 
-                {/* CollEco AI Agent - Primary Support */}
+                {/* Zola - Primary Support */}
                 <div className="bg-orange-50 border-2 border-brand-orange rounded-lg p-4 mb-4">
                   <div className="flex items-center gap-2 mb-2">
                     <svg className="h-6 w-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    <h4 className="font-semibold text-brand-brown text-lg">AI Travel Assistant - 24/7 Instant Help</h4>
+                    <h4 className="font-semibold text-brand-brown text-lg">Zola - 24/7 Instant Help</h4>
                   </div>
                   <p className="text-sm text-brand-brown mb-3">
                     Get instant answers about your booking, changes, cancellations, refunds, payment issues, and recommendations. 
-                    Our smart AI Agent handles most requests immediately and routes complex issues to the right specialist.
+                    Zola handles most requests immediately and routes complex issues to the right specialist.
                   </p>
                   <button 
                     onClick={() => window.location.href = '/support'}
@@ -660,7 +660,7 @@ export default function AccommodationBooking(){
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
-                    Chat with AI Assistant Now
+                    Chat with Zola Now
                   </button>
                   <p className="text-xs text-gray-600 mt-2 text-center">
                     Available 24/7 • Instant responses • Handles booking changes, queries & recommendations
@@ -675,7 +675,7 @@ export default function AccommodationBooking(){
                     </svg>
                     <h4 className="font-medium text-gray-700 text-sm">Need to Speak to a Human?</h4>
                   </div>
-                  <p className="text-xs text-gray-600 mb-3">If the AI Agent can't resolve your issue, you'll be connected to our team:</p>
+                  <p className="text-xs text-gray-600 mb-3">If Zola can't resolve your issue, you'll be connected to our team:</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                     <div>
                       <p className="text-gray-500">Email Support</p>
