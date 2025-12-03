@@ -67,6 +67,9 @@ export default function AccommodationBooking(){
     const cheapestProperty = availableProperties.reduce((min, property) => 
       property.pricePerNight < min.pricePerNight ? property : min
     );
+              {import.meta?.env?.VITE_DEMO_ACCOMMODATION === '1' && (
+                <div className="mt-2 text-xs text-gray-500">Demo mode: showing sample properties if live data is unavailable.</div>
+              )}
 
     await confirmPropertySelection(cheapestProperty);
   }

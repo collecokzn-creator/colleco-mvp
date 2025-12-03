@@ -121,6 +121,8 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
       });
     };
 
+    const useDemo = (import.meta?.env?.VITE_DEMO_ACCOMMODATION ?? '1') === '1';
+
     fetch('/api/accommodation/available-properties', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -129,11 +131,11 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
       .then(res => res.ok ? res.json() : Promise.reject(new Error('bad status')))
       .then(data => {
         const props = data.properties || [];
-        setProperties(props.length ? props : generateMockProperties());
+        setProperties(props.length ? props : (useDemo ? generateMockProperties() : []));
       })
       .catch(() => {
-        // Fallback for static deployments or API downtime
-        setProperties(generateMockProperties());
+        // Fallback for static deployments or API downtime when demo mode enabled
+        setProperties(useDemo ? generateMockProperties() : []);
       })
       .finally(() => setLoading(false));
   }, [location, checkIn, checkOut, guests]);
