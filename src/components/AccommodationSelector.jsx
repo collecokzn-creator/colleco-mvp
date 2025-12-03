@@ -142,6 +142,44 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
 
   return (
     <div className="p-4">
+      {/* Basic filter controls */}
+      <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Minimum Stars</label>
+          <select value={minStars} onChange={e => setMinStars(Number(e.target.value))} className="w-full border rounded px-2 py-1 text-xs">
+            <option value={0}>Any</option>
+            <option value={3}>3+</option>
+            <option value={4}>4+</option>
+            <option value={5}>5</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Preferred Type</label>
+          <select value={preferredType} onChange={e => setPreferredType(e.target.value)} className="w-full border rounded px-2 py-1 text-xs">
+            <option value="">Any</option>
+            <option value="Hotel">Hotel</option>
+            <option value="Guesthouse">Guesthouse</option>
+            <option value="B&B">B&B</option>
+            <option value="Lodge">Lodge</option>
+            <option value="Resort">Resort</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs text-gray-600 mb-1">Required Amenities</label>
+          <div className="flex flex-wrap gap-2">
+            {['Free WiFi','Breakfast','Pool','Parking','Gym','Spa'].map(a => (
+              <button
+                key={a}
+                type="button"
+                className={`px-2 py-1 border rounded text-xs ${requiredAmenities.includes(a) ? 'bg-brand-orange text-white border-brand-orange' : 'bg-white hover:bg-cream'}`}
+                onClick={() => setRequiredAmenities(prev => prev.includes(a) ? prev.filter(x => x !== a) : [...prev, a])}
+              >
+                {a}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
       {/* Property results: scrollable cards, amenities, meal plan selector */}
       {loading ? (
         <div className="text-center py-8 text-gray-500">Loading properties...</div>
@@ -177,7 +215,11 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
       ) : (
         <div className="overflow-x-auto pb-4" ref={scrollContainerRef}>
           <div className="flex gap-6 min-w-max">
-            {properties.map(property => (
+            {properties
+              .filter(p => (minStars ? p.stars >= minStars : true))
+              .filter(p => (preferredType ? p.type === preferredType : true))
+              .filter(p => (requiredAmenities.length ? requiredAmenities.every(a => (p.amenities||[]).includes(a)) : true))
+              .map(property => (
               <div key={property.id} className="border rounded-lg bg-white shadow p-4 min-w-[340px] max-w-xs flex-shrink-0">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-lg font-bold text-brand-brown">{property.name}</h3>
