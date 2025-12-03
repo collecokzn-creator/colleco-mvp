@@ -45,6 +45,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-ci, check-ci-bypass]
     if: ${{ always() && (needs.check-ci.result == 'success' || needs.check-ci-bypass.result == 'success') }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -87,17 +91,6 @@ jobs:
         with:
           path: ./dist
 
-  deploy:
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: [check-ci, build]
-    if: ${{ needs.build.result == 'success' }}
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
