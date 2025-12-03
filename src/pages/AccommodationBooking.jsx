@@ -374,17 +374,6 @@ export default function AccommodationBooking(){
                     <p className="text-sm text-gray-600">Type & Rating</p>
                     <p className="font-semibold text-brand-brown">{selectedProperty.type} • {selectedProperty.stars} ⭐</p>
                   </div>
-                  {selectedProperty.selectedMealPlan && selectedProperty.selectedMealPlan !== 'room_only' && (
-                    <div>
-                      <p className="text-sm text-gray-600">Meal Plan</p>
-                      <p className="font-semibold text-brand-brown">
-                        {selectedProperty.selectedMealPlan === 'breakfast' && 'Bed & Breakfast'}
-                        {selectedProperty.selectedMealPlan === 'half_board' && 'Half Board (B&B + Dinner)'}
-                        {selectedProperty.selectedMealPlan === 'full_board' && 'Full Board (All Meals)'}
-                        {selectedProperty.selectedMealPlan === 'all_inclusive' && 'All Inclusive'}
-                      </p>
-                    </div>
-                  )}
                   <div className="md:col-span-2">
                     <p className="text-sm text-gray-600">Address</p>
                     <div className="space-y-2">
@@ -509,29 +498,31 @@ export default function AccommodationBooking(){
               <div className="border-t pt-6">
                 <h3 className="text-lg font-bold text-brand-brown mb-3">Meal Plan</h3>
                 <div className={`border rounded-lg p-4 ${
-                  selectedProperty.mealPlan && selectedProperty.mealPlan !== 'room_only' 
+                  selectedProperty.selectedMealPlan && selectedProperty.selectedMealPlan !== 'room_only' 
                     ? 'bg-green-50 border-green-200' 
                     : 'bg-gray-50 border-gray-200'
                 }`}>
                   <p className={`font-semibold ${
-                    selectedProperty.mealPlan && selectedProperty.mealPlan !== 'room_only'
+                    selectedProperty.selectedMealPlan && selectedProperty.selectedMealPlan !== 'room_only'
                       ? 'text-green-800'
                       : 'text-gray-700'
                   }`}>
-                    {!selectedProperty.mealPlan || selectedProperty.mealPlan === 'room_only' ? '🏨 Room Only' :
-                     selectedProperty.mealPlan === 'breakfast' ? '🍳 Bed & Breakfast' : 
-                     selectedProperty.mealPlan === 'half_board' ? '🍽️ Half Board (Breakfast & Dinner)' : 
-                     '🍽️ Full Board (All Meals)'}
+                    {!selectedProperty.selectedMealPlan || selectedProperty.selectedMealPlan === 'room_only' ? '🏨 Room Only' :
+                     selectedProperty.selectedMealPlan === 'breakfast' ? '🍳 Bed & Breakfast' : 
+                     selectedProperty.selectedMealPlan === 'half_board' ? '🍽️ Half Board (Breakfast & Dinner)' : 
+                     selectedProperty.selectedMealPlan === 'full_board' ? '🍽️ Full Board (All Meals)' :
+                     selectedProperty.selectedMealPlan === 'all_inclusive' ? '🍹 All Inclusive' : '🏨 Room Only'}
                   </p>
                   <p className={`text-sm mt-1 ${
-                    selectedProperty.mealPlan && selectedProperty.mealPlan !== 'room_only'
+                    selectedProperty.selectedMealPlan && selectedProperty.selectedMealPlan !== 'room_only'
                       ? 'text-green-700'
                       : 'text-gray-600'
                   }`}>
-                    {!selectedProperty.mealPlan || selectedProperty.mealPlan === 'room_only' ? 'No meals included - Room accommodation only' :
-                     selectedProperty.mealPlan === 'breakfast' ? 'Daily breakfast included in your rate' : 
-                     selectedProperty.mealPlan === 'half_board' ? 'Breakfast and dinner included daily' : 
-                     'Breakfast, lunch, and dinner included daily'}
+                    {!selectedProperty.selectedMealPlan || selectedProperty.selectedMealPlan === 'room_only' ? 'No meals included - Room accommodation only' :
+                     selectedProperty.selectedMealPlan === 'breakfast' ? 'Daily breakfast included in your rate' : 
+                     selectedProperty.selectedMealPlan === 'half_board' ? 'Breakfast and dinner included daily' : 
+                     selectedProperty.selectedMealPlan === 'full_board' ? 'Breakfast, lunch, and dinner included daily' :
+                     selectedProperty.selectedMealPlan === 'all_inclusive' ? 'All meals, drinks, and activities included' : 'No meals included'}
                   </p>
                 </div>
               </div>

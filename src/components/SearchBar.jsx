@@ -11,6 +11,7 @@ export default function SearchBar({ className = '' }){
   const [activeIdx, setActiveIdx] = useState(0);
   const wrapRef = useRef(null);
   const activeItemRef = useRef(null);
+  const scrollContainerRef = useRef(null);
   const [recent, setRecent] = useState(() => {
     try { return JSON.parse(localStorage.getItem('recentSearches')||'[]'); } catch { return []; }
   });
@@ -59,11 +60,20 @@ export default function SearchBar({ className = '' }){
 
   // Scroll active item into view when keyboard navigating
   useEffect(() => {
-    if (activeItemRef.current && open) {
-      activeItemRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest'
-      });
+    if (activeItemRef.current && scrollContainerRef.current && open) {
+      const container = scrollContainerRef.current;
+      const activeItem = activeItemRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+      
+      // Check if item is above visible area
+      if (itemRect.top < containerRect.top) {
+        container.scrollTop -= (containerRect.top - itemRect.top);
+      }
+      // Check if item is below visible area
+      else if (itemRect.bottom > containerRect.bottom) {
+        container.scrollTop += (itemRect.bottom - containerRect.bottom);
+      }
     }
   }, [activeIdx, open]);
 
@@ -257,7 +267,7 @@ export default function SearchBar({ className = '' }){
         />
       </div>
       {open && (
-        <div className="absolute left-0 mt-2 w-full min-w-[20rem] max-w-xl bg-white border border-cream-border rounded-lg shadow-lg z-50 max-h-96 overflow-auto">
+        <div ref={scrollContainerRef} className="absolute left-0 mt-2 w-full min-w-[20rem] max-w-xl bg-white border border-cream-border rounded-lg shadow-lg z-50 max-h-96 overflow-auto">
           {q.trim().length >= 3 && events && events.length > 0 && (
             <div className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-white/90 bg-white border-b border-brand-gold/20 px-4 py-2 text-[11px] text-brand-russty/70">
               <span className="mr-1 font-semibold">Sources:</span>
