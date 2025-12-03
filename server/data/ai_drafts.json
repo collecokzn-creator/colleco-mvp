@@ -2097,5 +2097,14 @@
       "itinerary": []
     },
     "createdAt": 1764103933754
+  },
+  "t7l9vifomrcmiq630a4": {
+    "id": "t7l9vifomrcmiq630a4",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764776030764
   }
 }
