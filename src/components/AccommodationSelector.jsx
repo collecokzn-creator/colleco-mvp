@@ -144,7 +144,34 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
       {loading ? (
         <div className="text-center py-8 text-gray-500">Loading properties...</div>
       ) : properties.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">No properties found for your criteria.</div>
+        <div className="text-center py-8 text-gray-500">
+          <div className="mb-2 font-semibold text-brand-brown">No properties found for your criteria.</div>
+          <div className="text-sm mb-4">Try widening your search:</div>
+          <div className="flex flex-wrap gap-2 justify-center mb-4">
+            <button
+              className="px-3 py-2 border rounded text-sm bg-white hover:bg-cream"
+              onClick={() => {
+                setMinStars(0);
+                setPreferredType('');
+                setRequiredAmenities([]);
+                setMealPlan('room_only');
+              }}
+            >
+              Reset filters
+            </button>
+            {googleMapsAreaUrl && (
+              <a
+                href={googleMapsAreaUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-2 border rounded text-sm bg-white hover:bg-cream"
+              >
+                View area on Google Maps
+              </a>
+            )}
+          </div>
+          <div className="text-xs text-gray-600">Tip: Remove strict amenities or lower minimum stars.</div>
+        </div>
       ) : (
         <div className="overflow-x-auto pb-4" ref={scrollContainerRef}>
           <div className="flex gap-6 min-w-max">
