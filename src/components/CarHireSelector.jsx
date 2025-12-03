@@ -37,6 +37,9 @@ export default function CarHireSelector({
   const [preferredFuelType, setPreferredFuelType] = useState(''); // petrol, diesel, electric, hybrid
   const [minSeats, setMinSeats] = useState(0);
   const [requiredFeatures, setRequiredFeatures] = useState([]);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     fetchAvailableCars();

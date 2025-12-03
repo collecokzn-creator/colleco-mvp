@@ -37,6 +37,9 @@ export default function FlightSelector({
   const [preferredCabin, setPreferredCabin] = useState(''); // economy, premium_economy, business, first
   const [maxStops, setMaxStops] = useState(3);
   const [requiredAmenities, setRequiredAmenities] = useState([]);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     fetchAvailableFlights();
