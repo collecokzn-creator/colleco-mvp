@@ -48,9 +48,81 @@ export default function CarHireSelector({
 
   const fetchAvailableCars = async () => {
     setLoading(true);
+    const useDemo = (import.meta?.env?.VITE_DEMO_CARHIRE ?? '1') === '1';
+
+    const generateMockCars = () => {
+      const carData = [
+        { make: 'Toyota', model: 'Corolla', year: 2023, category: 'Compact', seats: 5, luggage: 2, transmission: 'Automatic', fuelType: 'Petrol' },
+        { make: 'VW', model: 'Polo', year: 2024, category: 'Economy', seats: 5, luggage: 2, transmission: 'Manual', fuelType: 'Petrol' },
+        { make: 'Nissan', model: 'X-Trail', year: 2023, category: 'SUV', seats: 7, luggage: 4, transmission: 'Automatic', fuelType: 'Diesel' },
+        { make: 'Hyundai', model: 'i20', year: 2024, category: 'Economy', seats: 5, luggage: 2, transmission: 'Manual', fuelType: 'Petrol' },
+        { make: 'Toyota', model: 'Fortuner', year: 2023, category: 'SUV', seats: 7, luggage: 5, transmission: 'Automatic', fuelType: 'Diesel' },
+        { make: 'BMW', model: '3 Series', year: 2024, category: 'Luxury', seats: 5, luggage: 3, transmission: 'Automatic', fuelType: 'Petrol' },
+        { make: 'Mercedes', model: 'C-Class', year: 2023, category: 'Luxury', seats: 5, luggage: 3, transmission: 'Automatic', fuelType: 'Petrol' },
+        { make: 'Renault', model: 'Kwid', year: 2024, category: 'Economy', seats: 4, luggage: 1, transmission: 'Manual', fuelType: 'Petrol' },
+        { make: 'Kia', model: 'Sportage', year: 2023, category: 'SUV', seats: 5, luggage: 4, transmission: 'Automatic', fuelType: 'Diesel' },
+        { make: 'Honda', model: 'Civic', year: 2024, category: 'Compact', seats: 5, luggage: 2, transmission: 'Automatic', fuelType: 'Petrol' },
+        { make: 'Tesla', model: 'Model 3', year: 2024, category: 'Luxury', seats: 5, luggage: 2, transmission: 'Automatic', fuelType: 'Electric' },
+        { make: 'Toyota', model: 'Prius', year: 2023, category: 'Compact', seats: 5, luggage: 2, transmission: 'Automatic', fuelType: 'Hybrid' }
+      ];
+      const featuresList = [
+        ['AC', 'GPS', 'Bluetooth', 'USB'],
+        ['AC', 'Bluetooth', 'USB'],
+        ['AC', 'GPS', 'Bluetooth', 'USB', 'Cruise Control'],
+        ['AC', 'USB'],
+        ['AC', 'GPS', 'Bluetooth', 'USB', 'Leather Seats', '4x4'],
+        ['AC', 'GPS', 'Bluetooth', 'USB', 'Leather Seats', 'Sunroof'],
+        ['AC', 'GPS', 'Bluetooth', 'USB', 'Leather Seats', 'Premium Sound'],
+        ['AC'],
+        ['AC', 'GPS', 'Bluetooth', 'USB', 'Parking Sensors'],
+        ['AC', 'Bluetooth', 'USB', 'Apple CarPlay'],
+        ['AC', 'GPS', 'Bluetooth', 'USB', 'Autopilot', 'Premium Sound'],
+        ['AC', 'GPS', 'Bluetooth', 'USB', 'Eco Mode']
+      ];
+      const basePrice = 350;
+      const pickupDt = new Date(pickupDate);
+      const dropoffDt = new Date(dropoffDate);
+      const days = Math.max(1, Math.ceil((dropoffDt - pickupDt) / (1000 * 60 * 60 * 24)));
+      return carData.map((car, index) => {
+        const features = featuresList[index % featuresList.length];
+        let priceMultiplier = 1.0;
+        if (car.category === 'Luxury') priceMultiplier = 2.5;
+        else if (car.category === 'SUV') priceMultiplier = 1.8;
+        else if (car.category === 'Compact') priceMultiplier = 1.2;
+        else if (car.category === 'Economy') priceMultiplier = 0.8;
+        if (car.transmission === 'Automatic') priceMultiplier += 0.2;
+        if (car.fuelType === 'Electric') priceMultiplier += 0.4;
+        if (car.fuelType === 'Hybrid') priceMultiplier += 0.3;
+        if (car.year >= 2024) priceMultiplier += 0.15;
+        priceMultiplier += (Math.random() * 0.2 - 0.1);
+        const pricePerDay = Math.round(basePrice * priceMultiplier / 10) * 10;
+        const totalPrice = pricePerDay * days;
+        const rating = 3.8 + Math.random() * 1.2;
+        const reviewCount = 30 + Math.floor(Math.random() * 470);
+        const safetyRating = 4 + Math.floor(Math.random() * 2);
+        const isPremium = car.category === 'Luxury' && car.year >= 2023;
+        const insuranceIncluded = Math.random() > 0.5;
+        const isPopular = reviewCount > 300 && rating >= 4.5;
+        return {
+          id: `CAR-${Date.now()}-${index}`,
+          ...car,
+          features,
+          pricePerDay,
+          totalPrice,
+          days,
+          rating: Number(rating.toFixed(1)),
+          reviewCount,
+          safetyRating,
+          isPremium,
+          insuranceIncluded,
+          isPopular,
+          imageUrl: null
+        };
+      });
+    };
+
     try {
       console.log('[CarHireSelector] Fetching cars for:', { pickupLocation, dropoffLocation, pickupDate, dropoffDate });
-      
       const response = await fetch('/api/carhire/available-cars', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -61,17 +133,17 @@ export default function CarHireSelector({
           dropoffDate
         })
       });
-
       if (response.ok) {
         const data = await response.json();
-        setCars(data.cars || []);
+        const list = data.cars || [];
+        setCars(list.length ? list : (useDemo ? generateMockCars() : []));
       } else {
         console.error('[CarHireSelector] Failed to fetch cars');
-        setCars([]);
+        setCars(useDemo ? generateMockCars() : []);
       }
     } catch (error) {
       console.error('[CarHireSelector] Error fetching cars:', error);
-      setCars([]);
+      setCars(useDemo ? generateMockCars() : []);
     } finally {
       setLoading(false);
     }

@@ -48,9 +48,56 @@ export default function FlightSelector({
 
   const fetchAvailableFlights = async () => {
     setLoading(true);
+    const useDemo = (import.meta?.env?.VITE_DEMO_FLIGHTS ?? '1') === '1';
+
+    const generateMockFlights = () => {
+      const airlines = ['South African', 'Lift', 'FlySafair', 'CemAir', 'British Airways', 'Ethiopian', 'Qatar'];
+      const cabins = ['economy', 'premium_economy', 'business'];
+      const basePrice = 1200;
+      const amenitiesPool = ['WiFi', 'Meals', 'Entertainment', 'Power Outlets', 'Checked Baggage'];
+
+      const mkLeg = (legFrom, legTo, dayOffset = 0, depHour = 6) => {
+        const dep = new Date(departDate);
+        dep.setDate(dep.getDate() + dayOffset);
+        dep.setHours(depHour);
+        const durationMinutes = 60 + Math.floor(Math.random() * 180);
+        const arr = new Date(dep.getTime() + durationMinutes * 60000);
+        return { departureTime: dep.toISOString(), arrivalTime: arr.toISOString(), durationMinutes };
+      };
+
+      const out = [];
+      for (let i = 0; i < 12; i++) {
+        const name = airlines[i % airlines.length];
+        const stops = i % 3; // 0,1,2
+        const cabin = cabins[i % cabins.length];
+        const leg = mkLeg(from, to, 0, 6 + (i % 10));
+        const priceMult = (1 + stops * 0.15) * (cabin === 'business' ? 2.2 : cabin === 'premium_economy' ? 1.35 : 1);
+        const price = Math.round(basePrice * priceMult / 10) * 10;
+        const amenities = amenitiesPool.filter((_, idx) => (i + idx) % 2 === 0).slice(0, 4);
+        const rating = 3.6 + Math.random() * 1.3;
+        const reviewCount = 400 + Math.floor(Math.random() * 3600);
+        out.push({
+          id: `FL-${Date.now()}-${i}`,
+          airline: { name, rating, reviewCount },
+          flightNumber: `${name.slice(0,2).toUpperCase()}${100 + i}`,
+          from,
+          to,
+          ...leg,
+          stops,
+          cabin,
+          amenities,
+          baggageIncluded: amenities.includes('Checked Baggage'),
+          refundable: Math.random() > 0.5,
+          isPremium: cabin !== 'economy',
+          price,
+          pricePerPerson: Math.round(price / Math.max(1, passengers)),
+        });
+      }
+      return out;
+    };
+
     try {
       console.log('[FlightSelector] Fetching flights for:', { from, to, departDate, returnDate, passengers });
-      
       const response = await fetch('/api/flights/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,14 +112,15 @@ export default function FlightSelector({
 
       if (response.ok) {
         const data = await response.json();
-        setFlights(data.flights || []);
+        const list = data.flights || [];
+        setFlights(list.length ? list : (useDemo ? generateMockFlights() : []));
       } else {
         console.error('[FlightSelector] Failed to fetch flights');
-        setFlights([]);
+        setFlights(useDemo ? generateMockFlights() : []);
       }
     } catch (error) {
       console.error('[FlightSelector] Error fetching flights:', error);
-      setFlights([]);
+      setFlights(useDemo ? generateMockFlights() : []);
     } finally {
       setLoading(false);
     }

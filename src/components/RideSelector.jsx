@@ -40,9 +40,89 @@ export default function RideSelector({
 
   const fetchAvailableRides = async () => {
     setLoading(true);
+    const useDemo = (import.meta?.env?.VITE_DEMO_SHUTTLE ?? '1') === '1';
+
+    const generateMockRides = () => {
+      const brands = [
+        { name: 'Uber', isPremium: false },
+        { name: 'Executive Transfers', isPremium: true },
+        { name: 'City Cabs', isPremium: false },
+        { name: 'VIP Shuttles', isPremium: true },
+        { name: 'SafeRide', isPremium: false },
+        { name: 'Luxury Limo Service', isPremium: true }
+      ];
+      const drivers = [
+        'Thabo Mkhize', 'Sipho Ndlovu', 'Zanele Khumalo', 'Bheki Dlamini',
+        'Nomusa Zulu', 'Jabu Mthembu', 'Thandiwe Sithole', 'Mandla Ngubane'
+      ];
+      const models = ['Toyota Corolla', 'BMW 3 Series', 'Mercedes E-Class', 'VW Polo', 'Honda Accord', 'Nissan Altima'];
+      const colors = ['White', 'Black', 'Silver', 'Gray', 'Blue'];
+      const features = ['AC', 'WiFi', 'USB', 'Premium Sound', 'Leather Seats', 'Sunroof'];
+      const languages = ['English', 'Zulu', 'Xhosa', 'Afrikaans'];
+      const specialties = ['Airport Transfers', 'Long Distance', 'Business Travel', 'Family Friendly'];
+
+      const basePrice = 150;
+      const out = [];
+      for (let i = 0; i < 10; i++) {
+        const brand = brands[i % brands.length];
+        const driver = drivers[i % drivers.length];
+        const model = models[i % models.length];
+        const color = colors[i % colors.length];
+        const plate = `CA ${Math.floor(100000 + Math.random() * 900000)}`;
+        const rating = 4.0 + Math.random() * 1.0;
+        const totalReviews = 50 + Math.floor(Math.random() * 500);
+        const completedTrips = 100 + Math.floor(Math.random() * 1400);
+        const estimatedArrival = 5 + Math.floor(Math.random() * 20);
+        const isVerified = Math.random() > 0.3;
+        const isSuperDriver = rating >= 4.7 && completedTrips > 500;
+        const isPopular = completedTrips > 800 && rating >= 4.5;
+        let priceMultiplier = 1.0;
+        if (brand.isPremium) priceMultiplier += 0.6;
+        if (vehicleType === 'suv') priceMultiplier += 0.3;
+        else if (vehicleType === 'van') priceMultiplier += 0.5;
+        else if (vehicleType === 'luxury') priceMultiplier += 1.0;
+        priceMultiplier += (Math.random() * 0.2 - 0.1);
+        const price = Math.round(basePrice * priceMultiplier / 5) * 5;
+        const vehicleFeatures = features.filter((_, idx) => (i + idx) % 2 === 0).slice(0, 3);
+        const driverLangs = languages.filter((_, idx) => (i + idx) % 2 === 0).slice(0, 2);
+        const driverSpecs = specialties.filter((_, idx) => (i + idx) % 3 === 0).slice(0, 2);
+        const latestReview = totalReviews > 100 && Math.random() > 0.5 ? {
+          comment: 'Excellent service, very professional and punctual!',
+          author: 'Client ' + (i + 1)
+        } : null;
+
+        out.push({
+          id: `RIDE-${Date.now()}-${i}`,
+          driver: {
+            id: `DRIVER-${i}`,
+            name: driver,
+            photo: null,
+            isVerified,
+            isSuperDriver,
+            languages: driverLangs,
+            specialties: driverSpecs
+          },
+          brand,
+          vehicle: {
+            model,
+            color,
+            plate,
+            features: vehicleFeatures
+          },
+          price,
+          rating: Number(rating.toFixed(1)),
+          totalReviews,
+          completedTrips,
+          estimatedArrival,
+          isPopular,
+          latestReview
+        });
+      }
+      return out;
+    };
+
     try {
       console.log('[RideSelector] Fetching rides for:', { pickup, dropoff, vehicleType, passengers });
-      
       const response = await fetch('/api/transfers/available-rides', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -54,17 +134,18 @@ export default function RideSelector({
         })
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (response.ok) {
+        const data = await response.json();
+        const list = data.rides || [];
+        console.log('[RideSelector] Received rides:', list.length);
+        setRides(list.length ? list : (useDemo ? generateMockRides() : []));
+      } else {
+        console.error('[RideSelector] Failed to fetch rides');
+        setRides(useDemo ? generateMockRides() : []);
       }
-
-      const data = await response.json();
-      console.log('[RideSelector] Received rides:', data.rides?.length || 0);
-      setRides(data.rides || []);
     } catch (error) {
       console.error('Failed to fetch rides:', error);
-      // Set empty array on error so UI shows "no rides" message
-      setRides([]);
+      setRides(useDemo ? generateMockRides() : []);
     } finally {
       setLoading(false);
     }
