@@ -45,6 +45,8 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
   const [requiredAmenities, setRequiredAmenities] = useState([]);
   const [freeCancellation, setFreeCancellation] = useState(false);
   const [breakfastIncluded, setBreakfastIncluded] = useState(false);
+  const [mealPlanFilter, setMealPlanFilter] = useState(''); // Filter: '', 'room_only', 'breakfast', 'half_board', 'full_board'
+  const [propertyMealPlans, setPropertyMealPlans] = useState({}); // Store selected meal plan per property
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState('list'); // 'list', 'grid', or 'map'
   const [hoveredProperty, setHoveredProperty] = useState(null);
@@ -123,6 +125,19 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
         const hasFreeCancellation = Math.random() > 0.4;
         const hasBreakfast = amenities.includes('Breakfast');
         
+        // Define available meal plans based on property type and stars
+        const availableMealPlans = ['room_only'];
+        if (stars >= 2) availableMealPlans.push('breakfast');
+        if (stars >= 3 && (type === 'Hotel' || type === 'Resort' || type === 'Lodge')) {
+          availableMealPlans.push('half_board');
+        }
+        if (stars >= 4 && (type === 'Hotel' || type === 'Resort')) {
+          availableMealPlans.push('full_board');
+        }
+        if (stars === 5 && type === 'Resort') {
+          availableMealPlans.push('all_inclusive');
+        }
+        
         // Generate realistic coordinates based on location
         const baseCoords = { lat: -29.8587, lng: 31.0218 }; // Durban center
         const latOffset = (Math.random() - 0.5) * 0.1;
@@ -144,6 +159,7 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
           isPopular,
           hasFreeCancellation,
           hasBreakfast,
+          availableMealPlans,
           distanceKm: Number(distanceKm.toFixed(1)),
           imageUrl: null,
           checkIn,
@@ -211,6 +227,11 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
     }
     if (freeCancellation) filtered = filtered.filter(p => p.hasFreeCancellation);
     if (breakfastIncluded) filtered = filtered.filter(p => p.hasBreakfast);
+    if (mealPlanFilter) {
+      filtered = filtered.filter(p => 
+        p.availableMealPlans && p.availableMealPlans.includes(mealPlanFilter)
+      );
+    }
     
     // Price range filter
     filtered = filtered.filter(p => 
@@ -259,6 +280,7 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
     setRequiredAmenities([]);
     setFreeCancellation(false);
     setBreakfastIncluded(false);
+    setMealPlanFilter('');
     if (properties.length) {
       const prices = properties.map(p => p.pricePerNight);
       setPriceRange([Math.min(...properties.map(p => p.pricePerNight)), Math.max(...properties.map(p => p.pricePerNight))]);
@@ -274,6 +296,7 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
     if (requiredAmenities.length > 0) count++;
     if (freeCancellation) count++;
     if (breakfastIncluded) count++;
+    if (mealPlanFilter) count++;
     return count;
   };
 
@@ -285,6 +308,28 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
     if (rating >= 3.5) return 'Very Good';
     if (rating >= 3.0) return 'Good';
     return 'Average';
+  };
+
+  const getMealPlanLabel = (plan) => {
+    const labels = {
+      'room_only': 'Room Only',
+      'breakfast': 'Bed & Breakfast',
+      'half_board': 'Half Board (B&B + Dinner)',
+      'full_board': 'Full Board (B, L & D)',
+      'all_inclusive': 'All Inclusive'
+    };
+    return labels[plan] || plan;
+  };
+
+  const getMealPlanPrice = (basePrice, plan) => {
+    const multipliers = {
+      'room_only': 1.0,
+      'breakfast': 1.15,
+      'half_board': 1.35,
+      'full_board': 1.55,
+      'all_inclusive': 1.85
+    };
+    return Math.round(basePrice * (multipliers[plan] || 1.0) / 50) * 50;
   };
 
   const getAmenityIcon = (amenity) => {
@@ -474,6 +519,23 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Meal Plan Filter */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Meal Plan</label>
+                <select
+                  value={mealPlanFilter}
+                  onChange={e => setMealPlanFilter(e.target.value)}
+                  className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-brand-orange focus:outline-none text-sm"
+                >
+                  <option value="">Any Meal Plan</option>
+                  <option value="room_only">Room Only</option>
+                  <option value="breakfast">Bed & Breakfast</option>
+                  <option value="half_board">Half Board (Breakfast + Dinner)</option>
+                  <option value="full_board">Full Board (All Meals)</option>
+                  <option value="all_inclusive">All Inclusive</option>
+                </select>
               </div>
 
               {/* Quick Filters */}
@@ -775,19 +837,53 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
                       )}
                     </div>
 
+                    {/* Meal Plan Selector */}
+                    {property.availableMealPlans && property.availableMealPlans.length > 1 && (
+                      <div className="mb-3">
+                        <label className="text-xs font-medium text-gray-700 mb-1 block">Meal Plan</label>
+                        <select
+                          value={propertyMealPlans[property.id] || 'room_only'}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            setPropertyMealPlans({
+                              ...propertyMealPlans,
+                              [property.id]: e.target.value
+                            });
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                        >
+                          {property.availableMealPlans.map(plan => {
+                            const planPrice = getMealPlanPrice(property.pricePerNight, plan);
+                            const planLabel = getMealPlanLabel(plan);
+                            return (
+                              <option key={plan} value={plan}>
+                                {planLabel} - {formatCurrency(planPrice)}/night
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    )}
+
                     {/* Pricing */}
                     <div className="mt-auto pt-3 border-t flex items-end justify-between">
                       <div>
                         <div className="text-xs text-gray-500 mb-1">{property.nights} night{property.nights !== 1 ? 's' : ''}</div>
                         <div className="flex items-baseline gap-2">
                           <span className="text-2xl font-bold text-brand-orange">
-                            {formatCurrency(property.pricePerNight)}
+                            {formatCurrency(getMealPlanPrice(property.pricePerNight, propertyMealPlans[property.id] || 'room_only'))}
                           </span>
                           <span className="text-sm text-gray-600">/night</span>
                         </div>
                         <div className="text-xs text-gray-500">
-                          Total: {formatCurrency(property.totalPrice)}
+                          Total: {formatCurrency(getMealPlanPrice(property.totalPrice, propertyMealPlans[property.id] || 'room_only'))}
                         </div>
+                        {propertyMealPlans[property.id] && propertyMealPlans[property.id] !== 'room_only' && (
+                          <div className="text-xs text-brand-orange font-medium mt-1">
+                            • {getMealPlanLabel(propertyMealPlans[property.id])}
+                          </div>
+                        )}
                       </div>
                       {property.availableRooms <= 2 && (
                         <div className="text-xs text-red-600 font-medium">
@@ -822,13 +918,26 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
           </div>
           
           <button
-            onClick={() => selectedProperty && onSelectProperty(selectedProperty)}
+            onClick={() => {
+              if (selectedProperty) {
+                const selectedMealPlan = propertyMealPlans[selectedProperty.id] || 'room_only';
+                const adjustedPrice = getMealPlanPrice(selectedProperty.pricePerNight, selectedMealPlan);
+                const adjustedTotal = getMealPlanPrice(selectedProperty.totalPrice, selectedMealPlan);
+                
+                onSelectProperty({
+                  ...selectedProperty,
+                  selectedMealPlan,
+                  pricePerNight: adjustedPrice,
+                  totalPrice: adjustedTotal
+                });
+              }
+            }}
             disabled={!selectedProperty}
             className="px-6 py-3 bg-brand-orange text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 font-semibold"
           >
             <CheckCircle2 className="h-5 w-5" />
             {selectedProperty 
-              ? `Book ${selectedProperty.name} - ${formatCurrency(selectedProperty.totalPrice)}`
+              ? `Book ${selectedProperty.name} - ${formatCurrency(getMealPlanPrice(selectedProperty.totalPrice, propertyMealPlans[selectedProperty.id] || 'room_only'))}`
               : 'Select a Property'
             }
           </button>
