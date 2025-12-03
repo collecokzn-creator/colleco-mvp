@@ -29,6 +29,7 @@ export default function CarHireSelector({
 }) {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
   const [filterBy, setFilterBy] = useState('all'); // all, economy, compact, suv, luxury
   const [sortBy, setSortBy] = useState('recommended'); // recommended, price_low, price_high, rating
   const [favoriteCars, setFavoriteCars] = useState([]);
@@ -49,6 +50,7 @@ export default function CarHireSelector({
   const fetchAvailableCars = async () => {
     setLoading(true);
     const useDemo = (import.meta?.env?.VITE_DEMO_CARHIRE ?? '1') === '1';
+    setErrorMsg('');
 
     const generateMockCars = () => {
       const carData = [
@@ -137,13 +139,18 @@ export default function CarHireSelector({
         const data = await response.json();
         const list = data.cars || [];
         setCars(list.length ? list : (useDemo ? generateMockCars() : []));
+        if (!list.length && useDemo) {
+          setErrorMsg('Live car hire providers unavailable. Showing demo cars.');
+        }
       } else {
         console.error('[CarHireSelector] Failed to fetch cars');
         setCars(useDemo ? generateMockCars() : []);
+        setErrorMsg('Unable to load live cars. Showing demo cars.');
       }
     } catch (error) {
       console.error('[CarHireSelector] Error fetching cars:', error);
       setCars(useDemo ? generateMockCars() : []);
+      setErrorMsg('Network error. Showing demo cars.');
     } finally {
       setLoading(false);
     }
@@ -475,6 +482,12 @@ export default function CarHireSelector({
 
         {/* Cars List */}
         <div className="flex-1 overflow-y-auto p-4 relative" ref={scrollContainerRef}>
+          {errorMsg && (
+            <div className="mb-3 p-3 bg-brand-orange/10 border-l-4 border-brand-orange rounded">
+              <strong className="text-brand-orange">Notice:</strong>
+              <span className="ml-2 text-sm text-brand-brown">{errorMsg}</span>
+            </div>
+          )}
           {/* Scroll Up Button */}
           {canScrollLeft && (
             <button

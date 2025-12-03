@@ -343,19 +343,20 @@ export default function CarBooking(){
               </p>
             </div>
 
-            {/* Human Support Fallback */}
+            {/* Specialist Support Fallback */}
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
                 </svg>
-                <h4 className="font-medium text-gray-700 text-sm">Need to Speak to a Human?</h4>
+                <h4 className="font-medium text-gray-700 text-sm">Need to Speak to a Specialist?</h4>
               </div>
               <p className="text-xs text-gray-600 mb-3">If Zola can't resolve your issue:</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 <div>
                   <p className="text-gray-500">Email Support</p>
                   <p className="font-semibold text-gray-700">support@colleco.co.za</p>
+                  <p className="text-xs text-gray-400">Zola routes to specialist</p>
                 </div>
                 <div>
                   <p className="text-gray-500">Phone (Escalations)</p>
