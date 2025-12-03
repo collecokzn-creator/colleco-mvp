@@ -46,7 +46,8 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
   const [freeCancellation, setFreeCancellation] = useState(false);
   const [breakfastIncluded, setBreakfastIncluded] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState('list'); // 'list' or 'grid'
+  const [viewMode, setViewMode] = useState('list'); // 'list', 'grid', or 'map'
+  const [hoveredProperty, setHoveredProperty] = useState(null);
   
   // Google Maps search URL
   const googleMapsAreaUrl = location
@@ -122,6 +123,11 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
         const hasFreeCancellation = Math.random() > 0.4;
         const hasBreakfast = amenities.includes('Breakfast');
         
+        // Generate realistic coordinates based on location
+        const baseCoords = { lat: -29.8587, lng: 31.0218 }; // Durban center
+        const latOffset = (Math.random() - 0.5) * 0.1;
+        const lngOffset = (Math.random() - 0.5) * 0.1;
+        
         return {
           id: `PROP-${Date.now()}-${index}`,
           name,
@@ -144,7 +150,11 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
           checkOut,
           nights,
           availableRooms: 1 + Math.floor(Math.random() * 5),
-          lastBookedMinutesAgo: Math.random() > 0.6 ? Math.floor(Math.random() * 120) : null
+          lastBookedMinutesAgo: Math.random() > 0.6 ? Math.floor(Math.random() * 120) : null,
+          coordinates: {
+            lat: baseCoords.lat + latOffset,
+            lng: baseCoords.lng + lngOffset
+          }
         };
       });
     };
@@ -384,6 +394,15 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
             >
               <Home className="h-5 w-5" />
             </button>
+            <button
+              onClick={() => setViewMode('map')}
+              className={`p-2 rounded-lg transition-colors ${
+                viewMode === 'map' ? 'bg-brand-orange text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+              title="Map view"
+            >
+              <MapIcon className="h-5 w-5" />
+            </button>
           </div>
 
           <span className="text-sm text-gray-600">
@@ -564,6 +583,79 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
                     View on Google Maps
                   </a>
                 )}
+              </div>
+            </div>
+          ) : viewMode === 'map' ? (
+            <div className="h-full min-h-[600px] rounded-lg overflow-hidden border-2 border-gray-200">
+              <iframe
+                src={`https://www.google.com/maps/embed/v1/search?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'demo'}&q=hotels+in+${encodeURIComponent(location)}&zoom=12`}
+                className="w-full h-full"
+                style={{ border: 0, minHeight: '600px' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Property locations map"
+              />
+              
+              {/* Map overlay with property cards */}
+              <div className="absolute bottom-4 left-0 right-0 px-4">
+                <div className="bg-white rounded-lg shadow-2xl p-4 max-h-64 overflow-y-auto">
+                  <h3 className="text-sm font-bold text-brand-brown mb-3 flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-brand-orange" />
+                    {filteredProperties.length} Properties on Map
+                  </h3>
+                  <div className="space-y-2">
+                    {filteredProperties.slice(0, 5).map(property => (
+                      <div
+                        key={property.id}
+                        className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                          selectedProperty?.id === property.id
+                            ? 'border-brand-orange bg-orange-50'
+                            : 'border-gray-200 hover:border-brand-orange hover:bg-gray-50'
+                        }`}
+                        onClick={() => setSelectedProperty(property)}
+                        onMouseEnter={() => setHoveredProperty(property.id)}
+                        onMouseLeave={() => setHoveredProperty(null)}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-sm text-brand-brown truncate">{property.name}</h4>
+                            <div className="flex items-center gap-2 mt-1">
+                              <div className="flex items-center">
+                                {Array.from({ length: property.stars }).map((_, i) => (
+                                  <Star key={i} className="h-3 w-3 text-yellow-500 fill-current" />
+                                ))}
+                              </div>
+                              <span className="text-xs text-gray-500">•</span>
+                              <div className="flex items-center gap-1 text-xs">
+                                <span className="font-semibold text-brand-orange">{property.rating.toFixed(1)}</span>
+                                <span className="text-gray-500">({property.reviewCount})</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 mt-1 text-xs text-gray-600">
+                              <MapPin className="h-3 w-3" />
+                              <span>{property.distanceKm} km away</span>
+                            </div>
+                          </div>
+                          <div className="text-right flex-shrink-0">
+                            <div className="text-lg font-bold text-brand-orange">
+                              {formatCurrency(property.pricePerNight)}
+                            </div>
+                            <div className="text-xs text-gray-500">/night</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {filteredProperties.length > 5 && (
+                      <button
+                        onClick={() => setViewMode('list')}
+                        className="w-full text-center text-sm text-brand-orange hover:underline py-2"
+                      >
+                        View all {filteredProperties.length} properties in list
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
