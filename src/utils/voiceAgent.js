@@ -112,7 +112,7 @@ class VoiceBookingAgent {
     
     // Remove emojis and symbols
     cleaned = cleaned.replace(/[\u{1F300}-\u{1F9FF}]/gu, ''); // Emojis
-    cleaned = cleaned.replace(/[🔍✅❌📍💬📞🚗]/g, ''); // Common symbols
+    cleaned = cleaned.replace(/[🔍✅❌📍💬📞🚗]/gu, ''); // Common symbols
     
     // Replace common patterns with natural speech
     cleaned = cleaned.replace(/:\)/g, ''); // Smileys

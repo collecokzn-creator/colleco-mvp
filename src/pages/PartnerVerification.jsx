@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Upload, FileText, CheckCircle2, XCircle, AlertCircle, ExternalLink, Loader } from "lucide-react";
 
