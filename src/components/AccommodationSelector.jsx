@@ -614,7 +614,7 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
         )}
 
         {/* Results */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 min-h-0">
           {demoModeHint}
           
           {loading ? (
