@@ -388,21 +388,31 @@ export default function AccommodationBooking(){
                       {/* CollEco Travel info box above map link */}
                       <div className="mb-2 p-3 bg-brand-orange/10 border-l-4 border-brand-orange rounded">
                         <strong className="text-brand-orange">CollEco Travel Tip:</strong>
-                        <span className="ml-2 text-sm text-brand-brown">For the best rates and support, always book directly with CollEco Travel. Use the map link below only to view the property location—complete your booking here for exclusive perks!</span>
+                        <span className="ml-2 text-sm text-brand-brown">We've embedded a map below so you can see the property location. Complete your booking here with CollEco Travel for exclusive rates and 24/7 support!</span>
                       </div>
                       
-                      <div className="flex items-center gap-2 mb-2">
-                        <svg className="h-5 w-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <a
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProperty.name + ', ' + selectedProperty.address)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-brand-orange underline font-medium hover:text-orange-600"
-                        >
-                          View Location on Google Maps
-                        </a>
+                      {/* Embedded Google Map - View only, no external links to protect brand */}
+                      <div className="relative rounded-lg overflow-hidden border-2 border-brand-orange mb-4">
+                        <iframe
+                          title="Property Location Map"
+                          width="100%"
+                          height="300"
+                          style={{ border: 0 }}
+                          loading="lazy"
+                          allowFullScreen={false}
+                          referrerPolicy="no-referrer-when-downgrade"
+                          src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(selectedProperty.name + ', ' + selectedProperty.address)}&zoom=15`}
+                        />
+                        {/* Overlay badge to reinforce CollEco Travel branding */}
+                        <div className="absolute top-2 left-2 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-md">
+                          <div className="flex items-center gap-2">
+                            <svg className="h-4 w-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span className="text-xs font-semibold text-brand-brown">Property Location</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -635,17 +645,6 @@ export default function AccommodationBooking(){
                 </div>
               </div>
 
-              {/* Static map image using Google Static Maps API */}
-              {selectedProperty.address && (
-                <div className="mb-2">
-                  <img
-                    src={`https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(selectedProperty.address)}&zoom=15&size=600x200&markers=color:orange|${encodeURIComponent(selectedProperty.address)}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
-                    alt="Map location"
-                    className="rounded border border-gray-200"
-                    style={{ maxWidth: '100%', height: 'auto' }}
-                  />
-                </div>
-              )}
             </div>
           </div>
         )}
