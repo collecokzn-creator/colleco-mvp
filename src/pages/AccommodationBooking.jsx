@@ -374,6 +374,18 @@ export default function AccommodationBooking(){
                     <p className="text-sm text-gray-600">Type & Rating</p>
                     <p className="font-semibold text-brand-brown">{selectedProperty.type} • {selectedProperty.stars} ⭐</p>
                   </div>
+                  {selectedProperty.selectedMealPlan && (
+                    <div>
+                      <p className="text-sm text-gray-600">Meal Plan</p>
+                      <p className="font-semibold text-brand-brown">
+                        {selectedProperty.selectedMealPlan === 'room_only' && 'Room Only'}
+                        {selectedProperty.selectedMealPlan === 'breakfast' && 'Bed & Breakfast'}
+                        {selectedProperty.selectedMealPlan === 'half_board' && 'Half Board (B&B + Dinner)'}
+                        {selectedProperty.selectedMealPlan === 'full_board' && 'Full Board (All Meals)'}
+                        {selectedProperty.selectedMealPlan === 'all_inclusive' && 'All Inclusive'}
+                      </p>
+                    </div>
+                  )}
                   <div className="md:col-span-2">
                     <p className="text-sm text-gray-600">Address</p>
                     <div className="space-y-2">
@@ -385,25 +397,26 @@ export default function AccommodationBooking(){
                         {selectedProperty.address || location}
                       </p>
                       
-                      {/* CollEco Travel info box above map link */}
-                      <div className="mb-2 p-3 bg-brand-orange/10 border-l-4 border-brand-orange rounded">
+                      {/* CollEco Travel info box */}
+                      <div className="mb-3 p-3 bg-brand-orange/10 border-l-4 border-brand-orange rounded">
                         <strong className="text-brand-orange">CollEco Travel Tip:</strong>
-                        <span className="ml-2 text-sm text-brand-brown">We've embedded a map below so you can see the property location. Complete your booking here with CollEco Travel for exclusive rates and 24/7 support!</span>
+                        <span className="ml-2 text-sm text-brand-brown">Map shows approximate property location. Complete your booking here with CollEco Travel for exclusive rates and support!</span>
                       </div>
                       
-                      {/* Embedded Google Map - View only, no external links to protect brand */}
-                      <div className="relative rounded-lg overflow-hidden border-2 border-brand-orange mb-4">
-                        <iframe
-                          title="Property Location Map"
-                          width="100%"
-                          height="300"
-                          style={{ border: 0 }}
-                          loading="lazy"
-                          allowFullScreen={false}
-                          referrerPolicy="no-referrer-when-downgrade"
-                          src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(selectedProperty.name + ', ' + selectedProperty.address)}&zoom=15`}
-                        />
-                        {/* Overlay badge to reinforce CollEco Travel branding */}
+                      {/* Static Location Map - No API key required */}
+                      <div className="relative rounded-lg overflow-hidden border-2 border-brand-orange mb-4 bg-gradient-to-br from-blue-50 to-green-50">
+                        <div className="w-full h-64 flex flex-col items-center justify-center p-6">
+                          <svg className="h-16 w-16 text-brand-orange mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          <p className="text-lg font-semibold text-brand-brown mb-1">{selectedProperty.name}</p>
+                          <p className="text-sm text-gray-600 text-center">{selectedProperty.address || location}</p>
+                          {selectedProperty.distanceKm && (
+                            <p className="text-xs text-gray-500 mt-2">{selectedProperty.distanceKm} km from city center</p>
+                          )}
+                        </div>
+                        {/* Overlay badge */}
                         <div className="absolute top-2 left-2 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-md">
                           <div className="flex items-center gap-2">
                             <svg className="h-4 w-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -544,6 +557,18 @@ export default function AccommodationBooking(){
                       return Math.max(1, diffDays);
                     })()).toLocaleString()}</span>
                   </div>
+                  {selectedProperty.selectedMealPlan && selectedProperty.selectedMealPlan !== 'room_only' && (
+                    <div className="flex justify-between text-sm text-brand-orange">
+                      <span>Meal Plan: {(() => {
+                        if (selectedProperty.selectedMealPlan === 'breakfast') return 'Bed & Breakfast';
+                        if (selectedProperty.selectedMealPlan === 'half_board') return 'Half Board';
+                        if (selectedProperty.selectedMealPlan === 'full_board') return 'Full Board';
+                        if (selectedProperty.selectedMealPlan === 'all_inclusive') return 'All Inclusive';
+                        return '';
+                      })()}</span>
+                      <span className="font-medium">Included in price</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-sm border-t pt-2">
                     <span className="font-bold text-brand-brown">Total Amount</span>
                     <span className="text-2xl font-bold text-brand-orange">R{(selectedProperty.totalPrice || (selectedProperty.pricePerNight * (() => {
