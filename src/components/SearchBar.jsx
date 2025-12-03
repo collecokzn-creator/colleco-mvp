@@ -10,6 +10,7 @@ export default function SearchBar({ className = '' }){
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
   const wrapRef = useRef(null);
+  const activeItemRef = useRef(null);
   const [recent, setRecent] = useState(() => {
     try { return JSON.parse(localStorage.getItem('recentSearches')||'[]'); } catch { return []; }
   });
@@ -55,6 +56,16 @@ export default function SearchBar({ className = '' }){
     
     return null;
   }, [q]);
+
+  // Scroll active item into view when keyboard navigating
+  useEffect(() => {
+    if (activeItemRef.current && open) {
+      activeItemRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    }
+  }, [activeIdx, open]);
 
   const navLinks = useMemo(() => ([
     { label: 'Trip Planner', path: '/plan-trip', group: 'Navigate' },
@@ -263,7 +274,7 @@ export default function SearchBar({ className = '' }){
           {filtered.length>0 && (
             <ul className="py-2 text-sm">
               {filtered.map((s, idx)=> (
-                <li key={s.group + s.label}>
+                <li key={s.group + s.label} ref={idx === activeIdx ? activeItemRef : null}>
                   <button
                     onMouseEnter={()=>setActiveIdx(idx)}
                     onClick={()=>go(s)}

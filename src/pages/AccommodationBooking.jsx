@@ -374,11 +374,10 @@ export default function AccommodationBooking(){
                     <p className="text-sm text-gray-600">Type & Rating</p>
                     <p className="font-semibold text-brand-brown">{selectedProperty.type} • {selectedProperty.stars} ⭐</p>
                   </div>
-                  {selectedProperty.selectedMealPlan && (
+                  {selectedProperty.selectedMealPlan && selectedProperty.selectedMealPlan !== 'room_only' && (
                     <div>
                       <p className="text-sm text-gray-600">Meal Plan</p>
                       <p className="font-semibold text-brand-brown">
-                        {selectedProperty.selectedMealPlan === 'room_only' && 'Room Only'}
                         {selectedProperty.selectedMealPlan === 'breakfast' && 'Bed & Breakfast'}
                         {selectedProperty.selectedMealPlan === 'half_board' && 'Half Board (B&B + Dinner)'}
                         {selectedProperty.selectedMealPlan === 'full_board' && 'Full Board (All Meals)'}
