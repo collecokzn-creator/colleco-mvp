@@ -420,35 +420,6 @@ export default function AccommodationBooking(){
                     <p className="text-sm text-gray-600">Guest Rating</p>
                     <p className="font-semibold text-brand-brown">{selectedProperty.rating?.toFixed(1) || 'N/A'}/5.0 ({selectedProperty.reviewCount || 0} reviews)</p>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Property Contact</p>
-                    <div className="space-y-1">
-                      {selectedProperty.phone && (
-                        <p className="text-sm font-medium text-brand-brown flex items-center gap-2">
-                          <svg className="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                          </svg>
-                          {selectedProperty.phone}
-                        </p>
-                      )}
-                      {selectedProperty.email && (
-                        <p className="text-sm font-medium text-brand-brown flex items-center gap-2">
-                          <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                          </svg>
-                          {selectedProperty.email}
-                        </p>
-                      )}
-                      {selectedProperty.website && (
-                        <p className="text-sm font-medium text-brand-brown flex items-center gap-2">
-                          <svg className="h-4 w-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                          </svg>
-                          {selectedProperty.website}
-                        </p>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -626,21 +597,60 @@ export default function AccommodationBooking(){
                 </div>
               </div>
 
-              {/* Contact Information */}
+              {/* Contact Information - Separated by Purpose */}
               <div className="border-t pt-6">
                 <h3 className="text-lg font-bold text-brand-brown mb-3">Need Assistance?</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <p className="text-gray-600">Customer Support</p>
-                    <p className="font-semibold text-brand-brown">+27 31 123 4567</p>
+                
+                {/* Property Contact - For Stay-Related Questions */}
+                <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <h4 className="font-semibold text-green-900">During Your Stay - Contact Property Directly</h4>
                   </div>
-                  <div>
-                    <p className="text-gray-600">Email</p>
-                    <p className="font-semibold text-brand-brown">support@colleco.co.za</p>
+                  <p className="text-sm text-green-800 mb-3">For check-in, room requests, amenities, or on-site assistance:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    {selectedProperty.phone && (
+                      <div>
+                        <p className="text-green-700 font-medium">Property Phone</p>
+                        <p className="font-semibold text-green-900">{selectedProperty.phone}</p>
+                      </div>
+                    )}
+                    {selectedProperty.email && (
+                      <div>
+                        <p className="text-green-700 font-medium">Property Email</p>
+                        <p className="font-semibold text-green-900">{selectedProperty.email}</p>
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    <p className="text-gray-600">Operating Hours</p>
-                    <p className="font-semibold text-brand-brown">24/7 Support</p>
+                </div>
+
+                {/* CollEco Support - For Booking Issues */}
+                <div className="bg-orange-50 border border-brand-orange rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="h-5 w-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <h4 className="font-semibold text-brand-brown">Booking Support - Contact CollEco Travel</h4>
+                  </div>
+                  <p className="text-sm text-brand-brown mb-3">For booking changes, cancellations, refunds, or payment issues:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                    <div>
+                      <p className="text-gray-600">Phone Support</p>
+                      <p className="font-semibold text-brand-brown">+27 31 123 4567</p>
+                      <p className="text-xs text-gray-500">Mon-Fri: 8AM-6PM</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Email Support</p>
+                      <p className="font-semibold text-brand-brown">support@colleco.co.za</p>
+                      <p className="text-xs text-gray-500">24-48hr response</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Emergency Line</p>
+                      <p className="font-semibold text-brand-brown">+27 82 911 0000</p>
+                      <p className="text-xs text-gray-500">After hours only</p>
+                    </div>
                   </div>
                 </div>
               </div>
