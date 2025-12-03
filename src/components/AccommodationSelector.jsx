@@ -354,8 +354,8 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
   );
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-modal flex items-start justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-xl shadow-2xl max-w-7xl w-full flex flex-col my-4">
+    <div className="fixed inset-0 bg-black/50 z-modal flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-7xl w-full max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
           <div className="flex items-start justify-between mb-3">
