@@ -928,6 +928,74 @@ export default function Transfers() {
           )}
         </div>
       )}
+
+      {/* AI-First Support Section */}
+      {selectedRide && (
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mt-6">
+          <h2 className="text-xl font-bold text-brand-brown mb-4">Need Assistance?</h2>
+          
+          {/* Driver Contact - For During Transfer */}
+          <div className="mb-4 bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <svg className="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+              <h4 className="font-semibold text-purple-900">During Transfer - Contact Driver Directly</h4>
+            </div>
+            <p className="text-sm text-purple-800 mb-3">For pickup coordination, delays, or route questions:</p>
+            <div className="text-sm">
+              <p className="text-purple-700 font-medium">Driver: {selectedRide.driver.name}</p>
+              <p className="text-purple-600">Contact via in-app chat or phone once matched</p>
+            </div>
+          </div>
+
+          {/* CollEco AI Agent - Primary Support */}
+          <div className="bg-orange-50 border-2 border-brand-orange rounded-lg p-4 mb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <svg className="h-6 w-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <h4 className="font-semibold text-brand-brown text-lg">AI Travel Assistant - 24/7 Instant Help</h4>
+            </div>
+            <p className="text-sm text-brand-brown mb-3">
+              Get instant answers about your booking, changes, cancellations, refunds, payment issues, and recommendations.
+            </p>
+            <button 
+              onClick={() => window.location.href = '/support'}
+              className="w-full bg-brand-orange text-white font-semibold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              Chat with AI Assistant Now
+            </button>
+            <p className="text-xs text-gray-600 mt-2 text-center">
+              Available 24/7 • Instant responses • Handles booking changes & queries
+            </p>
+          </div>
+
+          {/* Human Support Fallback */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+              </svg>
+              <h4 className="font-medium text-gray-700 text-sm">Need to Speak to a Human?</h4>
+            </div>
+            <p className="text-xs text-gray-600 mb-3">If the AI Agent can't resolve your issue:</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div>
+                <p className="text-gray-500">Email Support</p>
+                <p className="font-semibold text-gray-700">support@colleco.co.za</p>
+              </div>
+              <div>
+                <p className="text-gray-500">Phone (Escalations)</p>
+                <p className="font-semibold text-gray-700">+27 31 123 4567</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
 
     {/* Ride Selector Modal */}
