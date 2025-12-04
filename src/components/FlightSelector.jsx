@@ -14,7 +14,9 @@ import {
   Briefcase,
   Coffee,
   Wifi,
-  MonitorPlay
+  MonitorPlay,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 export default function FlightSelector({ 
