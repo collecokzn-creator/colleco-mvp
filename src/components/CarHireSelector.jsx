@@ -15,7 +15,9 @@ import {
   Users,
   Luggage,
   Snowflake,
-  Radio
+  Radio,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 export default function CarHireSelector({ 
