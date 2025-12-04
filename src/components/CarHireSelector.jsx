@@ -354,7 +354,7 @@ export default function CarHireSelector({
     <div className="fixed inset-0 bg-black/50 z-modal flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
+        <div className="p-3 sm:p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
           <h2 className="text-2xl font-bold text-white mb-2">Pick My Car</h2>
           <p className="text-white/90 text-sm">
             {pickupLocation} • {pickupDate} to {dropoffDate} • <span className="font-semibold">{rentalDays} day{rentalDays !== 1 ? 's' : ''}</span>
@@ -544,9 +544,9 @@ export default function CarHireSelector({
                     : 'border-gray-200 hover:border-brand-orange/50'
                 }`}
               >
-                <div className="flex gap-4">
+                <div className="flex gap-2 sm:gap-4">
                   {/* Car Image */}
-                  <div className="w-40 h-28 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden">
+                  <div className="w-24 sm:w-40 h-20 sm:h-28 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden">
                     {car.imageUrl ? (
                       <img 
                         src={car.imageUrl} 
@@ -692,7 +692,7 @@ export default function CarHireSelector({
           <button
             onClick={() => selectedCar && onSelectCar(selectedCar)}
             disabled={!selectedCar}
-            className="px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+            className="px-3 sm:px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 text-sm sm:text-base"
           >
             <CheckCircle2 className="h-4 w-4" />
             Confirm Car {selectedCar && `- ${formatCurrency(selectedCar.pricePerDay)}/day`}

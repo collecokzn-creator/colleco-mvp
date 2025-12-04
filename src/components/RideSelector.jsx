@@ -326,7 +326,7 @@ export default function RideSelector({
     <div className="fixed inset-0 bg-black/50 z-modal flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-white rounded-lg max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col my-8">
         {/* Header */}
-        <div className="p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
+        <div className="p-3 sm:p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
           <h2 className="text-2xl font-bold text-white mb-2">Pick Your Ride</h2>
           <p className="text-white/90 text-sm">
             {pickup} → {dropoff}
@@ -402,10 +402,10 @@ export default function RideSelector({
                     : 'border-gray-200 hover:border-brand-orange hover:shadow-md'
                 }`}
               >
-                <div className="flex gap-4">
+                <div className="flex gap-2 sm:gap-4">
                   {/* Driver Photo */}
                   <div className="flex-shrink-0">
-                    <div className="w-20 h-20 bg-gray-200 rounded-full overflow-hidden relative">
+                    <div className="w-16 sm:w-20 h-16 sm:h-20 bg-gray-200 rounded-full overflow-hidden relative">
                       {ride.driver.photo ? (
                         <img 
                           src={ride.driver.photo} 
@@ -574,7 +574,7 @@ export default function RideSelector({
           <button
             onClick={() => selectedRide && onSelectRide(selectedRide)}
             disabled={!selectedRide}
-            className="px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+            className="px-3 sm:px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 text-sm sm:text-base"
           >
             <CheckCircle2 className="h-4 w-4" />
             Confirm Ride {selectedRide && `- ${formatCurrency(selectedRide.price)}`}

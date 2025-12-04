@@ -333,7 +333,7 @@ export default function FlightSelector({
     <div className="fixed inset-0 bg-black/50 z-modal flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
+        <div className="p-3 sm:p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
           <h2 className="text-2xl font-bold text-white mb-2">Pick My Flight</h2>
           <p className="text-white/90 text-sm">
             {from} → {to} • {passengers} passenger{passengers !== 1 ? 's' : ''} • {departDate}
@@ -547,9 +547,9 @@ export default function FlightSelector({
                 </div>
 
                 {/* Flight Route */}
-                <div className="grid grid-cols-3 gap-4 mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-3">
                   <div>
-                    <p className="text-2xl font-bold text-brand-brown">{formatTime(flight.departureTime)}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-brand-brown">{formatTime(flight.departureTime)}</p>
                     <p className="text-sm text-gray-600">{flight.from}</p>
                   </div>
                   <div className="flex flex-col items-center justify-center">
@@ -667,7 +667,7 @@ export default function FlightSelector({
           <button
             onClick={() => selectedFlight && onSelectFlight(selectedFlight)}
             disabled={!selectedFlight}
-            className="px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+            className="px-3 sm:px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 text-sm sm:text-base"
           >
             <CheckCircle2 className="h-4 w-4" />
             Confirm Flight {selectedFlight && `- ${formatCurrency(selectedFlight.price)}`}
