@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 /**
- * Pre-commit hook to prevent accidental secret commits
- * Scans staged files for potential API keys, tokens, and credentials
- * Note: May be skipped on Windows PowerShell (use Git Bash instead)
+ * Windows-friendly pre-commit hook wrapper
+ * Use this on Windows PowerShell instead of .husky/pre-commit
+ * 
+ * To use on Windows:
+ * 1. npm run husky-skip (to disable default husky for Git Bash)
+ * 2. Configure this script in your IDE's pre-commit settings
+ * 
+ * Or better: Use Git Bash for commits (it supports .husky/pre-commit natively)
  */
 
 const { execSync } = require('child_process');
@@ -39,6 +44,8 @@ const IGNORE_FILES = [
   'pnpm-lock.yaml',
   '.git/',
   'node_modules/',
+  '.env.local',
+  '.env.*.local',
 ];
 
 function getStagedFiles() {
@@ -61,35 +68,40 @@ function scanFileForSecrets(filePath) {
   if (!fs.existsSync(filePath)) return [];
   if (shouldIgnoreFile(filePath)) return [];
   
-  const content = fs.readFileSync(filePath, 'utf8');
-  const findings = [];
-  
-  SECRET_PATTERNS.forEach(({ pattern, name }) => {
-    const matches = content.match(new RegExp(pattern, 'g'));
-    if (matches) {
-      const lines = content.split('\n');
-      lines.forEach((line, index) => {
-        if (pattern.test(line)) {
-          findings.push({
-            file: filePath,
-            line: index + 1,
-            type: name,
-            preview: line.trim().substring(0, 80),
-          });
-        }
-      });
-    }
-  });
-  
-  return findings;
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const findings = [];
+    
+    SECRET_PATTERNS.forEach(({ pattern, name }) => {
+      const matches = content.match(new RegExp(pattern, 'g'));
+      if (matches) {
+        const lines = content.split('\n');
+        lines.forEach((line, index) => {
+          if (pattern.test(line)) {
+            findings.push({
+              file: filePath,
+              line: index + 1,
+              type: name,
+              preview: line.trim().substring(0, 80),
+            });
+          }
+        });
+      }
+    });
+    
+    return findings;
+  } catch (error) {
+    console.warn(`Warning: Could not scan ${filePath}: ${error.message}`);
+    return [];
+  }
 }
 
 function main() {
-  console.log('🔍 Scanning for potential secrets...\n');
+  console.log('🔍 [Windows] Scanning for potential secrets...\n');
   
   const stagedFiles = getStagedFiles();
   if (stagedFiles.length === 0) {
-    console.log('No files to scan.');
+    console.log('✅ No files to scan.\n');
     return 0;
   }
   
@@ -123,7 +135,7 @@ function main() {
   console.error('  2. Add files to .gitignore');
   console.error('  3. Use placeholder values in documentation\n');
   
-  return 1; // Exit with error to block commit
+  return 1;
 }
 
 process.exit(main());
