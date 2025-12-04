@@ -413,6 +413,291 @@ export const zolaPA = {
   },
 
   /**
+   * Generate quotation on request
+   */
+  generateQuotation: (userId, quoteRequest) => {
+    const quotation = {
+      id: `QUOTE-${Date.now()}`,
+      userId,
+      quoteNumber: `QT-${new Date().getFullYear()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+      type: quoteRequest.type, // accommodation, transport, package, event, custom
+      destination: quoteRequest.destination,
+      dates: {
+        from: quoteRequest.startDate,
+        to: quoteRequest.endDate,
+        nights: Math.ceil((new Date(quoteRequest.endDate) - new Date(quoteRequest.startDate)) / (1000 * 60 * 60 * 24))
+      },
+      items: quoteRequest.items || [],
+      lineItems: [],
+      subtotal: 0,
+      tax: 0,
+      discount: quoteRequest.discount || 0,
+      total: 0,
+      currency: quoteRequest.currency || 'ZAR',
+      validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+      status: 'draft',
+      notes: quoteRequest.notes || '',
+      createdAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+    };
+
+    // Calculate line items
+    if (quoteRequest.items && quoteRequest.items.length > 0) {
+      quoteRequest.items.forEach(item => {
+        const lineItem = {
+          id: `LI-${Date.now()}`,
+          description: item.description,
+          quantity: item.quantity || 1,
+          unitPrice: item.price,
+          total: (item.quantity || 1) * item.price
+        };
+        quotation.lineItems.push(lineItem);
+        quotation.subtotal += lineItem.total;
+      });
+    }
+
+    // Apply tax (15% VAT South Africa)
+    quotation.tax = Math.round(quotation.subtotal * 0.15 * 100) / 100;
+
+    // Apply discount
+    if (quotation.discount > 0) {
+      if (quotation.discount < 1) {
+        // Percentage discount
+        quotation.discount = Math.round(quotation.subtotal * quotation.discount * 100) / 100;
+      }
+    }
+
+    quotation.total = quotation.subtotal + quotation.tax - quotation.discount;
+
+    localStorage.setItem(`colleco.pa.quotation.${quotation.id}`, JSON.stringify(quotation));
+    return quotation;
+  },
+
+  /**
+   * Generate invoice from accepted quotation
+   */
+  generateInvoice: (userId, quoteId, paymentTerms = 'net30') => {
+    const quotation = JSON.parse(localStorage.getItem(`colleco.pa.quotation.${quoteId}`) || '{}');
+
+    if (!quotation.id) {
+      return { error: 'Quotation not found' };
+    }
+
+    const invoice = {
+      id: `INV-${Date.now()}`,
+      invoiceNumber: `INV-${new Date().getFullYear()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+      quotationId: quoteId,
+      userId,
+      type: quotation.type,
+      destination: quotation.destination,
+      dates: quotation.dates,
+      lineItems: quotation.lineItems,
+      subtotal: quotation.subtotal,
+      tax: quotation.tax,
+      discount: quotation.discount,
+      total: quotation.total,
+      currency: quotation.currency,
+      paymentTerms, // net30, net15, due_on_date, immediate
+      dueDate: zolaPA.calculateDueDate(paymentTerms),
+      status: 'sent',
+      paidAmount: 0,
+      outstandingAmount: quotation.total,
+      notes: quotation.notes,
+      issuedAt: new Date().toISOString(),
+      dueAt: zolaPA.calculateDueDate(paymentTerms),
+      paidAt: null,
+      paymentHistory: []
+    };
+
+    localStorage.setItem(`colleco.pa.invoice.${invoice.id}`, JSON.stringify(invoice));
+
+    // Update quotation status
+    quotation.status = 'converted_to_invoice';
+    localStorage.setItem(`colleco.pa.quotation.${quoteId}`, JSON.stringify(quotation));
+
+    return invoice;
+  },
+
+  /**
+   * Calculate due date based on payment terms
+   */
+  calculateDueDate: (paymentTerms) => {
+    const now = new Date();
+    let daysToAdd = 30; // default net30
+
+    if (paymentTerms === 'net15') daysToAdd = 15;
+    if (paymentTerms === 'net30') daysToAdd = 30;
+    if (paymentTerms === 'net60') daysToAdd = 60;
+    if (paymentTerms === 'immediate') daysToAdd = 0;
+
+    return new Date(now.getTime() + daysToAdd * 24 * 60 * 60 * 1000).toISOString();
+  },
+
+  /**
+   * Record payment against invoice
+   */
+  recordPayment: (invoiceId, amount, method = 'bank_transfer', reference = '') => {
+    const invoice = JSON.parse(localStorage.getItem(`colleco.pa.invoice.${invoiceId}`) || '{}');
+
+    if (!invoice.id) {
+      return { error: 'Invoice not found' };
+    }
+
+    const payment = {
+      id: `PAY-${Date.now()}`,
+      amount,
+      method, // bank_transfer, credit_card, cash, cheque, mobile_payment
+      reference,
+      recordedAt: new Date().toISOString()
+    };
+
+    invoice.paymentHistory.push(payment);
+    invoice.paidAmount += amount;
+    invoice.outstandingAmount = invoice.total - invoice.paidAmount;
+
+    if (invoice.outstandingAmount <= 0) {
+      invoice.status = 'paid';
+      invoice.paidAt = new Date().toISOString();
+    } else if (invoice.outstandingAmount < invoice.total) {
+      invoice.status = 'partially_paid';
+    }
+
+    localStorage.setItem(`colleco.pa.invoice.${invoiceId}`, JSON.stringify(invoice));
+    return invoice;
+  },
+
+  /**
+   * Get all quotations for user
+   */
+  getQuotations: (userId, filters = {}) => {
+    const quotations = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('colleco.pa.quotation.')) {
+        const quote = JSON.parse(localStorage.getItem(key));
+        if (quote.userId === userId) {
+          quotations.push(quote);
+        }
+      }
+    }
+
+    // Apply filters
+    if (filters.status) {
+      return quotations.filter(q => q.status === filters.status);
+    }
+
+    if (filters.type) {
+      return quotations.filter(q => q.type === filters.type);
+    }
+
+    return quotations.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  /**
+   * Get all invoices for user
+   */
+  getInvoices: (userId, filters = {}) => {
+    const invoices = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('colleco.pa.invoice.')) {
+        const invoice = JSON.parse(localStorage.getItem(key));
+        if (invoice.userId === userId) {
+          invoices.push(invoice);
+        }
+      }
+    }
+
+    // Apply filters
+    if (filters.status) {
+      return invoices.filter(i => i.status === filters.status);
+    }
+
+    if (filters.outstanding) {
+      return invoices.filter(i => i.outstandingAmount > 0);
+    }
+
+    if (filters.overdue) {
+      const now = new Date();
+      return invoices.filter(i => new Date(i.dueAt) < now && i.status !== 'paid');
+    }
+
+    return invoices.sort((a, b) => new Date(b.issuedAt) - new Date(a.issuedAt));
+  },
+
+  /**
+   * Generate quotation PDF (stub - would use jsPDF)
+   */
+  exportQuotationPDF: (quotationId) => {
+    const quotation = JSON.parse(localStorage.getItem(`colleco.pa.quotation.${quotationId}`) || '{}');
+
+    return {
+      filename: `quotation-${quotation.quoteNumber}.pdf`,
+      title: 'Quotation',
+      data: quotation,
+      format: 'A4',
+      status: 'ready_for_export'
+    };
+  },
+
+  /**
+   * Generate invoice PDF (stub - would use jsPDF)
+   */
+  exportInvoicePDF: (invoiceId) => {
+    const invoice = JSON.parse(localStorage.getItem(`colleco.pa.invoice.${invoiceId}`) || '{}');
+
+    return {
+      filename: `invoice-${invoice.invoiceNumber}.pdf`,
+      title: 'Invoice',
+      data: invoice,
+      format: 'A4',
+      status: 'ready_for_export'
+    };
+  },
+
+  /**
+   * Send quotation via email
+   */
+  sendQuotationEmail: (quotationId, recipientEmail) => {
+    const quotation = JSON.parse(localStorage.getItem(`colleco.pa.quotation.${quotationId}`) || '{}');
+
+    const emailRecord = {
+      id: `EMAIL-${Date.now()}`,
+      type: 'quotation',
+      recipientEmail,
+      quotationId,
+      subject: `Your Quotation ${quotation.quoteNumber}`,
+      status: 'sent',
+      sentAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(`colleco.pa.email_sent.${emailRecord.id}`, JSON.stringify(emailRecord));
+    return emailRecord;
+  },
+
+  /**
+   * Send invoice via email
+   */
+  sendInvoiceEmail: (invoiceId, recipientEmail) => {
+    const invoice = JSON.parse(localStorage.getItem(`colleco.pa.invoice.${invoiceId}`) || '{}');
+
+    const emailRecord = {
+      id: `EMAIL-${Date.now()}`,
+      type: 'invoice',
+      recipientEmail,
+      invoiceId,
+      subject: `Your Invoice ${invoice.invoiceNumber}`,
+      status: 'sent',
+      sentAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(`colleco.pa.email_sent.${emailRecord.id}`, JSON.stringify(emailRecord));
+    return emailRecord;
+  },
+
+  /**
    * Partner PA features (for accommodations/services)
    */
   partnerPA: {

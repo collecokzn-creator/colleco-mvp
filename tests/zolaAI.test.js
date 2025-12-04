@@ -674,6 +674,237 @@ describe('Zola PA Features', () => {
     });
   });
 
+  describe('Quotation Management', () => {
+    it('should generate a quotation', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [
+          { description: 'Hotel 5 nights', quantity: 5, price: 200 },
+          { description: 'Airport transfer', quantity: 1, price: 100 }
+        ],
+        currency: 'ZAR'
+      });
+
+      expect(quotation).toHaveProperty('id');
+      expect(quotation).toHaveProperty('quoteNumber');
+      expect(quotation.subtotal).toBe(1100);
+      expect(quotation.total).toBeGreaterThan(quotation.subtotal);
+      expect(quotation.status).toBe('draft');
+    });
+
+    it('should calculate tax correctly', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 5, price: 1000 }]
+      });
+
+      // 15% VAT on R5000 = R750
+      expect(quotation.tax).toBe(750);
+    });
+
+    it('should apply discount to quotation', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 5, price: 1000 }],
+        discount: 0.1  // 10% discount
+      });
+
+      expect(quotation.discount).toBe(500);
+      expect(quotation.total).toBe(quotation.subtotal + quotation.tax - 500);
+    });
+
+    it('should retrieve user quotations', () => {
+      zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 1, price: 1000 }]
+      });
+
+      const quotations = zolaPA.getQuotations('USER-1');
+      expect(Array.isArray(quotations)).toBe(true);
+      expect(quotations.length).toBeGreaterThan(0);
+    });
+
+    it('should export quotation PDF', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 1, price: 1000 }]
+      });
+
+      const pdf = zolaPA.exportQuotationPDF(quotation.id);
+      expect(pdf).toHaveProperty('filename');
+      expect(pdf.filename).toContain('quotation');
+      expect(pdf.status).toBe('ready_for_export');
+    });
+
+    it('should send quotation via email', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 1, price: 1000 }]
+      });
+
+      const email = zolaPA.sendQuotationEmail(quotation.id, 'client@example.com');
+      expect(email.status).toBe('sent');
+      expect(email.recipientEmail).toBe('client@example.com');
+    });
+  });
+
+  describe('Invoice Management', () => {
+    it('should generate invoice from quotation', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 5, price: 200 }]
+      });
+
+      const invoice = zolaPA.generateInvoice('USER-1', quotation.id, 'net30');
+
+      expect(invoice).toHaveProperty('id');
+      expect(invoice).toHaveProperty('invoiceNumber');
+      expect(invoice.status).toBe('sent');
+      expect(invoice.total).toBe(quotation.total);
+      expect(invoice.outstandingAmount).toBe(invoice.total);
+    });
+
+    it('should calculate due date based on payment terms', () => {
+      const now = new Date();
+      
+      const dueDate30 = zolaPA.calculateDueDate('net30');
+      const days30 = Math.floor((new Date(dueDate30) - now) / (1000 * 60 * 60 * 24));
+      expect(days30).toBe(30);
+
+      const dueDate15 = zolaPA.calculateDueDate('net15');
+      const days15 = Math.floor((new Date(dueDate15) - now) / (1000 * 60 * 60 * 24));
+      expect(days15).toBe(15);
+    });
+
+    it('should record payment against invoice', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 5, price: 200 }]
+      });
+
+      const invoice = zolaPA.generateInvoice('USER-1', quotation.id);
+      const originalTotal = invoice.total;
+
+      zolaPA.recordPayment(invoice.id, 500, 'bank_transfer', 'TXN-123');
+
+      const updated = JSON.parse(localStorage.getItem(`colleco.pa.invoice.${invoice.id}`));
+      expect(updated.paidAmount).toBe(500);
+      expect(updated.outstandingAmount).toBe(originalTotal - 500);
+      expect(updated.status).toBe('partially_paid');
+    });
+
+    it('should mark invoice as paid when fully paid', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 5, price: 200 }]
+      });
+
+      const invoice = zolaPA.generateInvoice('USER-1', quotation.id);
+      zolaPA.recordPayment(invoice.id, invoice.total, 'bank_transfer');
+
+      const updated = JSON.parse(localStorage.getItem(`colleco.pa.invoice.${invoice.id}`));
+      expect(updated.status).toBe('paid');
+      expect(updated.paidAt).toBeDefined();
+    });
+
+    it('should retrieve user invoices with filters', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 1, price: 1000 }]
+      });
+
+      const invoice = zolaPA.generateInvoice('USER-1', quotation.id);
+
+      const allInvoices = zolaPA.getInvoices('USER-1');
+      expect(Array.isArray(allInvoices)).toBe(true);
+
+      const outstandingInvoices = zolaPA.getInvoices('USER-1', { outstanding: true });
+      expect(outstandingInvoices.length).toBeGreaterThan(0);
+    });
+
+    it('should export invoice PDF', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 1, price: 1000 }]
+      });
+
+      const invoice = zolaPA.generateInvoice('USER-1', quotation.id);
+      const pdf = zolaPA.exportInvoicePDF(invoice.id);
+
+      expect(pdf).toHaveProperty('filename');
+      expect(pdf.filename).toContain('invoice');
+      expect(pdf.status).toBe('ready_for_export');
+    });
+
+    it('should send invoice via email', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 1, price: 1000 }]
+      });
+
+      const invoice = zolaPA.generateInvoice('USER-1', quotation.id);
+      const email = zolaPA.sendInvoiceEmail(invoice.id, 'client@example.com');
+
+      expect(email.status).toBe('sent');
+      expect(email.recipientEmail).toBe('client@example.com');
+      expect(email.type).toBe('invoice');
+    });
+
+    it('should track payment history on invoice', () => {
+      const quotation = zolaPA.generateQuotation('USER-1', {
+        type: 'accommodation',
+        destination: 'Paris',
+        startDate: '2025-06-01',
+        endDate: '2025-06-08',
+        items: [{ description: 'Hotel', quantity: 5, price: 200 }]
+      });
+
+      const invoice = zolaPA.generateInvoice('USER-1', quotation.id);
+      zolaPA.recordPayment(invoice.id, 300, 'bank_transfer', 'TXN-1');
+      zolaPA.recordPayment(invoice.id, 300, 'credit_card', 'TXN-2');
+
+      const updated = JSON.parse(localStorage.getItem(`colleco.pa.invoice.${invoice.id}`));
+      expect(updated.paymentHistory.length).toBe(2);
+      expect(updated.paidAmount).toBe(600);
+    });
+  });
+
   describe('Partner PA Features', () => {
     it('should optimize partner listings', () => {
       const optimization = zolaPA.partnerPA.optimizeListings('PARTNER-1');
