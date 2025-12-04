@@ -115,16 +115,16 @@ export class ROIAnalyzer {
         type: 'wow_positive',
         message: `🎉 ${recommendedPlan.name} would PAY FOR ITSELF in ${breakevensData.daysToBreakeven} days at your current revenue!`,
         savings: breakevensData.profitIfUpgraded,
-        annualSavings: breakeventsData.profitIfUpgraded * 12,
-        daysToBreakeven: breakeventsData.daysToBreakeven,
+        annualSavings: breakevensData.profitIfUpgraded * 12,
+        daysToBreakeven: breakevensData.daysToBreakeven,
         action: 'upgrade_now',
       };
     }
     
     return {
       type: 'info',
-      message: `Upgrade to ${recommendedPlan.name} when you reach R${breakeventsData.monthlyBreakeven.toLocaleString()}/month revenue.`,
-      targetRevenue: breakeventsData.monthlyBreakeven,
+      message: `Upgrade to ${recommendedPlan.name} when you reach R${breakevensData.monthlyBreakeven.toLocaleString()}/month revenue.`,
+      targetRevenue: breakevensData.monthlyBreakeven,
       action: 'monitor',
     };
   }
