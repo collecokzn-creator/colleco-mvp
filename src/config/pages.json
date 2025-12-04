@@ -160,6 +160,17 @@
               }
             },
             {
+              "path": "/gamification",
+              "name": "Gamification Center",
+              "component": "Gamification",
+              "meta": {
+                "title": "Gamification Center | Challenges & Achievements",
+                "description": "Complete challenges, earn badges, climb leaderboards, and unlock rewards.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
               "path": "/wishlist",
               "name": "Wishlist",
               "component": "Wishlist",

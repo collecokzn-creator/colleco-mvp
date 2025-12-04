@@ -1,0 +1,686 @@
+/**
+ * CollEco Travel Gamification Engine
+ * 
+ * Powers engagement through challenges, achievements, leaderboards, and rewards.
+ * Integrates with loyalty system, booking flows, and revenue tracking.
+ */
+
+// ==================== STORAGE KEYS ====================
+const CHALLENGES_KEY = 'colleco.gamification.challenges';
+const ACHIEVEMENTS_KEY = 'colleco.gamification.achievements';
+const LEADERBOARDS_KEY = 'colleco.gamification.leaderboards';
+const STREAKS_KEY = 'colleco.gamification.streaks';
+const PROGRESS_KEY = 'colleco.gamification.progress';
+
+// ==================== CHALLENGE DEFINITIONS ====================
+
+export const PARTNER_CHALLENGES = {
+  // Revenue Challenges
+  revenue_starter: {
+    id: 'revenue_starter',
+    name: 'First R10K',
+    description: 'Earn your first R10,000 in revenue',
+    type: 'partner',
+    category: 'revenue',
+    target: 10000,
+    reward: { points: 500, badge: 'revenue_bronze' },
+    difficulty: 'easy',
+  },
+  revenue_pro: {
+    id: 'revenue_pro',
+    name: 'Revenue Champion',
+    description: 'Reach R100,000 in total revenue',
+    type: 'partner',
+    category: 'revenue',
+    target: 100000,
+    reward: { points: 2500, badge: 'revenue_gold' },
+    difficulty: 'hard',
+  },
+  monthly_target: {
+    id: 'monthly_target',
+    name: 'Monthly Goal',
+    description: 'Hit R50,000 revenue in a single month',
+    type: 'partner',
+    category: 'revenue',
+    target: 50000,
+    timeframe: 'monthly',
+    reward: { points: 1000, badge: 'monthly_star' },
+    difficulty: 'medium',
+  },
+
+  // Booking Challenges
+  booking_milestone_10: {
+    id: 'booking_milestone_10',
+    name: '10 Bookings',
+    description: 'Receive 10 confirmed bookings',
+    type: 'partner',
+    category: 'bookings',
+    target: 10,
+    reward: { points: 200, badge: 'booking_bronze' },
+    difficulty: 'easy',
+  },
+  booking_milestone_100: {
+    id: 'booking_milestone_100',
+    name: '100 Bookings',
+    description: 'Reach 100 confirmed bookings',
+    type: 'partner',
+    category: 'bookings',
+    target: 100,
+    reward: { points: 1500, badge: 'booking_gold' },
+    difficulty: 'hard',
+  },
+
+  // Occupancy Challenges
+  high_occupancy: {
+    id: 'high_occupancy',
+    name: 'Fully Booked',
+    description: 'Maintain 90%+ occupancy for 30 days',
+    type: 'partner',
+    category: 'occupancy',
+    target: 90,
+    duration: 30,
+    reward: { points: 800, badge: 'occupancy_champion' },
+    difficulty: 'medium',
+  },
+
+  // Rating Challenges
+  five_star_streak: {
+    id: 'five_star_streak',
+    name: '5-Star Streak',
+    description: 'Get 10 consecutive 5-star reviews',
+    type: 'partner',
+    category: 'rating',
+    target: 10,
+    threshold: 5,
+    reward: { points: 1200, badge: 'excellence_badge' },
+    difficulty: 'hard',
+  },
+
+  // Engagement Challenges
+  quick_responder: {
+    id: 'quick_responder',
+    name: 'Quick Responder',
+    description: 'Respond to 20 inquiries within 1 hour',
+    type: 'partner',
+    category: 'engagement',
+    target: 20,
+    timeLimit: 60, // minutes
+    reward: { points: 300, badge: 'responsive_partner' },
+    difficulty: 'medium',
+  },
+};
+
+export const TRAVELER_CHALLENGES = {
+  // Trip Challenges
+  first_trip: {
+    id: 'first_trip',
+    name: 'First Adventure',
+    description: 'Complete your first trip',
+    type: 'traveler',
+    category: 'trips',
+    target: 1,
+    reward: { points: 100, badge: 'explorer_bronze' },
+    difficulty: 'easy',
+  },
+  trip_milestone_10: {
+    id: 'trip_milestone_10',
+    name: 'Seasoned Traveler',
+    description: 'Complete 10 trips',
+    type: 'traveler',
+    category: 'trips',
+    target: 10,
+    reward: { points: 1000, badge: 'explorer_gold' },
+    difficulty: 'medium',
+  },
+
+  // Geography Challenges
+  province_explorer: {
+    id: 'province_explorer',
+    name: 'Province Explorer',
+    description: 'Visit all 9 provinces of South Africa',
+    type: 'traveler',
+    category: 'geography',
+    target: 9,
+    reward: { points: 2000, badge: 'sa_explorer' },
+    difficulty: 'hard',
+  },
+  country_collector: {
+    id: 'country_collector',
+    name: 'Globe Trotter',
+    description: 'Visit 5 different countries',
+    type: 'traveler',
+    category: 'geography',
+    target: 5,
+    reward: { points: 1500, badge: 'globe_trotter' },
+    difficulty: 'medium',
+  },
+
+  // Loyalty Challenges
+  loyalty_tier_silver: {
+    id: 'loyalty_tier_silver',
+    name: 'Silver Status',
+    description: 'Reach Silver tier in loyalty program',
+    type: 'traveler',
+    category: 'loyalty',
+    target: 'silver',
+    reward: { points: 500, badge: 'loyal_silver' },
+    difficulty: 'easy',
+  },
+  loyalty_tier_platinum: {
+    id: 'loyalty_tier_platinum',
+    name: 'Platinum Elite',
+    description: 'Reach Platinum tier in loyalty program',
+    type: 'traveler',
+    category: 'loyalty',
+    target: 'platinum',
+    reward: { points: 3000, badge: 'loyal_platinum' },
+    difficulty: 'hard',
+  },
+
+  // Spending Challenges
+  big_spender: {
+    id: 'big_spender',
+    name: 'Big Spender',
+    description: 'Spend R50,000+ on travel',
+    type: 'traveler',
+    category: 'spending',
+    target: 50000,
+    reward: { points: 2500, badge: 'vip_traveler' },
+    difficulty: 'hard',
+  },
+
+  // Social Challenges
+  referral_champion: {
+    id: 'referral_champion',
+    name: 'Referral Champion',
+    description: 'Refer 5 friends who complete a booking',
+    type: 'traveler',
+    category: 'social',
+    target: 5,
+    reward: { points: 1000, badge: 'ambassador' },
+    difficulty: 'medium',
+  },
+
+  // Review Challenges
+  reviewer: {
+    id: 'reviewer',
+    name: 'Helpful Reviewer',
+    description: 'Write 10 verified reviews',
+    type: 'traveler',
+    category: 'reviews',
+    target: 10,
+    reward: { points: 400, badge: 'trusted_reviewer' },
+    difficulty: 'easy',
+  },
+};
+
+// ==================== ACHIEVEMENT BADGES ====================
+
+export const BADGES = {
+  // Partner Badges
+  revenue_bronze: { name: 'Revenue Starter', tier: 'bronze', icon: '🥉', color: '#CD7F32' },
+  revenue_silver: { name: 'Revenue Builder', tier: 'silver', icon: '🥈', color: '#C0C0C0' },
+  revenue_gold: { name: 'Revenue Champion', tier: 'gold', icon: '🥇', color: '#FFD700' },
+  booking_bronze: { name: 'Booking Starter', tier: 'bronze', icon: '📅', color: '#CD7F32' },
+  booking_gold: { name: 'Booking Master', tier: 'gold', icon: '🏆', color: '#FFD700' },
+  occupancy_champion: { name: 'Occupancy Champion', tier: 'gold', icon: '🎯', color: '#FFD700' },
+  excellence_badge: { name: 'Excellence Badge', tier: 'platinum', icon: '⭐', color: '#E5E4E2' },
+  responsive_partner: { name: 'Quick Responder', tier: 'silver', icon: '⚡', color: '#C0C0C0' },
+  monthly_star: { name: 'Monthly Star', tier: 'gold', icon: '🌟', color: '#FFD700' },
+
+  // Traveler Badges
+  explorer_bronze: { name: 'First Explorer', tier: 'bronze', icon: '🗺️', color: '#CD7F32' },
+  explorer_gold: { name: 'Seasoned Traveler', tier: 'gold', icon: '✈️', color: '#FFD700' },
+  sa_explorer: { name: 'SA Explorer', tier: 'platinum', icon: '🇿🇦', color: '#E5E4E2' },
+  globe_trotter: { name: 'Globe Trotter', tier: 'gold', icon: '🌍', color: '#FFD700' },
+  loyal_silver: { name: 'Loyal Silver', tier: 'silver', icon: '💎', color: '#C0C0C0' },
+  loyal_platinum: { name: 'Loyal Platinum', tier: 'platinum', icon: '👑', color: '#E5E4E2' },
+  vip_traveler: { name: 'VIP Traveler', tier: 'platinum', icon: '💳', color: '#E5E4E2' },
+  ambassador: { name: 'Ambassador', tier: 'gold', icon: '🎖️', color: '#FFD700' },
+  trusted_reviewer: { name: 'Trusted Reviewer', tier: 'silver', icon: '✍️', color: '#C0C0C0' },
+};
+
+// ==================== CORE GAMIFICATION ENGINE ====================
+
+/**
+ * Get user's active challenges
+ */
+export function getActiveChallenges(userId, userType = 'traveler') {
+  const allChallenges = userType === 'partner' ? PARTNER_CHALLENGES : TRAVELER_CHALLENGES;
+  const progressData = getProgressData(userId);
+  
+  return Object.values(allChallenges).map(challenge => {
+    const progress = progressData[challenge.id] || { current: 0, completed: false };
+    
+    return {
+      ...challenge,
+      progress: progress.current,
+      completed: progress.completed,
+      completedAt: progress.completedAt,
+      percentComplete: Math.min((progress.current / challenge.target) * 100, 100),
+    };
+  });
+}
+
+/**
+ * Update challenge progress
+ */
+export function updateChallengeProgress(userId, challengeId, value, operation = 'increment') {
+  const progressData = getProgressData(userId);
+  const challenge = { ...PARTNER_CHALLENGES, ...TRAVELER_CHALLENGES }[challengeId];
+  
+  if (!challenge) {
+    return { success: false, message: 'Challenge not found' };
+  }
+
+  const current = progressData[challengeId] || { current: 0, completed: false };
+  
+  let newValue;
+  if (operation === 'increment') {
+    newValue = current.current + value;
+  } else if (operation === 'set') {
+    newValue = value;
+  } else {
+    newValue = Math.max(current.current, value); // max operation
+  }
+
+  progressData[challengeId] = {
+    current: newValue,
+    completed: current.completed || newValue >= challenge.target,
+    lastUpdated: new Date().toISOString(),
+  };
+
+  // Check if just completed
+  if (!current.completed && newValue >= challenge.target) {
+    progressData[challengeId].completed = true;
+    progressData[challengeId].completedAt = new Date().toISOString();
+    
+    // Award rewards
+    const reward = awardChallengeReward(userId, challenge);
+    saveProgressData(userId, progressData);
+    
+    return {
+      success: true,
+      completed: true,
+      challenge,
+      reward,
+      message: `🎉 Challenge completed: ${challenge.name}! +${challenge.reward.points} points`,
+    };
+  }
+
+  saveProgressData(userId, progressData);
+  
+  return {
+    success: true,
+    completed: false,
+    progress: newValue,
+    target: challenge.target,
+    percentComplete: (newValue / challenge.target) * 100,
+  };
+}
+
+/**
+ * Award challenge rewards
+ */
+function awardChallengeReward(userId, challenge) {
+  const achievements = getAchievements(userId);
+  
+  // Award points
+  const pointsAwarded = challenge.reward.points;
+  
+  // Award badge
+  if (challenge.reward.badge) {
+    achievements.badges = achievements.badges || [];
+    if (!achievements.badges.includes(challenge.reward.badge)) {
+      achievements.badges.push(challenge.reward.badge);
+      achievements.lastBadgeEarned = {
+        badgeId: challenge.reward.badge,
+        earnedAt: new Date().toISOString(),
+        challengeId: challenge.id,
+      };
+    }
+  }
+
+  achievements.totalPoints = (achievements.totalPoints || 0) + pointsAwarded;
+  achievements.challengesCompleted = (achievements.challengesCompleted || 0) + 1;
+  
+  saveAchievements(userId, achievements);
+  
+  return {
+    points: pointsAwarded,
+    badge: challenge.reward.badge,
+    badgeDetails: BADGES[challenge.reward.badge],
+    totalPoints: achievements.totalPoints,
+  };
+}
+
+/**
+ * Get user's achievements
+ */
+export function getAchievements(userId) {
+  try {
+    const data = localStorage.getItem(`${ACHIEVEMENTS_KEY}.${userId}`);
+    return data ? JSON.parse(data) : {
+      badges: [],
+      totalPoints: 0,
+      challengesCompleted: 0,
+      joinedAt: new Date().toISOString(),
+    };
+  } catch {
+    return {
+      badges: [],
+      totalPoints: 0,
+      challengesCompleted: 0,
+      joinedAt: new Date().toISOString(),
+    };
+  }
+}
+
+/**
+ * Save achievements
+ */
+function saveAchievements(userId, achievements) {
+  localStorage.setItem(`${ACHIEVEMENTS_KEY}.${userId}`, JSON.stringify(achievements));
+}
+
+/**
+ * Get progress data
+ */
+function getProgressData(userId) {
+  try {
+    const data = localStorage.getItem(`${PROGRESS_KEY}.${userId}`);
+    return data ? JSON.parse(data) : {};
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Save progress data
+ */
+function saveProgressData(userId, progressData) {
+  localStorage.setItem(`${PROGRESS_KEY}.${userId}`, JSON.stringify(progressData));
+}
+
+// ==================== STREAKS ====================
+
+/**
+ * Update streak counter
+ */
+export function updateStreak(userId, action = 'login') {
+  const streaks = getStreaks(userId);
+  const today = new Date().toDateString();
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  
+  const streak = streaks[action] || { current: 0, best: 0, lastDate: null };
+  
+  if (streak.lastDate === today) {
+    // Already counted today
+    return streak;
+  }
+  
+  if (streak.lastDate === yesterday) {
+    // Continuing streak
+    streak.current += 1;
+  } else {
+    // Streak broken, restart
+    streak.current = 1;
+  }
+  
+  streak.best = Math.max(streak.best, streak.current);
+  streak.lastDate = today;
+  
+  streaks[action] = streak;
+  saveStreaks(userId, streaks);
+  
+  // Award milestone badges for streaks
+  if (streak.current === 7) {
+    updateChallengeProgress(userId, 'week_streak', 1, 'increment');
+  } else if (streak.current === 30) {
+    updateChallengeProgress(userId, 'month_streak', 1, 'increment');
+  }
+  
+  return streak;
+}
+
+/**
+ * Get streaks
+ */
+export function getStreaks(userId) {
+  try {
+    const data = localStorage.getItem(`${STREAKS_KEY}.${userId}`);
+    return data ? JSON.parse(data) : {};
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Save streaks
+ */
+function saveStreaks(userId, streaks) {
+  localStorage.setItem(`${STREAKS_KEY}.${userId}`, JSON.stringify(streaks));
+}
+
+// ==================== LEADERBOARDS ====================
+
+/**
+ * Get leaderboard data
+ */
+export function getLeaderboard(type = 'partner', category = 'revenue', timeframe = 'all') {
+  try {
+    const data = localStorage.getItem(LEADERBOARDS_KEY);
+    const leaderboards = data ? JSON.parse(data) : {};
+    
+    const key = `${type}_${category}_${timeframe}`;
+    return leaderboards[key] || [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Update leaderboard entry
+ */
+export function updateLeaderboard(userId, userType, category, value, metadata = {}) {
+  try {
+    const data = localStorage.getItem(LEADERBOARDS_KEY);
+    const leaderboards = data ? JSON.parse(data) : {};
+    
+    const timeframes = ['all', 'monthly', 'weekly'];
+    
+    timeframes.forEach(timeframe => {
+      const key = `${userType}_${category}_${timeframe}`;
+      let board = leaderboards[key] || [];
+      
+      // Find or create user entry
+      let entry = board.find(e => e.userId === userId);
+      
+      if (entry) {
+        entry.value = value;
+        entry.metadata = { ...entry.metadata, ...metadata };
+        entry.lastUpdated = new Date().toISOString();
+      } else {
+        entry = {
+          userId,
+          value,
+          metadata: { ...metadata, name: metadata.name || 'User' },
+          lastUpdated: new Date().toISOString(),
+        };
+        board.push(entry);
+      }
+      
+      // Sort and rank
+      board.sort((a, b) => b.value - a.value);
+      board = board.slice(0, 100); // Keep top 100
+      board.forEach((entry, index) => {
+        entry.rank = index + 1;
+      });
+      
+      leaderboards[key] = board;
+    });
+    
+    localStorage.setItem(LEADERBOARDS_KEY, JSON.stringify(leaderboards));
+    
+    return { success: true };
+  } catch {
+    return { success: false };
+  }
+}
+
+/**
+ * Get user's leaderboard rank
+ */
+export function getUserRank(userId, userType, category, timeframe = 'all') {
+  const leaderboard = getLeaderboard(userType, category, timeframe);
+  const entry = leaderboard.find(e => e.userId === userId);
+  
+  return entry ? entry.rank : null;
+}
+
+// ==================== POINTS SYSTEM ====================
+
+/**
+ * Award points for actions
+ */
+export const POINT_VALUES = {
+  // Partner actions
+  booking_received: 10,
+  booking_confirmed: 25,
+  five_star_review: 50,
+  quick_response: 5,
+  profile_complete: 100,
+  
+  // Traveler actions
+  booking_made: 15,
+  trip_completed: 50,
+  review_written: 20,
+  profile_photo_added: 25,
+  referral_signup: 100,
+  referral_booking: 500,
+};
+
+/**
+ * Award points
+ */
+export function awardPoints(userId, action, multiplier = 1) {
+  const points = POINT_VALUES[action] || 0;
+  const totalPoints = points * multiplier;
+  
+  if (totalPoints === 0) return { success: false, message: 'Invalid action' };
+  
+  const achievements = getAchievements(userId);
+  achievements.totalPoints = (achievements.totalPoints || 0) + totalPoints;
+  achievements.pointHistory = achievements.pointHistory || [];
+  achievements.pointHistory.push({
+    action,
+    points: totalPoints,
+    timestamp: new Date().toISOString(),
+  });
+  
+  saveAchievements(userId, achievements);
+  
+  return {
+    success: true,
+    pointsAwarded: totalPoints,
+    totalPoints: achievements.totalPoints,
+    action,
+  };
+}
+
+/**
+ * Get point history
+ */
+export function getPointHistory(userId, limit = 50) {
+  const achievements = getAchievements(userId);
+  const history = achievements.pointHistory || [];
+  
+  return history
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+    .slice(0, limit);
+}
+
+// ==================== REWARDS & BENEFITS ====================
+
+export const REWARD_TIERS = {
+  bronze: {
+    minPoints: 0,
+    name: 'Bronze',
+    benefits: ['5% booking discount', 'Priority email support'],
+    color: '#CD7F32',
+  },
+  silver: {
+    minPoints: 1000,
+    name: 'Silver',
+    benefits: ['10% booking discount', 'Priority phone support', 'Free trip insurance'],
+    color: '#C0C0C0',
+  },
+  gold: {
+    minPoints: 5000,
+    name: 'Gold',
+    benefits: ['15% booking discount', '24/7 concierge', 'Free upgrades', 'Lounge access'],
+    color: '#FFD700',
+  },
+  platinum: {
+    minPoints: 15000,
+    name: 'Platinum',
+    benefits: ['20% booking discount', 'Personal travel advisor', 'Complimentary transfers', 'VIP experiences'],
+    color: '#E5E4E2',
+  },
+};
+
+/**
+ * Get user's reward tier
+ */
+export function getRewardTier(userId) {
+  const achievements = getAchievements(userId);
+  const points = achievements.totalPoints || 0;
+  
+  let currentTier = REWARD_TIERS.bronze;
+  
+  for (const [key, tier] of Object.entries(REWARD_TIERS)) {
+    if (points >= tier.minPoints) {
+      currentTier = { ...tier, key };
+    }
+  }
+  
+  // Find next tier
+  const tiers = Object.entries(REWARD_TIERS).sort((a, b) => a[1].minPoints - b[1].minPoints);
+  const currentIndex = tiers.findIndex(([key]) => key === currentTier.key);
+  const nextTier = currentIndex < tiers.length - 1 ? tiers[currentIndex + 1][1] : null;
+  
+  return {
+    current: currentTier,
+    next: nextTier,
+    pointsToNext: nextTier ? nextTier.minPoints - points : 0,
+    progress: nextTier ? ((points - currentTier.minPoints) / (nextTier.minPoints - currentTier.minPoints)) * 100 : 100,
+  };
+}
+
+/**
+ * Reset monthly challenges
+ */
+export function resetMonthlyChallenges() {
+  // This should be called at the start of each month
+  // Implementation depends on backend cron job or scheduled task
+  console.warn('resetMonthlyChallenges should be called via backend scheduler');
+}
+
+export default {
+  getActiveChallenges,
+  updateChallengeProgress,
+  getAchievements,
+  updateStreak,
+  getStreaks,
+  getLeaderboard,
+  updateLeaderboard,
+  getUserRank,
+  awardPoints,
+  getPointHistory,
+  getRewardTier,
+  PARTNER_CHALLENGES,
+  TRAVELER_CHALLENGES,
+  BADGES,
+  POINT_VALUES,
+  REWARD_TIERS,
+};
