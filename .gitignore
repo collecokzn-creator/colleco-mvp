@@ -8,6 +8,10 @@ dist/
 !.env.example
 .fake
 
+# Security reports (may contain sensitive data)
+security-reports/
+!security-reports/.gitkeep
+
 # Ignore CI/debug artifact folders and Cypress artifacts created during CI runs
 ci-artifacts*/
 gh-artifacts*/

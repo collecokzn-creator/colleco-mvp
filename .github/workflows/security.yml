@@ -166,21 +166,122 @@ jobs:
     if: always()
     
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
       - name: Security Scan Summary
+        id: summary
         run: |
           echo "## 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Scan Date:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Results" >> $GITHUB_STEP_SUMMARY
           echo "- Secret Scan: ${{ needs.secret-scan.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Dependency Scan: ${{ needs.dependency-scan.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- API Key Check: ${{ needs.api-key-check.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Environment Check: ${{ needs.environment-check.result }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
+          # Determine overall status
           if [ "${{ needs.secret-scan.result }}" == "success" ] && \
              [ "${{ needs.dependency-scan.result }}" == "success" ] && \
              [ "${{ needs.api-key-check.result }}" == "success" ] && \
              [ "${{ needs.environment-check.result }}" == "success" ]; then
             echo "✅ All security checks passed!" >> $GITHUB_STEP_SUMMARY
+            echo "status=success" >> $GITHUB_OUTPUT
           else
             echo "⚠️ Some security checks failed. Please review the logs." >> $GITHUB_STEP_SUMMARY
+            echo "status=failure" >> $GITHUB_OUTPUT
           fi
+      
+      - name: Create Issue on Security Failure
+        if: steps.summary.outputs.status == 'failure' && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🚨 Security Scan Failed - ' + new Date().toISOString().split('T')[0];
+            const body = `## Security Scan Alert
+            
+            One or more security scans failed during the scheduled weekly scan.
+            
+            **Details:**
+            - Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Branch: ${{ github.ref_name }}
+            - Commit: ${{ github.sha }}
+            
+            **Results:**
+            - Secret Scan: ${{ needs.secret-scan.result }}
+            - Dependency Scan: ${{ needs.dependency-scan.result }}
+            - API Key Check: ${{ needs.api-key-check.result }}
+            - Environment Check: ${{ needs.environment-check.result }}
+            
+            **Action Required:**
+            Please review the workflow logs and address any security issues immediately.
+            
+            ---
+            *This issue was created automatically by the Security Scan workflow.*`;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['security', 'automated']
+            });
+      
+      - name: Send Slack Notification on Failure
+        if: steps.summary.outputs.status == 'failure' && vars.SLACK_WEBHOOK_URL != ''
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "🚨 Security Scan Failed",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "🚨 Security Scan Failed"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n${{ github.repository }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n${{ github.ref_name }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Secret Scan:*\n${{ needs.secret-scan.result }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Dependency Scan:*\n${{ needs.dependency-scan.result }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Logs"
+                      },
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
