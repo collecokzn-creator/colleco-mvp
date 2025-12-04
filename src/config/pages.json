@@ -147,19 +147,29 @@
                 "requiresAuth": false,
                 "layout": "auth"
               }
-            }
-            ,
-              {
-                "path": "/wishlist",
-                "name": "Wishlist",
-                "component": "Wishlist",
-                "meta": {
-                  "title": "My Wishlist",
-                  "description": "View and manage your saved travel items.",
-                  "requiresAuth": false,
-                  "layout": "marketing"
-                }
-              },
+            },
+            {
+              "path": "/loyalty",
+              "name": "CollEco Passport",
+              "component": "LoyaltyDashboard",
+              "meta": {
+                "title": "CollEco Passport | Loyalty Rewards",
+                "description": "Earn points, unlock badges, and get rewarded for every trip.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/wishlist",
+              "name": "Wishlist",
+              "component": "Wishlist",
+              "meta": {
+                "title": "My Wishlist",
+                "description": "View and manage your saved travel items.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
               {
                 "path": "/refunds",
                 "name": "Refunds",
