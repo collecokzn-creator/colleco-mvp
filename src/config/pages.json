@@ -442,6 +442,28 @@
               }
             },
             {
+              "path": "/subscription",
+              "name": "Subscription Plans",
+              "component": "SubscriptionTiers",
+              "meta": {
+                "title": "CollEco Subscription Plans | Pay-as-You-Grow",
+                "description": "Flexible subscription tiers with ROI optimization. Start free, upgrade as your business grows.",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/subscription/manage",
+              "name": "Manage Subscription",
+              "component": "SubscriptionTiers",
+              "meta": {
+                "title": "Manage Your Subscription",
+                "requiresAuth": true,
+                "roles": ["partner"],
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/partner/onboarding",
               "name": "Partner Onboarding",
               "component": "PartnerOnboarding",
