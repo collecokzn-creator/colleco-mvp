@@ -373,7 +373,12 @@ export default function CarBooking(){
                     Zola handles most requests immediately and routes complex issues to the right specialist.
                   </p>
                   <button 
-                    onClick={() => window.location.href = '/support'}
+                    onClick={() => {
+                      // Trigger AIAgent to open via custom event
+                      window.dispatchEvent(new CustomEvent('openAIAgent'));
+                      // Smooth scroll to bottom-right where AIAgent is positioned
+                      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    }}
                     className="w-full bg-brand-orange text-white font-semibold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
                   >
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -445,7 +450,12 @@ export default function CarBooking(){
                 Get instant answers from Zola about your booking, changes, cancellations, refunds, payment issues, and recommendations.
               </p>
               <button 
-                onClick={() => window.location.href = '/support'}
+                onClick={() => {
+                  // Trigger AIAgent to open via custom event
+                  window.dispatchEvent(new CustomEvent('openAIAgent'));
+                  // Smooth scroll to bottom-right where AIAgent is positioned
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }}
                 className="w-full bg-brand-orange text-white font-semibold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

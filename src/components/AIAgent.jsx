@@ -62,6 +62,19 @@ export default function AIAgent() {
   const dragScopeRef = useRef(null);
   const messagesRef = useRef(null);
 
+  // Listen for custom event to open AIAgent from booking confirmations
+  useEffect(() => {
+    const handleOpenAIAgent = () => {
+      setOpen(true);
+    };
+
+    window.addEventListener('openAIAgent', handleOpenAIAgent);
+
+    return () => {
+      window.removeEventListener('openAIAgent', handleOpenAIAgent);
+    };
+  }, []);
+
   // Listen for voice responses from voiceAgent
   useEffect(() => {
     const handleVoiceResponse = (event) => {
