@@ -221,8 +221,8 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
       const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
       console.log('[LiveMap] API Key present:', !!apiKey, 'Length:', apiKey?.length);
       if (!apiKey || apiKey === 'YOUR_API_KEY') {
-        const errorMsg = 'Google Maps API key is missing or invalid';
-        console.error('[LiveMap]', errorMsg);
+        const errorMsg = 'Google Maps API key not configured. Map preview unavailable. Set VITE_GOOGLE_MAPS_API_KEY in environment variables.';
+        console.warn('[LiveMap]', errorMsg);
         setError(errorMsg);
         setLoading(false);
         return;
@@ -328,9 +328,12 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
       {/* Error overlay */}
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-red-50">
-          <div className="text-center p-4">
-            <p className="text-red-600 font-semibold">Map Error</p>
-            <p className="text-sm text-red-500 mt-1">{error}</p>
+          <div className="text-center p-4 max-w-sm">
+            <p className="text-red-600 font-semibold">Map Not Available</p>
+            <p className="text-sm text-red-500 mt-1 mb-3">{error}</p>
+            <p className="text-xs text-gray-600">
+              To fix: Add <code className="bg-white px-1 rounded text-gray-800">VITE_GOOGLE_MAPS_API_KEY</code> to your environment variables or GitHub repository secrets.
+            </p>
           </div>
         </div>
       )}

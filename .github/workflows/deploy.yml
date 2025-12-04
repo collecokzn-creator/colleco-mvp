@@ -82,6 +82,10 @@ jobs:
           fi
           # Use hash routing on GitHub Pages to eliminate deep-link 404s
           echo "VITE_USE_HASH=1" >> $GITHUB_ENV
+          # Set Google Maps API key from secrets (optional for production)
+          if [ ! -z "${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}" ]; then
+            echo "VITE_GOOGLE_MAPS_API_KEY=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}" >> $GITHUB_ENV
+          fi
 
       - name: Build
         run: npm run build
