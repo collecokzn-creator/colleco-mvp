@@ -2142,5 +2142,32 @@
       "itinerary": []
     },
     "createdAt": 1764840872749
+  },
+  "drv0uz1pvwmirmm7qm": {
+    "id": "drv0uz1pvwmirmm7qm",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764864266926
+  },
+  "hrqw500ou4kmirmnop3": {
+    "id": "hrqw500ou4kmirmnop3",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764864335559
+  },
+  "kplvrypyl6miru8e7z": {
+    "id": "kplvrypyl6miru8e7z",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764877059071
   }
 }
