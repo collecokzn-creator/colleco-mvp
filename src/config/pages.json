@@ -430,6 +430,18 @@
               }
             },
             {
+              "path": "/partner/success",
+              "name": "Partner Success Dashboard",
+              "component": "PartnerSuccessDashboard",
+              "meta": {
+                "title": "Partner Success | Revenue Optimization",
+                "description": "Maximize partner revenue with analytics, benchmarking, and growth strategies",
+                "requiresAuth": true,
+                "roles": ["partner"],
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/partner/onboarding",
               "name": "Partner Onboarding",
               "component": "PartnerOnboarding",
