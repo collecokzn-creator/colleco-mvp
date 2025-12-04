@@ -5,6 +5,7 @@ import {
   Clock, CheckCircle2, XCircle, AlertCircle, TrendingUp,
   Bookmark, FileText, MessageCircle, Star, ArrowRight, Plus
 } from "lucide-react";
+import GamificationWidget from "../components/GamificationWidget";
 
 export default function TravelerDashboard() {
   const navigate = useNavigate();
@@ -240,6 +241,11 @@ export default function TravelerDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Column */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Gamification Widget - Mobile */}
+            <div className="lg:hidden">
+              <GamificationWidget userId={user?.id || 'user_123'} compact={false} />
+            </div>
+
             {/* Upcoming Trips */}
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -303,6 +309,11 @@ export default function TravelerDashboard() {
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Gamification Widget - Desktop */}
+            <div className="hidden lg:block">
+              <GamificationWidget userId={user?.id || 'user_123'} compact={false} />
+            </div>
+
             {/* Saved Itineraries */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">

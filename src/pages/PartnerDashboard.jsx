@@ -13,6 +13,7 @@ import VerifiedBadge from "../components/ui/VerifiedBadge";
 import AutoSyncBanner from "../components/ui/AutoSyncBanner";
 import ComplianceStatusCard from "../components/ui/ComplianceStatusCard";
 import PromotionsBalanceCard from "../components/ui/PromotionsBalanceCard";
+import GamificationWidget from "../components/GamificationWidget";
 
 const PARTNER_CATEGORIES = [
   {
@@ -83,10 +84,13 @@ export default function PartnerDashboard() {
       <div className="mb-8"><AutoSyncBanner message="Your partner dashboard syncs automatically with your listings and bookings" /></div>
 
       {/* Snapshots */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
         <LiveStatCard title="Bookings this month" value="—" to="/bookings" icon={Ticket} />
         <LiveStatCard title="Revenue earned" value="—" to="/reports" icon={BarChart3} />
-  <LiveStatCard title="Documents status" value={<span className="inline-flex items-center gap-2">Valid <VerifiedBadge verified /></span>} to="/compliance" icon={ShieldCheck} highlight="bg-emerald-500" />
+        <LiveStatCard title="Documents status" value={<span className="inline-flex items-center gap-2">Valid <VerifiedBadge verified /></span>} to="/compliance" icon={ShieldCheck} highlight="bg-emerald-500" />
+        <div className="sm:col-span-2 lg:col-span-1">
+          <GamificationWidget userId={user?.id || 'partner_123'} compact={false} />
+        </div>
       </section>
 
       {/* Partner Type Selection */}
