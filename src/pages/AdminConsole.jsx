@@ -9,10 +9,12 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BarChart3, Users, FileText, Settings, ShieldCheck, MessageSquare } from "lucide-react";
+import { BarChart3, Users, FileText, Settings, ShieldCheck, MessageSquare, DollarSign } from "lucide-react";
+import AdminRevenueMetrics from "../components/AdminRevenueMetrics.jsx";
 
 const menuItems = [
   { name: "Dashboard", icon: BarChart3 },
+  { name: "Revenue", icon: DollarSign },
   { name: "Partners", icon: Users },
   { name: "Bookings", icon: FileText },
   { name: "Compliance", icon: ShieldCheck },
@@ -97,6 +99,12 @@ const AdminConsole = () => {
                 <ChartPlaceholder title="Revenue Overview" />
                 <ChartPlaceholder title="Booking Trends" />
               </div>
+            </motion.div>
+          )}
+
+          {activeTab === "Revenue" && (
+            <motion.div key="revenue" {...fadeMotion}>
+              <AdminRevenueMetrics />
             </motion.div>
           )}
 

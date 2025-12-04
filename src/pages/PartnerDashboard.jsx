@@ -149,10 +149,10 @@ export default function PartnerDashboard() {
       <section className="mb-6">
         <h3 className="font-bold mb-2">Tools</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <ToolTile icon={BarChart3} title="Performance" to="/reports" desc="Bookings, revenue, exposure." />
-          <ToolTile icon={CreditCard} title="Payments & Payouts" to="/payouts" desc="Payouts and reconciliation." />
+          <ToolTile icon={BarChart3} title="Performance" to="/partner/success" desc="Analytics and revenue optimization." />
+          <ToolTile icon={CreditCard} title="Earnings & Payouts" to="/partner/earnings" desc="Commission tracking and payouts." />
           <ToolTile icon={ShieldCheck} title="Compliance Center" to="/compliance" desc="Upload licenses and insurance." />
-          <ToolTile icon={Megaphone} title="Promotions Hub" to="/promotions" desc="Buy exposure or featured placements." />
+          <ToolTile icon={Megaphone} title="Subscription Plan" to="/subscription/manage" desc="Manage your subscription tier." />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
           <ComplianceStatusCard valid={2} expiring={1} missing={0} />

@@ -442,6 +442,18 @@
               }
             },
             {
+              "path": "/partner/earnings",
+              "name": "Earnings & Payouts",
+              "component": "PartnerEarnings",
+              "meta": {
+                "title": "Partner Earnings | Commission & Payouts",
+                "description": "Track commission earnings, manage payouts, and optimize your subscription plan",
+                "requiresAuth": true,
+                "roles": ["partner"],
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/subscription",
               "name": "Subscription Plans",
               "component": "SubscriptionTiers",
