@@ -72,6 +72,8 @@ jobs:
 
       - name: Set base path for Pages
         shell: bash
+        env:
+          MAPS_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
         run: |
           # If a custom domain CNAME is present, build with base '/'
           # Otherwise default to project pages path '/<repo>/'
@@ -83,8 +85,8 @@ jobs:
           # Use hash routing on GitHub Pages to eliminate deep-link 404s
           echo "VITE_USE_HASH=1" >> $GITHUB_ENV
           # Set Google Maps API key from secrets (optional for production)
-          if [ ! -z "${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}" ]; then
-            echo "VITE_GOOGLE_MAPS_API_KEY=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}" >> $GITHUB_ENV
+          if [ ! -z "$MAPS_KEY" ]; then
+            echo "VITE_GOOGLE_MAPS_API_KEY=$MAPS_KEY" >> $GITHUB_ENV
           fi
 
       - name: Build

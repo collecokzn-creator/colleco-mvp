@@ -404,13 +404,13 @@ Always:
   generateFollowUpQuestions(intent, context) {
     const questions = {
       booking_inquiry: [
-        'What's your budget range?',
+        'What\'s your budget range?',
         'How many guests are traveling?',
         'Do you prefer luxury or budget options?'
       ],
       refund_request: [
         'When did you make the booking?',
-        'What's the booking ID?',
+        'What\'s the booking ID?',
         'Have you contacted the property directly?'
       ],
       complaint: [

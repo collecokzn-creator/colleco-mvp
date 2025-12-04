@@ -39,7 +39,6 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}  # Optional: for GitLeaks+
         continue-on-error: true
   
   dependency-scan:
@@ -236,8 +235,10 @@ jobs:
       
       - name: Check Slack Configuration
         id: slack_check
+        env:
+          SLACK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
         run: |
-          if [ -n "${{ vars.SLACK_WEBHOOK_URL }}" ]; then
+          if [ -n "$SLACK_URL" ]; then
             echo "configured=true" >> $GITHUB_OUTPUT
           else
             echo "configured=false" >> $GITHUB_OUTPUT
@@ -296,4 +297,4 @@ jobs:
               ]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
