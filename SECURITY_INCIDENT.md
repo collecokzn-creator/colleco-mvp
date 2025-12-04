@@ -25,7 +25,7 @@
 2. **Key Rotation** (User Action Required)
    - **Regenerate API key** in Google Cloud Console
    - Navigate to: [Google Cloud Credentials](https://console.cloud.google.com/apis/credentials)
-   - Find key: `AIzaSyACEQqF8zTEAYvjsu5LJtiBgQvGcAtP_rs`
+   - Find the exposed key (pattern: `AIzaSy*********************P_rs`, full value redacted from this document)
    - Click **Edit** → **Regenerate Key**
    - Add new key to GitHub Secrets (never commit it)
 

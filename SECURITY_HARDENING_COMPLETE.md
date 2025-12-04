@@ -37,9 +37,9 @@ CollEco Travel MVP has successfully implemented comprehensive security hardening
 
 ### Phase 2: Incident Response (Security Critical)
 
-**Commits**: f1e7606
+**Commit**: f1e7606
 
-**Incident**: Exposed Google Maps API Key `AIzaSyACEQqF8zTEAYvjsu5LJtiBgQvGcAtP_rs`
+**Incident**: Exposed Google Maps API Key `AIzaSy*********************P_rs` (redacted)
 
 **Actions Taken**:
 - Removed key from 4 documentation files

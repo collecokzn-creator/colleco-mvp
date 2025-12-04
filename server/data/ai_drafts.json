@@ -2106,5 +2106,41 @@
       "itinerary": []
     },
     "createdAt": 1764776030764
+  },
+  "zuweqclvpvdmir80d08": {
+    "id": "zuweqclvpvdmir80d08",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764839732696
+  },
+  "l5nfbluxggmir86y5x": {
+    "id": "l5nfbluxggmir86y5x",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764840040053
+  },
+  "xuzup7hc3nmir8hecu": {
+    "id": "xuzup7hc3nmir8hecu",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764840527598
+  },
+  "q17s44jhn2mir8osod": {
+    "id": "q17s44jhn2mir8osod",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764840872749
   }
 }
