@@ -3,6 +3,7 @@ import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
 import Button from '../components/ui/Button.jsx';
 import { Home, Calendar, Users, Clock, DollarSign } from 'lucide-react';
+import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function AccommodationBooking(){
   const [location, setLocation] = useState('');
@@ -89,7 +90,30 @@ export default function AccommodationBooking(){
       // Here you would send the booking to your backend
       // For now, we'll simulate success
       await new Promise(resolve => setTimeout(resolve, 1000));
-      alert(`Property "${property.name}" booked successfully!`);
+      
+      // Calculate booking details
+      const checkInDate = new Date(checkIn);
+      const checkOutDate = new Date(checkOut);
+      const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+      const totalPrice = property.pricePerNight * nights;
+      
+      // Create booking object for loyalty integration
+      const booking = {
+        id: `ACC_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        type: 'accommodation',
+        amount: totalPrice,
+        userId: localStorage.getItem('colleco.user.id') || 'guest_' + Date.now(),
+        checkInDate,
+        propertyId: property.id,
+        propertyName: property.name,
+        nights,
+        guests
+      };
+      
+      // Process loyalty rewards and track booking
+      const result = processBookingRewards(booking);
+      
+      alert(`Property "${property.name}" booked successfully! You earned ${result.pointsEarned} loyalty points! 🎉`);
       setLoading(false);
     } catch (error) {
       console.error('Booking failed:', error);

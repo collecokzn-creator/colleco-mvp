@@ -3,6 +3,7 @@ import BookingNav from '../components/BookingNav';
 import CarHireSelector from '../components/CarHireSelector';
 import Button from '../components/ui/Button.jsx';
 import { Car, Calendar, Clock, DollarSign } from 'lucide-react';
+import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function CarBooking(){
   const [pickupLocation, setPickupLocation] = useState('');
@@ -63,7 +64,34 @@ export default function CarBooking(){
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      alert(`Car "${car.make} ${car.model}" booked successfully!`);
+      
+      // Calculate booking details
+      const pickupDateObj = new Date(pickupDate);
+      const dropoffDateObj = new Date(dropoffDate);
+      const days = Math.ceil((dropoffDateObj - pickupDateObj) / (1000 * 60 * 60 * 24));
+      const totalPrice = car.pricePerDay * days;
+      
+      // Create booking object for loyalty integration
+      const booking = {
+        id: `CAR_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        type: 'car_hire',
+        amount: totalPrice,
+        userId: localStorage.getItem('colleco.user.id') || 'guest_' + Date.now(),
+        checkInDate: pickupDateObj,
+        carId: car.id,
+        make: car.make,
+        model: car.model,
+        pickupLocation,
+        dropoffLocation,
+        days,
+        insuranceLevel,
+        additionalDrivers
+      };
+      
+      // Process loyalty rewards and track booking
+      const result = processBookingRewards(booking);
+      
+      alert(`Car "${car.make} ${car.model}" booked successfully! You earned ${result.pointsEarned} loyalty points! 🎉`);
       setLoading(false);
     } catch (error) {
       console.error('Booking failed:', error);

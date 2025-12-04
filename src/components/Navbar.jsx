@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { useUser } from "../context/UserContext.jsx";
 import logoPng from "../assets/colleco-logo.png";
 import SearchBar from "./SearchBar.jsx";
+import { Gift, Crown } from "lucide-react";
+import { getLoyaltySummary } from "../utils/bookingIntegration";
 
 export default function Navbar() {
 	const location = useLocation();
 	const { user, isPartner, isAdmin } = useUser();
 	const [showMobileSearch, setShowMobileSearch] = useState(false);
+	const [loyaltyInfo, setLoyaltyInfo] = useState(null);
 	const mobileSearchRef = useRef(null);
 
 	const toggleSidebar = () => {
@@ -22,6 +25,13 @@ export default function Navbar() {
 			window.dispatchEvent(new Event("toggle-sidebar"));
 		}
 	};
+
+	// Load loyalty info
+	useEffect(() => {
+		const userId = user?.id || localStorage.getItem('colleco.user.id') || 'guest_' + Date.now();
+		const info = getLoyaltySummary(userId);
+		setLoyaltyInfo(info);
+	}, [user]);
 
 	// Close mobile search on route change
 	useEffect(() => { 
@@ -100,6 +110,26 @@ export default function Navbar() {
 						})}
 					</div>
 					<div className="flex items-center gap-3 ml-auto">
+						{/* Loyalty Widget */}
+						{loyaltyInfo && (
+							<Link
+								to="/loyalty"
+								className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-brand-orange/10 to-orange-100 hover:from-brand-orange/20 hover:to-orange-200 rounded-full border border-brand-orange/20 hover:border-brand-orange/40 transition-all group"
+								title="View loyalty rewards"
+							>
+								{loyaltyInfo.tier === 'Platinum' ? (
+									<Crown className="w-4 h-4 text-yellow-600 group-hover:scale-110 transition-transform" />
+								) : (
+									<Gift className="w-4 h-4 text-brand-orange group-hover:scale-110 transition-transform" />
+								)}
+								<span className="text-xs font-semibold text-brand-brown">
+									{loyaltyInfo.availablePoints} pts
+								</span>
+								<span className="text-[10px] text-brand-orange font-medium">
+									{loyaltyInfo.tier}
+								</span>
+							</Link>
+						)}
 						{/* Mobile Search Toggle */}
 						<button
 							type="button"

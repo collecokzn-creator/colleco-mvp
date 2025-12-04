@@ -3,6 +3,7 @@ import BookingNav from '../components/BookingNav';
 import FlightSelector from '../components/FlightSelector';
 import Button from '../components/ui/Button.jsx';
 import { Plane, Calendar, Users, Clock, DollarSign } from 'lucide-react';
+import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function FlightBooking(){
   const [from, setFrom] = useState('');
@@ -61,7 +62,25 @@ export default function FlightBooking(){
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      alert(`Flight ${flight.flightNumber} booked successfully!`);
+      
+      // Create booking object for loyalty integration
+      const booking = {
+        id: `FLT_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        type: 'flight',
+        amount: flight.price * passengers,
+        userId: localStorage.getItem('colleco.user.id') || 'guest_' + Date.now(),
+        checkInDate: new Date(departDate),
+        flightNumber: flight.flightNumber,
+        from,
+        to,
+        passengers,
+        cabinClass
+      };
+      
+      // Process loyalty rewards and track booking
+      const result = processBookingRewards(booking);
+      
+      alert(`Flight ${flight.flightNumber} booked successfully! You earned ${result.pointsEarned} loyalty points! 🎉`);
       setLoading(false);
     } catch (error) {
       console.error('Booking failed:', error);
