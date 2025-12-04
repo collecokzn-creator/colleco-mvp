@@ -6,6 +6,7 @@ import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import AutoFocus from "../components/AutoFocus.jsx";
 import { Outlet } from "react-router-dom";
 import AIAgent from "../components/AIAgent.jsx";
+import globeIcon from "../assets/Globeicon.png";
 
 export default function RootLayout() {
   // Feature flag: when deploying as a static site (GitHub Pages), there's no backend to ping.
@@ -105,7 +106,7 @@ export default function RootLayout() {
         <span>© 2025 CollEco Travel — All rights reserved.</span>
         <span className="flex items-center gap-2 text-white text-sm font-normal">
           <span className="inline-flex h-5 w-5 rounded-full overflow-hidden mr-1 align-text-bottom ring-[0.5px] ring-white/40 shrink-0 bg-white/10">
-            <img src="/src/assets/Globeicon.png" alt="CollEco globe" className="w-full h-full object-cover" />
+            <img src={globeIcon} alt="CollEco globe" className="w-full h-full object-cover" />
           </span>
           <a href="https://www.travelcolleco.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-gold transition">
             www.travelcolleco.com
