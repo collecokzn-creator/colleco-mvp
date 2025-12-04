@@ -234,8 +234,18 @@ jobs:
               labels: ['security', 'automated']
             });
       
+      - name: Check Slack Configuration
+        id: slack_check
+        run: |
+          if [ -n "${{ vars.SLACK_WEBHOOK_URL }}" ]; then
+            echo "configured=true" >> $GITHUB_OUTPUT
+          else
+            echo "configured=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  Slack webhook not configured - skipping notification"
+          fi
+      
       - name: Send Slack Notification on Failure
-        if: steps.summary.outputs.status == 'failure' && vars.SLACK_WEBHOOK_URL != ''
+        if: steps.summary.outputs.status == 'failure' && steps.slack_check.outputs.configured == 'true'
         uses: slackapi/slack-github-action@v1
         with:
           payload: |
