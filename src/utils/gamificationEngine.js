@@ -465,22 +465,55 @@ function saveStreaks(userId, streaks) {
 // ==================== LEADERBOARDS ====================
 
 /**
- * Get leaderboard data
+ * Anonymize user data for POPI Act compliance
  */
-export function getLeaderboard(type = 'partner', category = 'revenue', timeframe = 'all') {
+function anonymizeUserData(entry, currentUserId) {
+  const isCurrentUser = entry.userId === currentUserId;
+  
+  // Only show full data for the current user
+  if (isCurrentUser) {
+    return {
+      ...entry,
+      isCurrentUser: true,
+    };
+  }
+  
+  // Anonymize other users - POPI Act compliance
+  return {
+    userId: `anon_${entry.rank}`, // Anonymized ID
+    rank: entry.rank,
+    value: entry.value,
+    isCurrentUser: false,
+    metadata: {
+      // No personal information - only anonymized display name
+      name: `User ${entry.rank}`,
+      // No location, email, phone, or any identifying information
+      ...(entry.metadata?.city && { city: entry.metadata.city }), // Optional: general city only (not full address)
+    },
+    lastUpdated: entry.lastUpdated,
+  };
+}
+
+/**
+ * Get leaderboard data (POPI Act compliant)
+ */
+export function getLeaderboard(type = 'partner', category = 'revenue', timeframe = 'all', currentUserId = null) {
   try {
     const data = localStorage.getItem(LEADERBOARDS_KEY);
     const leaderboards = data ? JSON.parse(data) : {};
     
     const key = `${type}_${category}_${timeframe}`;
-    return leaderboards[key] || [];
+    const rawLeaderboard = leaderboards[key] || [];
+    
+    // Anonymize all entries except current user (POPI Act compliance)
+    return rawLeaderboard.map(entry => anonymizeUserData(entry, currentUserId));
   } catch {
     return [];
   }
 }
 
 /**
- * Update leaderboard entry
+ * Update leaderboard entry (stores only necessary data)
  */
 export function updateLeaderboard(userId, userType, category, value, metadata = {}) {
   try {
@@ -496,15 +529,24 @@ export function updateLeaderboard(userId, userType, category, value, metadata = 
       // Find or create user entry
       let entry = board.find(e => e.userId === userId);
       
+      // Only store non-identifying metadata (POPI Act compliance)
+      const safeMetadata = {
+        // DO NOT store: name, email, phone, address, ID numbers
+        // Only store: anonymized display name and general location (optional)
+        city: metadata.city || null, // General city only (not full address)
+        // Business users can optionally show business name (not personal name)
+        businessName: userType === 'partner' ? metadata.businessName : null,
+      };
+      
       if (entry) {
         entry.value = value;
-        entry.metadata = { ...entry.metadata, ...metadata };
+        entry.metadata = safeMetadata;
         entry.lastUpdated = new Date().toISOString();
       } else {
         entry = {
           userId,
           value,
-          metadata: { ...metadata, name: metadata.name || 'User' },
+          metadata: safeMetadata,
           lastUpdated: new Date().toISOString(),
         };
         board.push(entry);
@@ -532,10 +574,49 @@ export function updateLeaderboard(userId, userType, category, value, metadata = 
  * Get user's leaderboard rank
  */
 export function getUserRank(userId, userType, category, timeframe = 'all') {
-  const leaderboard = getLeaderboard(userType, category, timeframe);
+  const leaderboard = getLeaderboard(userType, category, timeframe, userId);
   const entry = leaderboard.find(e => e.userId === userId);
   
   return entry ? entry.rank : null;
+}
+
+/**
+ * Get user consent status for leaderboard participation (POPI Act)
+ */
+export function getLeaderboardConsent(userId) {
+  try {
+    const data = localStorage.getItem(`colleco.gamification.consent.${userId}`);
+    return data ? JSON.parse(data) : {
+      leaderboardParticipation: false, // Opt-in required
+      showCity: false,
+      showBusinessName: false,
+      consentDate: null,
+    };
+  } catch {
+    return {
+      leaderboardParticipation: false,
+      showCity: false,
+      showBusinessName: false,
+      consentDate: null,
+    };
+  }
+}
+
+/**
+ * Set user consent for leaderboard (POPI Act compliance)
+ */
+export function setLeaderboardConsent(userId, consent) {
+  const consentData = {
+    leaderboardParticipation: consent.leaderboardParticipation || false,
+    showCity: consent.showCity || false,
+    showBusinessName: consent.showBusinessName || false,
+    consentDate: new Date().toISOString(),
+    version: '1.0', // Track consent version for auditing
+  };
+  
+  localStorage.setItem(`colleco.gamification.consent.${userId}`, JSON.stringify(consentData));
+  
+  return { success: true, consent: consentData };
 }
 
 // ==================== POINTS SYSTEM ====================
@@ -675,6 +756,8 @@ export default {
   getLeaderboard,
   updateLeaderboard,
   getUserRank,
+  getLeaderboardConsent,
+  setLeaderboardConsent,
   awardPoints,
   getPointHistory,
   getRewardTier,

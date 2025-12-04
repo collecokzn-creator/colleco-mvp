@@ -34,7 +34,8 @@ export default function Leaderboards({
     { id: 'all', label: 'All Time' },
   ];
 
-  const leaderboard = getLeaderboard(userType, category, timeframe);
+  // POPI Act compliance: Pass userId to anonymize other users
+  const leaderboard = getLeaderboard(userType, category, timeframe, userId);
   const userRank = getUserRank(userId, userType, category, timeframe);
 
   const getRankIcon = (rank) => {
@@ -158,15 +159,21 @@ export default function Leaderboards({
                     
                     <div className="flex-1">
                       <p className={`font-semibold ${isCurrentUser ? 'text-blue-700' : 'text-gray-900'}`}>
-                        {entry.metadata?.name || 'User'}
+                        {/* POPI Act: Only show real name for current user, anonymize others */}
+                        {isCurrentUser ? (entry.metadata?.name || 'You') : `User ${entry.rank}`}
                         {isCurrentUser && (
                           <span className="ml-2 text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">
                             You
                           </span>
                         )}
                       </p>
-                      {entry.metadata?.location && (
-                        <p className="text-sm text-gray-600">{entry.metadata.location}</p>
+                      {/* POPI Act: Only show general location if user consented */}
+                      {entry.metadata?.city && (
+                        <p className="text-sm text-gray-600">{entry.metadata.city}</p>
+                      )}
+                      {/* Show business name for partners (if consented) */}
+                      {entry.metadata?.businessName && userType === 'partner' && (
+                        <p className="text-xs text-gray-500">{entry.metadata.businessName}</p>
                       )}
                     </div>
                   </div>

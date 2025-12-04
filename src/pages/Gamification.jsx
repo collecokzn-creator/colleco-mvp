@@ -14,6 +14,7 @@ import AchievementBadge from '../components/AchievementBadge';
 import StreakCounter from '../components/StreakCounter';
 import Leaderboards from '../components/Leaderboards';
 import ProgressBar from '../components/ProgressBar';
+import LeaderboardConsentBanner from '../components/LeaderboardConsentBanner';
 
 /**
  * Gamification Page
@@ -79,6 +80,17 @@ export default function Gamification() {
 
   return (
     <div className="min-h-screen bg-cream-50">
+      {/* POPI Act Consent Banner */}
+      <LeaderboardConsentBanner 
+        userId={userId} 
+        userType={userType}
+        onConsent={(consent) => {
+          console.log('User consent updated:', consent);
+          // Optionally reload data after consent
+          loadGamificationData();
+        }}
+      />
+
       {/* Header */}
       <div className="bg-gradient-to-r from-brand-orange to-amber-500 text-white py-8">
         <div className="max-w-7xl mx-auto px-4">
