@@ -216,15 +216,21 @@ export default function TravelerDashboard() {
           {renderStatCard(Plane, "Total Trips", stats.totalTrips)}
           {renderStatCard(MapPin, "Countries Visited", stats.countriesVisited)}
           {renderStatCard(DollarSign, "Total Spent", `R ${stats.totalSpent?.toLocaleString()}`)}
-          {renderStatCard(Star, "Rewards Points", stats.rewardsPoints)}
+          <div 
+            onClick={() => navigate('/loyalty')} 
+            className="cursor-pointer"
+          >
+            {renderStatCard(Star, "Rewards Points", stats.rewardsPoints)}
+          </div>
         </div>
 
         {/* Quick Actions */}
         <div className="mb-8">
           <h2 className="text-xl font-bold text-brand-brown mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
             {renderQuickAction(Plus, "Plan New Trip", () => navigate('/plan-trip'))}
             {renderQuickAction(Calendar, "My Bookings", () => navigate('/my-trips'))}
+            {renderQuickAction(Star, "Rewards", () => navigate('/loyalty'))}
             {renderQuickAction(Bookmark, "Saved Itineraries", () => navigate('/saved-itineraries'))}
             {renderQuickAction(MessageCircle, "Trip Assistant", () => navigate('/trip-assist'))}
             {renderQuickAction(FileText, "Documents", () => navigate('/travel-documents'))}
