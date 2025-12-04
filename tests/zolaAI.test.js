@@ -905,6 +905,281 @@ describe('Zola PA Features', () => {
     });
   });
 
+  describe('Tax Configuration', () => {
+    it('should set business tax configuration', () => {
+      const config = zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.15,
+        taxName: 'VAT',
+        taxRegNumber: 'ZA123456789'
+      });
+
+      expect(config).toHaveProperty('isVATVendor');
+      expect(config.taxRate).toBe(0.15);
+      expect(config.taxName).toBe('VAT');
+      expect(config.taxRegNumber).toBe('ZA123456789');
+    });
+
+    it('should get business tax configuration', () => {
+      zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.15,
+        taxName: 'VAT',
+        taxRegNumber: 'ZA123456789'
+      });
+
+      const config = zolaPA.getBusinessTaxConfig('USER-1');
+      expect(config.isVATVendor).toBe(true);
+      expect(config.taxRate).toBe(0.15);
+    });
+
+    it('should return defaults when tax config not set', () => {
+      const config = zolaPA.getBusinessTaxConfig('NEW-USER');
+
+      expect(config.isVATVendor).toBe(true);
+      expect(config.taxRate).toBe(0.15);
+      expect(config.taxName).toBe('VAT');
+    });
+
+    it('should support non-VAT vendors', () => {
+      const config = zolaPA.setBusinessTaxConfig('USER-2', {
+        isVATVendor: false,
+        taxRate: 0,
+        taxName: 'None'
+      });
+
+      expect(config.isVATVendor).toBe(false);
+      expect(config.taxRate).toBe(0);
+    });
+
+    it('should support custom tax rates', () => {
+      const config = zolaPA.setBusinessTaxConfig('USER-3', {
+        isVATVendor: true,
+        taxRate: 0.08,
+        taxName: 'GST',
+        taxRegNumber: 'CA987654321'
+      });
+
+      expect(config.taxRate).toBe(0.08);
+      expect(config.taxName).toBe('GST');
+    });
+
+    it('should support HST (Canada)', () => {
+      const config = zolaPA.setBusinessTaxConfig('USER-4', {
+        isVATVendor: true,
+        taxRate: 0.13,
+        taxName: 'HST'
+      });
+
+      expect(config.taxName).toBe('HST');
+      expect(config.taxRate).toBe(0.13);
+    });
+
+    it('should support US Sales Tax', () => {
+      const config = zolaPA.setBusinessTaxConfig('USER-5', {
+        isVATVendor: false,
+        taxRate: 0,
+        taxName: 'Sales Tax'
+      });
+
+      expect(config.taxName).toBe('Sales Tax');
+      expect(config.isVATVendor).toBe(false);
+    });
+
+    it('should persist tax configuration to localStorage', () => {
+      const config = zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.2,
+        taxName: 'VAT'
+      });
+
+      const stored = JSON.parse(localStorage.getItem('colleco.pa.taxConfig.USER-1'));
+      expect(stored.taxRate).toBe(0.2);
+    });
+
+    it('should apply tax config to quotation generation', async () => {
+      zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.15,
+        taxName: 'VAT'
+      });
+
+      const quotation = await zolaPA.generateQuotation('USER-1', {
+        lineItems: [
+          { description: 'Service', quantity: 1, unitPrice: 1000 }
+        ],
+        discount: 0
+      });
+
+      expect(quotation.isVATVendor).toBe(true);
+      expect(quotation.taxRate).toBe(0.15);
+      expect(quotation.taxName).toBe('VAT');
+      expect(quotation.tax).toBe(150); // 1000 * 0.15
+    });
+
+    it('should calculate zero tax for non-VAT vendors', async () => {
+      zolaPA.setBusinessTaxConfig('USER-2', {
+        isVATVendor: false,
+        taxRate: 0,
+        taxName: 'None'
+      });
+
+      const quotation = await zolaPA.generateQuotation('USER-2', {
+        lineItems: [
+          { description: 'Service', quantity: 1, unitPrice: 1000 }
+        ],
+        discount: 0
+      });
+
+      expect(quotation.isVATVendor).toBe(false);
+      expect(quotation.tax).toBe(0);
+      expect(quotation.total).toBe(1000);
+    });
+
+    it('should apply custom tax rate to quotation', async () => {
+      zolaPA.setBusinessTaxConfig('USER-3', {
+        isVATVendor: true,
+        taxRate: 0.08,
+        taxName: 'GST'
+      });
+
+      const quotation = await zolaPA.generateQuotation('USER-3', {
+        lineItems: [
+          { description: 'Service', quantity: 1, unitPrice: 2500 }
+        ],
+        discount: 0
+      });
+
+      expect(quotation.tax).toBe(200); // 2500 * 0.08
+      expect(quotation.total).toBe(2700); // 2500 + 200
+    });
+
+    it('should inherit tax config in invoice generation', async () => {
+      zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.15,
+        taxName: 'VAT',
+        taxRegNumber: 'ZA123456789'
+      });
+
+      const quotation = await zolaPA.generateQuotation('USER-1', {
+        lineItems: [
+          { description: 'Service', quantity: 1, unitPrice: 1000 }
+        ],
+        discount: 0
+      });
+
+      const invoice = await zolaPA.generateInvoice('USER-1', quotation.id, 'net30');
+
+      expect(invoice.isVATVendor).toBe(true);
+      expect(invoice.taxRate).toBe(0.15);
+      expect(invoice.taxName).toBe('VAT');
+      expect(invoice.taxRegNumber).toBe('ZA123456789');
+    });
+
+    it('should include tax registration number in invoice', async () => {
+      zolaPA.setBusinessTaxConfig('USER-4', {
+        isVATVendor: true,
+        taxRate: 0.15,
+        taxName: 'VAT',
+        taxRegNumber: 'IE1234567'
+      });
+
+      const quotation = await zolaPA.generateQuotation('USER-4', {
+        lineItems: [
+          { description: 'Service', quantity: 1, unitPrice: 500 }
+        ],
+        discount: 0
+      });
+
+      const invoice = await zolaPA.generateInvoice('USER-4', quotation.id, 'net30');
+
+      expect(invoice.taxRegNumber).toBe('IE1234567');
+    });
+
+    it('should handle multiple users with different tax configs', () => {
+      zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.15,
+        taxName: 'VAT'
+      });
+
+      zolaPA.setBusinessTaxConfig('USER-2', {
+        isVATVendor: false,
+        taxRate: 0,
+        taxName: 'None'
+      });
+
+      const config1 = zolaPA.getBusinessTaxConfig('USER-1');
+      const config2 = zolaPA.getBusinessTaxConfig('USER-2');
+
+      expect(config1.isVATVendor).toBe(true);
+      expect(config2.isVATVendor).toBe(false);
+    });
+
+    it('should update existing tax configuration', () => {
+      zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.15,
+        taxName: 'VAT'
+      });
+
+      zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: false,
+        taxRate: 0,
+        taxName: 'None'
+      });
+
+      const config = zolaPA.getBusinessTaxConfig('USER-1');
+      expect(config.isVATVendor).toBe(false);
+      expect(config.taxRate).toBe(0);
+    });
+
+    it('should validate tax rate is between 0 and 1', () => {
+      const config = zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.5,
+        taxName: 'TAX'
+      });
+
+      expect(config.taxRate).toBeGreaterThanOrEqual(0);
+      expect(config.taxRate).toBeLessThanOrEqual(1);
+    });
+
+    it('should preserve tax config across browser sessions', () => {
+      zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.2,
+        taxName: 'VAT',
+        taxRegNumber: 'TAXID123'
+      });
+
+      // Simulate new instance
+      const config = zolaPA.getBusinessTaxConfig('USER-1');
+      expect(config.taxRegNumber).toBe('TAXID123');
+    });
+
+    it('should apply correct tax for quotation with discount', async () => {
+      zolaPA.setBusinessTaxConfig('USER-1', {
+        isVATVendor: true,
+        taxRate: 0.15,
+        taxName: 'VAT'
+      });
+
+      const quotation = await zolaPA.generateQuotation('USER-1', {
+        lineItems: [
+          { description: 'Service', quantity: 1, unitPrice: 1000 }
+        ],
+        discount: 100 // R100 discount
+      });
+
+      const expectedSubtotal = 900; // 1000 - 100
+      const expectedTax = 135; // 900 * 0.15
+      expect(quotation.tax).toBe(expectedTax);
+      expect(quotation.total).toBe(expectedSubtotal + expectedTax);
+    });
+  });
+
   describe('Partner PA Features', () => {
     it('should optimize partner listings', () => {
       const optimization = zolaPA.partnerPA.optimizeListings('PARTNER-1');

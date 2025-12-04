@@ -413,9 +413,46 @@ export const zolaPA = {
   },
 
   /**
+   * Configure business tax settings (VAT vendor status, tax rate)
+   */
+  setBusinessTaxConfig: (userId, config) => {
+    const taxConfig = {
+      userId,
+      isVATVendor: config.isVATVendor !== false,  // Default to VAT vendor
+      taxRate: config.taxRate !== undefined ? config.taxRate : 0.15,  // Default 15% VAT
+      taxName: config.taxName || 'VAT',
+      taxRegNumber: config.taxRegNumber || '',  // Tax registration number
+      includeInvoiceTax: config.includeInvoiceTax !== false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(`colleco.pa.tax_config.${userId}`, JSON.stringify(taxConfig));
+    return taxConfig;
+  },
+
+  /**
+   * Get business tax configuration
+   */
+  getBusinessTaxConfig: (userId) => {
+    const config = JSON.parse(localStorage.getItem(`colleco.pa.tax_config.${userId}`) || '{}');
+    
+    // Return defaults if not configured
+    return {
+      isVATVendor: config.isVATVendor !== undefined ? config.isVATVendor : true,
+      taxRate: config.taxRate !== undefined ? config.taxRate : 0.15,
+      taxName: config.taxName || 'VAT',
+      taxRegNumber: config.taxRegNumber || '',
+      includeInvoiceTax: config.includeInvoiceTax !== undefined ? config.includeInvoiceTax : true
+    };
+  },
+
+  /**
    * Generate quotation on request
    */
   generateQuotation: (userId, quoteRequest) => {
+    const taxConfig = zolaPA.getBusinessTaxConfig(userId);
+
     const quotation = {
       id: `QUOTE-${Date.now()}`,
       userId,
@@ -431,6 +468,9 @@ export const zolaPA = {
       lineItems: [],
       subtotal: 0,
       tax: 0,
+      taxRate: taxConfig.isVATVendor ? taxConfig.taxRate : 0,
+      taxName: taxConfig.taxName,
+      isVATVendor: taxConfig.isVATVendor,
       discount: quoteRequest.discount || 0,
       total: 0,
       currency: quoteRequest.currency || 'ZAR',
@@ -456,8 +496,10 @@ export const zolaPA = {
       });
     }
 
-    // Apply tax (15% VAT South Africa)
-    quotation.tax = Math.round(quotation.subtotal * 0.15 * 100) / 100;
+    // Apply tax only if VAT vendor
+    if (taxConfig.isVATVendor && taxConfig.includeInvoiceTax) {
+      quotation.tax = Math.round(quotation.subtotal * quotation.taxRate * 100) / 100;
+    }
 
     // Apply discount
     if (quotation.discount > 0) {
@@ -478,6 +520,7 @@ export const zolaPA = {
    */
   generateInvoice: (userId, quoteId, paymentTerms = 'net30') => {
     const quotation = JSON.parse(localStorage.getItem(`colleco.pa.quotation.${quoteId}`) || '{}');
+    const taxConfig = zolaPA.getBusinessTaxConfig(userId);
 
     if (!quotation.id) {
       return { error: 'Quotation not found' };
@@ -494,6 +537,10 @@ export const zolaPA = {
       lineItems: quotation.lineItems,
       subtotal: quotation.subtotal,
       tax: quotation.tax,
+      taxRate: quotation.taxRate,
+      taxName: quotation.taxName,
+      isVATVendor: taxConfig.isVATVendor,
+      taxRegNumber: taxConfig.taxRegNumber,
       discount: quotation.discount,
       total: quotation.total,
       currency: quotation.currency,
