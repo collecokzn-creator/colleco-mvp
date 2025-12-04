@@ -287,19 +287,134 @@ export default function CarBooking(){
         )}
 
         {selectedCar && !loading && (
-          <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
-            <h2 className="text-lg font-bold text-brand-brown mb-4">Booking Confirmed</h2>
-            <div className="space-y-2">
-              <p><span className="font-semibold">Vehicle:</span> {selectedCar.make} {selectedCar.model}</p>
-              <p><span className="font-semibold">Category:</span> {selectedCar.category}</p>
-              <p><span className="font-semibold">Price per Day:</span> R{selectedCar.pricePerDay}</p>
-              <p><span className="font-semibold">Total:</span> R{selectedCar.totalPrice}</p>
+          <div className="space-y-6">
+            {/* Booking Confirmation Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
+              <h2 className="text-lg font-bold text-brand-brown mb-4">Booking Confirmed</h2>
+              <div className="space-y-2">
+                <p><span className="font-semibold">Vehicle:</span> {selectedCar.make} {selectedCar.model}</p>
+                <p><span className="font-semibold">Category:</span> {selectedCar.category}</p>
+                <p><span className="font-semibold">Price per Day:</span> R{selectedCar.pricePerDay}</p>
+                <p><span className="font-semibold">Total:</span> R{selectedCar.totalPrice}</p>
+              </div>
+            </div>
+
+            {/* Terms & Conditions - Rental Policies */}
+            <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
+              <h2 className="text-lg font-bold text-brand-brown mb-4">Rental Terms & Conditions</h2>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="font-semibold text-brand-brown mb-1">Cancellation Policy</p>
+                    <ul className="list-disc list-inside space-y-1 text-xs">
+                      <li>Free cancellation up to 48 hours before pickup</li>
+                      <li>50% refund for cancellations 24-48 hours before pickup</li>
+                      <li>No refund for cancellations within 24 hours of pickup</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-brown mb-1">Payment Terms</p>
+                    <ul className="list-disc list-inside space-y-1 text-xs">
+                      <li>Full rental amount charged at booking</li>
+                      <li>Security deposit required at pickup (refunded after return)</li>
+                      <li>Fuel and damage waiver options available</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-brown mb-1">Rental Company Policies</p>
+                    <ul className="list-disc list-inside space-y-1 text-xs">
+                      <li>Valid driver's license required (minimum 21 years old)</li>
+                      <li>International license or IDP may be required</li>
+                      <li>Vehicle inspection at pickup and return is mandatory</li>
+                      <li>Insurance coverage included; excess may apply</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-brown mb-1">Important Information</p>
+                    <ul className="list-disc list-inside space-y-1 text-xs">
+                      <li>Pickup timing: Arrive 15 minutes before booked time</li>
+                      <li>Return vehicle with full fuel tank to avoid surcharge</li>
+                      <li>Report any damage immediately to rental company</li>
+                      <li>Child car seats available upon request</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Information - Separated by Purpose */}
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-bold text-brand-brown mb-3">Need Assistance?</h3>
+                
+                {/* Rental Company Contact - For Vehicle-Specific Issues */}
+                <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <h4 className="font-semibold text-green-900">During Your Rental - Contact Company Directly</h4>
+                  </div>
+                  <p className="text-sm text-green-800 mb-3">For pickup, vehicle issues, roadside assistance, or extensions:</p>
+                  <div className="text-sm">
+                    <p className="text-green-700 font-medium">Rental Company Contact Info</p>
+                    <p className="text-green-600">Available at pickup location or in your confirmation email</p>
+                  </div>
+                </div>
+
+                {/* Zola - Primary Support */}
+                <div className="bg-orange-50 border-2 border-brand-orange rounded-lg p-4 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="h-6 w-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <h4 className="font-semibold text-brand-brown text-lg">Zola - 24/7 Instant Help</h4>
+                  </div>
+                  <p className="text-sm text-brand-brown mb-3">
+                    Get instant answers about your booking, changes, cancellations, refunds, payment issues, and recommendations. 
+                    Zola handles most requests immediately and routes complex issues to the right specialist.
+                  </p>
+                  <button 
+                    onClick={() => window.location.href = '/support'}
+                    className="w-full bg-brand-orange text-white font-semibold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    Chat with Zola Now
+                  </button>
+                  <p className="text-xs text-gray-600 mt-2 text-center">
+                    Available 24/7 • Instant responses • Handles booking changes, queries & recommendations
+                  </p>
+                </div>
+
+                {/* Human Support - Backup */}
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                    </svg>
+                    <h4 className="font-medium text-gray-700 text-sm">Need to Speak to a Specialist?</h4>
+                  </div>
+                  <p className="text-xs text-gray-600 mb-3">If Zola can't resolve your issue, you'll be connected to our team:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <p className="text-gray-500">Email Support</p>
+                      <p className="font-semibold text-gray-700">support@colleco.co.za</p>
+                      <p className="text-xs text-gray-400">Zola routes to specialist</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Phone (Escalations)</p>
+                      <p className="font-semibold text-gray-700">+27 31 123 4567</p>
+                      <p className="text-xs text-gray-400">Mon-Fri: 9AM-5PM</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
-        {/* AI-First Support Section */}
-        {selectedCar && (
+        {/* Additional Support Section if no booking yet */}
+        {!selectedCar && (
           <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mt-6">
             <h2 className="text-xl font-bold text-brand-brown mb-4">Need Assistance?</h2>
             
