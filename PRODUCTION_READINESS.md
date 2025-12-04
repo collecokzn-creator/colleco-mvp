@@ -116,8 +116,10 @@ Modules Tested:
 2. Click **New repository secret**
 3. Enter:
    - **Name:** `VITE_GOOGLE_MAPS_API_KEY`
-   - **Value:** `AIzaSyACEQqF8zTEAYvjsu5LJtiBgQvGcAtP_rs`
+   - **Value:** `<YOUR_GOOGLE_MAPS_API_KEY>` (obtain from Google Cloud Console)
 4. Click **Add secret**
+
+**Security Note:** Never commit API keys to version control. Always use environment variables and secrets management.
 5. Push any commit to `main` or manually run Deploy Vite workflow
 6. Maps will load on Transfers page after deployment
 

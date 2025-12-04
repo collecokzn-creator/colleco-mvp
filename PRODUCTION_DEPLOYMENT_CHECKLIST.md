@@ -215,9 +215,11 @@ Test Categories:
 4. Click: **New repository secret**
 5. Fill in:
    - **Name:** `VITE_GOOGLE_MAPS_API_KEY`
-   - **Value:** `AIzaSyACEQqF8zTEAYvjsu5LJtiBgQvGcAtP_rs`
+   - **Value:** `<YOUR_API_KEY_HERE>` (get from [Google Cloud Console](https://console.cloud.google.com/apis/credentials))
 6. Click: **Add secret**
 7. GitHub Actions will auto-deploy on next commit OR manually trigger
+
+**🔒 Security Reminder:** API keys are sensitive. Never commit them to Git. Always use environment variables and secrets management.
 
 **After Configuration:**
 - Maps will show on Transfers page

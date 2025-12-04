@@ -30,17 +30,23 @@
 ## 🗺️ Google Maps Setup (5 minutes)
 
 ### Step 1: Get Your API Key
-The API key is already in your local `.env.local` file:
-```
-VITE_GOOGLE_MAPS_API_KEY=AIzaSyACEQqF8zTEAYvjsu5LJtiBgQvGcAtP_rs
-```
+**IMPORTANT:** Never commit API keys to Git repositories!
+
+Your API key should be stored only in:
+- Local `.env.local` file (already in `.gitignore`)
+- GitHub repository secrets (encrypted)
+
+To get your Google Maps API key:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Navigate to **APIs & Services → Credentials**
+3. Create or copy your **API Key** for Maps JavaScript API
 
 ### Step 2: Add to GitHub Repository Secrets
 1. Go to: **GitHub Repository → Settings → Secrets and variables → Actions**
 2. Click **New repository secret**
 3. Fill in:
    - **Name:** `VITE_GOOGLE_MAPS_API_KEY`
-   - **Value:** `AIzaSyACEQqF8zTEAYvjsu5LJtiBgQvGcAtP_rs`
+   - **Value:** `<YOUR_GOOGLE_MAPS_API_KEY_HERE>`
 4. Click **Add secret**
 
 ### Step 3: Trigger Deployment

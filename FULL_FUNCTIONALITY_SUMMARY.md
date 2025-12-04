@@ -163,8 +163,10 @@ CollEco Travel MVP is **fully functional and production-ready**. All booking pag
 3. Click: **New repository secret**
 4. Enter:
    - **Name:** `VITE_GOOGLE_MAPS_API_KEY`
-   - **Value:** `AIzaSyACEQqF8zTEAYvjsu5LJtiBgQvGcAtP_rs`
+   - **Value:** `<YOUR_GOOGLE_MAPS_API_KEY>` (obtain from [Google Cloud Console](https://console.cloud.google.com/))
 5. Click: **Add secret**
+
+**⚠️ Security:** Never commit API keys to Git. Always use GitHub Secrets for production deployments.
 
 **Result:**
 - Next deployment will include Maps API key
