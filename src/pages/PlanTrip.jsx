@@ -696,7 +696,7 @@ export default function PlanTrip() {
   }, []);
   return (
   <div className="overflow-x-hidden">
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-brand-russty">
+    <div className="max-w-6xl mx-auto px-2 sm:px-4 md:px-6 py-8 text-brand-russty">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="text-3xl font-bold mb-1">Trip Planner</h2>

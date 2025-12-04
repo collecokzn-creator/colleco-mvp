@@ -366,7 +366,7 @@ export default function PartnerVerification() {
             <div className="overflow-x-auto pb-4" ref={scrollContainerRef}>
               <div className="flex gap-4">
                 {properties.map(property => (
-                  <div key={property.id} className="border rounded-lg bg-white shadow p-4 min-w-[340px] max-w-xs flex-shrink-0">
+                  <div key={property.id} className="border rounded-lg bg-white shadow p-4 min-w-[280px] sm:min-w-[340px] max-w-xs flex-shrink-0">
                     <h4 className="text-lg font-bold text-brand-brown">{property.name}</h4>
                     <button
                       className={favoriteProperties.includes(property.id) ? "text-red-500" : "text-gray-300"}

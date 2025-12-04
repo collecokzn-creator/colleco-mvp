@@ -70,7 +70,7 @@ export default function WeatherWidget({ city, country }){
         {data && !showExtended && (
           <div className="flex items-center gap-2 overflow-x-auto">
             {data.forecast.slice(0, 3).map(f => (
-              <div key={f.date} className="text-center px-2 py-1 rounded bg-white border border-cream-border min-w-[72px]">
+              <div key={f.date} className="text-center px-1 sm:px-2 py-1 rounded bg-white border border-cream-border min-w-[60px] sm:min-w-[72px]">
                 <div className="text-[10px] text-brand-brown/60">{new Date(f.date).toLocaleDateString(undefined,{ weekday:'short'})}</div>
                 <div className="text-[16px]">{f.icon}</div>
                 <div className="text-[11px] text-brand-brown/70">{Math.round(f.tmin)}–{Math.round(f.tmax)}°C</div>

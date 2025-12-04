@@ -257,7 +257,7 @@ export default function Bookings() {
 					</div>
 					
 					{/* Sort */}
-					<div className="flex items-center gap-2 sm:min-w-[160px]">
+					<div className="flex items-center gap-2 min-w-0 sm:min-w-[160px]">
 						<span className="text-sm font-semibold text-brand-brown whitespace-nowrap">Sort by:</span>
 						<select
 							value={sortBy}

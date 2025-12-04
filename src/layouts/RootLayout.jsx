@@ -72,7 +72,7 @@ export default function RootLayout() {
     }
   };
   return (
-  <div className="min-h-screen bg-cream">
+  <div className="min-h-screen bg-cream overflow-x-hidden">
       <AutoFocus />
       {/* Connectivity bar - Hidden in development for better UX */}
       {false && (offline || (hasBackend && !apiOk)) && (
@@ -91,8 +91,8 @@ export default function RootLayout() {
       <div className="pb-24" style={{ paddingTop: 'calc(var(--header-h) + var(--banner-h))' }}>
         <div className="flex flex-row-reverse">
           <Sidebar />
-          <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0" tabIndex="-1">
-            <section className="px-6 py-6">
+          <main id="main-content" className="flex-1 min-w-0 focus:outline-none focus:ring-0 overflow-x-hidden" tabIndex="-1">
+            <section className="px-3 sm:px-6 py-6">
               <Breadcrumbs />
               <Outlet />
             </section>

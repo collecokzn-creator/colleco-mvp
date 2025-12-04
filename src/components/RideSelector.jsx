@@ -336,7 +336,7 @@ export default function RideSelector({
         {/* Filters & Sort */}
         <div className="p-4 border-b bg-cream-50 space-y-3">
           <div className="flex flex-wrap gap-3">
-            <div className="flex-1 min-w-[200px]">
+            <div className="flex-1 min-w-0 sm:min-w-[200px]">
               <label className="block text-xs font-medium text-gray-700 mb-1">
                 <Filter className="h-3 w-3 inline mr-1" />
                 Filter By
@@ -354,7 +354,7 @@ export default function RideSelector({
               </select>
             </div>
 
-            <div className="flex-1 min-w-[200px]">
+            <div className="flex-1 min-w-0 sm:min-w-[200px]">
               <label className="block text-xs font-medium text-gray-700 mb-1">
                 <ArrowUpDown className="h-3 w-3 inline mr-1" />
                 Sort By
