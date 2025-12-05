@@ -230,7 +230,7 @@ export default function Profile() {
 
   return (
     <div className="overflow-x-hidden bg-cream min-h-screen">
-      <div className="max-w-5xl mx-auto px-4 py-8" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
+      <div className="max-w-4xl mx-auto px-4 py-8" data-e2e="profile-ready" data-e2e-user-email={user?.email || ''}>
         
         {/* Hero */}
         <div className="mb-8">

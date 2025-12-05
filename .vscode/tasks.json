@@ -78,6 +78,13 @@
 			"command": "npm run build",
 			"isBackground": false,
 			"group": "build"
+		},
+		{
+			"label": "Run Mobile E2E Tests (all viewports)",
+			"type": "shell",
+			"command": "npm run mobile:all",
+			"isBackground": false,
+			"group": "test"
 		}
 	]
 }

@@ -1,0 +1,16 @@
+
+> collecotravel-frontend@0.1.0 mobile:run:se
+> cross-env API_BASE=http://localhost:4010 cypress run --browser chrome --e2e --spec "cypress/e2e/mobile-*.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/debug_mobile_pages.cy.js" --config viewportWidth=375,viewportHeight=667,baseUrl=http://127.0.0.1:5173
+
+
+
+DevTools listening on ws://127.0.0.1:64305/devtools/browser/8142f864-0342-41d9-889c-e22319fc308d
+Cypress could not verify that this server is running:
+
+  > http://127.0.0.1:5173
+
+We are verifying this server because it has been configured as your baseUrl.
+
+Cypress automatically waits until your server is accessible before running tests.
+
+We will try connecting to it 3 more times...

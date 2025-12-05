@@ -83,7 +83,8 @@ export default function Compliance() {
 	}
 
 	return (
-		<div className="text-brand-brown">
+		<div className="overflow-x-hidden min-h-screen flex items-start justify-center px-4 py-6">
+			<div className="w-full max-w-4xl text-brand-brown">
 			<h2 className="text-xl font-bold mb-4">🛡️ Compliance Center</h2>
 			<div className="mb-3"><AutoSyncBanner message="Documents are validated automatically; expiry reminders are sent before deadlines." /></div>
 			<div className="mb-4"><ComplianceStatusCard valid={counts.valid} expiring={counts.expiring} missing={counts.missing} /></div>
@@ -159,6 +160,7 @@ export default function Compliance() {
 						</ul>
 					)}
 				</div>
+			</div>
 			</div>
 		</div>
 	);

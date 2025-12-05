@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 
 function Packages() {
   return (
-    <div className="overflow-x-hidden">
-      <div className="max-w-7xl mx-auto">
+    <div className="overflow-x-hidden min-h-screen flex items-start justify-center px-4 py-6">
+      <div className="w-full max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

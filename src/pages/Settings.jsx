@@ -95,8 +95,8 @@ export default function Settings() {
   }
 
   return (
-    <div className="overflow-x-hidden">
-      <div className="max-w-7xl mx-auto p-6 max-w-3xl">
+    <div className="overflow-x-hidden min-h-screen flex items-start justify-center px-4 py-6">
+      <div className="w-full max-w-3xl">
       <h2 className="text-2xl font-bold mb-3 text-brand-orange">Settings</h2>
       <ApiStatusCard />
       <div className="bg-cream-sand p-4 border border-cream-border space-y-4">
