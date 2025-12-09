@@ -113,6 +113,37 @@ export default function Checkout() {
   }
 
   const nights = booking.lineItems.reduce((sum, item) => Math.max(sum, item.nights || 0), 0);
+  
+  // Detect if this is a package booking (accommodation + multiple services bundled together)
+  const isPackageBooking = () => {
+    if (!booking.lineItems || booking.lineItems.length < 2) return false;
+    
+    // Check if accommodation is included
+    const hasAccommodation = booking.lineItems.some(item => 
+      item.description.toLowerCase().includes('accommodation') || 
+      item.description.toLowerCase().includes('room') ||
+      item.description.toLowerCase().includes('hotel')
+    );
+    
+    // Count other services (parking, meals, breakfast, dinner, lunch, conference, etc.)
+    const otherServices = booking.lineItems.filter(item => 
+      !item.description.toLowerCase().includes('accommodation') && 
+      !item.description.toLowerCase().includes('room') &&
+      !item.description.toLowerCase().includes('hotel')
+    );
+    
+    // It's a package if accommodation + 2+ other services
+    return hasAccommodation && otherServices.length >= 2;
+  };
+  
+  const isPackage = isPackageBooking();
+  
+  // Get list of included services for package display
+  const getIncludedServices = () => {
+    return booking.lineItems
+      .map(item => item.description)
+      .join(', ');
+  };
 
   return (
     <div className="min-h-screen bg-cream py-8 px-4">
@@ -160,32 +191,53 @@ export default function Checkout() {
             </div>
           </div>
 
-          {/* Line Items - Detailed Breakdown (Booking.com style) */}
+          {/* Line Items - Show as Package or Itemized Breakdown */}
           <div className="border-t pt-4 mb-4">
-            <h3 className="text-sm font-semibold text-brand-brown mb-3">Price Breakdown</h3>
-            <div className="space-y-3">
-              {booking.lineItems.map((item, index) => {
-                const unitPrice = item.retailPrice || item.basePrice || 0;
-                const itemTotal = item.totalRetail || item.finalPrice || 0;
-                
-                return (
-                  <div key={index} className="flex justify-between text-sm">
-                    <div className="flex-1">
-                      <p className="font-medium text-brand-brown">{item.description}</p>
-                      <p className="text-xs text-gray-500">
-                        {item.quantity > 1 && `${item.quantity} × `}
-                        {item.nights > 1 
-                          ? `${item.nights} night${item.nights > 1 ? 's' : ''} × ZAR ${unitPrice.toFixed(2)}` 
-                          : `ZAR ${unitPrice.toFixed(2)}`}
-                      </p>
-                    </div>
-                    <span className="font-semibold text-brand-brown whitespace-nowrap ml-4">
-                      ZAR {itemTotal.toFixed(2)}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+            {isPackage ? (
+              // Package Display: Show total with included items
+              <div>
+                <h3 className="text-sm font-semibold text-brand-brown mb-3">All-Inclusive Package</h3>
+                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm font-semibold text-brand-brown mb-2">This package includes:</p>
+                  <ul className="text-xs text-gray-700 space-y-1">
+                    {booking.lineItems.map((item, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-brand-orange mt-1">✓</span>
+                        <span>{item.description}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              // Itemized Display: Show breakdown per service
+              <div>
+                <h3 className="text-sm font-semibold text-brand-brown mb-3">Price Breakdown</h3>
+                <div className="space-y-3">
+                  {booking.lineItems.map((item, index) => {
+                    const unitPrice = item.retailPrice || item.basePrice || 0;
+                    const itemTotal = item.totalRetail || item.finalPrice || 0;
+                    
+                    return (
+                      <div key={index} className="flex justify-between text-sm">
+                        <div className="flex-1">
+                          <p className="font-medium text-brand-brown">{item.description}</p>
+                          <p className="text-xs text-gray-500">
+                            {item.quantity > 1 && `${item.quantity} × `}
+                            {item.nights > 1 
+                              ? `${item.nights} night${item.nights > 1 ? 's' : ''} × ZAR ${unitPrice.toFixed(2)}` 
+                              : `ZAR ${unitPrice.toFixed(2)}`}
+                          </p>
+                        </div>
+                        <span className="font-semibold text-brand-brown whitespace-nowrap ml-4">
+                          ZAR {itemTotal.toFixed(2)}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Pricing Summary */}
