@@ -22,7 +22,15 @@ const router = express.Router();
  */
 router.post('/generate', (req, res) => {
   try {
-    const { bookingId, invoiceNumber: customInvoiceNumber, dueDate, notes, terms } = req.body;
+    const { 
+      bookingId, 
+      invoiceNumber: customInvoiceNumber, 
+      orderNumber,
+      dueDate, 
+      notes, 
+      terms,
+      paymentInstructions
+    } = req.body;
 
     if (!bookingId) {
       return res.status(400).json({ error: 'bookingId is required' });
@@ -43,9 +51,11 @@ router.post('/generate', (req, res) => {
     // Generate and save PDF
     const invoiceInfo = saveInvoiceFile(booking, {
       invoiceNumber,
+      orderNumber,
       dueDate,
       notes,
-      terms
+      terms,
+      paymentInstructions
     });
 
     res.json({

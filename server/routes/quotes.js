@@ -26,16 +26,19 @@ const { getBookingById } = require('../utils/bookings');
  * {
  *   quoteId?: string,
  *   quoteNumber?: string,
+ *   orderNumber?: string,
  *   clientName: string,
  *   clientEmail?: string,
  *   clientPhone?: string,
+ *   clientVAT?: string,
  *   items: [{ title, description?, quantity, unitPrice }],
  *   taxRate?: number,
  *   discountRate?: number,
  *   currency?: string,
  *   validUntil?: string (ISO date),
  *   notes?: string,
- *   terms?: string
+ *   terms?: string,
+ *   paymentInstructions?: string
  * }
  */
 router.post('/pdf/generate', async (req, res) => {
@@ -43,16 +46,19 @@ router.post('/pdf/generate', async (req, res) => {
     const {
       quoteId,
       quoteNumber: customQuoteNumber,
+      orderNumber,
       clientName,
       clientEmail,
       clientPhone,
+      clientVAT,
       items = [],
       taxRate = 15,
       discountRate = 0,
       currency = 'ZAR',
       validUntil,
       notes,
-      terms
+      terms,
+      paymentInstructions
     } = req.body;
 
     // Validation
@@ -77,9 +83,11 @@ router.post('/pdf/generate', async (req, res) => {
     const quote = {
       id: quoteId || `QT-${Date.now()}`,
       quoteNumber,
+      orderNumber,
       clientName,
       clientEmail,
       clientPhone,
+      clientVAT,
       items,
       taxRate,
       discountRate,
@@ -87,6 +95,7 @@ router.post('/pdf/generate', async (req, res) => {
       validUntil: validUntil || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       notes,
       terms,
+      paymentInstructions,
       createdAt: new Date().toISOString()
     };
 

@@ -71,10 +71,12 @@ function formatCurrency(value, currency = 'ZAR') {
 function generateQuotePdf(quote, options = {}) {
   const {
     quoteNumber = quote.quoteNumber || quote.id,
+    orderNumber = quote.orderNumber || quote.poNumber || '',
     validUntil = quote.validUntil || addDays(new Date(), 30).toISOString().split('T')[0],
     currency = quote.currency || 'ZAR',
     notes = quote.notes || '',
-    terms = quote.terms || 'This quotation is valid for 30 days from the date of issue.'
+    terms = quote.terms || 'This quotation is valid for 30 days from the date of issue.',
+    paymentInstructions = quote.paymentInstructions || null
   } = options;
 
   // Create PDF document (A4 size)
@@ -156,6 +158,15 @@ function generateQuotePdf(quote, options = {}) {
   doc.text(quoteNumber, leftCol + 35, leftY);
   leftY += 5;
 
+  // Order/PO Number (if provided)
+  if (orderNumber) {
+    doc.setFont('helvetica', 'bold');
+    doc.text('Order/PO Number:', leftCol, leftY);
+    doc.setFont('helvetica', 'normal');
+    doc.text(orderNumber, leftCol + 35, leftY);
+    leftY += 5;
+  }
+
   // Quote Date
   doc.setFont('helvetica', 'bold');
   doc.text('Quote Date:', leftCol, leftY);
@@ -194,6 +205,14 @@ function generateQuotePdf(quote, options = {}) {
 
     if (quote.clientPhone) {
       doc.text(quote.clientPhone, rightCol, rightY);
+      rightY += 5;
+    }
+
+    if (quote.clientVAT) {
+      doc.setFont('helvetica', 'bold');
+      doc.text('VAT Number:', rightCol, rightY);
+      doc.setFont('helvetica', 'normal');
+      doc.text(quote.clientVAT, rightCol + 25, rightY);
       rightY += 5;
     }
   }
@@ -323,7 +342,7 @@ function generateQuotePdf(quote, options = {}) {
     yPos += (noteLines.length * 4) + 5;
   }
 
-  // ===== FOOTER (Banking Details) =====
+  // ===== FOOTER (Payment Instructions / Banking Details) =====
   yPos += 5;
   doc.setDrawColor(200, 200, 200);
   doc.line(margin, yPos, pageWidth - margin, yPos);
@@ -332,19 +351,35 @@ function generateQuotePdf(quote, options = {}) {
   doc.setFontSize(8);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(244, 124, 32);
-  doc.text('BANKING DETAILS', margin, yPos);
-  yPos += 5;
 
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(60, 60, 60);
-  doc.text(`Bank: ${COMPANY_INFO.bankName}`, margin, yPos);
-  yPos += 4;
-  doc.text(`Branch Code: ${COMPANY_INFO.bankCode}`, margin, yPos);
-  yPos += 4;
-  doc.text(`Account Number: ${COMPANY_INFO.accountNumber}`, margin, yPos);
-  yPos += 4;
-  doc.text(`Account Holder: ${COMPANY_INFO.accountHolder}`, margin, yPos);
-  yPos += 8;
+  if (paymentInstructions) {
+    // Custom payment instructions (for government, municipalities, etc.)
+    doc.text('PAYMENT INSTRUCTIONS', margin, yPos);
+    yPos += 5;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(60, 60, 60);
+    const instructionLines = doc.splitTextToSize(paymentInstructions, contentWidth);
+    doc.text(instructionLines, margin, yPos);
+    yPos += (instructionLines.length * 4) + 4;
+  } else {
+    // Default banking details for EFT
+    doc.text('BANKING DETAILS (EFT Payments)', margin, yPos);
+    yPos += 5;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(60, 60, 60);
+    doc.text(`Bank: ${COMPANY_INFO.bankName}`, margin, yPos);
+    yPos += 4;
+    doc.text(`Branch Code: ${COMPANY_INFO.bankCode}`, margin, yPos);
+    yPos += 4;
+    doc.text(`Account Number: ${COMPANY_INFO.accountNumber}`, margin, yPos);
+    yPos += 4;
+    doc.text(`Account Holder: ${COMPANY_INFO.accountHolder}`, margin, yPos);
+    yPos += 4;
+    doc.text('Reference: Use Quote Number as payment reference', margin, yPos);
+    yPos += 4;
+  }
 
   // Generated timestamp
   doc.setFontSize(7);

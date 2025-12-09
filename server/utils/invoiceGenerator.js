@@ -45,11 +45,13 @@ function formatCurrency(value, currency = 'ZAR') {
 function generateInvoicePdf(booking, options = {}) {
   const {
     invoiceNumber = null,
+    orderNumber = booking.orderNumber || booking.poNumber || '',
     companyInfo = COMPANY_INFO,
     dueDate = null,
     notes = '',
     terms = 'Net 30 days',
-    currency = 'ZAR'
+    currency = 'ZAR',
+    paymentInstructions = booking.paymentInstructions || null
   } = options;
 
   // Create PDF document
@@ -140,6 +142,15 @@ function generateInvoicePdf(booking, options = {}) {
     doc.setFont(undefined, 'normal');
     currentY += 10;
   }
+
+  // Order/PO Number (if provided)
+  if (orderNumber) {
+    doc.text('Order/PO Number:', rightColX, currentY);
+    doc.setFont(undefined, 'bold');
+    doc.text(orderNumber, rightColX, currentY + 5);
+    doc.setFont(undefined, 'normal');
+    currentY += 10;
+  }
   
   doc.text('Booking Reference:', rightColX, currentY);
   doc.setFont(undefined, 'bold');
@@ -184,6 +195,16 @@ function generateInvoicePdf(booking, options = {}) {
     doc.setTextColor(100, 100, 100);
     doc.text(`Phone: ${booking.metadata.customerPhone}`, marginLeft, currentY);
     doc.setTextColor(0, 0, 0);
+    currentY += 4;
+  }
+
+  // Customer VAT Number
+  if (booking.metadata?.customerVAT || booking.clientVAT) {
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'bold');
+    doc.text('VAT Number:', marginLeft, currentY);
+    doc.setFont(undefined, 'normal');
+    doc.text(booking.metadata?.customerVAT || booking.clientVAT, marginLeft + 25, currentY);
     currentY += 4;
   }
 
@@ -299,24 +320,45 @@ function generateInvoicePdf(booking, options = {}) {
   doc.setFont(undefined, 'normal');
   currentY += 6;
 
-  // Banking details
+  // Payment Instructions (custom or default banking details)
   doc.setFont(undefined, 'bold');
   doc.setFontSize(9);
-  doc.text('BANKING DETAILS:', marginLeft, currentY);
-  doc.setFont(undefined, 'normal');
-  currentY += 4;
+  
+  if (paymentInstructions) {
+    // Custom payment instructions (for government, municipalities, etc.)
+    doc.text('PAYMENT INSTRUCTIONS:', marginLeft, currentY);
+    doc.setFont(undefined, 'normal');
+    currentY += 4;
 
-  doc.setFontSize(8);
-  doc.setTextColor(100, 100, 100);
-  doc.text(`Bank: ${companyInfo.bankName}`, marginLeft, currentY);
-  currentY += 3;
-  doc.text(`Code: ${companyInfo.bankCode}`, marginLeft, currentY);
-  currentY += 3;
-  doc.text(`Account: ${companyInfo.accountNumber}`, marginLeft, currentY);
-  currentY += 3;
-  doc.text(`Holder: ${companyInfo.accountHolder}`, marginLeft, currentY);
-  doc.setTextColor(0, 0, 0);
-  currentY += 6;
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    const instructionLines = doc.splitTextToSize(paymentInstructions, contentWidth);
+    instructionLines.forEach(line => {
+      doc.text(line, marginLeft, currentY);
+      currentY += 3;
+    });
+    doc.setTextColor(0, 0, 0);
+    currentY += 3;
+  } else {
+    // Default banking details for EFT
+    doc.text('BANKING DETAILS (EFT):', marginLeft, currentY);
+    doc.setFont(undefined, 'normal');
+    currentY += 4;
+
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Bank: ${companyInfo.bankName}`, marginLeft, currentY);
+    currentY += 3;
+    doc.text(`Code: ${companyInfo.bankCode}`, marginLeft, currentY);
+    currentY += 3;
+    doc.text(`Account: ${companyInfo.accountNumber}`, marginLeft, currentY);
+    currentY += 3;
+    doc.text(`Holder: ${companyInfo.accountHolder}`, marginLeft, currentY);
+    currentY += 3;
+    doc.text('Reference: Use Invoice Number as payment reference', marginLeft, currentY);
+    doc.setTextColor(0, 0, 0);
+    currentY += 6;
+  }
 
   // ===== NOTES / TERMS & CONDITIONS =====
   if (notes) {
