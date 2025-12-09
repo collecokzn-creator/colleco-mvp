@@ -160,24 +160,31 @@ export default function Checkout() {
             </div>
           </div>
 
-          {/* Line Items */}
+          {/* Line Items - Detailed Breakdown (Booking.com style) */}
           <div className="border-t pt-4 mb-4">
-            <h3 className="text-sm font-semibold text-brand-brown mb-3">Services</h3>
-            <div className="space-y-2">
-              {booking.lineItems.map((item, index) => (
-                <div key={index} className="flex justify-between text-sm">
-                  <div>
-                    <p className="font-medium text-brand-brown">{item.description}</p>
-                    <p className="text-xs text-gray-500">
-                      {item.quantity}x ZAR {(item.retailPrice || item.basePrice || 0).toFixed(2)}
-                      {item.nights > 1 && ` × ${item.nights} nights`}
-                    </p>
+            <h3 className="text-sm font-semibold text-brand-brown mb-3">Price Breakdown</h3>
+            <div className="space-y-3">
+              {booking.lineItems.map((item, index) => {
+                const unitPrice = item.retailPrice || item.basePrice || 0;
+                const itemTotal = item.totalRetail || item.finalPrice || 0;
+                
+                return (
+                  <div key={index} className="flex justify-between text-sm">
+                    <div className="flex-1">
+                      <p className="font-medium text-brand-brown">{item.description}</p>
+                      <p className="text-xs text-gray-500">
+                        {item.quantity > 1 && `${item.quantity} × `}
+                        {item.nights > 1 
+                          ? `${item.nights} night${item.nights > 1 ? 's' : ''} × ZAR ${unitPrice.toFixed(2)}` 
+                          : `ZAR ${unitPrice.toFixed(2)}`}
+                      </p>
+                    </div>
+                    <span className="font-semibold text-brand-brown whitespace-nowrap ml-4">
+                      ZAR {itemTotal.toFixed(2)}
+                    </span>
                   </div>
-                  <span className="font-semibold text-brand-brown">
-                    ZAR {(item.totalRetail || item.finalPrice || 0).toFixed(2)}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
