@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
 import Button from '../components/ui/Button.jsx';
-import { Home, Calendar, Users, Clock, DollarSign } from 'lucide-react';
+import { Home, Calendar, Users, Clock, DollarSign, Plus, Trash2 } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function AccommodationBooking(){
@@ -18,6 +18,33 @@ export default function AccommodationBooking(){
   const [availableProperties, setAvailableProperties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  
+  // Multi-supplier booking state
+  const [supplierId, setSupplierId] = useState('beekman'); // beekman or premier
+  const [bookingType, setBookingType] = useState('FIT'); // FIT or Groups
+  const [additionalServices, setAdditionalServices] = useState([]); // conference, meals, etc
+  const [suppliers, setSuppliers] = useState([]);
+  
+  // Load suppliers on mount
+  useEffect(() => {
+    async function loadSuppliers() {
+      try {
+        const response = await fetch('/api/suppliers/active');
+        if (response.ok) {
+          const data = await response.json();
+          setSuppliers(data);
+        }
+      } catch (error) {
+        console.error('Failed to load suppliers:', error);
+        // Use fallback suppliers
+        setSuppliers([
+          { id: 'beekman', name: 'Beekman Holidays' },
+          { id: 'premier', name: 'Premier Hotels & Resorts' }
+        ]);
+      }
+    }
+    loadSuppliers();
+  }, []);
   
   React.useEffect(() => {
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
@@ -87,37 +114,88 @@ export default function AccommodationBooking(){
     setLoading(true);
 
     try {
-      // Here you would send the booking to your backend
-      // For now, we'll simulate success
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       // Calculate booking details
       const checkInDate = new Date(checkIn);
       const checkOutDate = new Date(checkOut);
       const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-      const totalPrice = property.pricePerNight * nights;
+      const basePrice = property.pricePerNight;
+      const retailPrice = basePrice; // No markup for now
       
-      // Create booking object for loyalty integration
-      const booking = {
-        id: `ACC_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      // Build line items array
+      const lineItems = [
+        {
+          serviceType: 'accommodation',
+          description: `${property.name} - ${roomType} room`,
+          basePrice,
+          retailPrice,
+          quantity: 1, // 1 room
+          nights
+        }
+      ];
+      
+      // Add additional services
+      additionalServices.forEach(service => {
+        lineItems.push({
+          serviceType: service.type,
+          description: service.description,
+          basePrice: service.basePrice,
+          retailPrice: service.retailPrice,
+          quantity: service.quantity || guests,
+          nights: service.type.includes('conference') ? 1 : nights
+        });
+      });
+      
+      // Create booking via API
+      const userId = localStorage.getItem('colleco.user.id') || 'guest_' + Date.now();
+      const bookingData = {
+        supplierId,
+        userId,
+        bookingType,
+        checkInDate: checkIn,
+        checkOutDate: checkOut,
+        lineItems,
+        metadata: {
+          propertyId: property.id,
+          propertyName: property.name,
+          location,
+          guests,
+          roomType,
+          specialRequests: specialRequests || undefined
+        }
+      };
+      
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Booking failed: ${response.statusText}`);
+      }
+      
+      const booking = await response.json();
+      
+      // Process loyalty rewards
+      const loyaltyResult = processBookingRewards({
+        id: booking.id,
         type: 'accommodation',
-        amount: totalPrice,
-        userId: localStorage.getItem('colleco.user.id') || 'guest_' + Date.now(),
+        amount: booking.pricing.total,
+        userId,
         checkInDate,
         propertyId: property.id,
         propertyName: property.name,
         nights,
         guests
-      };
+      });
       
-      // Process loyalty rewards and track booking
-      const result = processBookingRewards(booking);
+      // Redirect to payment
+      const paymentUrl = `/checkout?bookingId=${booking.id}`;
+      window.location.href = paymentUrl;
       
-      alert(`Property "${property.name}" booked successfully! You earned ${result.pointsEarned} loyalty points! 🎉`);
-      setLoading(false);
     } catch (error) {
       console.error('Booking failed:', error);
-      alert('Booking failed. Please try again.');
+      alert(`Booking failed: ${error.message}\n\nPlease try again or contact support.`);
       setLoading(false);
     }
   }
@@ -162,6 +240,46 @@ export default function AccommodationBooking(){
           <h2 className="text-lg font-bold text-brand-brown mb-4">Search Accommodation</h2>
           
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Supplier Selection */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-brand-brown">
+                Supplier/Hotel Group *
+              </label>
+              <select
+                value={supplierId}
+                onChange={e => setSupplierId(e.target.value)}
+                required
+                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+              >
+                {suppliers.map(supplier => (
+                  <option key={supplier.id} value={supplier.id}>
+                    {supplier.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Booking Type */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-brand-brown">
+                Booking Type *
+              </label>
+              <select
+                value={bookingType}
+                onChange={e => setBookingType(e.target.value)}
+                required
+                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+              >
+                <option value="FIT">FIT (Individual Travel)</option>
+                <option value="Groups">Groups (10+ guests)</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                {bookingType === 'FIT' 
+                  ? 'Full payment due 7 days before check-in' 
+                  : '25% deposit due, balance 30 days before check-in'}
+              </p>
+            </div>
+
             {/* Location */}
             <div>
               <label className="block mb-2 text-sm font-semibold text-brand-brown">
@@ -271,6 +389,114 @@ export default function AccommodationBooking(){
                 className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors resize-none"
               />
               <p className="text-xs text-gray-500 mt-1">{specialRequests.length}/200 characters</p>
+            </div>
+
+            {/* Additional Services */}
+            <div className="border-t pt-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-brand-brown">Additional Services (Optional)</h3>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAdditionalServices([...additionalServices, {
+                      id: Date.now(),
+                      type: 'day_conference_packages',
+                      description: 'Day Conference Package',
+                      basePrice: 150,
+                      retailPrice: 150,
+                      quantity: guests
+                    }]);
+                  }}
+                  className="flex items-center gap-1 text-xs text-brand-orange hover:text-orange-600"
+                >
+                  <Plus className="h-3 w-3" />
+                  Add Service
+                </button>
+              </div>
+
+              {additionalServices.length > 0 && (
+                <div className="space-y-3 mb-4">
+                  {additionalServices.map((service, index) => (
+                    <div key={service.id} className="bg-cream p-3 rounded-lg">
+                      <div className="flex gap-3">
+                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                          <select
+                            value={service.type}
+                            onChange={e => {
+                              const updated = [...additionalServices];
+                              updated[index].type = e.target.value;
+                              // Update description based on type
+                              const typeNames = {
+                                day_conference_packages: 'Day Conference Package',
+                                formal_banqueting_meals: 'Formal Banqueting/Meals',
+                                groups_accommodation: 'Groups Accommodation',
+                                corporate: 'Corporate Rate'
+                              };
+                              updated[index].description = typeNames[e.target.value] || e.target.value;
+                              setAdditionalServices(updated);
+                            }}
+                            className="text-sm border border-cream-border rounded px-2 py-1"
+                          >
+                            <option value="day_conference_packages">Conference Package</option>
+                            <option value="formal_banqueting_meals">Banqueting/Meals</option>
+                            <option value="groups_accommodation">Groups Accommodation</option>
+                            <option value="corporate">Corporate Rate</option>
+                          </select>
+                          
+                          <input
+                            type="number"
+                            min="1"
+                            value={service.quantity}
+                            onChange={e => {
+                              const updated = [...additionalServices];
+                              updated[index].quantity = Number(e.target.value);
+                              setAdditionalServices(updated);
+                            }}
+                            placeholder="Qty"
+                            className="text-sm border border-cream-border rounded px-2 py-1"
+                          />
+                          
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={service.basePrice}
+                            onChange={e => {
+                              const updated = [...additionalServices];
+                              updated[index].basePrice = Number(e.target.value);
+                              updated[index].retailPrice = Number(e.target.value);
+                              setAdditionalServices(updated);
+                            }}
+                            placeholder="Price (ZAR)"
+                            className="text-sm border border-cream-border rounded px-2 py-1"
+                          />
+                        </div>
+                        
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setAdditionalServices(additionalServices.filter((_, i) => i !== index));
+                          }}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {supplierId === 'premier' && (
+                <p className="text-xs text-gray-600">
+                  Premier Hotels offers: Day Conference Packages, Formal Banqueting, Corporate Rates
+                </p>
+              )}
+              {supplierId === 'beekman' && (
+                <p className="text-xs text-gray-600">
+                  Beekman Holidays offers: Conference Facilities, Banqueting, Groups Accommodation
+                </p>
+              )}
             </div>
 
             <Button type="submit" fullWidth disabled={loading}>

@@ -257,9 +257,17 @@ app.use('/api/legal', legalRouter);
 const webhooksRouter = require('./routes/webhooks');
 app.use('/api/webhooks', webhooksRouter);
 
+// --- Register payment URL generation routes ---
+const paymentsRouter = require('./routes/payments');
+app.use('/api/payments', paymentsRouter);
+
 // --- Register bookings API (multi-supplier support) ---
 const bookingsRouter = require('./routes/bookings');
 app.use('/api/bookings', bookingsRouter);
+
+// --- Register suppliers API ---
+const suppliersRouter = require('./routes/suppliers');
+app.use('/api/suppliers', suppliersRouter);
 
 // Persistent store file (reuse DATA_DIR defined above for AI assets)
 const DATA_FILE = path.join(DATA_DIR, 'collab.json');

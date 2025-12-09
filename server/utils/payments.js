@@ -2,17 +2,34 @@ const crypto = require('crypto');
 const { getPaymentConfig } = require('../config/payments');
 
 /**
- * Generate PayFast payment URL (hosted checkout)
- * @param {Object} booking - booking details
- * @param {string} booking.id - booking ID (m_payment_id)
- * @param {number} booking.amount - amount in ZAR
- * @param {string} booking.name - item name
- * @param {string} booking.email - customer email
- * @param {string} [processor='payfast'] - 'payfast' or 'yoco'
+ * Generate PayFast or Yoco payment URL (hosted checkout)
+ * @param {Object} params - Payment parameters
+ * @param {string} params.bookingId - booking ID (m_payment_id)
+ * @param {string} params.processor - 'payfast' or 'yoco'
+ * @param {number} params.amount - amount in ZAR
+ * @param {string} [params.returnUrl] - success redirect URL
+ * @param {string} [params.cancelUrl] - cancel redirect URL
+ * @param {string} [params.notifyUrl] - webhook notification URL
+ * @param {string} [params.email] - customer email (optional)
+ * @param {string} [params.firstName] - customer first name (optional)
+ * @param {string} [params.lastName] - customer last name (optional)
+ * @param {string} [params.itemName] - item name (optional)
  * @returns {string} - hosted checkout URL
  */
-function generatePaymentUrl(booking, processor = 'payfast') {
+function generatePaymentUrl(params) {
   const config = getPaymentConfig();
+  const {
+    bookingId,
+    processor = 'payfast',
+    amount,
+    returnUrl,
+    cancelUrl,
+    notifyUrl,
+    email = 'customer@example.com',
+    firstName = 'Customer',
+    lastName = '',
+    itemName = `Booking ${bookingId}`
+  } = params;
 
   if (processor === 'payfast') {
     const pf = config.payfast;
@@ -27,16 +44,16 @@ function generatePaymentUrl(booking, processor = 'payfast') {
     const data = {
       merchant_id: pf.merchantId,
       merchant_key: pf.merchantKey,
-      return_url: pf.returnUrl,
-      cancel_url: pf.cancelUrl,
-      notify_url: pf.notifyUrl,
-      name_first: booking.firstName || 'Customer',
-      name_last: booking.lastName || '',
-      email_address: booking.email,
-      m_payment_id: booking.id,
-      amount: booking.amount.toFixed(2),
-      item_name: booking.name || 'Booking',
-      item_description: booking.description || `Booking ${booking.id}`,
+      return_url: returnUrl || pf.returnUrl,
+      cancel_url: cancelUrl || pf.cancelUrl,
+      notify_url: notifyUrl || pf.notifyUrl,
+      name_first: firstName,
+      name_last: lastName,
+      email_address: email,
+      m_payment_id: bookingId,
+      amount: amount.toFixed(2),
+      item_name: itemName,
+      item_description: `Booking ${bookingId}`,
     };
 
     // Generate signature
