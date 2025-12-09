@@ -169,12 +169,12 @@ export default function Checkout() {
                   <div>
                     <p className="font-medium text-brand-brown">{item.description}</p>
                     <p className="text-xs text-gray-500">
-                      {item.quantity}x ZAR {item.retailPrice.toFixed(2)}
+                      {item.quantity}x ZAR {(item.retailPrice || item.basePrice || 0).toFixed(2)}
                       {item.nights > 1 && ` × ${item.nights} nights`}
                     </p>
                   </div>
                   <span className="font-semibold text-brand-brown">
-                    ZAR {item.totalRetail.toFixed(2)}
+                    ZAR {(item.totalRetail || item.finalPrice || 0).toFixed(2)}
                   </span>
                 </div>
               ))}
@@ -184,10 +184,21 @@ export default function Checkout() {
           {/* Pricing Summary */}
           <div className="border-t pt-4">
             <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Subtotal (excl. VAT):</span>
+                <span className="font-semibold text-brand-brown">ZAR {booking.pricing.subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">VAT (included):</span>
+                <span className="font-semibold text-brand-brown">ZAR {booking.pricing.vat.toFixed(2)}</span>
+              </div>
               <div className="flex justify-between text-lg font-bold pt-2 border-t">
                 <span className="text-brand-brown">Total:</span>
                 <span className="text-brand-orange">ZAR {booking.pricing.total.toFixed(2)}</span>
               </div>
+              <p className="text-xs text-gray-500 mt-2">
+                Price shown is the full amount, inclusive of taxes and any service fees. No extra booking fees at checkout.
+              </p>
             </div>
           </div>
 
