@@ -370,20 +370,21 @@ function calculateRiskScore(userId, userType, transactionData) {
   let score = 0;
 
   // Amount anomaly (0-30 points)
-  if (transactionData.amount > 100000) score += 20;
-  else if (transactionData.amount > 50000) score += 10;
+  if (transactionData.amount > 100000) score += 30;
+  else if (transactionData.amount > 50000) score += 15;
 
   // Frequency anomaly (0-25 points)
   const recentTransactions = getRecentTransactions(userId, 7);
-  if (recentTransactions.length > 10) score += 15;
-  else if (recentTransactions.length > 5) score += 8;
+  if (recentTransactions.length > 10) score += 25;
+  else if (recentTransactions.length > 5) score += 15;
 
   // Time anomaly (0-20 points)
   const hour = new Date().getHours();
-  if (hour >= 2 && hour <= 5) score += 10; // Unusual hours
+  if (hour >= 2 && hour <= 5) score += 15; // Unusual hours
 
-  // Device/location change (0-15 points)
-  if (transactionData.newDevice || transactionData.newLocation) score += 8;
+  // Device/location change (0-25 points)
+  if (transactionData.newDevice && transactionData.newLocation) score += 25;
+  else if (transactionData.newDevice || transactionData.newLocation) score += 15;
 
   // Account age (0-10 points)
   const accountAge = getAccountAge(userId);
@@ -426,8 +427,16 @@ function containsProhibitedContent(text) {
 
 function isLikelySpam(text) {
   const commonSpamPatterns = ['click here', 'buy now', 'limited time', 'act now'];
-  const matches = commonSpamPatterns.filter(p => text.toLowerCase().includes(p)).length;
-  return matches > 1 || text.length < 20;
+  const hasSpamPattern = commonSpamPatterns.some(p => text.toLowerCase().includes(p));
+  
+  // If it has a spam pattern, it's spam
+  if (hasSpamPattern) return true;
+  
+  // Very short text is only spam if it's really minimal (< 10 chars)
+  // Allow short positive reviews like "Great!" "Excellent!" etc
+  if (text.length < 10) return false;
+  
+  return false;
 }
 
 function containsContactInfo(text) {

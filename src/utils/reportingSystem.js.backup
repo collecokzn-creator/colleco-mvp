@@ -1,0 +1,56 @@
+const VALID_REASONS = ['hate_speech', 'harassment', 'spam', 'fraud', 'illegal_activity', 'child_safety_violation', 'violence', 'misinformation'];
+const SEVERITY_MAP = { child_safety_violation: 10, illegal_activity: 9, violence: 8, fraud: 7, harassment: 6, hate_speech: 5, misinformation: 3, spam: 2 };
+const reports = new Map();
+let reportIdCounter = 1;
+
+function reportUserContent(data) {
+  const { reporterId, reportedUserId, contentId, reason, description, contentPreview, attachments = [] } = data;
+  if (!VALID_REASONS.includes(reason)) throw new Error('Invalid reason: ' + reason);
+  for (const ex of reports.values()) {
+    if (ex.contentId === contentId && ex.reason === reason) throw new Error('Duplicate report for same content');
+  }
+  const priority = SEVERITY_MAP[reason] || 1;
+  const report = {
+    id: 'RPT-' + (reportIdCounter++), reporterId, reportedUserId, contentId, reason, description,
+    contentPreview: contentPreview ? contentPreview.substring(0, 500) : undefined, attachments,
+    status: 'open', priority, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+    publicReport: { reason, status: 'open', createdAt: new Date().toISOString() }
+  };
+  reports.set(report.id, report);
+  return report;
+}
+
+function getReportStatus(reportId) {
+  return reports.get(reportId);
+}
+
+function resolveReport(reportId, status, resolution, metadata = {}) {
+  const report = reports.get(reportId);
+  if (!report) throw new Error('Report not found');
+  report.status = status;
+  report.resolution = resolution;
+  report.updatedAt = new Date().toISOString();
+  if (metadata.moderatorId) report.moderatorId = metadata.moderatorId;
+  if (metadata.policyViolated) report.policyViolated = metadata.policyViolated;
+  if (metadata.escalatedTo) report.escalatedTo = metadata.escalatedTo;
+  return report;
+}
+
+function getReportHistory(userId, filters = {}) {
+  const { reason, status, startDate, endDate } = filters;
+  let filtered = Array.from(reports.values()).filter(r => r.reportedUserId === userId);
+  if (reason) filtered = filtered.filter(r => r.reason === reason);
+  if (status) filtered = filtered.filter(r => r.status === status);
+  if (startDate && endDate) filtered = filtered.filter(r => new Date(r.createdAt) >= startDate && new Date(r.createdAt) <= endDate);
+  return filtered;
+}
+
+function calculateReportUrgency(report) {
+  let urgency = SEVERITY_MAP[report.reason] || 1;
+  if (report.attachments && report.attachments.length > 0) urgency += 2;
+  const history = getReportHistory(report.reportedUserId);
+  if (history.length > 1) urgency += Math.min(history.length - 1, 3);
+  return Math.min(urgency, 10);
+}
+
+module.exports = { reportUserContent, getReportStatus, resolveReport, getReportHistory, calculateReportUrgency, createReport: reportUserContent };

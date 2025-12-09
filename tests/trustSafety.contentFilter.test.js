@@ -14,8 +14,8 @@ describe('Content Filtering System', () => {
     it('removes profanity from text', () => {
       const input = 'This is a damn good trip with some ****ed up activities';
       const result = filterContent(input);
-      expect(result).not.toContain('damn');
-      expect(result).toContain('***');
+      expect(result.text).not.toContain('damn');
+      expect(result.text).toContain('***');
     });
 
     it('flags sexual content', () => {

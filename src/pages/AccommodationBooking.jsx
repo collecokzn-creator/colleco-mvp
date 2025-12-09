@@ -19,32 +19,35 @@ export default function AccommodationBooking(){
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   
-  // Multi-supplier booking state
-  const [supplierId, setSupplierId] = useState('beekman'); // beekman or premier
+  // Property selection (replaces direct supplier selection)
+  const [propertyId, setPropertyId] = useState(''); // property ID from search
+  const [properties, setProperties] = useState([]);
   const [bookingType, setBookingType] = useState('FIT'); // FIT or Groups
   const [additionalServices, setAdditionalServices] = useState([]); // conference, meals, etc
-  const [suppliers, setSuppliers] = useState([]);
   
-  // Load suppliers on mount
+  // Search properties when location changes
   useEffect(() => {
-    async function loadSuppliers() {
+    async function searchProperties() {
+      if (!location || location.length < 3) return;
+      
       try {
-        const response = await fetch('/api/suppliers/active');
+        const response = await fetch(`/api/properties/search?location=${encodeURIComponent(location)}`);
         if (response.ok) {
           const data = await response.json();
-          setSuppliers(data);
+          setProperties(data);
+          // Auto-select first property if available
+          if (data.length > 0 && !propertyId) {
+            setPropertyId(data[0].id);
+          }
         }
       } catch (error) {
-        console.error('Failed to load suppliers:', error);
-        // Use fallback suppliers
-        setSuppliers([
-          { id: 'beekman', name: 'Beekman Holidays' },
-          { id: 'premier', name: 'Premier Hotels & Resorts' }
-        ]);
+        console.error('Failed to search properties:', error);
       }
     }
-    loadSuppliers();
-  }, []);
+    
+    const timer = setTimeout(searchProperties, 300); // Debounce
+    return () => clearTimeout(timer);
+  }, [location]);
   
   React.useEffect(() => {
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
@@ -114,18 +117,24 @@ export default function AccommodationBooking(){
     setLoading(true);
 
     try {
+      // Get selected property details to derive supplier
+      const selectedProp = properties.find(p => p.id === propertyId);
+      if (!selectedProp) {
+        throw new Error('Please select a property first');
+      }
+      
       // Calculate booking details
       const checkInDate = new Date(checkIn);
       const checkOutDate = new Date(checkOut);
       const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-      const basePrice = property.pricePerNight;
+      const basePrice = property.pricePerNight || selectedProp.basePrice;
       const retailPrice = basePrice; // No markup for now
       
       // Build line items array
       const lineItems = [
         {
           serviceType: 'accommodation',
-          description: `${property.name} - ${roomType} room`,
+          description: `${selectedProp.name} - ${roomType} room`,
           basePrice,
           retailPrice,
           quantity: 1, // 1 room
@@ -148,7 +157,8 @@ export default function AccommodationBooking(){
       // Create booking via API
       const userId = localStorage.getItem('colleco.user.id') || 'guest_' + Date.now();
       const bookingData = {
-        supplierId,
+        propertyId: selectedProp.id,
+        supplierId: selectedProp.supplierId, // Derived from property mapping
         userId,
         bookingType,
         checkInDate: checkIn,
@@ -240,46 +250,6 @@ export default function AccommodationBooking(){
           <h2 className="text-lg font-bold text-brand-brown mb-4">Search Accommodation</h2>
           
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Supplier Selection */}
-            <div>
-              <label className="block mb-2 text-sm font-semibold text-brand-brown">
-                Supplier/Hotel Group *
-              </label>
-              <select
-                value={supplierId}
-                onChange={e => setSupplierId(e.target.value)}
-                required
-                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-              >
-                {suppliers.map(supplier => (
-                  <option key={supplier.id} value={supplier.id}>
-                    {supplier.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Booking Type */}
-            <div>
-              <label className="block mb-2 text-sm font-semibold text-brand-brown">
-                Booking Type *
-              </label>
-              <select
-                value={bookingType}
-                onChange={e => setBookingType(e.target.value)}
-                required
-                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-              >
-                <option value="FIT">FIT (Individual Travel)</option>
-                <option value="Groups">Groups (10+ guests)</option>
-              </select>
-              <p className="text-xs text-gray-500 mt-1">
-                {bookingType === 'FIT' 
-                  ? 'Full payment due 7 days before check-in' 
-                  : '25% deposit due, balance 30 days before check-in'}
-              </p>
-            </div>
-
             {/* Location */}
             <div>
               <label className="block mb-2 text-sm font-semibold text-brand-brown">
@@ -296,6 +266,65 @@ export default function AccommodationBooking(){
               {formErrors.location && (
                 <p className="text-red-500 text-xs mt-1">{formErrors.location}</p>
               )}
+            </div>
+
+            {/* Property Selection */}
+            {properties.length > 0 && (
+              <div>
+                <label className="block mb-2 text-sm font-semibold text-brand-brown">
+                  Select Property *
+                </label>
+                <div className="space-y-2">
+                  {properties.map(prop => (
+                    <label
+                      key={prop.id}
+                      className={`flex items-start gap-3 p-3 border-2 rounded-lg cursor-pointer transition-colors ${
+                        propertyId === prop.id
+                          ? 'border-brand-orange bg-orange-50'
+                          : 'border-cream-border hover:border-brand-orange'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="property"
+                        value={prop.id}
+                        checked={propertyId === prop.id}
+                        onChange={e => setPropertyId(e.target.value)}
+                        className="mt-1"
+                      />
+                      <div className="flex-1">
+                        <p className="font-semibold text-brand-brown">{prop.name}</p>
+                        <p className="text-xs text-gray-600">{prop.type} • {prop.location} • {prop.stars}⭐</p>
+                        <p className="text-xs text-gray-500 mt-1">{prop.description}</p>
+                        <p className="text-sm font-semibold text-brand-orange mt-2">
+                          From ZAR {prop.basePrice}/night
+                        </p>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Booking Type */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-brand-brown">
+                Booking Type *
+              </label>
+              <select
+                value={bookingType}
+                onChange={e => setBookingType(e.target.value)}
+                required
+                className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
+              >
+                <option value="FIT">Individual Booking</option>
+                <option value="Groups">Group Booking (10+ guests)</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                {bookingType === 'FIT' 
+                  ? 'Full payment due 7 days before check-in' 
+                  : '25% deposit due now, balance 30 days before check-in'}
+              </p>
             </div>
 
             {/* Dates */}
@@ -485,17 +514,6 @@ export default function AccommodationBooking(){
                     </div>
                   ))}
                 </div>
-              )}
-
-              {supplierId === 'premier' && (
-                <p className="text-xs text-gray-600">
-                  Premier Hotels offers: Day Conference Packages, Formal Banqueting, Corporate Rates
-                </p>
-              )}
-              {supplierId === 'beekman' && (
-                <p className="text-xs text-gray-600">
-                  Beekman Holidays offers: Conference Facilities, Banqueting, Groups Accommodation
-                </p>
               )}
             </div>
 

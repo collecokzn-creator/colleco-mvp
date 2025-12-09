@@ -279,6 +279,27 @@ function getBookingsBySupplierId(supplierId) {
   return Object.values(bookings).filter(b => b.supplierId === supplierId);
 }
 
+/**
+ * Get all bookings (admin only)
+ */
+function getAllBookings() {
+  const bookings = loadBookings();
+  return Object.values(bookings);
+}
+
+/**
+ * Get bookings by date range
+ */
+function getBookingsByDateRange(dateFrom, dateTo) {
+  const bookings = loadBookings();
+  return Object.values(bookings).filter(b => {
+    const checkIn = new Date(b.checkInDate);
+    const from = dateFrom ? new Date(dateFrom) : new Date(0);
+    const to = dateTo ? new Date(dateTo) : new Date('2100-01-01');
+    return checkIn >= from && checkIn <= to;
+  });
+}
+
 module.exports = {
   createBooking,
   getBooking,
@@ -287,4 +308,6 @@ module.exports = {
   cancelBooking,
   getBookingsByUserId,
   getBookingsBySupplierId,
+  getAllBookings,
+  getBookingsByDateRange,
 };

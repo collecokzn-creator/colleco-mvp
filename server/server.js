@@ -265,9 +265,17 @@ app.use('/api/payments', paymentsRouter);
 const bookingsRouter = require('./routes/bookings');
 app.use('/api/bookings', bookingsRouter);
 
-// --- Register suppliers API ---
+// --- Register suppliers API (internal/admin only) ---
 const suppliersRouter = require('./routes/suppliers');
 app.use('/api/suppliers', suppliersRouter);
+
+// --- Register properties API (customer-facing) ---
+const propertiesRouter = require('./routes/properties');
+app.use('/api/properties', propertiesRouter);
+
+// --- Register admin bookings API (internal monitoring) ---
+const adminBookingsRouter = require('./routes/admin-bookings');
+app.use('/api/admin/bookings', adminBookingsRouter);
 
 // Persistent store file (reuse DATA_DIR defined above for AI assets)
 const DATA_FILE = path.join(DATA_DIR, 'collab.json');

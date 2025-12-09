@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -7,10 +7,15 @@ const {
   getReportStatus,
   resolveReport,
   getReportHistory,
-  calculateReportUrgency
+  calculateReportUrgency,
+  clearReports
 } = require('../src/utils/reportingSystem');
 
 describe('User Reporting System', () => {
+  beforeEach(() => {
+    clearReports();
+  });
+
   describe('reportUserContent', () => {
     it('creates a new report for inappropriate content', () => {
       const report = reportUserContent({
@@ -125,7 +130,7 @@ describe('User Reporting System', () => {
       });
 
       const status = getReportStatus(report.id);
-      expect(status).toBe('open');
+      expect(status.status).toBe('open');
     });
 
     it('tracks status transitions over time', () => {
@@ -138,7 +143,7 @@ describe('User Reporting System', () => {
       // Simulate status change
       resolveReport(report.id, 'resolved', 'User warned');
       const status = getReportStatus(report.id);
-      expect(status).toBe('resolved');
+      expect(status.status).toBe('resolved');
     });
 
     it('includes metadata about report age and activity', () => {
@@ -360,7 +365,7 @@ describe('User Reporting System', () => {
 
       // Check status
       let status = getReportStatus(report.id);
-      expect(status).toBe('open');
+      expect(status.status).toBe('open');
 
       // Resolve report
       const resolved = resolveReport(report.id, 'upheld', 'User account suspended', {

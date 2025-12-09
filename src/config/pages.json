@@ -655,6 +655,18 @@
               }
             },
             {
+              "path": "/admin/bookings",
+              "name": "Admin Bookings",
+              "component": "AdminBookings",
+              "meta": {
+                "title": "Bookings Management - Internal",
+                "description": "Full commission breakdown and supplier settlements",
+                "requiresAuth": true,
+                "roles": ["admin"],
+                "layout": "workspace"
+              }
+            },
+            {
               "path": "/admin/business-accounts",
               "name": "Manage Business Accounts",
               "component": "ManageBusinessAccounts",

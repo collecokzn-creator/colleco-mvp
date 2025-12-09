@@ -128,13 +128,23 @@ export default function Checkout() {
               <span className="text-gray-600">Booking ID:</span>
               <span className="font-semibold text-brand-brown">{booking.id}</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Supplier:</span>
-              <span className="font-semibold text-brand-brown capitalize">{booking.supplierId}</span>
-            </div>
+            {booking.metadata?.propertyName && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Property:</span>
+                <span className="font-semibold text-brand-brown">{booking.metadata.propertyName}</span>
+              </div>
+            )}
+            {booking.metadata?.location && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Location:</span>
+                <span className="font-semibold text-brand-brown">{booking.metadata.location}</span>
+              </div>
+            )}
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Type:</span>
-              <span className="font-semibold text-brand-brown">{booking.bookingType}</span>
+              <span className="font-semibold text-brand-brown">
+                {booking.bookingType === 'FIT' ? 'Individual Booking' : 'Group Booking'}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Check-in:</span>
@@ -174,14 +184,6 @@ export default function Checkout() {
           {/* Pricing Summary */}
           <div className="border-t pt-4">
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Subtotal:</span>
-                <span className="font-semibold text-brand-brown">ZAR {booking.pricing.subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Commission ({booking.pricing.commissionPercent}%):</span>
-                <span className="font-semibold text-green-600">-ZAR {booking.pricing.commissionAmount.toFixed(2)}</span>
-              </div>
               <div className="flex justify-between text-lg font-bold pt-2 border-t">
                 <span className="text-brand-brown">Total:</span>
                 <span className="text-brand-orange">ZAR {booking.pricing.total.toFixed(2)}</span>

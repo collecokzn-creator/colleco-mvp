@@ -39,7 +39,8 @@ export default function WorkflowPanel({ currentPage, basketCount = 0, hasItinera
       ],
       quickLinks: [
         { label: '✨ Trip Assist (AI)', link: '/ai', description: 'Generate itinerary from description' },
-        { label: '📦 View Basket', link: '/plan-trip', description: `${basketCount} items ready` }
+        { label: '📦 View Basket', link: '/plan-trip', description: `${basketCount} items ready` },
+        { label: '💬 Contact Product Owner', action: 'contactProductOwner', description: 'Message product owner in-app' }
       ]
     },
     
@@ -68,7 +69,8 @@ export default function WorkflowPanel({ currentPage, basketCount = 0, hasItinera
       quickLinks: [
         { label: '🛍️ Add More Items', link: '/plan-trip', description: 'Browse catalog' },
         { label: '✨ AI Generator', link: '/ai', description: 'Generate new draft' },
-        { label: '📄 Export PDF', action: 'export', description: 'Download itinerary' }
+        { label: '📄 Export PDF', action: 'export', description: 'Download itinerary' },
+        { label: '💬 Contact Product Owner', action: 'contactProductOwner', description: 'Message product owner in-app' }
       ]
     },
     
@@ -167,7 +169,8 @@ export default function WorkflowPanel({ currentPage, basketCount = 0, hasItinera
       quickLinks: [
         { label: '🗓️ My Itinerary', link: '/itinerary', description: 'View day plan' },
         { label: '🛍️ Add Items', link: '/plan-trip', description: 'Browse more' },
-        { label: '💰 View Quote', link: '/quotes', description: 'Generate proposal' }
+        { label: '💰 View Quote', link: '/quotes', description: 'Generate proposal' },
+        { label: '💬 Contact Product Owner', action: 'contactProductOwner', description: 'Message product owner in-app' }
       ]
     }
   };
@@ -242,7 +245,14 @@ export default function WorkflowPanel({ currentPage, basketCount = 0, hasItinera
             ) : (
               <button
                 key={idx}
-                onClick={() => link.action && link.action()}
+                onClick={() => {
+                  if (link.action === 'contactProductOwner') {
+                    // TODO: Trigger in-app chat/modal for product owner contact
+                    window.dispatchEvent(new CustomEvent('openProductOwnerChat'));
+                  } else if (typeof link.action === 'function') {
+                    link.action();
+                  }
+                }}
                 className="inline-flex items-center gap-1 px-2 py-1 rounded bg-white border border-cream-border text-[11px] text-brand-brown hover:bg-brand-orange hover:text-white hover:border-brand-orange transition"
                 title={link.description}
               >

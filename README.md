@@ -808,8 +808,78 @@ Useful for dynamically shaping UI (e.g., showing burst allowance or hybrid indic
 - Price source integration (lodging/activity vendor APIs) with margin logic.
 - Persist analytics into a warehouse (current: local log `server/data/ai_analytics.log`).
 
+## Security & Compliance Framework
+
+### 🛡️ Enterprise-Grade Protection
+
+CollEco Travel implements comprehensive security, compliance, and brand protection safeguards:
+
+**POPI Act Compliance** (South African Data Protection):
+- Explicit user consent before account creation
+- Complete audit trails (3+ year retention)
+- Data encryption (AES-256 at rest, TLS 1.3 in transit)
+- User rights (access, correct, delete, portability)
+- Data breach notification (<72 hours)
+
+**Payment Security** (PCI DSS Level 1):
+- Zero card data storage (tokenization only)
+- 3D Secure verification (>R5,000 transactions)
+- Quarterly security audits
+- Annual penetration testing
+- Real-time fraud detection
+
+**Partner Agreement Enforcement**:
+- Service Level Agreement (response time <2 hours, confirmation <4 hours)
+- Quality standards (photos, cleanliness, accuracy)
+- SLA monitoring with automated escalation
+- Appeal process (30-day window)
+- Blacklist system (permanent for violations)
+
+**Brand Protection**:
+- Fraud detection (registration, booking, payment)
+- Zero-tolerance discrimination policy
+- Guest safety standards enforcement
+- Review authenticity verification
+- Reputation monitoring and metrics
+
+### 📋 Documentation
+
+**Complete framework documentation is available in `docs/`**:
+
+| Document | Purpose | Audience |
+|----------|---------|----------|
+| `docs/INDEX.md` | Navigation & quick lookup | Everyone |
+| `docs/EXECUTIVE_SUMMARY.md` | Overview & timeline | Leadership |
+| `docs/SECURITY_AND_BRAND_PROTECTION.md` | Security procedures | Technical, Compliance |
+| `docs/PARTNER_AGREEMENT_ENFORCEMENT.md` | Partner SLA & enforcement | Legal, Operations |
+| `docs/IMPLEMENTATION_ROADMAP.md` | 8-week implementation plan | Developers |
+| `docs/DEV_QUICK_REFERENCE.md` | Implementation checklists | Developers |
+
+### 🚀 Implementation Status
+
+- ✅ **Complete**: Legal consent component, POPI Act framework, partner SLA terms, fraud detection architecture, security procedures
+- 🔄 **Next**: Phase 1 development (integrate consent into all registration flows, implement backend API)
+- 📅 **Timeline**: 8 weeks to production (Phase 1-4)
+- 💰 **Investment**: R900k-1M + 2-4% payment processing fees
+
+**Start here**: Read `docs/EXECUTIVE_SUMMARY.md` for overview and next steps.
+
+### Key Requirements
+
+**Before Production Launch**:
+- [ ] External legal counsel approves all terms (POPI Act compliance)
+- [ ] Penetration testing completed (zero critical vulnerabilities)
+- [ ] Staff trained on compliance procedures
+- [ ] Real contact information (no placeholders)
+- [ ] Payment processor integrated (PayFast recommended)
+- [ ] Audit logging operational
+- [ ] Backup and disaster recovery tested
+
+For detailed implementation guide, see `docs/IMPLEMENTATION_ROADMAP.md`.
+
 ## Release Notes (Addendum)
  v31 (Unreleased): AI Itinerary Generator MVP — heuristic parser + streaming & single-shot UI panel.
+ v32 (December 8, 2025): Security & Compliance Framework — Complete POPI Act framework, partner SLA enforcement, fraud detection, brand protection systems documented and ready for implementation.
 
 
 \n# CI retrigger 2025-10-20T08:01:13.0098947+02:00

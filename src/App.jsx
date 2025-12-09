@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
+import ProductOwnerChatModal from './components/ProductOwnerChatModal.jsx';
 import {
   BrowserRouter,
   HashRouter,
@@ -149,6 +150,13 @@ const NotFoundElement = (
 export default function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeRole] = useLocalStorageState("colleco.sidebar.role", null);
+  const [showProductOwnerChat, setShowProductOwnerChat] = useState(false);
+  // Listen for openProductOwnerChat event
+  useEffect(() => {
+    const handler = () => setShowProductOwnerChat(true);
+    window.addEventListener('openProductOwnerChat', handler);
+    return () => window.removeEventListener('openProductOwnerChat', handler);
+  }, []);
 
   useEffect(() => {
     const idle = (cb) =>
@@ -230,28 +238,35 @@ export default function App() {
   return (
     <>
       {showOnboarding && <OnboardingPermissions onComplete={handleOnboardingComplete} />}
-      
+      {showProductOwnerChat && (
+        <ProductOwnerChatModal
+          bookingId={"demo-booking-1"}
+          clientName={activeRole || "Client"}
+          productOwnerName={"Product Owner"}
+          onClose={() => setShowProductOwnerChat(false)}
+        />
+      )}
       <RouterComponent basename={basename}>
-      <RouteMetadataSync />
-      <Suspense fallback={<div className="p-6 text-brand-brown">Loading…</div>}>
-        <Routes>
-          <Route element={<RootLayout />}>
-            {HOME_ROUTE && <Route index element={<GuardedRoute route={HOME_ROUTE} />} />}
-            {HOME_ROUTE && (
-              <Route path="/" element={<GuardedRoute route={HOME_ROUTE} />} />
-            )}
-            {ROUTES_EXCLUDING_HOME.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={<GuardedRoute route={route} />}
-              />
-            ))}
-            <Route path="*" element={NotFoundElement} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </RouterComponent>
+        <RouteMetadataSync />
+        <Suspense fallback={<div className="p-6 text-brand-brown">Loading…</div>}>
+          <Routes>
+            <Route element={<RootLayout />}>
+              {HOME_ROUTE && <Route index element={<GuardedRoute route={HOME_ROUTE} />} />}
+              {HOME_ROUTE && (
+                <Route path="/" element={<GuardedRoute route={HOME_ROUTE} />} />
+              )}
+              {ROUTES_EXCLUDING_HOME.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<GuardedRoute route={route} />}
+                />
+              ))}
+              <Route path="*" element={NotFoundElement} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </RouterComponent>
     </>
   );
 }

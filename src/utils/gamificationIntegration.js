@@ -19,7 +19,18 @@ import {
  * Award points and update challenges when a booking is made
  */
 export function onBookingCreated(userId, userType, bookingData) {
+  // Validate inputs
+  if (!userId) {
+    return { success: false, error: 'userId is required' };
+  }
+  
+  if (!bookingData) {
+    return { success: false, error: 'bookingData is required' };
+  }
+  
   const { bookingId, totalAmount, bookingType, partnerId } = bookingData;
+  
+  const challengesUpdated = [];
   
   // Award base points for booking
   const pointsResult = awardPoints(userId, 'booking_made', 1);
@@ -28,10 +39,13 @@ export function onBookingCreated(userId, userType, bookingData) {
   if (userType === 'traveler') {
     // Update trip count challenges
     updateChallengeProgress(userId, 'first_trip', 1, 'increment');
+    challengesUpdated.push('first_trip');
     updateChallengeProgress(userId, 'trip_milestone_10', 1, 'increment');
+    challengesUpdated.push('trip_milestone_10');
     
     // Update spending challenges
     updateChallengeProgress(userId, 'big_spender', totalAmount, 'increment');
+    challengesUpdated.push('big_spender');
   }
   
   // Update partner challenges (if booking is for a partner's property)
@@ -44,6 +58,7 @@ export function onBookingCreated(userId, userType, bookingData) {
     success: true,
     pointsAwarded: pointsResult.pointsAwarded,
     totalPoints: pointsResult.totalPoints,
+    challengesUpdated,
     message: `+${pointsResult.pointsAwarded} points for booking!`,
   };
 }
@@ -54,14 +69,19 @@ export function onBookingCreated(userId, userType, bookingData) {
 export function onBookingConfirmed(userId, userType, bookingData) {
   const { partnerId, totalAmount } = bookingData;
   
+  const challengesUpdated = [];
+  
   // Award confirmation bonus points
   const pointsResult = awardPoints(userId, 'booking_confirmed', 1);
   
   // Update partner revenue challenges
   if (partnerId && userType === 'partner') {
     updateChallengeProgress(partnerId, 'revenue_starter', totalAmount, 'increment');
+    challengesUpdated.push('revenue_starter');
     updateChallengeProgress(partnerId, 'revenue_pro', totalAmount, 'increment');
+    challengesUpdated.push('revenue_pro');
     updateChallengeProgress(partnerId, 'monthly_target', totalAmount, 'increment');
+    challengesUpdated.push('monthly_target');
     
     // Update partner leaderboard
     updateLeaderboard(partnerId, 'partner', 'revenue', totalAmount);
@@ -71,6 +91,7 @@ export function onBookingConfirmed(userId, userType, bookingData) {
   return {
     success: true,
     pointsAwarded: pointsResult.pointsAwarded,
+    challengesUpdated,
     message: `Booking confirmed! +${pointsResult.pointsAwarded} points`,
   };
 }
@@ -81,16 +102,20 @@ export function onBookingConfirmed(userId, userType, bookingData) {
 export function onTripCompleted(userId, tripData) {
   const { destination, country, province } = tripData;
   
+  const challengesUpdated = [];
+  
   // Award trip completion points
   const pointsResult = awardPoints(userId, 'trip_completed', 1);
   
   // Update geography challenges
   if (country) {
     updateChallengeProgress(userId, 'country_collector', 1, 'increment');
+    challengesUpdated.push('country_collector');
   }
   
   if (province) {
     updateChallengeProgress(userId, 'province_explorer', 1, 'increment');
+    challengesUpdated.push('province_explorer');
   }
   
   // Update trip count on leaderboard
@@ -99,6 +124,7 @@ export function onTripCompleted(userId, tripData) {
   return {
     success: true,
     pointsAwarded: pointsResult.pointsAwarded,
+    challengesUpdated,
     message: `Trip completed! +${pointsResult.pointsAwarded} points`,
   };
 }
@@ -190,15 +216,19 @@ export function onReferralSignup(userId, referralData) {
 export function onReferralBooking(userId, referralData) {
   const { referredUserId, bookingAmount } = referralData;
   
+  const challengesUpdated = [];
+  
   // Award referral booking points
   const pointsResult = awardPoints(userId, 'referral_booking', 1);
   
   // Update referral challenge
   updateChallengeProgress(userId, 'referral_champion', 1, 'increment');
+  challengesUpdated.push('referral_champion');
   
   return {
     success: true,
     pointsAwarded: pointsResult.pointsAwarded,
+    challengesUpdated,
     message: `Referral made a booking! +${pointsResult.pointsAwarded} points`,
   };
 }
@@ -225,7 +255,11 @@ export function onPartnerQuickResponse(partnerId, responseData) {
     };
   }
   
-  return { success: false, message: 'Response time > 1 hour' };
+  return { 
+    success: true, 
+    pointsAwarded: 0,
+    message: 'Response time > 1 hour, no points awarded'
+  };
 }
 
 /**

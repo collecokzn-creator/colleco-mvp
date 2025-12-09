@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -11,10 +11,15 @@ const {
   autoTemporarilySuspend,
   autoTemporarilyRestrict,
   getAccountRiskScore,
-  analyzeRiskPattern
+  analyzeRiskPattern,
+  clearAccountData
 } = require('../src/utils/riskManagement');
 
 describe('Risk Management & Account Limits', () => {
+  beforeEach(() => {
+    clearAccountData();
+  });
+
   describe('enforceAccountLimits', () => {
     it('enforces transaction amount limit', () => {
       const transaction = {

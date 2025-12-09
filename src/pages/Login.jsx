@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Button from "../components/ui/Button.jsx";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
+import LegalConsentModal from "../components/LegalConsentModal.jsx";
 
 function Login() {
   const [tab, setTab] = useState("login");
@@ -21,6 +22,8 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showLegalConsent, setShowLegalConsent] = useState(false);
+  const [pendingUserData, setPendingUserData] = useState(null);
   const [keepLoggedIn, setKeepLoggedIn] = useState(() => {
     try { return (localStorage.getItem('user:persistence') || 'local') === 'local'; } catch { return true; }
   });
@@ -267,32 +270,52 @@ function Login() {
       newUser.registrationNumber = registrationNumber.trim() || '';
     }
     
-    localStorage.setItem("user:" + identifier, JSON.stringify(newUser));
+    // Store pending user data and show legal consent modal
+    setPendingUserData({ user: newUser, identifier });
+    setShowLegalConsent(true);
+  }
+
+  function handleLegalConsentAccept(consentRecord) {
+    if (!pendingUserData) return;
+
+    const { user, identifier } = pendingUserData;
+    
+    // Add consent record to user data
+    user.legalConsent = consentRecord;
+    
+    localStorage.setItem("user:" + identifier, JSON.stringify(user));
     
     // remember chosen persistence and biometrics for subsequent login
     try { localStorage.setItem('user:persistence', keepLoggedIn ? 'local' : 'session'); } catch (e) {}
     try { localStorage.setItem('user:biometrics', useBiometrics ? '1' : '0'); } catch (e) {}
     
+    setShowLegalConsent(false);
+    setPendingUserData(null);
     setSuccess("Registration successful! Redirecting to home...");
     
     // Auto-login after registration
-    setUser(newUser);
+    setUser(user);
     
     // E2E support
     try {
       if (typeof window !== 'undefined' && window.__E2E__) {
-        window.__E2E_USER__ = newUser;
+        window.__E2E_USER__ = user;
         window.__E2E_PROFILE_LOADED__ = true;
         if (keepLoggedIn) {
-          localStorage.setItem('user', JSON.stringify(newUser));
+          localStorage.setItem('user', JSON.stringify(user));
         } else {
-          sessionStorage.setItem('user', JSON.stringify(newUser));
+          sessionStorage.setItem('user', JSON.stringify(user));
         }
       }
     } catch (e) {}
     
-    // Redirect to home page after registration
     setTimeout(() => navigate("/"), 800);
+  }
+
+  function handleLegalConsentDecline() {
+    setShowLegalConsent(false);
+    setPendingUserData(null);
+    setError("You must accept the Terms & Conditions to create an account.");
   }
 
   function handleLogout() {
@@ -744,10 +767,21 @@ function Login() {
         {/* Footer */}
         <div className="mt-6 text-center">
           <p className="text-xs text-brand-russty">
-            By continuing, you agree to our Terms of Service and Privacy Policy
+            By registering, you agree to review and accept our Terms & Conditions and Privacy Policy
           </p>
         </div>
       </div>
+
+      {/* Legal Consent Modal */}
+      {showLegalConsent && pendingUserData && (
+        <LegalConsentModal
+          userId={pendingUserData.user.email || pendingUserData.user.phone}
+          userType={pendingUserData.user.role}
+          onAccept={handleLegalConsentAccept}
+          onDecline={handleLegalConsentDecline}
+          isRegistration={true}
+        />
+      )}
     </div>
   );
 }
