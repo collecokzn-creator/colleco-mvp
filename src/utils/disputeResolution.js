@@ -143,7 +143,7 @@ export function requestResponse(disputeId) {
     });
   }
 
-  dispatch.updated_at = new Date().toISOString();
+  dispute.updated_at = new Date().toISOString();
   updateDispute(disputeId, dispute);
 
   return {

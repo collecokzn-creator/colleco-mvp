@@ -5,6 +5,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [thread, setThread] = useState(null);
+  const [receipts, setReceipts] = useState({});
 
   useEffect(() => {
     // Load or create thread for this booking

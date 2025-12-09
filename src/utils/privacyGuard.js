@@ -218,10 +218,11 @@ export function maskSensitiveData(value, type) {
   if (!value) return value;
   
   switch (type) {
-    case 'email':
+    case 'email': {
       const [username, domain] = value.split('@');
       if (!domain) return '***';
       return `${username.substring(0, 2)}***@${domain}`;
+    }
       
     case 'phone':
       return value.replace(/(\d{3})\d{4}(\d{3})/, '$1****$2');
@@ -235,11 +236,12 @@ export function maskSensitiveData(value, type) {
     case 'address':
       return value.split(',')[0] + ', ***'; // Only show street, hide rest
       
-    case 'name':
+    case 'name': {
       const parts = value.split(' ');
       return parts.length > 1 
         ? `${parts[0]} ${parts[1].charAt(0)}.`
         : parts[0];
+    }
       
     default:
       return '***';
