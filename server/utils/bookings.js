@@ -91,10 +91,10 @@ function createBooking(data) {
   let totalCommission = 0;
 
   for (const item of lineItems) {
-    const { serviceType, basePrice, retailPrice, quantity = 1, description = serviceType, nights = 1 } = item;
+    const { serviceType, basePrice, retailPrice = basePrice, quantity = 1, description = serviceType, nights = 1 } = item;
 
-    if (!serviceType || !basePrice || !retailPrice) {
-      throw new Error(`Invalid line item: missing serviceType, basePrice, or retailPrice`);
+    if (!serviceType || !basePrice) {
+      throw new Error(`Invalid line item: missing serviceType or basePrice`);
     }
 
     // Calculate commission for this line item (handles both discount and rebate)
@@ -111,6 +111,9 @@ function createBooking(data) {
       description,
       nights,
       quantity,
+      retailPrice: parseFloat(retailPrice),
+      totalRetail: parseFloat(commission.finalPrice.toFixed(2)),
+      serviceFee: parseFloat(commission.commissionAmount.toFixed(2)),
     };
 
     processedItems.push(itemTotal);
@@ -131,6 +134,11 @@ function createBooking(data) {
 
   const depositAmount = totalRetailPrice * paymentTerms.deposit;
 
+  // Compute VAT (included) at 15% for display purposes
+  const VAT_RATE = 0.15;
+  const vatPortion = totalRetailPrice - totalRetailPrice / (1 + VAT_RATE);
+  const subtotalExVat = totalRetailPrice - vatPortion;
+
   const booking = {
     id: bookingId,
     supplierId,
@@ -143,6 +151,10 @@ function createBooking(data) {
       baseTotal: parseFloat(totalBasePrice.toFixed(2)),
       retailTotal: parseFloat(totalRetailPrice.toFixed(2)),
       commissionTotal: parseFloat(totalCommission.toFixed(2)),
+      subtotal: parseFloat(subtotalExVat.toFixed(2)),
+      vat: parseFloat(vatPortion.toFixed(2)),
+      serviceFee: parseFloat(totalCommission.toFixed(2)),
+      total: parseFloat(totalRetailPrice.toFixed(2)),
       itemCount: lineItems.length,
     },
     paymentTerms: {

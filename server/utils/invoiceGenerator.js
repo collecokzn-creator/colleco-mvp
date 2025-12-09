@@ -131,6 +131,16 @@ function generateInvoicePdf(booking, options = {}) {
   // Right column - Reference info
   const rightColX = pageWidth - marginRight - 70;
   doc.setFontSize(9);
+  
+  // Quote reference (if converted from quote)
+  if (booking.quoteNumber || booking.quoteId) {
+    doc.text('Quote Reference:', rightColX, currentY);
+    doc.setFont(undefined, 'bold');
+    doc.text(booking.quoteNumber || booking.quoteId, rightColX, currentY + 5);
+    doc.setFont(undefined, 'normal');
+    currentY += 10;
+  }
+  
   doc.text('Booking Reference:', rightColX, currentY);
   doc.setFont(undefined, 'bold');
   doc.text(booking.id, rightColX, currentY + 5);

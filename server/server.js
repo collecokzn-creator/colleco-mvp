@@ -289,6 +289,10 @@ app.use('/api/emails', emailsRouter);
 const invoicesRouter = require('./routes/invoices');
 app.use('/api/invoices', invoicesRouter);
 
+// --- Register quotes API (for quotation generation, download, and conversion to invoices) ---
+const quotesRouter = require('./routes/quotes');
+app.use('/api/quotes', quotesRouter);
+
 // Persistent store file (reuse DATA_DIR defined above for AI assets)
 const DATA_FILE = path.join(DATA_DIR, 'collab.json');
 const PROVIDERS_FILE = path.join(DATA_DIR, 'providers.json');
@@ -1182,6 +1186,12 @@ function saveProviders() {
 // Store: { [bookingId]: thread }
 const store = loadStore();
 const providers = loadProviders();
+
+// Make store and saveStore available globally for routes
+global.store = store;
+global.saveStore = saveStore;
+app.set('store', store);
+app.set('saveStore', saveStore);
 
 // Transfer requests store
 store._transferRequests = store._transferRequests || {};

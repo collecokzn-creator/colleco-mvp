@@ -12,6 +12,7 @@ const {
   deleteInvoiceFile,
   listInvoices
 } = require('../utils/invoiceGenerator');
+const { getNextInvoiceNumber } = require('../utils/sequenceGenerator');
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ const router = express.Router();
  */
 router.post('/generate', (req, res) => {
   try {
-    const { bookingId, invoiceNumber, dueDate, notes, terms } = req.body;
+    const { bookingId, invoiceNumber: customInvoiceNumber, dueDate, notes, terms } = req.body;
 
     if (!bookingId) {
       return res.status(400).json({ error: 'bookingId is required' });
@@ -32,6 +33,12 @@ router.post('/generate', (req, res) => {
     if (!booking) {
       return res.status(404).json({ error: `Booking ${bookingId} not found` });
     }
+
+    // Generate invoice number using sequence generator
+    // If booking was converted from quote, use quote number to derive invoice number
+    const invoiceNumber = customInvoiceNumber || getNextInvoiceNumber({
+      quoteNumber: booking.quoteNumber
+    });
 
     // Generate and save PDF
     const invoiceInfo = saveInvoiceFile(booking, {
@@ -44,7 +51,7 @@ router.post('/generate', (req, res) => {
     res.json({
       success: true,
       bookingId,
-      invoiceNumber: invoiceNumber || bookingId,
+      invoiceNumber,
       filename: invoiceInfo.filename,
       size: invoiceInfo.size,
       generatedAt: new Date().toISOString()
@@ -62,7 +69,7 @@ router.post('/generate', (req, res) => {
 router.get('/:bookingId/download', (req, res) => {
   try {
     const { bookingId } = req.params;
-    const { invoiceNumber } = req.query;
+    const { invoiceNumber: queryInvoiceNumber } = req.query;
 
     // Get booking to verify it exists
     const booking = getBooking(bookingId);
@@ -70,9 +77,14 @@ router.get('/:bookingId/download', (req, res) => {
       return res.status(404).json({ error: `Booking ${bookingId} not found` });
     }
 
+    // Use provided invoice number, or booking's invoice number, or generate from sequence
+    const invoiceNumber = queryInvoiceNumber || booking.invoiceNumber || getNextInvoiceNumber({
+      quoteNumber: booking.quoteNumber
+    });
+
     // Generate PDF on-the-fly (don't save)
     const pdfBuffer = generateInvoicePdf(booking, {
-      invoiceNumber: invoiceNumber || bookingId
+      invoiceNumber
     });
 
     // Send as PDF download
