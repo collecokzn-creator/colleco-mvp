@@ -255,10 +255,32 @@
             {
               "path": "/terms",
               "name": "Terms & Conditions",
-              "component": "Terms",
+              "component": "TermsStandalone",
               "meta": {
                 "title": "Terms and Conditions",
                 "description": "Understand the agreements that govern CollEco services.",
+                "requiresAuth": false,
+                "layout": "legal"
+              }
+            },
+            {
+              "path": "/privacy",
+              "name": "Privacy Policy",
+              "component": "PrivacyPolicy",
+              "meta": {
+                "title": "Privacy Policy",
+                "description": "How CollEco protects your personal data (POPI Act compliant).",
+                "requiresAuth": false,
+                "layout": "legal"
+              }
+            },
+            {
+              "path": "/sla",
+              "name": "Service Level Agreement",
+              "component": "SLAPage",
+              "meta": {
+                "title": "Service Level Agreement",
+                "description": "CollEco service standards and partner commitments.",
                 "requiresAuth": false,
                 "layout": "legal"
               }
@@ -420,8 +442,49 @@
               }
             },
             {
-              "path": "/payment-success",
+              "path": "/settings/privacy",
+              "name": "Privacy & Data Settings",
+              "component": "PrivacySettings",
+              "meta": {
+                "title": "Privacy & Data Settings",
+                "description": "Manage your consent and personal data (POPI Act compliant)",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/pay/success",
               "name": "Payment Success",
+              "component": "PaymentSuccess",
+              "meta": {
+                "title": "Payment Success",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/pay/cancel",
+              "name": "Payment Cancelled",
+              "component": "PaymentCancel",
+              "meta": {
+                "title": "Payment Cancelled",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/pay/fail",
+              "name": "Payment Failed",
+              "component": "PaymentFailure",
+              "meta": {
+                "title": "Payment Failed",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
+              "path": "/payment-success",
+              "name": "Payment Success (Legacy)",
               "component": "PaymentSuccess",
               "meta": {
                 "title": "Payment Success",

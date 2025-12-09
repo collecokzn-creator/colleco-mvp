@@ -1,0 +1,128 @@
+[
+  {
+    "id": "beekman",
+    "name": "Beekman Holidays (Pty) Ltd",
+    "registration": "2002/011372/07",
+    "address": "3 Daly Street, Port Shepstone, KwaZulu-Natal, South Africa, 4240",
+    "contact": {
+      "phone": "0861 266 5669",
+      "email": "sto@beekmanholidays.com"
+    },
+    "api": {
+      "type": "siteminder",
+      "propertyId": "<to-fill>",
+      "roomTypeIds": {},
+      "auth": "API_KEY",
+      "baseUrl": "<to-fill>"
+    },
+    "commission": {
+      "accommodation": 0.10,
+      "groups": 0.10,
+      "conference": 0.10,
+      "banqueting": 0.05,
+      "corporate": 0.025,
+      "model": "discount"
+    },
+    "paymentTerms": {
+      "FIT": { "deposit": 1.0, "dueDays": 7, "shortLeadDueDays": 2 },
+      "Groups": { "deposit": 0.25, "dueDays": 7, "balanceDueDays": 30 },
+      "currency": "ZAR",
+      "methods": ["EFT", "CreditCard"],
+      "creditCardRequiredForShortLead": true
+    },
+    "cancellationPolicy": {
+      "FIT": [
+        { "daysBefore": 31, "refund": 1.0 },
+        { "daysBefore": 30, "refund": 0.0 }
+      ],
+      "Groups": [
+        { "daysBefore": 41, "refund": 1.0 },
+        { "daysBefore": 40, "refund": 0.75 },
+        { "daysBefore": 30, "refund": 0.0 }
+      ],
+      "noShowFee": "full_invoice"
+    },
+    "rateParity": {
+      "enforce": true,
+      "retailRateSource": "beekman_public",
+      "allowPackaging": true
+    },
+    "dataPolicy": {
+      "POPIA": true,
+      "retentionDays": 30,
+      "destroyOnTermination": true
+    },
+    "status": "active"
+  },
+  {
+    "id": "premier",
+    "name": "Premier Hotels & Resorts (Pty) Ltd",
+    "registration": "1991/000698/07",
+    "address": "Premier House, 4th Floor, 339 Main Road, Sea Point, 8060, Western Cape, South Africa",
+    "contact": {
+      "phone": "+27 21 161 0961",
+      "email": "info@premierhotels.co.za"
+    },
+    "api": {
+      "type": "siteminder",
+      "propertyId": "<to-fill>",
+      "roomTypeIds": {},
+      "auth": "API_KEY",
+      "baseUrl": "<to-fill>"
+    },
+    "commission": {
+      "accommodation": 0.10,
+      "groups_accommodation": 0.10,
+      "day_conference_packages": 0.10,
+      "formal_banqueting_meals": 0.05,
+      "corporate": 0.025,
+      "model": "discount"
+    },
+    "paymentTerms": {
+      "FIT": {
+        "deposit": 1.0,
+        "dueDays": 7,
+        "shortLeadDueDays": 2,
+        "paymentMethod": "VCC_or_EFT",
+        "description": "Guaranteed by credit facility or voucher/PO"
+      },
+      "Groups": {
+        "deposit": 0.25,
+        "dueDays": 7,
+        "balanceDueDays": 30,
+        "paymentMethod": "EFT",
+        "description": "25% deposit, balance 30 days before arrival"
+      },
+      "currency": "ZAR",
+      "methods": ["EFT", "VCC", "Voucher"],
+      "offsets": false,
+      "commissionPaymentAfterBooking": true
+    },
+    "cancellationPolicy": {
+      "FIT": [
+        { "daysBefore": 31, "refund": 1.0 },
+        { "daysBefore": 30, "refund": 0.0 }
+      ],
+      "Groups": [
+        { "daysBefore": 41, "refund": 1.0 },
+        { "daysBefore": 40, "refund": 0.75 },
+        { "daysBefore": 30, "refund": 0.0 }
+      ],
+      "noShowFee": "full_invoice",
+      "creditCardFee": true
+    },
+    "rateParity": {
+      "enforce": true,
+      "retailRateSource": "gds_platform",
+      "allowPackaging": true,
+      "barRateApplies": true
+    },
+    "dataPolicy": {
+      "POPIA": true,
+      "retentionDays": 30,
+      "destroyOnTermination": true,
+      "confidentiality": "strict"
+    },
+    "status": "active"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "propertyId": "TEST_PROPERTY_ID",
+  "roomTypeIds": {
+    "standard": "ROOM_STANDARD_ID",
+    "deluxe": "ROOM_DELUXE_ID"
+  },
+  "webhooks": {
+    "successUrl": "https://staging.colleco.travel/pay/success",
+    "failureUrl": "https://staging.colleco.travel/pay/fail"
+  }
+}

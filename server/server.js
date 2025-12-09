@@ -13,6 +13,7 @@ const { parsePrompt, parseFlightRequest, parseIntent } = require('./aiParser');
 const crypto = require('crypto');
 const pricingEngine = require('./pricingEngine');
 const webpush = require('web-push');
+const legalRouter = require('./routes/legal');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
 // --- Search suggest mock ---
 const DEFAULT_SUGGESTIONS = [
@@ -248,6 +249,17 @@ function authCheck(req, res, next) {
   if (token === API_TOKEN || tokenFromQuery === API_TOKEN) return next();
   return res.status(401).json({ error: 'unauthorized' });
 }
+
+// --- Register legal consent routes (POPI Act compliance) ---
+app.use('/api/legal', legalRouter);
+
+// --- Register payment webhook routes ---
+const webhooksRouter = require('./routes/webhooks');
+app.use('/api/webhooks', webhooksRouter);
+
+// --- Register bookings API (multi-supplier support) ---
+const bookingsRouter = require('./routes/bookings');
+app.use('/api/bookings', bookingsRouter);
 
 // Persistent store file (reuse DATA_DIR defined above for AI assets)
 const DATA_FILE = path.join(DATA_DIR, 'collab.json');

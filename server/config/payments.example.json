@@ -1,0 +1,20 @@
+{
+  "payfast": {
+    "merchantId": "TEST_MERCHANT_ID",
+    "merchantKey": "TEST_MERCHANT_KEY",
+    "passphrase": "TEST_PASSPHRASE",
+    "sandbox": true,
+    "returnUrl": "https://staging.colleco.travel/pay/success",
+    "cancelUrl": "https://staging.colleco.travel/pay/cancel",
+    "notifyUrl": "https://staging.colleco.travel/api/webhooks/payfast"
+  },
+  "yoco": {
+    "secretKey": "TEST_SECRET_KEY",
+    "publicKey": "TEST_PUBLIC_KEY",
+    "testMode": true,
+    "webhookSecret": "TEST_WEBHOOK_SECRET",
+    "successUrl": "https://staging.colleco.travel/pay/success",
+    "cancelUrl": "https://staging.colleco.travel/pay/cancel"
+  },
+  "defaultProcessor": "payfast"
+}
