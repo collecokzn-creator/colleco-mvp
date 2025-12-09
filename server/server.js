@@ -277,6 +277,10 @@ app.use('/api/properties', propertiesRouter);
 const adminBookingsRouter = require('./routes/admin-bookings');
 app.use('/api/admin/bookings', adminBookingsRouter);
 
+// --- Register meal packages API (for bookings with complex meal options) ---
+const mealsRouter = require('./routes/meals');
+app.use('/api/meals', mealsRouter);
+
 // Persistent store file (reuse DATA_DIR defined above for AI assets)
 const DATA_FILE = path.join(DATA_DIR, 'collab.json');
 const PROVIDERS_FILE = path.join(DATA_DIR, 'providers.json');
