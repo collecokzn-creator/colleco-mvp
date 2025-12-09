@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const { verifyPayFastSignature, verifyYocoSignature } = require('../utils/payments');
+const { sendBookingConfirmation, sendPaymentReceipt } = require('../utils/emailService');
 
 const router = express.Router();
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -42,7 +43,7 @@ function logPaymentEvent(event) {
  * Payload: application/x-www-form-urlencoded
  * https://www.payfast.co.za/documentation/integration-guides/pdt-guide
  */
-router.post('/payfast', express.urlencoded({ extended: false }), (req, res) => {
+router.post('/payfast', express.urlencoded({ extended: false }), async (req, res) => {
   const data = req.body || {};
   const ip = req.ip || 'unknown';
 
@@ -129,6 +130,30 @@ router.post('/payfast', express.urlencoded({ extended: false }), (req, res) => {
   if (bookingStatus === 'paid') {
     booking.paidAt = new Date().toISOString();
     console.log('[webhook] PayFast payment successful:', bookingId);
+
+    // Send confirmation and receipt emails
+    try {
+      const customerEmail = booking.metadata?.customerEmail || booking.email;
+      if (customerEmail) {
+        // Send booking confirmation
+        await sendBookingConfirmation(booking, customerEmail);
+
+        // Send payment receipt
+        await sendPaymentReceipt(booking, customerEmail, {
+          processor: 'payfast',
+          amount: paidAmount,
+          transactionId: data.pf_payment_id,
+          paidAt: new Date().toISOString(),
+        });
+
+        console.log('[webhook] Confirmation and receipt emails sent:', bookingId);
+      } else {
+        console.warn('[webhook] No customer email for booking:', bookingId);
+      }
+    } catch (emailError) {
+      console.error('[webhook] Failed to send confirmation emails:', emailError.message);
+      // Don't fail the webhook if email fails
+    }
   } else {
     console.log('[webhook] PayFast payment failed:', { bookingId, status });
   }
@@ -156,7 +181,7 @@ router.post('/payfast', express.urlencoded({ extended: false }), (req, res) => {
  * Headers: X-Yoco-Signature
  * https://yoco.com/en/documentation/
  */
-router.post('/yoco', express.json(), (req, res) => {
+router.post('/yoco', express.json(), async (req, res) => {
   const payload = JSON.stringify(req.body);
   const signature = req.headers['x-yoco-signature'] || '';
   const ip = req.ip || 'unknown';
@@ -242,12 +267,33 @@ router.post('/yoco', express.json(), (req, res) => {
     return res.status(200).json({ ok: true });
   }
 
-  // Handle event types
-  let bookingStatus = 'pending';
-
-  if (eventType === 'checkout.completed' || eventType === 'checkout.paid' || eventType === 'charge.succeeded') {
-    bookingStatus = 'paid';
+  if (bookingStatus === 'paid') {
+    booking.paidAt = new Date().toISOString();
     console.log('[webhook] Yoco payment successful:', bookingId);
+
+    // Send confirmation and receipt emails
+    try {
+      const customerEmail = booking.metadata?.customerEmail || booking.email;
+      if (customerEmail) {
+        // Send booking confirmation
+        await sendBookingConfirmation(booking, customerEmail);
+
+        // Send payment receipt
+        await sendPaymentReceipt(booking, customerEmail, {
+          processor: 'yoco',
+          amount: paidAmount,
+          transactionId: chargeId || checkoutId,
+          paidAt: new Date().toISOString(),
+        });
+
+        console.log('[webhook] Confirmation and receipt emails sent:', bookingId);
+      } else {
+        console.warn('[webhook] No customer email for booking:', bookingId);
+      }
+    } catch (emailError) {
+      console.error('[webhook] Failed to send confirmation emails:', emailError.message);
+      // Don't fail the webhook if email fails
+    }
   } else if (eventType === 'charge.failed') {
     bookingStatus = 'failed';
     console.log('[webhook] Yoco payment failed:', bookingId);

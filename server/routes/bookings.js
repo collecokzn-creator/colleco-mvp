@@ -56,6 +56,42 @@ router.put('/:bookingId', (req, res) => {
 });
 
 /**
+ * PATCH /api/bookings/:bookingId
+ * Partial update to a booking (e.g., just metadata)
+ */
+router.patch('/:bookingId', (req, res) => {
+  try {
+    const booking = getBooking(req.params.bookingId);
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    // Merge metadata if provided
+    if (req.body.metadata) {
+      booking.metadata = {
+        ...booking.metadata,
+        ...req.body.metadata
+      };
+    }
+
+    // Update other allowed fields
+    const allowedFields = ['paymentStatus', 'paymentId', 'notes'];
+    Object.keys(req.body).forEach(key => {
+      if (key !== 'metadata' && allowedFields.includes(key)) {
+        booking[key] = req.body[key];
+      }
+    });
+
+    // Use updateBooking to save changes (handles persistence)
+    const updated = updateBooking(req.params.bookingId, booking);
+    res.json({ ok: true, booking: updated });
+  } catch (err) {
+    console.error('[bookings API] PATCH error:', err.message);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+/**
  * POST /api/bookings/:bookingId/cancel
  * Cancel a booking and calculate refund
  */

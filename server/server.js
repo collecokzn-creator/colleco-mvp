@@ -281,6 +281,10 @@ app.use('/api/admin/bookings', adminBookingsRouter);
 const mealsRouter = require('./routes/meals');
 app.use('/api/meals', mealsRouter);
 
+// --- Register email API (for transactional emails) ---
+const emailsRouter = require('./routes/emails');
+app.use('/api/emails', emailsRouter);
+
 // Persistent store file (reuse DATA_DIR defined above for AI assets)
 const DATA_FILE = path.join(DATA_DIR, 'collab.json');
 const PROVIDERS_FILE = path.join(DATA_DIR, 'providers.json');

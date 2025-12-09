@@ -13,6 +13,8 @@ export default function Checkout() {
   const [error, setError] = useState(null);
   const [processor, setProcessor] = useState('payfast'); // payfast or yoco
   const [redirecting, setRedirecting] = useState(false);
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
     if (!bookingId) {
@@ -43,8 +45,35 @@ export default function Checkout() {
   async function handlePayment() {
     if (!booking) return;
 
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!customerEmail.trim()) {
+      setEmailError('Email is required for booking confirmation');
+      return;
+    }
+    if (!emailRegex.test(customerEmail)) {
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+
     setRedirecting(true);
     try {
+      // Update booking with customer email
+      const updateResponse = await fetch(`/api/bookings/${booking.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          metadata: {
+            ...booking.metadata,
+            customerEmail
+          }
+        })
+      });
+
+      if (!updateResponse.ok) {
+        console.warn('Failed to update booking with email, continuing anyway');
+      }
+
       // Generate payment URL from backend
       const response = await fetch('/api/payments/generate-url', {
         method: 'POST',
@@ -274,6 +303,38 @@ export default function Checkout() {
                 <p>Balance: ZAR {booking.paymentTerms.balanceAmount.toFixed(2)} due by {booking.paymentTerms.balanceDueDate}</p>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Payment Method Selection */}
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mb-6">
+          <h2 className="text-lg font-bold text-brand-brown mb-4">Contact Information</h2>
+          
+          <div className="mb-6">
+            <label htmlFor="customerEmail" className="block text-sm font-semibold text-brand-brown mb-2">
+              Email Address
+            </label>
+            <input
+              id="customerEmail"
+              type="email"
+              value={customerEmail}
+              onChange={(e) => {
+                setCustomerEmail(e.target.value);
+                setEmailError('');
+              }}
+              placeholder="your.email@example.com"
+              className={`w-full px-4 py-2 rounded-lg border-2 transition-colors ${
+                emailError
+                  ? 'border-red-500 bg-red-50'
+                  : 'border-cream-border bg-white hover:border-brand-orange focus:border-brand-orange'
+              } focus:outline-none`}
+            />
+            {emailError && (
+              <p className="text-sm text-red-600 mt-2">{emailError}</p>
+            )}
+            <p className="text-xs text-gray-500 mt-2">
+              Your booking confirmation and payment receipt will be sent to this email address.
+            </p>
           </div>
         </div>
 
