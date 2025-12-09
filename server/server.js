@@ -285,6 +285,10 @@ app.use('/api/meals', mealsRouter);
 const emailsRouter = require('./routes/emails');
 app.use('/api/emails', emailsRouter);
 
+// --- Register invoices API (for invoice generation and download) ---
+const invoicesRouter = require('./routes/invoices');
+app.use('/api/invoices', invoicesRouter);
+
 // Persistent store file (reuse DATA_DIR defined above for AI assets)
 const DATA_FILE = path.join(DATA_DIR, 'collab.json');
 const PROVIDERS_FILE = path.join(DATA_DIR, 'providers.json');

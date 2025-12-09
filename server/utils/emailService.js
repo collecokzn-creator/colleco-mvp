@@ -64,9 +64,10 @@ function getTransporter() {
  * @param {string} options.html - HTML content
  * @param {string} [options.text] - Plain text fallback
  * @param {string} [options.replyTo] - Reply-to address
+ * @param {Array} [options.attachments] - Email attachments (nodemailer format)
  * @returns {Promise<Object>} Send result with messageId
  */
-async function sendEmail({ to, subject, html, text, replyTo = FROM_EMAIL }) {
+async function sendEmail({ to, subject, html, text, replyTo = FROM_EMAIL, attachments = [] }) {
   const transport = getTransporter();
 
   if (!transport) {
@@ -86,7 +87,8 @@ async function sendEmail({ to, subject, html, text, replyTo = FROM_EMAIL }) {
       subject,
       html,
       text: text || html.replace(/<[^>]*>/g, ''), // Strip HTML if no text provided
-      replyTo
+      replyTo,
+      attachments
     });
 
     console.log(`[email] Sent to ${to}: ${subject} (${info.messageId})`);
@@ -277,8 +279,32 @@ async function sendBookingConfirmation(booking, customerEmail) {
     to: customerEmail,
     subject: `✅ Booking Confirmed - ${bookingId}`,
     html,
-    replyTo: 'support@colleco.com'
+    replyTo: 'support@colleco.com',
+    attachments: await getBookingInvoiceAttachment(booking)
   });
+}
+
+/**
+ * Generate invoice attachment for booking
+ * Returns nodemailer attachment object with PDF
+ */
+async function getBookingInvoiceAttachment(booking) {
+  try {
+    const { generateInvoicePdf } = require('./invoiceGenerator');
+    const pdfBuffer = generateInvoicePdf(booking, {
+      invoiceNumber: booking.id
+    });
+    
+    return [{
+      filename: `Invoice_${booking.id}.pdf`,
+      content: Buffer.from(pdfBuffer),
+      contentType: 'application/pdf'
+    }];
+  } catch (err) {
+    console.error('[email] Failed to generate invoice attachment:', err.message);
+    // Return empty array if invoice generation fails - don't block email sending
+    return [];
+  }
 }
 
 /**
