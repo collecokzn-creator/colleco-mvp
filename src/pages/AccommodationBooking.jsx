@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
+import MealSelector from '../components/MealSelector';
 import Button from '../components/ui/Button.jsx';
 import { Home, Calendar, Users, Clock, DollarSign, Plus, Trash2 } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
@@ -23,7 +24,7 @@ export default function AccommodationBooking(){
   const [propertyId, setPropertyId] = useState(''); // property ID from search
   const [properties, setProperties] = useState([]);
   const [bookingType, setBookingType] = useState('FIT'); // FIT or Groups
-  const [additionalServices, setAdditionalServices] = useState([]); // conference, meals, etc
+  const [mealPricing, setMealPricing] = useState(null); // Store meal pricing from MealSelector
   
   // Search properties when location changes
   useEffect(() => {
@@ -142,17 +143,19 @@ export default function AccommodationBooking(){
         }
       ];
       
-      // Add additional services
-      additionalServices.forEach(service => {
-        lineItems.push({
-          serviceType: service.type,
-          description: service.description,
-          basePrice: service.basePrice,
-          retailPrice: service.retailPrice,
-          quantity: service.quantity || guests,
-          nights: service.type.includes('conference') ? 1 : nights
+      // Add meal selections from MealSelector if present
+      if (mealPricing && mealPricing.items && mealPricing.items.length > 0) {
+        mealPricing.items.forEach(mealItem => {
+          lineItems.push({
+            serviceType: 'meal',
+            description: mealItem.name || mealItem.description,
+            basePrice: mealItem.total / (mealItem.quantity || 1), // Back-calculate per-unit price
+            retailPrice: mealItem.total / (mealItem.quantity || 1),
+            quantity: mealItem.quantity || 1,
+            nights: 1 // Meals are per-head, not per-night
+          });
         });
-      });
+      }
       
       // Create booking via API
       const userId = localStorage.getItem('colleco.user.id') || 'guest_' + Date.now();
@@ -420,101 +423,15 @@ export default function AccommodationBooking(){
               <p className="text-xs text-gray-500 mt-1">{specialRequests.length}/200 characters</p>
             </div>
 
-            {/* Additional Services */}
+            {/* Meal Selection */}
             <div className="border-t pt-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-brand-brown">Additional Services (Optional)</h3>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAdditionalServices([...additionalServices, {
-                      id: Date.now(),
-                      type: 'day_conference_packages',
-                      description: 'Day Conference Package',
-                      basePrice: 150,
-                      retailPrice: 150,
-                      quantity: guests
-                    }]);
-                  }}
-                  className="flex items-center gap-1 text-xs text-brand-orange hover:text-orange-600"
-                >
-                  <Plus className="h-3 w-3" />
-                  Add Service
-                </button>
-              </div>
-
-              {additionalServices.length > 0 && (
-                <div className="space-y-3 mb-4">
-                  {additionalServices.map((service, index) => (
-                    <div key={service.id} className="bg-cream p-3 rounded-lg">
-                      <div className="flex gap-3">
-                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2">
-                          <select
-                            value={service.type}
-                            onChange={e => {
-                              const updated = [...additionalServices];
-                              updated[index].type = e.target.value;
-                              // Update description based on type
-                              const typeNames = {
-                                day_conference_packages: 'Day Conference Package',
-                                formal_banqueting_meals: 'Formal Banqueting/Meals',
-                                groups_accommodation: 'Groups Accommodation',
-                                corporate: 'Corporate Rate'
-                              };
-                              updated[index].description = typeNames[e.target.value] || e.target.value;
-                              setAdditionalServices(updated);
-                            }}
-                            className="text-sm border border-cream-border rounded px-2 py-1"
-                          >
-                            <option value="day_conference_packages">Conference Package</option>
-                            <option value="formal_banqueting_meals">Banqueting/Meals</option>
-                            <option value="groups_accommodation">Groups Accommodation</option>
-                            <option value="corporate">Corporate Rate</option>
-                          </select>
-                          
-                          <input
-                            type="number"
-                            min="1"
-                            value={service.quantity}
-                            onChange={e => {
-                              const updated = [...additionalServices];
-                              updated[index].quantity = Number(e.target.value);
-                              setAdditionalServices(updated);
-                            }}
-                            placeholder="Qty"
-                            className="text-sm border border-cream-border rounded px-2 py-1"
-                          />
-                          
-                          <input
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            value={service.basePrice}
-                            onChange={e => {
-                              const updated = [...additionalServices];
-                              updated[index].basePrice = Number(e.target.value);
-                              updated[index].retailPrice = Number(e.target.value);
-                              setAdditionalServices(updated);
-                            }}
-                            placeholder="Price (ZAR)"
-                            className="text-sm border border-cream-border rounded px-2 py-1"
-                          />
-                        </div>
-                        
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setAdditionalServices(additionalServices.filter((_, i) => i !== index));
-                          }}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <h3 className="text-sm font-semibold text-brand-brown mb-3">Meal Plans (Optional)</h3>
+              <MealSelector 
+                onMealsSelected={setMealPricing}
+                headCount={guests}
+                nights={Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)) || 1}
+                bookingType={bookingType}
+              />
             </div>
 
             <Button type="submit" fullWidth disabled={loading}>
