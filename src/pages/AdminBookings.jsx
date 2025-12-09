@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DollarSign, TrendingUp, Download, Filter, Calendar } from 'lucide-react';
+import { DollarSign, TrendingUp, Download, Filter, Calendar, FileText } from 'lucide-react';
 import Button from '../components/ui/Button';
 
 export default function AdminBookings() {
@@ -82,6 +82,26 @@ export default function AdminBookings() {
     } catch (error) {
       console.error('Export failed:', error);
       alert('Failed to export bookings');
+    }
+  }
+
+  async function downloadInvoice(bookingId) {
+    try {
+      const response = await fetch(`/api/invoices/${bookingId}/download`);
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Invoice_${bookingId}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else {
+        alert('Failed to download invoice');
+      }
+    } catch (error) {
+      console.error('Invoice download failed:', error);
+      alert('Failed to download invoice');
     }
   }
 
@@ -273,12 +293,21 @@ export default function AdminBookings() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        <a
-                          href={`/admin/bookings/${booking.id}`}
-                          className="text-brand-orange hover:text-orange-600 text-xs font-semibold"
-                        >
-                          View Details
-                        </a>
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={`/admin/bookings/${booking.id}`}
+                            className="text-brand-orange hover:text-orange-600 text-xs font-semibold"
+                          >
+                            Details
+                          </a>
+                          <button
+                            onClick={() => downloadInvoice(booking.id)}
+                            className="text-brand-orange hover:text-orange-600 flex items-center gap-1"
+                            title="Download invoice PDF"
+                          >
+                            <FileText className="h-4 w-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))

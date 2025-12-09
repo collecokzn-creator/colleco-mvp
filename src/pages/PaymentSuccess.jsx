@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { confirmMockPayment, getPayment } from '../utils/payments';
 import { getBooking as apiGetBooking } from '../api/client';
 import { Link } from 'react-router-dom';
+import { FileText } from 'lucide-react';
 
 export default function PaymentSuccess() {
   // Support both normal query string and hash-based query (used by static preview / hash router)
@@ -20,6 +21,32 @@ export default function PaymentSuccess() {
   const [payment, setPayment] = useState(null);
 
   const bookingId = params.get('bookingId');
+
+  async function downloadInvoice() {
+    if (!bookingId) {
+      alert('No booking ID available');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/invoices/${bookingId}/download`);
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Invoice_${bookingId}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else {
+        alert('Failed to download invoice');
+      }
+    } catch (error) {
+      console.error('Invoice download failed:', error);
+      alert('Failed to download invoice');
+    }
+  }
+
   useEffect(() => {
     if (bookingId) {
       // E2E shortcut: allow tests to inject booking data directly via window.__E2E_BOOKING
@@ -100,8 +127,18 @@ export default function PaymentSuccess() {
               </div>
             ) : null)
           )}
-          <div className="mt-4">
-            <Link to="/bookings" className="px-3 py-2 bg-brand-orange text-white rounded">Back to Bookings</Link>
+          <div className="mt-4 flex gap-3">
+            <Link to="/bookings" className="px-3 py-2 bg-brand-orange text-white rounded hover:bg-orange-600 transition">
+              Back to Bookings
+            </Link>
+            <button
+              onClick={downloadInvoice}
+              className="px-3 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition flex items-center gap-2"
+              title="Download invoice PDF"
+            >
+              <FileText className="h-4 w-4" />
+              Download Invoice
+            </button>
           </div>
         </div>
       )}
