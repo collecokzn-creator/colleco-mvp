@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Calendar, MapPin, Plane, Hotel, Car, DollarSign, Filter,
@@ -31,15 +30,7 @@ export default function MyTrips() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    fetchTrips();
-  }, []);
-
-  useEffect(() => {
-    applyFiltersAndSort();
-  }, [trips, activeFilter, sortBy, searchQuery]);
-
-  const fetchTrips = async () => {
+  const fetchTrips = useCallback(async () => {
     try {
       const response = await fetch('/api/bookings/all');
       if (!response.ok) throw new Error('Failed to fetch trips');
@@ -53,7 +44,17 @@ export default function MyTrips() {
       setTrips(mockTrips);
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchTrips();
+  }, [fetchTrips]);
+
+  useEffect(() => {
+    applyFiltersAndSort();
+  }, [trips, activeFilter, sortBy, searchQuery]);
+
+  
 
   const applyFiltersAndSort = () => {
     let result = [...trips];
