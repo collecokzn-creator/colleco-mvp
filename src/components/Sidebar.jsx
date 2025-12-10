@@ -371,8 +371,7 @@ export default function Sidebar() {
       else if (userCtx.isPartner && role !== 'partner') setRole('partner');
       else if (userCtx.isClient && role !== 'client') setRole('client');
     } catch (e) {}
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userCtx && userCtx.user && userCtx.user.role, userCtx && userCtx.isAdmin, userCtx && userCtx.isPartner, userCtx && userCtx.isClient]);
+  }, [userCtx, role, setRole]);
   const [isMobile, setIsMobile] = useState(false);
   const [open, setOpen] = useState(false);
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
