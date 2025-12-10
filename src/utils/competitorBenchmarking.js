@@ -231,7 +231,7 @@ export function compareWithCompetitors(analysis) {
 /**
  * Get pricing strategy recommendations
  */
-export function getPricingStrategy(analysis, partnerMetrics) {
+export function getPricingStrategy(analysis, _partnerMetrics) {
   const strategies = [];
   const opportunity = analysis.pricing.priceOpportunity;
   

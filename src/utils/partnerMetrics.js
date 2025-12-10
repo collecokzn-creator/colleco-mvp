@@ -317,11 +317,11 @@ export function getPartnerInsights(metrics) {
   
   // Occupancy insights
   if (performance.occupancyRate < SUCCESS_METRICS.occupancyRate.target) {
-    const gap = SUCCESS_METRICS.occupancyRate.target - performance.occupancyRate;
+    const _gap = SUCCESS_METRICS.occupancyRate.target - performance.occupancyRate;
     insights.push({
       type: 'opportunity',
       category: 'Occupancy',
-      message: `Occupancy is ${performance.occupancyRate}%. There's ${gap}% room for improvement.`,
+      message: `Occupancy is ${performance.occupancyRate}%. There's ${_gap}% room for improvement.`,
       action: 'Consider dynamic pricing or targeted promotions to fill vacant days.',
       priority: 'high',
     });
@@ -329,7 +329,7 @@ export function getPartnerInsights(metrics) {
   
   // Rating insights
   if (performance.guestRating < SUCCESS_METRICS.guestRating.target) {
-    const gap = SUCCESS_METRICS.guestRating.target - performance.guestRating;
+    const _gap = SUCCESS_METRICS.guestRating.target - performance.guestRating;
     insights.push({
       type: 'warning',
       category: 'Guest Rating',
@@ -341,7 +341,7 @@ export function getPartnerInsights(metrics) {
   
   // Cancellation insights
   if (performance.cancellationRate > SUCCESS_METRICS.cancellationRate.target) {
-    const excess = performance.cancellationRate - SUCCESS_METRICS.cancellationRate.target;
+    const _excess = performance.cancellationRate - SUCCESS_METRICS.cancellationRate.target;
     insights.push({
       type: 'warning',
       category: 'Cancellation Rate',

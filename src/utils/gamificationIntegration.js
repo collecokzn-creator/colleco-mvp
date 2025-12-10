@@ -10,7 +10,7 @@ import {
   updateChallengeProgress,
   updateStreak,
   updateLeaderboard,
-  POINT_VALUES,
+  POINT_VALUES as _POINT_VALUES,
 } from './gamificationEngine';
 
 // ==================== BOOKING INTEGRATION ====================
@@ -28,7 +28,7 @@ export function onBookingCreated(userId, userType, bookingData) {
     return { success: false, error: 'bookingData is required' };
   }
   
-  const { bookingId, totalAmount, bookingType, partnerId } = bookingData;
+  const { bookingId: _bookingId, totalAmount, bookingType: _bookingType, partnerId } = bookingData;
   
   const challengesUpdated = [];
   
@@ -214,7 +214,7 @@ export function onReferralSignup(userId, referralData) {
  * Award points when a referral makes their first booking
  */
 export function onReferralBooking(userId, referralData) {
-  const { referredUserId, bookingAmount } = referralData;
+  const { referredUserId: _referredUserId, bookingAmount: _bookingAmount } = referralData;
   
   const challengesUpdated = [];
   

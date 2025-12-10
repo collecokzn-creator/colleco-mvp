@@ -424,7 +424,7 @@ export function convertReferral(newUserId) {
   
   // Search for referrer
   let referrerId = null;
-  for (const [code, id] of Object.entries(mappings)) {
+  for (const [_code, id] of Object.entries(mappings)) {
     const data = getLoyaltyData(id);
     const pending = data.referrals.pending.find(r => r.userId === newUserId);
     if (pending) {

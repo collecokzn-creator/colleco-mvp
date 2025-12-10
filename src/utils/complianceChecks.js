@@ -111,7 +111,7 @@ export function submitBackgroundCheckRequest(partnerId, checkData) {
 }
 
 // Process background check (simulated)
-function processBackgroundCheck(check, checkData) {
+function processBackgroundCheck(check, _checkData) {
   check.results = [];
 
   // Criminal check
