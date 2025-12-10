@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Building2, Users as _Users, Search, Filter as _Filter, Download as _Download, Eye, Edit, Mail,
@@ -36,13 +35,13 @@ export default function ManageBusinessAccounts() {
   useEffect(() => {
     fetchAccounts();
     fetchStats();
-  }, []);
+  }, [fetchAccounts, fetchStats]);
 
   useEffect(() => {
     applyFiltersAndSort();
-  }, [accounts, searchQuery, statusFilter, sortBy]);
+  }, [applyFiltersAndSort]);
 
-  const fetchAccounts = async () => {
+  const fetchAccounts = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await fetch('/api/admin/business-accounts');
@@ -53,9 +52,9 @@ export default function ManageBusinessAccounts() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/business-accounts/stats');
       const data = await response.json();
@@ -63,9 +62,9 @@ export default function ManageBusinessAccounts() {
     } catch (error) {
       console.error('Failed to fetch stats:', error);
     }
-  };
+  }, []);
 
-  const applyFiltersAndSort = () => {
+  const applyFiltersAndSort = useCallback(() => {
     let filtered = [...accounts];
 
     // Apply status filter
@@ -103,7 +102,7 @@ export default function ManageBusinessAccounts() {
     });
 
     setFilteredAccounts(filtered);
-  };
+  }, [accounts, searchQuery, statusFilter, sortBy]);
 
   const handleUpdateStatus = async (accountId, newStatus) => {
     try {
