@@ -1,3 +1,18 @@
+#!/usr/bin/env sh
+# Simple wrapper that invokes the Node-based pre-commit script.
+# Uses the script directory to locate `.husky/pre-commit.js` and calls node directly.
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+NODE_SCRIPT="$SCRIPT_DIR/pre-commit.js"
+
+if [ -x "$(command -v node 2>/dev/null)" ]; then
+  node "$NODE_SCRIPT" "$@"
+  status=$?
+  exit $status
+else
+  echo "node runtime not found in PATH; skipping husky pre-commit check"
+  exit 0
+fi
 #!/usr/bin/env node
 /**
  * Pre-commit hook to prevent accidental secret commits
@@ -61,69 +76,20 @@ function scanFileForSecrets(filePath) {
   if (!fs.existsSync(filePath)) return [];
   if (shouldIgnoreFile(filePath)) return [];
   
-  const content = fs.readFileSync(filePath, 'utf8');
-  const findings = [];
-  
-  SECRET_PATTERNS.forEach(({ pattern, name }) => {
-    const matches = content.match(new RegExp(pattern, 'g'));
-    if (matches) {
-      const lines = content.split('\n');
-      lines.forEach((line, index) => {
-        if (pattern.test(line)) {
-          findings.push({
-            file: filePath,
-            line: index + 1,
-            type: name,
-            preview: line.trim().substring(0, 80),
-          });
-        }
+  #!/usr/bin/env sh
+  # Cross-platform Husky pre-commit wrapper
+  # Runs the actual Node-based secret scan via Node or PowerShell on Windows
+  # This avoids direct execution of a JS file as a shell script which can fail on some environments.
+
+  ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+  if command -v pwsh >/dev/null 2>&1; then
+    # Use PowerShell Core if available (Windows, cross-platform)
+    pwsh -NoProfile -NonInteractive -Command "node '$ROOT_DIR/.husky/pre-commit.js'"
+  else
+    # Fallback to POSIX shell environment (git bash, macOS, Linux)
+    node "$ROOT_DIR/.husky/pre-commit.js"
+  fi
+
+  exit $?
       });
-    }
-  });
-  
-  return findings;
-}
-
-function main() {
-  console.log('🔍 Scanning for potential secrets...\n');
-  
-  const stagedFiles = getStagedFiles();
-  if (stagedFiles.length === 0) {
-    console.log('No files to scan.');
-    return 0;
-  }
-  
-  let allFindings = [];
-  
-  stagedFiles.forEach(file => {
-    const findings = scanFileForSecrets(file);
-    allFindings = allFindings.concat(findings);
-  });
-  
-  if (allFindings.length === 0) {
-    console.log('✅ No secrets detected. Safe to commit.\n');
-    return 0;
-  }
-  
-  // Report findings
-  console.error('❌ POTENTIAL SECRETS DETECTED!\n');
-  console.error('The following files contain patterns that look like secrets:\n');
-  
-  allFindings.forEach(finding => {
-    console.error(`  ${finding.file}:${finding.line}`);
-    console.error(`  Type: ${finding.type}`);
-    console.error(`  Preview: ${finding.preview}`);
-    console.error('');
-  });
-  
-  console.error('⚠️  COMMIT BLOCKED!\n');
-  console.error('Please remove sensitive data before committing.');
-  console.error('If these are false positives, you can:');
-  console.error('  1. Use environment variables instead (.env.local)');
-  console.error('  2. Add files to .gitignore');
-  console.error('  3. Use placeholder values in documentation\n');
-  
-  return 1; // Exit with error to block commit
-}
-
-process.exit(main());

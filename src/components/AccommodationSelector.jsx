@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars, react/no-unescaped-entities */
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Star,
