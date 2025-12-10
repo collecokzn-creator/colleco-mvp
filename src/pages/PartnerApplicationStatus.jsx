@@ -94,7 +94,7 @@ export default function PartnerApplicationStatus() {
           const Icon = stage.icon;
           const isCompleted = index < currentStageIndex;
           const isCurrent = index === currentStageIndex;
-          const isPending = index > currentStageIndex;
+          const _isPending = index > currentStageIndex;
 
           return (
             <div key={stage.id} className="flex gap-4 mb-8 last:mb-0">

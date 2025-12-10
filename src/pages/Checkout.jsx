@@ -168,7 +168,7 @@ export default function Checkout() {
   const isPackage = isPackageBooking();
   
   // Get list of included services for package display
-  const getIncludedServices = () => {
+  const _getIncludedServices = () => {
     return booking.lineItems
       .map(item => item.description)
       .join(', ');

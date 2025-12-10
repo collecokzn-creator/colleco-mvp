@@ -31,7 +31,7 @@ export default function Gamification() {
     // eslint-disable-next-line no-console
     else console.log(...args);
   };
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('challenges');
   const [challengeFilter, setChallengeFilter] = useState('all');
   
