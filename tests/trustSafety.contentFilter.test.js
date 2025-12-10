@@ -228,7 +228,7 @@ describe('Content Filtering System', () => {
     it('is stricter with public posts than private messages', () => {
       const text = 'This place is okay I guess';
       const publicResult = filterContent(text, { context: 'public_post', severity: 'strict' });
-      const privateResult = filterContent(text, { context: 'private_message', severity: 'strict' });
+      const _privateResult = filterContent(text, { context: 'private_message', severity: 'strict' });
       // Public should have higher scrutiny if applicable
       expect(publicResult.context).toBe('public_post');
     });

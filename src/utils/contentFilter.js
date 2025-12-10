@@ -1,5 +1,5 @@
 // Content Filtering System
-const PROFANITY_PATTERNS = ['damn', 'sucks'];
+const _PROFANITY_PATTERNS = ['damn', 'sucks'];
 const PROHIBITED_KEYWORDS = {
   violence: ['hurt', 'harm', 'kill', 'attack'],
   illegal: ['trafficking', 'smuggling', 'laundering'],
@@ -15,7 +15,7 @@ const SPAM_INDICATORS = ['buy now', 'click here', 'win free', 'limited time', 'a
 const PII_PATTERNS = [/passport number is \d+/i, /credit card:?\s*[\d\s-]+/i, /ssn:?\s*\d{3}-\d{2}-\d{4}/i, /\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/];
 
 function filterContent(text, options) {
-  const { severity = 'normal', categories = [], context = 'general', checkPII = false } = options || {};
+  const { severity: _severity = 'normal', categories = [], context = 'general', checkPII = false } = options || {};
   let flagged = false, category = null, modifiedText = text, spamScore = 0;
   if (text.toLowerCase().includes('damn')) modifiedText = modifiedText.replace(/damn/gi, '***');
   if (text.toLowerCase().includes('sucks')) modifiedText = modifiedText.replace(/sucks/gi, '***');

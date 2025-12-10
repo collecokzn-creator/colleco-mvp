@@ -506,7 +506,7 @@ export function pointsToCurrency(points, currency = 'ZAR') {
 /**
  * Calculate currency value in points
  */
-export function currencyToPoints(amount, currency = 'ZAR') {
+export function currencyToPoints(amount, _currency = 'ZAR') {
   // R1 = 100 points
   return Math.floor(amount * 100);
 }

@@ -6,7 +6,7 @@
  */
 
 // ==================== STORAGE KEYS ====================
-const CHALLENGES_KEY = 'colleco.gamification.challenges';
+const _CHALLENGES_KEY = 'colleco.gamification.challenges';
 const ACHIEVEMENTS_KEY = 'colleco.gamification.achievements';
 const LEADERBOARDS_KEY = 'colleco.gamification.leaderboards';
 const STREAKS_KEY = 'colleco.gamification.streaks';
