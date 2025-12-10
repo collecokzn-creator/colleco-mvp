@@ -876,8 +876,8 @@ export const CHALLENGES = {
 
 // Export BADGES in test-expected tier-organized format  
 export const BADGES = {
-  bronze: Object.entries(BADGE_DEFINITIONS).filter(([k, v]) => v.tier === 'bronze').map(([id, badge]) => ({id, ...badge})),
-  silver: Object.entries(BADGE_DEFINITIONS).filter(([k, v]) => v.tier === 'silver').map(([id, badge]) => ({id, ...badge})),
-  gold: Object.entries(BADGE_DEFINITIONS).filter(([k, v]) => v.tier === 'gold').map(([id, badge]) => ({id, ...badge})),
-  platinum: Object.entries(BADGE_DEFINITIONS).filter(([k, v]) => v.tier === 'platinum').map(([id, badge]) => ({id, ...badge}))
+  bronze: Object.entries(BADGE_DEFINITIONS).filter(([_k, v]) => v.tier === 'bronze').map(([id, badge]) => ({id, ...badge})),
+  silver: Object.entries(BADGE_DEFINITIONS).filter(([_k, v]) => v.tier === 'silver').map(([id, badge]) => ({id, ...badge})),
+  gold: Object.entries(BADGE_DEFINITIONS).filter(([_k, v]) => v.tier === 'gold').map(([id, badge]) => ({id, ...badge})),
+  platinum: Object.entries(BADGE_DEFINITIONS).filter(([_k, v]) => v.tier === 'platinum').map(([id, badge]) => ({id, ...badge}))
 };

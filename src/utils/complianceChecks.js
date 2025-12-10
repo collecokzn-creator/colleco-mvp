@@ -378,8 +378,8 @@ export function getPartnerComplianceStatus(partnerId) {
   }
 
   // Check insurance status
-  let total_insurance_coverage = 0;
-  let verified_policies = 0;
+  let _total_insurance_coverage = 0;
+  let _verified_policies = 0;
 
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
@@ -387,8 +387,8 @@ export function getPartnerComplianceStatus(partnerId) {
       const insurance = JSON.parse(localStorage.getItem(key));
       
       if (insurance.partnerId === partnerId) {
-        total_insurance_coverage += insurance.coverage_amount;
-        verified_policies += insurance.policies.filter(p => p.verified).length;
+        _total_insurance_coverage += insurance.coverage_amount;
+        _verified_policies += insurance.policies.filter(p => p.verified).length;
 
         if (insurance.status === INSURANCE_STATUS.ACTIVE) {
           status.compliance_score += 30;

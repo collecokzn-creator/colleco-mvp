@@ -4,8 +4,8 @@
  * Calculates net earnings after subscription costs
  */
 
-import { getPartnerTransactions, getUpcomingPayoutAmount, markTransactionsAsPaid } from './commissionCalculator.js';
-import { getPartnerSubscription } from './subscriptionManager.js';
+import { getUpcomingPayoutAmount, markTransactionsAsPaid } from './commissionCalculator.js';
+import { getPartnerSubscription as _getPartnerSubscription } from './subscriptionManager.js';
 
 const PAYOUTS_KEY = 'colleco.payouts';
 const PAYOUT_METHODS_KEY = 'colleco.payout_methods';

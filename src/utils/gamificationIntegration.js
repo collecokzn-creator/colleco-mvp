@@ -72,7 +72,7 @@ export function onBookingConfirmed(userId, userType, bookingData) {
   const challengesUpdated = [];
   
   // Award confirmation bonus points
-  const pointsResult = awardPoints(userId, 'booking_confirmed', 1);
+  const _pointsResult = awardPoints(userId, 'booking_confirmed', 1);
   
   // Update partner revenue challenges
   if (partnerId && userType === 'partner') {
@@ -100,7 +100,7 @@ export function onBookingConfirmed(userId, userType, bookingData) {
  * Award points when a trip is completed
  */
 export function onTripCompleted(userId, tripData) {
-  const { destination, country, province } = tripData;
+  const { destination: _destination, country, province } = tripData;
   
   const challengesUpdated = [];
   
@@ -135,10 +135,10 @@ export function onTripCompleted(userId, tripData) {
  * Award points when a review is written
  */
 export function onReviewSubmitted(userId, userType, reviewData) {
-  const { rating, hasPhotos, hasText, partnerId } = reviewData;
+  const { rating, hasPhotos, hasText: _hasText, partnerId } = reviewData;
   
   // Base review points
-  let pointsResult = awardPoints(userId, 'review_written', 1);
+  let _pointsResult = awardPoints(userId, 'review_written', 1);
   
   // Bonus for detailed reviews
   if (hasPhotos) {
@@ -198,7 +198,7 @@ export function onLoyaltyTierReached(userId, tierData) {
  * Award points when a referral signs up
  */
 export function onReferralSignup(userId, referralData) {
-  const { referredUserId } = referralData;
+  const { referredUserId: _referredUserId } = referralData;
   
   // Award referral signup points
   const pointsResult = awardPoints(userId, 'referral_signup', 1);
