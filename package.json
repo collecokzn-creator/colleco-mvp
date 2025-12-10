@@ -45,6 +45,10 @@
     "security:audit:fix": "npm audit fix",
     "security:audit:gcloud": "node scripts/audit-google-cloud.js",
     "security:check": "npm run security:scan && npm run security:audit",
+    "setup:env": "node scripts/setup-environments.js",
+    "setup:env:validate": "node scripts/setup-environments.js --validate",
+    "setup:env:github": "node scripts/setup-environments.js --check-github",
+    "validate:push": "node scripts/validate-push.js",
     "prepare": "husky install || true"
   },
   "husky": {
