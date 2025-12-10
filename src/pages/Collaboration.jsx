@@ -84,9 +84,8 @@ export default function Collaboration() {
   }
 
   // SSE subscription in API mode
-  // Subscribe based on currentRole only; eslint exhaustive-deps intentionally limited
+  // Subscribe based on `currentRole` and API availability
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (!isApiEnabled) return undefined;
     let es;
     try {
@@ -102,7 +101,7 @@ export default function Collaboration() {
       es.addEventListener("read", refresh);
     } catch {}
     return () => { try { es?.close(); } catch {} };
-  }, [currentRole]);
+  }, [currentRole, isApiEnabled]);
 
   // Ensure selection reacts to threads list and current bookingId
   useEffect(() => {
