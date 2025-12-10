@@ -474,7 +474,7 @@ describe('User Verification System', () => {
     });
 
     it('enforces verification cooling off period', () => {
-      const firstVerification = verifyUserIdentity('cooloff_user', {
+      const _firstVerification = verifyUserIdentity('cooloff_user', {
         documentType: 'passport',
         documentNumber: 'ABC123456',
         name: 'Test User'

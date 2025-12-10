@@ -84,7 +84,7 @@ describe('User Reporting System', () => {
     });
 
     it('prevents spam reporting of the same content multiple times', () => {
-      const firstReport = reportUserContent({
+      const _firstReport = reportUserContent({
         reportedUserId: 'user123',
         contentId: 'message456',
         reason: 'spam',

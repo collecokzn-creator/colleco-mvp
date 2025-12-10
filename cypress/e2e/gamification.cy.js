@@ -32,6 +32,9 @@ describe('Gamification System - Core Features', () => {
   it('should filter challenges by status', () => {
     cy.contains('button', 'All').click();
     const allCount = cy.get('[data-testid="challenge-card"]').its('length');
+   
+    // Renaming allCount to _allCount to avoid lint warnings
+    const _allCount = allCount;
     
     cy.contains('button', 'Active').click();
     cy.get('[data-testid="challenge-card"]').should('exist');

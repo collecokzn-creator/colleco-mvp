@@ -511,7 +511,7 @@ describe('Risk Management & Account Limits', () => {
       });
 
       // Then: Stronger restriction
-      const stronger = autoTemporarilyRestrict('user_graduated', {
+      const _stronger = autoTemporarilyRestrict('user_graduated', {
         reason: 'second_violation',
         severity: 'medium'
       });

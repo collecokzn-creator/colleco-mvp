@@ -161,11 +161,11 @@ export default function Bookings() {
 	}, [items, trustedOnly, verifiedIds, statusFilter, searchTerm, smartSort]);
   
   // Get smart recommendation
-  const recommendation = useMemo(() => {
-    const rec = getSmartRecommendation(filteredAndSortedItems);
-    lastRecommendationRef.current = rec;
-    return rec;
-  }, [filteredAndSortedItems]);
+	const _recommendation = useMemo(() => {
+		const rec = getSmartRecommendation(filteredAndSortedItems);
+		lastRecommendationRef.current = rec;
+		return rec;
+	}, [filteredAndSortedItems]);
   
   // Export to CSV
   function exportToCSV() {
