@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { DollarSign, TrendingUp, Download, Filter, Calendar, FileText } from 'lucide-react';
 import Button from '../components/ui/Button';
 
@@ -19,11 +18,7 @@ export default function AdminBookings() {
     pendingPayments: 0
   });
 
-  useEffect(() => {
-    loadBookings();
-  }, [filters]);
-
-  async function loadBookings() {
+  const loadBookings = useCallback(async () => {
     setLoading(true);
     try {
       // Build query string from filters
@@ -43,7 +38,11 @@ export default function AdminBookings() {
       console.error('Failed to load bookings:', error);
     }
     setLoading(false);
-  }
+  }, [filters.supplierId, filters.paymentStatus, filters.dateFrom, filters.dateTo]);
+
+  useEffect(() => {
+    loadBookings();
+  }, [loadBookings]);
 
   function calculateStats(bookings) {
     const stats = bookings.reduce((acc, booking) => {
