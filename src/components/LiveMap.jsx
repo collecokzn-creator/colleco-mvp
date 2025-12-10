@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars, react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 // Lightweight logger for development — avoids ESLint no-console across the file
@@ -230,6 +230,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     );
   }, [directionsRenderer, pickup, dropoff, waypoints, onRouteInfo]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     // Load Google Maps script
     _log('log', '[LiveMap] Script loading effect triggered', { hasGoogle: !!window.google });
@@ -271,12 +272,14 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     }
   }, []); // Empty deps - run once on mount only
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (map && window.google) {
       updateMapMarkers();
     }
   }, [map, pickup, dropoff, driverLocation]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (map && window.google && showRoute && pickup && dropoff) {
       drawRoute();

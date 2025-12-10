@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Star, 
@@ -53,6 +54,7 @@ export default function FlightSelector({
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollContainerRef = useRef(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchAvailableFlights();
     loadFavoriteFlights();

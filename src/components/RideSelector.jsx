@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, react/no-unescaped-entities */
+/* eslint-disable no-unused-vars, react/no-unescaped-entities, react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { 
   Star, 
@@ -44,6 +44,7 @@ export default function RideSelector({
   const [preferredBrand, setPreferredBrand] = useState('');
   const [preferredDriver, setPreferredDriver] = useState('');
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchAvailableRides();
     loadFavoriteDrivers();

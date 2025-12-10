@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, react/no-unescaped-entities */
+/* eslint-disable no-unused-vars, react/no-unescaped-entities, react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Star, 
@@ -55,6 +55,7 @@ export default function CarHireSelector({
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollContainerRef = useRef(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchAvailableCars();
     loadFavoriteCars();

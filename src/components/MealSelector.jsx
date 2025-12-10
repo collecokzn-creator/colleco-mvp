@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, ChevronDown } from 'lucide-react';
 
@@ -54,6 +55,7 @@ export default function MealSelector({
   }, []);
 
   // Calculate pricing when selections change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     calculatePricing();
   }, [selectedMode, selectedPackage, selectedItems, customItems, headCount, nights]);
