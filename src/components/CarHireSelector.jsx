@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars, react/no-unescaped-entities, react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef } from 'react';
+/* eslint-disable no-unused-vars, react/no-unescaped-entities */
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Star, 
   DollarSign, 
@@ -55,13 +55,12 @@ export default function CarHireSelector({
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollContainerRef = useRef(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchAvailableCars();
     loadFavoriteCars();
-  }, [pickupLocation, dropoffLocation, pickupDate, dropoffDate]);
+  }, [fetchAvailableCars, loadFavoriteCars]);
 
-  const fetchAvailableCars = async () => {
+  const fetchAvailableCars = useCallback(async () => {
     setLoading(true);
     const useDemo = (import.meta?.env?.VITE_DEMO_CARHIRE ?? '1') === '1';
     setErrorMsg('');
@@ -168,9 +167,9 @@ export default function CarHireSelector({
     } finally {
       setLoading(false);
     }
-  };
+  }, [pickupLocation, dropoffLocation, pickupDate, dropoffDate]);
 
-  const loadFavoriteCars = () => {
+  const loadFavoriteCars = useCallback(() => {
     try {
       const saved = localStorage.getItem('colleco.favoriteCars');
       if (saved) {
@@ -179,7 +178,7 @@ export default function CarHireSelector({
     } catch (error) {
       _log('error', '[CarHireSelector] Error loading favorites:', error);
     }
-  };
+  }, []);
 
   const checkScrollButtons = () => {
     const container = scrollContainerRef.current;

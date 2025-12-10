@@ -50,7 +50,6 @@ export default function PlanTrip() {
     const searchRef = useRef(null);
     useClickOutsideAndEscape(modalRef, () => setDirectBookingOpen(false));
     // Intentionally run once on mount; we read selectedProduct from closure for conditional focus
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
       // Focus search shortly after mount
       const t = setTimeout(() => {
@@ -59,7 +58,7 @@ export default function PlanTrip() {
         } catch {}
       }, 0);
       return () => clearTimeout(t);
-    }, []);
+    }, [selectedProduct]);
     // Focus trap
     useEffect(() => {
       function handleTrap(e) {
@@ -339,8 +338,7 @@ export default function PlanTrip() {
       }
     } catch {}
   // run once on mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.search, navigate]);
 
   // If deep-linked with filters, ensure Catalog tab is active so results are visible
   useEffect(()=>{
@@ -623,8 +621,7 @@ export default function PlanTrip() {
       params.delete('setLocation');
       navigate({ search: params.toString()?`?${params.toString()}`:'' }, { replace: true });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.search, navigate]);
   function applySmartSearch() {
     const raw = query.trim();
     if(!raw) return;

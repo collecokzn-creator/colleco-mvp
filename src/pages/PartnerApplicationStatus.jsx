@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CheckCircle2, Clock, XCircle, AlertCircle, ArrowRight, FileText, Shield, UserCheck as _UserCheck, Sparkles } from "lucide-react";
 
@@ -49,24 +48,11 @@ export default function PartnerApplicationStatus() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (!applicationId) {
-      navigate('/partner/onboarding');
-      return;
-    }
-
-    fetchApplicationStatus();
-    
-    // Poll for updates every 30 seconds
-    const interval = setInterval(fetchApplicationStatus, 30000);
-    return () => clearInterval(interval);
-  }, [applicationId]);
-
-  const fetchApplicationStatus = async () => {
+  const fetchApplicationStatus = useCallback(async () => {
     try {
       const response = await fetch(`/api/partners/${applicationId}/status`);
       if (!response.ok) throw new Error('Failed to fetch status');
-      
+
       const data = await response.json();
       setApplication(data);
       setLoading(false);
@@ -75,7 +61,20 @@ export default function PartnerApplicationStatus() {
       setError('Failed to load application status');
       setLoading(false);
     }
-  };
+  }, [applicationId]);
+
+  useEffect(() => {
+    if (!applicationId) {
+      navigate('/partner/onboarding');
+      return;
+    }
+
+    fetchApplicationStatus();
+
+    // Poll for updates every 30 seconds
+    const interval = setInterval(fetchApplicationStatus, 30000);
+    return () => clearInterval(interval);
+  }, [applicationId, navigate, fetchApplicationStatus]);
 
   const getCurrentStageIndex = () => {
     if (!application) return 0;

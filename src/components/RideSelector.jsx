@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars, react/no-unescaped-entities, react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Star, 
   DollarSign, 
@@ -44,13 +43,7 @@ export default function RideSelector({
   const [preferredBrand, setPreferredBrand] = useState('');
   const [preferredDriver, setPreferredDriver] = useState('');
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchAvailableRides();
-    loadFavoriteDrivers();
-  }, [pickup, dropoff, vehicleType]);
-
-  const fetchAvailableRides = async () => {
+  const fetchAvailableRides = useCallback(async () => {
     setLoading(true);
     const useDemo = (import.meta?.env?.VITE_DEMO_SHUTTLE ?? '1') === '1';
 
@@ -161,17 +154,21 @@ export default function RideSelector({
     } finally {
       setLoading(false);
     }
-  };
+  }, [pickup, dropoff, vehicleType, passengers]);
 
-  const loadFavoriteDrivers = () => {
+  const loadFavoriteDrivers = useCallback(() => {
     try {
       const saved = localStorage.getItem('colleco.favoriteDrivers');
       setFavoriteDrivers(saved ? JSON.parse(saved) : []);
     } catch (error) {
       _log('error', 'Failed to load favorite drivers:', error);
     }
-  };
+  }, []);
 
+  useEffect(() => {
+    fetchAvailableRides();
+    loadFavoriteDrivers();
+  }, [fetchAvailableRides, loadFavoriteDrivers]);
   const toggleFavoriteDriver = (driverId) => {
     const updated = favoriteDrivers.includes(driverId)
       ? favoriteDrivers.filter(id => id !== driverId)

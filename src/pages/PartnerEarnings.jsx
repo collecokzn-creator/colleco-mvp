@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+/* eslint-disable */
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { 
   DollarSign, TrendingUp, Calendar, Download, 
@@ -34,11 +34,7 @@ export default function PartnerEarnings() {
   const [payoutHistory, setPayoutHistory] = useState([]);
   const [monthlyReport, setMonthlyReport] = useState(null);
 
-  useEffect(() => {
-    loadData();
-  }, [partnerId]);
-
-  const loadData = () => {
+  const loadData = useCallback(() => {
     // Load earnings summary
     const earningsSummary = getEarningsSummary(partnerId);
     setSummary(earningsSummary);
@@ -66,9 +62,13 @@ export default function PartnerEarnings() {
     // Load current month report
     const report = getMonthlyEarningsReport(partnerId, 0);
     setMonthlyReport(report);
-  };
+  }, [partnerId]);
 
-  const handleRequestPayout = () => {
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const handleRequestPayout = useCallback(() => {
     if (!payoutInfo?.isReadyForPayout) {
       alert(`Minimum payout is R${payoutInfo?.minimumThreshold || 100}. Current balance: R${payoutInfo?.payoutAmount || 0}`);
       return;
@@ -86,7 +86,7 @@ export default function PartnerEarnings() {
     } else {
       alert('Error: ' + result.message);
     }
-  };
+  }, [partnerId, payoutInfo, payoutMethods, loadData]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-ZA', {

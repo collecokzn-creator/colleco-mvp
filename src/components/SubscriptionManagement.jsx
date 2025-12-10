@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CreditCard, Download, ChevronRight, AlertCircle as _AlertCircle, CheckCircle, Clock as _Clock } from 'lucide-react';
 import { getPlan, calculateMonthlyROI } from '../utils/subscriptionPlans.js';
 import { createROIAnalyzer } from '../utils/subscriptionAnalytics.js';
@@ -20,14 +19,7 @@ export default function SubscriptionManagement({
   const [_selectedUpgrade, _setSelectedUpgrade] = useState(null);
   const [showROI, _setShowROI] = useState(true);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    // Load subscription details
-    loadSubscriptionDetails();
-    loadBillingHistory();
-  }, [partnerId, currentPlan]);
-
-  const loadSubscriptionDetails = () => {
+  const loadSubscriptionDetails = useCallback(() => {
     const plan = getPlan(currentPlan);
     const roi = calculateMonthlyROI(currentPlan, monthlyRevenue);
     
@@ -43,9 +35,9 @@ export default function SubscriptionManagement({
       roi,
       features: plan.features,
     });
-  };
+  }, [currentPlan, monthlyRevenue]);
 
-  const loadBillingHistory = () => {
+  const loadBillingHistory = useCallback(() => {
     // Mock billing history
     const history = [
       {
@@ -64,7 +56,14 @@ export default function SubscriptionManagement({
       },
     ];
     setBillingHistory(history);
-  };
+  }, [currentPlan]);
+
+  useEffect(() => {
+    loadSubscriptionDetails();
+    loadBillingHistory();
+  }, [loadSubscriptionDetails, loadBillingHistory]);
+
+  
 
   const handleDownloadInvoice = (invoiceId) => {
     // In real app, trigger invoice download

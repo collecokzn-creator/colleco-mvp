@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Upload, FileText, CheckCircle2, XCircle, AlertCircle, ExternalLink, Loader } from "lucide-react";
 
@@ -82,30 +81,12 @@ export default function PartnerVerification() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
 
-  useEffect(() => {
-    // Fetch accommodation properties for selection
-    fetch('/api/accommodation/available-properties')
-      .then(res => res.json())
-      .then(data => setProperties(data.properties || []));
-
-    if (!applicationId) {
-      navigate('/partner/onboarding');
-      return;
-    }
-
-    // Fetch existing application status and documents
-    fetchApplicationStatus();
-  }, [applicationId]);
-
-  const fetchApplicationStatus = async () => {
+  const fetchApplicationStatus = useCallback(async () => {
     try {
       const response = await fetch(`/api/partners/${applicationId}/status`);
       if (!response.ok) throw new Error('Failed to fetch status');
-      
       const data = await response.json();
       setApplicationStatus(data);
-      
-      // Pre-populate uploaded documents
       if (data.documents) {
         const docMap = {};
         data.documents.forEach(doc => {
@@ -122,7 +103,24 @@ export default function PartnerVerification() {
     } catch (error) {
       console.error('Status fetch error:', error);
     }
-  };
+  }, [applicationId]);
+
+  useEffect(() => {
+    // Fetch accommodation properties for selection
+    fetch('/api/accommodation/available-properties')
+      .then(res => res.json())
+      .then(data => setProperties(data.properties || []));
+
+    if (!applicationId) {
+      navigate('/partner/onboarding');
+      return;
+    }
+
+    // Fetch existing application status and documents
+    fetchApplicationStatus();
+  }, [applicationId, navigate, fetchApplicationStatus]);
+
+  
 
   const validateFile = (file, docConfig) => {
     const errors = [];

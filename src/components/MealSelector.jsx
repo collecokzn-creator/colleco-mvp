@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Plus, Trash2, ChevronDown } from 'lucide-react';
 
 /**
@@ -55,12 +54,7 @@ export default function MealSelector({
   }, []);
 
   // Calculate pricing when selections change
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    calculatePricing();
-  }, [selectedMode, selectedPackage, selectedItems, customItems, headCount, nights]);
-
-  async function calculatePricing() {
+  const calculatePricing = useCallback(async () => {
     if (selectedMode === 'none') {
       setPricing(null);
       onMealsSelected([]);
@@ -108,7 +102,11 @@ export default function MealSelector({
     } catch (err) {
       console.error('Failed to calculate pricing:', err);
     }
-  }
+  }, [selectedMode, selectedPackage, selectedItems, customItems, headCount, nights, bookingType, onMealsSelected]);
+
+  useEffect(() => {
+    calculatePricing();
+  }, [calculatePricing]);
 
   if (loading) {
     return <div className="text-sm text-gray-500">Loading meal options...</div>;

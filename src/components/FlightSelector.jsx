@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Star, 
   DollarSign as _DollarSign, 
@@ -54,13 +53,7 @@ export default function FlightSelector({
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollContainerRef = useRef(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchAvailableFlights();
-    loadFavoriteFlights();
-  }, [from, to, departDate, returnDate, passengers]);
-
-  const fetchAvailableFlights = async () => {
+  const fetchAvailableFlights = useCallback(async () => {
     setLoading(true);
     const useDemo = (import.meta?.env?.VITE_DEMO_FLIGHTS ?? '1') === '1';
 
@@ -138,9 +131,9 @@ export default function FlightSelector({
     } finally {
       setLoading(false);
     }
-  };
+  }, [from, to, departDate, returnDate, passengers]);
 
-  const loadFavoriteFlights = () => {
+  const loadFavoriteFlights = useCallback(() => {
     try {
       const saved = localStorage.getItem('colleco.favoriteFlights');
       if (saved) {
@@ -149,7 +142,13 @@ export default function FlightSelector({
     } catch (error) {
       _log('error', '[FlightSelector] Error loading favorites:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchAvailableFlights();
+    loadFavoriteFlights();
+  }, [fetchAvailableFlights, loadFavoriteFlights]);
+
 
   const checkScrollButtons = () => {
     const container = scrollContainerRef.current;
@@ -162,22 +161,33 @@ export default function FlightSelector({
   };
 
   useEffect(() => {
+    const checkScrollButtons = () => {
+      const container = scrollContainerRef.current;
+      if (!container) return;
+      setCanScrollLeft(container.scrollTop > 0);
+      setCanScrollRight(
+        container.scrollTop < container.scrollHeight - container.clientHeight - 10
+      );
+    };
+
     checkScrollButtons();
     const container = scrollContainerRef.current;
     if (container) {
       container.addEventListener('scroll', checkScrollButtons);
-      
+
       // Add keyboard arrow support
       const handleKeyDown = (e) => {
+        const c = scrollContainerRef.current;
+        if (!c) return;
         if (e.key === 'ArrowUp') {
           e.preventDefault();
-          scrollUp();
+          c.scrollBy({ top: -300, behavior: 'smooth' });
         } else if (e.key === 'ArrowDown') {
           e.preventDefault();
-          scrollDown();
+          c.scrollBy({ top: 300, behavior: 'smooth' });
         }
       };
-      
+
       window.addEventListener('keydown', handleKeyDown);
       return () => {
         container.removeEventListener('scroll', checkScrollButtons);
