@@ -1,23 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { 
-  Star, 
-  DollarSign as _DollarSign, 
-  TrendingUp, 
-  Plane,
-  Shield, 
-  Award,
-  Heart,
-  CheckCircle2,
-  Filter,
-  ArrowUpDown,
-  Clock,
-  Briefcase,
-  Coffee,
-  Wifi,
-  MonitorPlay,
-  ChevronLeft,
-  ChevronRight
-} from 'lucide-react';
+import { Star, DollarSign, TrendingUp, Plane, Shield, Award, Heart, CheckCircle2, Filter, ArrowUpDown, Clock, Briefcase, Coffee, Wifi, MonitorPlay, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function FlightSelector({ 
   from,
