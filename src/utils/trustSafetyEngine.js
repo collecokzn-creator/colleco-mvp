@@ -16,7 +16,7 @@ export const partnerVerification = {
   },
 
   // Create verification record
-  createVerification: (partnerId, data) => {
+  createVerification: (partnerId, _data) => {
     const verification = {
       partnerId,
       status: 'pending',

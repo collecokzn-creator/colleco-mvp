@@ -72,7 +72,7 @@ export function onBookingConfirmed(userId, userType, bookingData) {
   const challengesUpdated = [];
   
   // Award confirmation bonus points
-  const _pointsResult = awardPoints(userId, 'booking_confirmed', 1);
+  const pointsResult = awardPoints(userId, 'booking_confirmed', 1);
   
   // Update partner revenue challenges
   if (partnerId && userType === 'partner') {
@@ -138,7 +138,7 @@ export function onReviewSubmitted(userId, userType, reviewData) {
   const { rating, hasPhotos, hasText: _hasText, partnerId } = reviewData;
   
   // Base review points
-  let _pointsResult = awardPoints(userId, 'review_written', 1);
+  let pointsResult = awardPoints(userId, 'review_written', 1);
   
   // Bonus for detailed reviews
   if (hasPhotos) {
@@ -180,7 +180,7 @@ export function onLoyaltyTierReached(userId, tierData) {
   };
   
   const points = tierPoints[tier.toLowerCase()] || 0;
-  const pointsResult = awardPoints(userId, 'profile_complete', points / 100); // Use multiplier
+  const _pointsResult = awardPoints(userId, 'profile_complete', points / 100); // Use multiplier
   
   // Update loyalty tier challenges
   updateChallengeProgress(userId, `loyalty_tier_${tier.toLowerCase()}`, tier, 'set');
@@ -283,7 +283,7 @@ export function onOccupancyUpdate(partnerId, occupancyData) {
  * Update partner rating on leaderboard
  */
 export function onPartnerRatingUpdate(partnerId, ratingData) {
-  const { averageRating, reviewCount } = ratingData;
+  const { averageRating, reviewCount: _reviewCount } = ratingData;
   
   // Update rating leaderboard
   updateLeaderboard(partnerId, 'partner', 'rating', averageRating);

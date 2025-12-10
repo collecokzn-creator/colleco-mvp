@@ -229,7 +229,7 @@ export function calculateMonthlyROI(plan, estimatedMonthlyRevenue = 10000) {
   
   // If on free tier, no subscription cost but higher commission
   // If on paid tier, subscription cost offsets lower commission
-  const netCost = subscriptionCost; // Subscription cost
+  const _netCost = subscriptionCost; // Subscription cost
   const commissionSaved = planData.id === 'free' ? 0 : (
     (SUBSCRIPTION_PLANS.free.commission.base - planData.commission.base) * estimatedMonthlyRevenue
   );
@@ -417,7 +417,7 @@ export function createSubscriptionOrder(partnerId, planId, billingInfo) {
 /**
  * Validate plan switch
  */
-export function validatePlanSwitch(currentPlan, newPlan, monthlyRevenue) {
+export function validatePlanSwitch(currentPlan, newPlan, _monthlyRevenue) {
   const current = SUBSCRIPTION_PLANS[currentPlan];
   const next = SUBSCRIPTION_PLANS[newPlan];
   

@@ -86,7 +86,7 @@ export function calculateDynamicPrice(params) {
     occupancyRate = 0.6,
     availableInventory = 10,
     totalInventory = 20,
-    propertyType = 'accommodation',
+    _propertyType = 'accommodation',
     groupSize = 1,
     userTier = 'bronze',
   } = params;
@@ -377,7 +377,7 @@ function getInventoryMultiplier(availableInventory, totalInventory) {
  * Generate pricing alerts for partners
  */
 function generatePricingAlerts(params) {
-  const { basePrice, finalPrice, occupancyRate, userTier, los } = params;
+  const { basePrice, finalPrice, occupancyRate, userTier, los: _los } = params;
   const alerts = [];
 
   // Alert 1: High occupancy

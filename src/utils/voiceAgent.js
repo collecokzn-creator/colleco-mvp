@@ -485,7 +485,7 @@ class VoiceBookingAgent {
   }
 
   // Handle shuttle booking conversation
-  async handleShuttleBooking(intent, transcript) {
+  async handleShuttleBooking(intent, _transcript) {
     const entities = intent.entities;
 
     // Initialize booking if new
@@ -632,7 +632,7 @@ class VoiceBookingAgent {
   }
 
   // Handle unknown intent
-  handleUnknownIntent(transcript) {
+  handleUnknownIntent(_transcript) {
     this.speak("I didn't quite understand that. Could you please rephrase, or say 'help' to hear what I can do?");
   }
 
