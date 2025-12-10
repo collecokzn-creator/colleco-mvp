@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, Building2, Users, _Mail, _Phone, _MapPin, Calendar, DollarSign,
-  Briefcase, Edit, Download, FileText, _TrendingUp, CheckCircle2, Clock,
-  AlertCircle, _Settings, BarChart3, CreditCard, Shield, User, Plane, Hotel, Car
+  ArrowLeft, Building2, Users, Mail, Phone, MapPin, Calendar, DollarSign,
+  Briefcase, Edit, Download, FileText, TrendingUp, CheckCircle2, Clock,
+  AlertCircle, Settings, BarChart3, CreditCard, Shield, User, Plane, Hotel, Car
 } from "lucide-react";
 
 export default function BusinessAccountDetail() {
@@ -17,11 +16,7 @@ export default function BusinessAccountDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
 
-  useEffect(() => {
-    fetchAccountDetails();
-  }, [accountId]);
-
-  const fetchAccountDetails = async () => {
+  const fetchAccountDetails = useCallback(async () => {
     setIsLoading(true);
     try {
       const [accountRes, travelersRes, bookingsRes, analyticsRes] = await Promise.all([
@@ -40,7 +35,11 @@ export default function BusinessAccountDetail() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [accountId]);
+
+  useEffect(() => {
+    fetchAccountDetails();
+  }, [fetchAccountDetails]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-ZA', {
