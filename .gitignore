@@ -48,4 +48,7 @@ server/data/collab.json
 /artifacts/
 *.pid
 
+# Local security audit exports (may contain sensitive keys)
+SECURITY_AUDIT_REPORT.md
+
 \n# Ignore CI/runtime artifacts\n/artifacts/\n
