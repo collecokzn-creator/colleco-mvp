@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { dbg } from '../utils/logger';
 import WorkflowPanel from './WorkflowPanel';
 import { Link } from 'react-router-dom';
@@ -51,11 +51,7 @@ export default function AIGeneratorPanel() {
     } catch {}
   }, [prompt]);
 
-  // Intentionally only depend on state slices that change the live message
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(()=>{ if (liveRef.current) liveRef.current.textContent = liveMessage(); }, [phases, error, loading, active]);
-
-  function liveMessage() {
+  const liveMessage = useCallback(() => {
     if (error) return `Error: ${error}`;
     if (loading && mode === 'single') return 'Generating draft';
     if (active && mode === 'stream') {
@@ -67,7 +63,12 @@ export default function AIGeneratorPanel() {
       return 'Preparing draft…';
     }
     return '';
-  }
+  }, [phases, error, loading, active, mode]);
+
+  // Update live region when message changes
+  useEffect(() => {
+    if (liveRef.current) liveRef.current.textContent = liveMessage();
+  }, [liveMessage]);
 
   function reset() {
     setPhases({}); setFullData(null); setError(''); setLoading(false); setActive(false); abortRef.current?.cancel(); abortRef.current=null;
