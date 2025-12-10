@@ -42,7 +42,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-brand-brown mb-4">1. Service Overview</h2>
             <p className="text-gray-700 mb-4">
-              CollEco Travel ("Platform") is a digital marketplace connecting business travelers, leisure travelers, and travel service partners (accommodations, transfers, experiences). This agreement governs your use of our platform.
+              CollEco Travel (&quot;Platform&quot;) is a digital marketplace connecting business travelers, leisure travelers, and travel service partners (accommodations, transfers, experiences). This agreement governs your use of our platform.
             </p>
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
               <p className="text-sm text-blue-900">
@@ -63,7 +63,7 @@ export default function TermsPage() {
               <li>Offering services as a partner</li>
             </ul>
             <p className="text-gray-700 mt-4">
-              If you don't accept these terms, please do not use our platform.
+              If you don&apos;t accept these terms, please do not use our platform.
             </p>
           </section>
 
@@ -218,7 +218,7 @@ export default function TermsPage() {
               <div>
                 <h3 className="font-semibold text-brand-brown mb-2">7.1 Limitation of Liability</h3>
                 <p className="text-gray-700">
-                  COLLECO IS PROVIDED "AS-IS" WITHOUT WARRANTIES. TO THE MAXIMUM EXTENT PERMITTED, COLLECO IS NOT LIABLE FOR:
+                  COLLECO IS PROVIDED &quot;AS-IS&quot; WITHOUT WARRANTIES. TO THE MAXIMUM EXTENT PERMITTED, COLLECO IS NOT LIABLE FOR:
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-gray-700 ml-4 mt-2">
                   <li>Indirect, incidental, special, or consequential damages</li>

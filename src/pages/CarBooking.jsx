@@ -351,7 +351,7 @@ export default function CarBooking(){
                   <div>
                     <p className="font-semibold text-brand-brown mb-1">Rental Company Policies</p>
                     <ul className="list-disc list-inside space-y-1 text-xs">
-                      <li>Valid driver's license required (minimum 21 years old)</li>
+                      <li>Valid driver&apos;s license required (minimum 21 years old)</li>
                       <li>International license or IDP may be required</li>
                       <li>Vehicle inspection at pickup and return is mandatory</li>
                       <li>Insurance coverage included; excess may apply</li>
@@ -427,7 +427,7 @@ export default function CarBooking(){
                     </svg>
                     <h4 className="font-medium text-gray-700 text-sm">Need to Speak to a Specialist?</h4>
                   </div>
-                  <p className="text-xs text-gray-600 mb-3">If Zola can't resolve your issue, you'll be connected to our team:</p>
+                  <p className="text-xs text-gray-600 mb-3">If Zola can&apos;t resolve your issue, you&apos;ll be connected to our team:</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                     <div>
                       <p className="text-gray-500">Email Support</p>
@@ -504,7 +504,7 @@ export default function CarBooking(){
                 </svg>
                 <h4 className="font-medium text-gray-700 text-sm">Need to Speak to a Specialist?</h4>
               </div>
-              <p className="text-xs text-gray-600 mb-3">If Zola can't resolve your issue:</p>
+              <p className="text-xs text-gray-600 mb-3">If Zola can&apos;t resolve your issue:</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 <div>
                   <p className="text-gray-500">Email Support</p>

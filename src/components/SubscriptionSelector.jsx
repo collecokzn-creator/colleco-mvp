@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronRight, Check, TrendingUp, AlertCircle, Star, Crown as _Crown, Zap as _Zap } from 'lucide-react';
-import { getPlan, getAllPlans, calculateMonthlyROI, simulateUpgrade } from '../utils/subscriptionPlans.js';
+import { getAllPlans, calculateMonthlyROI } from '../utils/subscriptionPlans.js';
 import { createROIAnalyzer } from '../utils/subscriptionAnalytics.js';
 
 /**
@@ -90,7 +90,7 @@ export default function SubscriptionSelector({
             <input
               type="number"
               value={monthlyRevenue || ''}
-              onChange={(e) => {
+              onChange={(_e) => {
                 // Note: In real implementation, pass to parent via callback
               }}
               placeholder="Enter your estimated monthly revenue"

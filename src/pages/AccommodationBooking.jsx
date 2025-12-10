@@ -3,7 +3,7 @@ import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
 import MealSelector from '../components/MealSelector';
 import Button from '../components/ui/Button.jsx';
-import { Home, Calendar, Users, Clock, DollarSign, Plus, Trash2 } from 'lucide-react';
+import { Home, Calendar as _Calendar, Users as _Users, Clock, DollarSign, Plus as _Plus, Trash2 as _Trash2 } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function AccommodationBooking(){
