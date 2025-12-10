@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { BarChart3, Users, CreditCard, TrendingUp, AlertCircle, Download } from 'lucide-react';
 import { getSubscriptionAnalytics, getAllSubscriptions } from '../utils/subscriptionManager.js';

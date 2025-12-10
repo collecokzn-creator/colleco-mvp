@@ -29,7 +29,7 @@ export default function GamificationWidget({ userId, compact = false }) {
   useEffect(() => {
     if (!userId) return;
     loadData();
-  }, [loadData]);
+  }, [loadData, userId]);
 
   useEffect(() => {
     // Listen for point awards
