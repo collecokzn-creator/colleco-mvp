@@ -4,8 +4,7 @@
  * POPI Act Compliance: Section 14 (User rights to access and control personal data)
  */
 
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Shield, Lock, Trash2, CheckCircle, AlertCircle, Download } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { getConsentSummary, getConsentHistory, withdrawConsent } from '../utils/consentApi';
@@ -20,24 +19,13 @@ export default function PrivacySettings() {
   const [showWithdrawalConfirm, setShowWithdrawalConfirm] = useState(false);
   const [withdrawing, setWithdrawing] = useState(false);
 
-  // Load consent data on mount
-  useEffect(() => {
-    if (!user?.id && !user?.email) {
-      setError('Please log in to view privacy settings');
-      setLoading(false);
-      return;
-    }
-
-    loadConsentData();
-  }, [user]);
-
-  const loadConsentData = async () => {
+  const loadConsentData = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
 
       const userId = user?.id || user?.email;
-      
+
       const [summary, history] = await Promise.all([
         getConsentSummary(userId),
         getConsentHistory(userId),
@@ -51,7 +39,18 @@ export default function PrivacySettings() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.id, user?.email]);
+
+  // Load consent data on mount / when user changes
+  useEffect(() => {
+    if (!user?.id && !user?.email) {
+      setError('Please log in to view privacy settings');
+      setLoading(false);
+      return;
+    }
+
+    loadConsentData();
+  }, [loadConsentData]);
 
   const handleWithdrawConsent = async () => {
     if (!withdrawalReason.trim()) {
