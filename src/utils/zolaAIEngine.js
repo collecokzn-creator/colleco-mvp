@@ -170,7 +170,7 @@ class ZolaAI {
     this.interactions = [];
   }
 
-  async chat(message, context = {}) {
+  async chat(message, _context = {}) {
     this.conversationHistory.push({ role: 'user', content: message });
     this.analytics.totalRequests++;
     

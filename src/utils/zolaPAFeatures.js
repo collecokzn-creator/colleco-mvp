@@ -74,7 +74,7 @@ export const zolaPA = {
   },
 
   generateRecommendations(userId) {
-    const prefs = this.getPreferences(userId);
+    const _prefs = this.getPreferences(userId);
     return [
       { title: 'Paris Museums Tour', match: 0.95 },
       { title: 'Budget Hotel in Paris', match: 0.85 }
@@ -89,7 +89,7 @@ export const zolaPA = {
     return list;
   },
 
-  planBudget(userId, days, destination, activities) {
+  planBudget(userId, days, _destination, _activities) {
     const dailyRate = 150;
     const total = days * dailyRate;
     return {
@@ -391,14 +391,14 @@ export const zolaPA = {
     return reminders;
   },
 
-  getProactiveSuggestions(userId) {
+  getProactiveSuggestions(_userId) {
     return [
       { type: 'price_drop', title: 'Price drop on Paris hotels', priority: 'high' },
       { type: 'recommendation', title: 'New restaurant in your favorite city', priority: 'medium' }
     ];
   },
 
-  optimizeListings(partnerId, listingData) {
+  optimizeListings(partnerId, _listingData) {
     return {
       partnerId,
       suggestions: [
@@ -435,7 +435,7 @@ export const zolaPA = {
   },
 
   partnerPA: {
-    optimizeListings(partnerId) {
+    optimizeListings(_partnerId) {
       return {
         recommendations: [
           { field: 'price', suggestion: 'Reduce by 10%' },
@@ -451,7 +451,7 @@ export const zolaPA = {
         suggestions: ['Increase weekend availability', 'Add seasonal pricing']
       };
     },
-    predictDemand(partnerId, days) {
+    predictDemand(_partnerId, _days) {
       return { predictions: [{ day: 1, demand: 'high' }] };
     }
   }

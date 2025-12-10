@@ -29,6 +29,16 @@ export default function FlightSelector({
   onSkip,
   onCancel 
 }) {
+  // Local debug logger — enabled in dev or when `VITE_DEBUG_FLIGHTS=1`
+  const _log = (level, ...args) => {
+    if (!(import.meta.env.DEV || import.meta?.env?.VITE_DEBUG_FLIGHTS === '1')) return;
+    // eslint-disable-next-line no-console
+    if (level === 'error') console.error(...args);
+    // eslint-disable-next-line no-console
+    else if (level === 'warn') console.warn(...args);
+    // eslint-disable-next-line no-console
+    else console.log(...args);
+  };
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterBy, setFilterBy] = useState('all'); // all, direct, 1stop, 2stops
@@ -99,7 +109,7 @@ export default function FlightSelector({
     };
 
     try {
-      console.log('[FlightSelector] Fetching flights for:', { from, to, departDate, returnDate, passengers });
+      _log('log', '[FlightSelector] Fetching flights for:', { from, to, departDate, returnDate, passengers });
       const response = await fetch('/api/flights/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -117,11 +127,11 @@ export default function FlightSelector({
         const list = data.flights || [];
         setFlights(list.length ? list : (useDemo ? generateMockFlights() : []));
       } else {
-        console.error('[FlightSelector] Failed to fetch flights');
+        _log('error', '[FlightSelector] Failed to fetch flights');
         setFlights(useDemo ? generateMockFlights() : []);
       }
     } catch (error) {
-      console.error('[FlightSelector] Error fetching flights:', error);
+      _log('error', '[FlightSelector] Error fetching flights:', error);
       setFlights(useDemo ? generateMockFlights() : []);
     } finally {
       setLoading(false);
@@ -135,7 +145,7 @@ export default function FlightSelector({
         setFavoriteFlights(JSON.parse(saved));
       }
     } catch (error) {
-      console.error('[FlightSelector] Error loading favorites:', error);
+      _log('error', '[FlightSelector] Error loading favorites:', error);
     }
   };
 

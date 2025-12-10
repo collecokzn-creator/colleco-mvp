@@ -29,6 +29,16 @@ export default function CarHireSelector({
   onSkip,
   onCancel 
 }) {
+  // Local debug logger — enabled in dev or when `VITE_DEBUG_CARHIRE=1`
+  const _log = (level, ...args) => {
+    if (!(import.meta.env.DEV || import.meta?.env?.VITE_DEBUG_CARHIRE === '1')) return;
+    // eslint-disable-next-line no-console
+    if (level === 'error') console.error(...args);
+    // eslint-disable-next-line no-console
+    else if (level === 'warn') console.warn(...args);
+    // eslint-disable-next-line no-console
+    else console.log(...args);
+  };
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
@@ -126,7 +136,7 @@ export default function CarHireSelector({
     };
 
     try {
-      console.log('[CarHireSelector] Fetching cars for:', { pickupLocation, dropoffLocation, pickupDate, dropoffDate });
+      _log('log', '[CarHireSelector] Fetching cars for:', { pickupLocation, dropoffLocation, pickupDate, dropoffDate });
       const response = await fetch('/api/carhire/available-cars', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -145,12 +155,12 @@ export default function CarHireSelector({
           setErrorMsg('Live car hire providers unavailable. Showing demo cars.');
         }
       } else {
-        console.error('[CarHireSelector] Failed to fetch cars');
+        _log('error', '[CarHireSelector] Failed to fetch cars');
         setCars(useDemo ? generateMockCars() : []);
         setErrorMsg('Unable to load live cars. Showing demo cars.');
       }
     } catch (error) {
-      console.error('[CarHireSelector] Error fetching cars:', error);
+      _log('error', '[CarHireSelector] Error fetching cars:', error);
       setCars(useDemo ? generateMockCars() : []);
       setErrorMsg('Network error. Showing demo cars.');
     } finally {
@@ -165,7 +175,7 @@ export default function CarHireSelector({
         setFavoriteCars(JSON.parse(saved));
       }
     } catch (error) {
-      console.error('[CarHireSelector] Error loading favorites:', error);
+      _log('error', '[CarHireSelector] Error loading favorites:', error);
     }
   };
 

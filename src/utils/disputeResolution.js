@@ -469,15 +469,18 @@ function updateDispute(disputeId, dispute) {
 
 function processRefund(userId, amount) {
   // Would integrate with payment processor
+  /* eslint-disable-next-line no-console */
   console.log(`Processing refund of ${amount} to user ${userId}`);
 }
 
 function addAccountCredit(userId, amount) {
   // Would add credit to user account
+  /* eslint-disable-next-line no-console */
   console.log(`Adding ${amount} credit to user ${userId}`);
 }
 
 function scheduleRebook(userId, rebookDate) {
   // Would schedule rebook for user
+  /* eslint-disable-next-line no-console */
   console.log(`Scheduling rebook for user ${userId} on ${rebookDate}`);
 }

@@ -186,7 +186,7 @@ const determineApprover = (booking, rules) => {
   }
 };
 
-const getEscalationPath = (booking, rules) => {
+const getEscalationPath = (_booking, _rules) => {
   return [
     { level: 1, role: 'manager', deadline: 24 },
     { level: 2, role: 'senior_manager', deadline: 48 },

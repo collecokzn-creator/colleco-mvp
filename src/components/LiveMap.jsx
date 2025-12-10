@@ -1,5 +1,20 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
+// Lightweight logger for development — avoids ESLint no-console across the file
+const _log = (level, ...args) => {
+  if (!import.meta.env.DEV) return;
+  if (level === 'warn') {
+    /* eslint-disable-next-line no-console */
+    console.warn(...args);
+  } else if (level === 'error') {
+    /* eslint-disable-next-line no-console */
+    console.error(...args);
+  } else {
+    /* eslint-disable-next-line no-console */
+    console.log(...args);
+  }
+};
+
 export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = true, nearbyDrivers = [], height = '400px', waypoints = [], onRouteInfo }) {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
@@ -10,15 +25,15 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log('[LiveMap] Render:', { pickup, dropoff, driverLocation, showRoute, nearbyDriversCount: nearbyDrivers.length, waypointsCount: waypoints.length, mapExists: !!map });
+  _log('log', '[LiveMap] Render:', { pickup, dropoff, driverLocation, showRoute, nearbyDriversCount: nearbyDrivers.length, waypointsCount: waypoints.length, mapExists: !!map });
 
   const initMap = useCallback(() => {
     if (!mapRef.current || !window.google) {
-      console.log('[LiveMap] initMap called but mapRef or google not ready');
+      _log('log', '[LiveMap] initMap called but mapRef or google not ready');
       return;
     }
 
-    console.log('[LiveMap] Initializing map...');
+    _log('log', '[LiveMap] Initializing map...');
     try {
       const mapInstance = new window.google.maps.Map(mapRef.current, {
         center: { lat: -29.8587, lng: 31.0218 }, // Durban default
@@ -31,7 +46,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
 
       setMap(mapInstance);
       setLoading(false);
-      console.log('[LiveMap] Map initialized successfully');
+      _log('log', '[LiveMap] Map initialized successfully');
       
       const renderer = new window.google.maps.DirectionsRenderer({
         map: mapInstance,
@@ -44,7 +59,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
       
       setDirectionsRenderer(renderer);
     } catch (e) {
-      console.error('[LiveMap] Failed to initialize map:', e);
+      _log('error', '[LiveMap] Failed to initialize map:', e);
       setError('Failed to initialize map');
       setLoading(false);
     }
@@ -208,7 +223,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
             // no-op
           }
         } else {
-          console.error('[LiveMap] Directions request failed:', status);
+          _log('error', '[LiveMap] Directions request failed:', status);
         }
       }
     );
@@ -216,13 +231,13 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
 
   useEffect(() => {
     // Load Google Maps script
-    console.log('[LiveMap] Script loading effect triggered', { hasGoogle: !!window.google });
+    _log('log', '[LiveMap] Script loading effect triggered', { hasGoogle: !!window.google });
     if (!window.google) {
       const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-      console.log('[LiveMap] API Key present:', !!apiKey, 'Length:', apiKey?.length);
+      _log('log', '[LiveMap] API Key present:', !!apiKey, 'Length:', apiKey?.length);
       if (!apiKey || apiKey === 'YOUR_API_KEY') {
         const errorMsg = 'Google Maps API key not configured. Map preview unavailable. Set VITE_GOOGLE_MAPS_API_KEY in environment variables.';
-        console.warn('[LiveMap]', errorMsg);
+        _log('warn', '[LiveMap]', errorMsg);
         setError(errorMsg);
         setLoading(false);
         return;
@@ -232,25 +247,25 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
-      console.log('[LiveMap] Adding Google Maps script to page');
+      _log('log', '[LiveMap] Adding Google Maps script to page');
       document.head.appendChild(script);
       
       script.onload = () => {
-        console.log('[LiveMap] Google Maps script loaded successfully');
+        _log('log', '[LiveMap] Google Maps script loaded successfully');
         setTimeout(() => {
-          console.log('[LiveMap] Attempting to initialize map');
+          _log('log', '[LiveMap] Attempting to initialize map');
           initMap();
         }, 100);
       };
       
       script.onerror = (e) => {
         const errorMsg = 'Failed to load Google Maps script - check API key and billing';
-        console.error('[LiveMap]', errorMsg, e);
+        _log('error', '[LiveMap]', errorMsg, e);
         setError(errorMsg);
         setLoading(false);
       };
     } else {
-      console.log('[LiveMap] Google Maps already loaded, initializing directly');
+      _log('log', '[LiveMap] Google Maps already loaded, initializing directly');
       initMap();
     }
   }, []); // Empty deps - run once on mount only

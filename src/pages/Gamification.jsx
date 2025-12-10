@@ -21,6 +21,16 @@ import LeaderboardConsentBanner from '../components/LeaderboardConsentBanner';
  * Main dashboard for challenges, achievements, and leaderboards
  */
 export default function Gamification() {
+  // Local debug logger — enabled in dev or by `VITE_DEBUG_GAMIFICATION=1`
+  const _log = (level, ...args) => {
+    if (!(import.meta.env.DEV || import.meta?.env?.VITE_DEBUG_GAMIFICATION === '1')) return;
+    // eslint-disable-next-line no-console
+    if (level === 'error') console.error(...args);
+    // eslint-disable-next-line no-console
+    else if (level === 'warn') console.warn(...args);
+    // eslint-disable-next-line no-console
+    else console.log(...args);
+  };
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('challenges');
   const [challengeFilter, setChallengeFilter] = useState('all');
@@ -85,7 +95,7 @@ export default function Gamification() {
         userId={userId} 
         userType={userType}
         onConsent={(consent) => {
-          console.log('User consent updated:', consent);
+          _log('log', 'User consent updated:', consent);
           // Optionally reload data after consent
           loadGamificationData();
         }}

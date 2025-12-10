@@ -8,6 +8,7 @@ class VoiceBookingAgent {
     this.recognition = null;
     this.synthesis = window.speechSynthesis;
     this.isListening = false;
+    this.debug = false; // set to true to enable debug logging
     this.conversationContext = {};
     this.currentBooking = {};
     this.conversationHistory = [];
@@ -16,10 +17,21 @@ class VoiceBookingAgent {
     this.initializeSpeechRecognition();
   }
 
+  // Internal debug logger — respects `this.debug` and avoids ESLint no-console warnings
+  _log(level, ...args) {
+    if (!this.debug) return;
+    // eslint-disable-next-line no-console
+    if (level === 'warn') console.warn(...args);
+    // eslint-disable-next-line no-console
+    else if (level === 'error') console.error(...args);
+    // eslint-disable-next-line no-console
+    else console.log(...args);
+  }
+
   // Initialize speech recognition
   initializeSpeechRecognition() {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      console.warn('Speech recognition not supported in this browser');
+      this._log('warn', 'Speech recognition not supported in this browser');
       return;
     }
 
@@ -54,7 +66,7 @@ class VoiceBookingAgent {
        }
       return true;
     } catch (error) {
-      console.error('Failed to start speech recognition:', error);
+      this._log('error', 'Failed to start speech recognition:', error);
       return false;
     }
   }
@@ -73,8 +85,8 @@ class VoiceBookingAgent {
     const lastResult = results[results.length - 1];
     
     if (lastResult.isFinal) {
-       const transcript = lastResult[0].transcript.trim();
-      console.log('User said:', transcript);
+      const transcript = lastResult[0].transcript.trim();
+      this._log('log', 'User said:', transcript);
       
       // Add to conversation history
       this.conversationHistory.push({
@@ -95,7 +107,7 @@ class VoiceBookingAgent {
 
   // Handle speech recognition errors
   handleSpeechError(event) {
-    console.error('Speech recognition error:', event.error);
+    this._log('error', 'Speech recognition error:', event.error);
     
     if (event.error === 'no-speech') {
       this.speak("I didn't catch that. Could you please repeat?");
@@ -178,7 +190,7 @@ class VoiceBookingAgent {
            try {
              this.recognition.start();
            } catch (e) {
-             console.log('[VoiceAgent] Recognition already started');
+             this._log('log', '[VoiceAgent] Recognition already started');
            }
          }, 500); // Wait 500ms before listening again
        }
@@ -552,7 +564,7 @@ class VoiceBookingAgent {
         this.speak(`The estimated cost for this trip is ${this.formatCurrency(estimate.totalPrice)}. Would you like to confirm?`);
       }, 3000);
     } catch (error) {
-      console.error('Failed to get estimate:', error);
+      this._log('error', 'Failed to get estimate:', error);
     }
   }
 

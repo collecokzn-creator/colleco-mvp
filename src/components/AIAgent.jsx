@@ -138,7 +138,7 @@ export default function AIAgent() {
   };
 
   // Context-aware smart reply stub
-  const smartReply = (text) => {
+  const _smartReply = (text) => {
     if (!role) {
       // Role selection
       if (/client/i.test(text)) {

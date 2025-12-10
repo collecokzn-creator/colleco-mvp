@@ -24,6 +24,16 @@ export default function RideSelector({
   onSkip,
   onCancel 
 }) {
+  // Local debug logger — enabled in dev or when `VITE_DEBUG_RIDES=1`
+  const _log = (level, ...args) => {
+    if (!(import.meta.env.DEV || import.meta?.env?.VITE_DEBUG_RIDES === '1')) return;
+    // eslint-disable-next-line no-console
+    if (level === 'error') console.error(...args);
+    // eslint-disable-next-line no-console
+    else if (level === 'warn') console.warn(...args);
+    // eslint-disable-next-line no-console
+    else console.log(...args);
+  };
   const [rides, setRides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterBy, setFilterBy] = useState('all'); // all, price, rating, popularity, brand
@@ -122,7 +132,7 @@ export default function RideSelector({
     };
 
     try {
-      console.log('[RideSelector] Fetching rides for:', { pickup, dropoff, vehicleType, passengers });
+      _log('log', '[RideSelector] Fetching rides for:', { pickup, dropoff, vehicleType, passengers });
       const response = await fetch('/api/transfers/available-rides', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -137,14 +147,14 @@ export default function RideSelector({
       if (response.ok) {
         const data = await response.json();
         const list = data.rides || [];
-        console.log('[RideSelector] Received rides:', list.length);
+        _log('log', '[RideSelector] Received rides:', list.length);
         setRides(list.length ? list : (useDemo ? generateMockRides() : []));
       } else {
-        console.error('[RideSelector] Failed to fetch rides');
+        _log('error', '[RideSelector] Failed to fetch rides');
         setRides(useDemo ? generateMockRides() : []);
       }
     } catch (error) {
-      console.error('Failed to fetch rides:', error);
+      _log('error', 'Failed to fetch rides:', error);
       setRides(useDemo ? generateMockRides() : []);
     } finally {
       setLoading(false);
@@ -156,7 +166,7 @@ export default function RideSelector({
       const saved = localStorage.getItem('colleco.favoriteDrivers');
       setFavoriteDrivers(saved ? JSON.parse(saved) : []);
     } catch (error) {
-      console.error('Failed to load favorite drivers:', error);
+      _log('error', 'Failed to load favorite drivers:', error);
     }
   };
 
@@ -171,7 +181,7 @@ export default function RideSelector({
 
   const getFilteredAndSortedRides = () => {
     let filtered = [...rides];
-    console.log(`[RideSelector] Starting filter: ${filterBy}, Total rides: ${filtered.length}`);
+    _log('log', `[RideSelector] Starting filter: ${filterBy}, Total rides: ${filtered.length}`);
 
     // Preferred brand/driver filters (exact or contains)
     if (preferredBrand.trim()) {
@@ -186,20 +196,20 @@ export default function RideSelector({
     // Apply filters
     if (filterBy === 'favorites') {
       filtered = filtered.filter(ride => favoriteDrivers.includes(ride.driver.id));
-      console.log(`[RideSelector] After favorites filter: ${filtered.length}`);
+      _log('log', `[RideSelector] After favorites filter: ${filtered.length}`);
     } else if (filterBy === 'premium') {
       filtered = filtered.filter(ride => ride.brand.isPremium);
-      console.log(`[RideSelector] After premium filter: ${filtered.length}`);
+      _log('log', `[RideSelector] After premium filter: ${filtered.length}`);
     } else if (filterBy === 'budget') {
       if (rides.length > 0) {
         const minPrice = Math.min(...rides.map(r => r.price));
-        console.log(`[RideSelector] Min price: R${minPrice}, Budget threshold: R${minPrice * 1.1}`);
+        _log('log', `[RideSelector] Min price: R${minPrice}, Budget threshold: R${minPrice * 1.1}`);
         filtered = filtered.filter(ride => ride.price <= minPrice * 1.1); // Within 10% of lowest
-        console.log(`[RideSelector] After budget filter: ${filtered.length}`);
+        _log('log', `[RideSelector] After budget filter: ${filtered.length}`);
       }
     } else if (filterBy === 'top_rated') {
       filtered = filtered.filter(ride => ride.rating >= 4.5);
-      console.log(`[RideSelector] After top_rated filter: ${filtered.length}`);
+      _log('log', `[RideSelector] After top_rated filter: ${filtered.length}`);
     }
 
     // Apply sorting
@@ -230,7 +240,7 @@ export default function RideSelector({
         });
     }
 
-    console.log(`[RideSelector] Final filtered count: ${filtered.length}`);
+    _log('log', `[RideSelector] Final filtered count: ${filtered.length}`);
     return filtered;
   };
 
