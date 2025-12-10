@@ -344,7 +344,7 @@ class SmartNotificationManager {
     ).slice(0, 3);
   }
 
-  suggestActions(notification, context) {
+  suggestActions(notification, _context) {
     const actions = [];
 
     if (notification.category === CATEGORY.APPROVAL) {

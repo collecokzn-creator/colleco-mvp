@@ -5,7 +5,7 @@
  */
 
 export function getZolaResponse(userMessage) {
-  const lower = userMessage.toLowerCase();
+  const _lower = userMessage.toLowerCase();
   
   // Greetings & casual chat - Ubuntu warmth
   if (/^(hi|hello|hey|howdy|good morning|good afternoon|good evening|what's up|sup|sawubona|sanibonani)\b/i.test(userMessage)) {

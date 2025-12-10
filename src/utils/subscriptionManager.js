@@ -4,11 +4,11 @@
  * Core of the revenue generation system
  */
 
-import { getPlan, SUBSCRIPTION_PLANS } from './subscriptionPlans.js';
+import { getPlan, SUBSCRIPTION_PLANS as _SUBSCRIPTION_PLANS } from './subscriptionPlans.js';
 
 const STORAGE_KEY = 'colleco.subscriptions';
 const INVOICES_KEY = 'colleco.invoices';
-const BILLING_CYCLES_KEY = 'colleco.billing_cycles';
+const _BILLING_CYCLES_KEY = 'colleco.billing_cycles';
 
 /**
  * Get or initialize partner subscription

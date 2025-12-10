@@ -142,7 +142,7 @@ function runContentFiltering(content, rating) {
 
   // Calculate overall confidence
   if (check_count > 0) {
-    const avg_confidence = confidence_sum / check_count;
+    const _avg_confidence = confidence_sum / check_count;
     
     // Filter out low-confidence flags
     return flags.filter(f => f.confidence >= 0.5);
