@@ -449,7 +449,7 @@ export default function LoyaltyDashboard() {
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-brand-orange focus:outline-none text-lg font-semibold"
               />
               <div className="mt-2 text-sm text-gray-600">
-                You'll receive: <strong className="text-brand-orange">{pointsToCurrency(redeemAmount).formatted}</strong> credit
+                You&apos;ll receive: <strong className="text-brand-orange">{pointsToCurrency(redeemAmount).formatted}</strong> credit
               </div>
             </div>
 

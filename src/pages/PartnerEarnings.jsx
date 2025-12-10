@@ -223,7 +223,7 @@ export default function PartnerEarnings() {
             <div className="bg-white rounded-lg shadow-sm border border-cream-border p-6">
               <h3 className="text-xl font-bold text-brand-brown mb-4 flex items-center gap-2">
                 <Calendar className="h-5 w-5" />
-                This Month's Earnings
+                This Month&apos;s Earnings
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <MetricBox label="Gross Earnings" value={formatCurrency(monthlyReport?.grossEarnings || 0)} />

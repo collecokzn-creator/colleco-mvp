@@ -77,7 +77,7 @@ export default function SubscriptionTiers() {
                   Your Estimated Monthly Revenue
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  Help us recommend the perfect plan by entering your typical monthly revenue. We'll calculate your exact ROI.
+                  Help us recommend the perfect plan by entering your typical monthly revenue. We&apos;ll calculate your exact ROI.
                 </p>
                 
                 <div className="flex items-center gap-4">

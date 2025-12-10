@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { CheckCircle2, Clock, XCircle, AlertCircle, ArrowRight, FileText, Shield, UserCheck, Sparkles } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, AlertCircle, ArrowRight, FileText, Shield, UserCheck as _UserCheck, Sparkles } from "lucide-react";
 
 const VERIFICATION_STAGES = [
   {
@@ -251,7 +251,7 @@ export default function PartnerApplicationStatus() {
             <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5" />
             <div>
               <p className="font-semibold text-green-900">{successMessage}</p>
-              <p className="text-sm text-green-700">We'll notify you once our team reviews your application.</p>
+              <p className="text-sm text-green-700">We&apos;ll notify you once our team reviews your application.</p>
             </div>
           </div>
         )}
