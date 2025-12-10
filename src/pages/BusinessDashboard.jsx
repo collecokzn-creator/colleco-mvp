@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Users, Briefcase, TrendingUp, DollarSign, Calendar, MapPin,
-  Download, Plus, Filter, Settings, BarChart3, FileText, Clock,
-  CheckCircle2, AlertCircle, User, Plane, Hotel, Car
+  Users, Briefcase, TrendingUp as _TrendingUp, DollarSign, Calendar, MapPin,
+  Download, Plus, Filter as _Filter, Settings as _Settings, BarChart3, FileText, Clock as _Clock,
+  CheckCircle2, AlertCircle as _AlertCircle, User, Plane, Hotel, Car
 } from "lucide-react";
 
 export default function BusinessDashboard() {

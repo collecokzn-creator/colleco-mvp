@@ -19,7 +19,7 @@ import {
   updatePartnerTier,
   getPerformanceSummary,
   getPartnerInsights,
-  getTierProgression,
+  getTierProgression as _getTierProgression,
 } from '../utils/partnerMetrics';
 import {
   analyzeCompetitors,

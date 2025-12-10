@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Calendar, MapPin, Plane, Hotel, Car, DollarSign, 
-  Clock, CheckCircle2, XCircle, AlertCircle, TrendingUp,
+  Clock, CheckCircle2, XCircle, AlertCircle as _AlertCircle, TrendingUp,
   Bookmark, FileText, MessageCircle, Star, ArrowRight, Plus
 } from "lucide-react";
 import GamificationWidget from "../components/GamificationWidget";

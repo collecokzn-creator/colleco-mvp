@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Bookmark, MapPin, Calendar, DollarSign, Clock, 
-  Trash2, Share2, Edit, ArrowRight, Plus, Search,
-  Filter, Download, Copy, CheckCircle2, Sparkles
+  Trash2, Share2, Edit, ArrowRight as _ArrowRight, Plus, Search,
+  Filter as _Filter, Download as _Download, Copy, CheckCircle2, Sparkles
 } from "lucide-react";
 
 export default function SavedItineraries() {
