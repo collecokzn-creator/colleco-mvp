@@ -8,6 +8,20 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 
+// Try to run lint-staged first to fix staged files (if available via npx).
+try {
+  execSync('npx --no-install lint-staged', { stdio: 'inherit' });
+} catch (err) {
+  // If lint-staged isn't installed locally, attempt to run it via npx network fetch.
+  try {
+    execSync('npx lint-staged', { stdio: 'inherit' });
+  } catch (e) {
+    // Not fatal — continue to secret scanning. Developers can install lint-staged.
+    // eslint-disable-next-line no-console
+    console.warn('lint-staged not run (not installed). Skipping.');
+  }
+}
+
 const SECRET_PATTERNS = [
   { pattern: /AIza[0-9A-Za-z_-]{35}/, name: 'Google API Key' },
   { pattern: /sk_live_[0-9a-zA-Z]{24,}/, name: 'Stripe Live Key' },

@@ -56,6 +56,12 @@
       "pre-commit": "node .husky/pre-commit"
     }
   },
+  "lint-staged": {
+    "*.+(js|jsx)": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "dependencies": {
     "ajv": "^8.17.1",
     "cors": "^2.8.5",
@@ -106,5 +112,11 @@
     "unzipper": "^0.10.11",
     "vite": "^7.1.7",
     "vitest": "^4.0.5"
+  }
+  ,
+  "dependenciesMeta": {
+    "lint-staged": {
+      "optional": true
+    }
   }
 }
