@@ -209,7 +209,7 @@ export default function TravelerDashboard() {
           <h1 className="text-3xl md:text-4xl font-bold text-brand-brown mb-2">
             Welcome back, {user?.name || 'Traveler'}! ✈️
           </h1>
-          <p className="text-gray-600">Here's what's happening with your trips</p>
+          <p className="text-gray-600">Here&apos;s what&apos;s happening with your trips</p>
         </div>
 
         {/* Stats Grid */}

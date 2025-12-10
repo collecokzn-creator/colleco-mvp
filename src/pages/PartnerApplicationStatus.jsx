@@ -153,7 +153,7 @@ export default function PartnerApplicationStatus() {
                   <div className="mt-3 space-y-3">
                     <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                       <p className="text-sm text-green-800 mb-2">
-                        🎉 Congratulations! You're now part of the CollEco Partner Network.
+                        🎉 Congratulations! You&apos;re now part of the CollEco Partner Network.
                       </p>
                       <p className="text-xs text-green-700">
                         Approved on {new Date(application.approvedAt).toLocaleDateString()}

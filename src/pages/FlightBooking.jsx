@@ -415,7 +415,7 @@ export default function FlightBooking(){
                     </svg>
                     <h4 className="font-medium text-gray-700 text-sm">Need to Speak to a Specialist?</h4>
                   </div>
-                  <p className="text-xs text-gray-600 mb-3">If Zola can't resolve your issue, you'll be connected to our team:</p>
+                  <p className="text-xs text-gray-600 mb-3">If Zola can&apos;t resolve your issue, you&apos;ll be connected to our team:</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                     <div>
                       <p className="text-gray-500">Email Support</p>

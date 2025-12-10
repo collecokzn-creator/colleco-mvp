@@ -457,7 +457,7 @@ export default function Transfers() {
                 {!loadingNearby && nearbyDrivers.length === 0 && (
                   <div className="p-3 bg-yellow-50 border-2 border-yellow-200 rounded-lg">
                     <p className="text-yellow-800 text-sm">
-                      <strong>No shuttles currently in this area.</strong> You can still submit a request and we'll notify nearby drivers.
+                      <strong>No shuttles currently in this area.</strong> You can still submit a request and we&apos;ll notify nearby drivers.
                     </p>
                   </div>
                 )}

@@ -3,7 +3,7 @@ import { Shield, Check, X, Info, Download, Trash2, Eye, Lock } from 'lucide-reac
 import { 
   getUserConsent, 
   setUserConsent, 
-  CONSENT_TYPES,
+  CONSENT_TYPES as _CONSENT_TYPES,
   exportUserData,
   deleteUserAccount,
 } from '../utils/privacyGuard';
