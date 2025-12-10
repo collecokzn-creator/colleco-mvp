@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Bookmark, MapPin, Calendar, DollarSign, Clock, 
@@ -17,13 +16,13 @@ export default function SavedItineraries() {
 
   useEffect(() => {
     fetchItineraries();
-  }, []);
+  }, [fetchItineraries]);
 
   useEffect(() => {
     applyFiltersAndSort();
-  }, [itineraries, searchQuery, sortBy]);
+  }, [applyFiltersAndSort]);
 
-  const fetchItineraries = async () => {
+  const fetchItineraries = useCallback(async () => {
     try {
       const response = await fetch('/api/itineraries/saved');
       if (!response.ok) throw new Error('Failed to fetch itineraries');
@@ -36,9 +35,9 @@ export default function SavedItineraries() {
       setItineraries(mockItineraries);
       setLoading(false);
     }
-  };
+  }, []);
 
-  const applyFiltersAndSort = () => {
+  const applyFiltersAndSort = useCallback(() => {
     let result = [...itineraries];
 
     // Apply search
@@ -71,7 +70,7 @@ export default function SavedItineraries() {
     });
 
     setFilteredItineraries(result);
-  };
+  }, [itineraries, searchQuery, sortBy]);
 
   const handleDelete = async (id, e) => {
     e.stopPropagation();
