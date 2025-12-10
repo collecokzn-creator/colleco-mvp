@@ -742,7 +742,7 @@ function Login() {
           {/* Additional Info */}
           <div className="mt-6 text-center">
             <p className="text-sm text-brand-russty">
-              {tab === "login" ? "Don't have an account? " : "Already have an account? "}
+              {tab === "login" ? "Don&apos;t have an account? " : "Already have an account? "}
               <button
                 type="button"
                 onClick={() => {

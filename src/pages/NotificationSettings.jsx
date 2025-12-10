@@ -264,7 +264,7 @@ const NotificationSettings = () => {
             )}
           </div>
 
-          {/* What You'll Receive */}
+          {/* What You&apos;ll Receive */}
           <div className="border-t border-cream-border pt-6">
             <h2 className="font-semibold text-gray-900 mb-3">What You&apos;ll Receive</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
