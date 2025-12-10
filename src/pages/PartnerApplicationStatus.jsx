@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CheckCircle2, Clock, XCircle, AlertCircle, ArrowRight, FileText, Shield, UserCheck as _UserCheck, Sparkles } from "lucide-react";

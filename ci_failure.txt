@@ -1,0 +1,571 @@
+build-test	Set up job	´╗┐2025-12-09T14:50:40.1086780Z Current runner version: '2.329.0'
+build-test	Set up job	2025-12-09T14:50:40.1113270Z ##[group]Runner Image Provisioner
+build-test	Set up job	2025-12-09T14:50:40.1114190Z Hosted Compute Agent
+build-test	Set up job	2025-12-09T14:50:40.1114716Z Version: 20251124.448
+build-test	Set up job	2025-12-09T14:50:40.1115310Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+build-test	Set up job	2025-12-09T14:50:40.1116046Z Build Date: 2025-11-24T21:16:26Z
+build-test	Set up job	2025-12-09T14:50:40.1116948Z ##[endgroup]
+build-test	Set up job	2025-12-09T14:50:40.1117488Z ##[group]Operating System
+build-test	Set up job	2025-12-09T14:50:40.1118126Z Ubuntu
+build-test	Set up job	2025-12-09T14:50:40.1118585Z 24.04.3
+build-test	Set up job	2025-12-09T14:50:40.1119066Z LTS
+build-test	Set up job	2025-12-09T14:50:40.1119524Z ##[endgroup]
+build-test	Set up job	2025-12-09T14:50:40.1120054Z ##[group]Runner Image
+build-test	Set up job	2025-12-09T14:50:40.1120654Z Image: ubuntu-24.04
+build-test	Set up job	2025-12-09T14:50:40.1121226Z Version: 20251126.144.1
+build-test	Set up job	2025-12-09T14:50:40.1122290Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+build-test	Set up job	2025-12-09T14:50:40.1123652Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+build-test	Set up job	2025-12-09T14:50:40.1124886Z ##[endgroup]
+build-test	Set up job	2025-12-09T14:50:40.1126006Z ##[group]GITHUB_TOKEN Permissions
+build-test	Set up job	2025-12-09T14:50:40.1128564Z Contents: read
+build-test	Set up job	2025-12-09T14:50:40.1129147Z Metadata: read
+build-test	Set up job	2025-12-09T14:50:40.1129605Z Packages: read
+build-test	Set up job	2025-12-09T14:50:40.1130225Z ##[endgroup]
+build-test	Set up job	2025-12-09T14:50:40.1132650Z Secret source: Actions
+build-test	Set up job	2025-12-09T14:50:40.1133512Z Prepare workflow directory
+build-test	Set up job	2025-12-09T14:50:40.1466671Z Prepare all required actions
+build-test	Set up job	2025-12-09T14:50:40.1506897Z Getting action download info
+build-test	Set up job	2025-12-09T14:50:40.4641317Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+build-test	Set up job	2025-12-09T14:50:40.7860311Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+build-test	Set up job	2025-12-09T14:50:40.9342433Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+build-test	Set up job	2025-12-09T14:50:41.2094789Z Complete job name: build-test
+build-test	Checkout	´╗┐2025-12-09T14:50:41.2797974Z ##[group]Run actions/checkout@v4
+build-test	Checkout	2025-12-09T14:50:41.2798877Z with:
+build-test	Checkout	2025-12-09T14:50:41.2799361Z   repository: collecokzn-creator/colleco-mvp
+build-test	Checkout	2025-12-09T14:50:41.2800102Z   token: ***
+build-test	Checkout	2025-12-09T14:50:41.2800496Z   ssh-strict: true
+build-test	Checkout	2025-12-09T14:50:41.2800906Z   ssh-user: git
+build-test	Checkout	2025-12-09T14:50:41.2801320Z   persist-credentials: true
+build-test	Checkout	2025-12-09T14:50:41.2801798Z   clean: true
+build-test	Checkout	2025-12-09T14:50:41.2802207Z   sparse-checkout-cone-mode: true
+build-test	Checkout	2025-12-09T14:50:41.2802708Z   fetch-depth: 1
+build-test	Checkout	2025-12-09T14:50:41.2803098Z   fetch-tags: false
+build-test	Checkout	2025-12-09T14:50:41.2803513Z   show-progress: true
+build-test	Checkout	2025-12-09T14:50:41.2803928Z   lfs: false
+build-test	Checkout	2025-12-09T14:50:41.2804312Z   submodules: false
+build-test	Checkout	2025-12-09T14:50:41.2804734Z   set-safe-directory: true
+build-test	Checkout	2025-12-09T14:50:41.2805394Z ##[endgroup]
+build-test	Checkout	2025-12-09T14:50:41.3904337Z Syncing repository: collecokzn-creator/colleco-mvp
+build-test	Checkout	2025-12-09T14:50:41.3906758Z ##[group]Getting Git version info
+build-test	Checkout	2025-12-09T14:50:41.3907581Z Working directory is '/home/runner/work/colleco-mvp/colleco-mvp'
+build-test	Checkout	2025-12-09T14:50:41.3908664Z [command]/usr/bin/git version
+build-test	Checkout	2025-12-09T14:50:41.3992335Z git version 2.52.0
+build-test	Checkout	2025-12-09T14:50:41.4019777Z ##[endgroup]
+build-test	Checkout	2025-12-09T14:50:41.4034776Z Temporarily overriding HOME='/home/runner/work/_temp/d951e57b-96db-4181-b38a-1fdd3d554a5b' before making global git config changes
+build-test	Checkout	2025-12-09T14:50:41.4036212Z Adding repository directory to the temporary git global config as a safe directory
+build-test	Checkout	2025-12-09T14:50:41.4049912Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/colleco-mvp/colleco-mvp
+build-test	Checkout	2025-12-09T14:50:41.4091525Z Deleting the contents of '/home/runner/work/colleco-mvp/colleco-mvp'
+build-test	Checkout	2025-12-09T14:50:41.4095443Z ##[group]Initializing the repository
+build-test	Checkout	2025-12-09T14:50:41.4099928Z [command]/usr/bin/git init /home/runner/work/colleco-mvp/colleco-mvp
+build-test	Checkout	2025-12-09T14:50:41.4222773Z hint: Using 'master' as the name for the initial branch. This default branch name
+build-test	Checkout	2025-12-09T14:50:41.4225206Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build-test	Checkout	2025-12-09T14:50:41.4227945Z hint: to use in all of your new repositories, which will suppress this warning,
+build-test	Checkout	2025-12-09T14:50:41.4229825Z hint: call:
+build-test	Checkout	2025-12-09T14:50:41.4230353Z hint:
+build-test	Checkout	2025-12-09T14:50:41.4231040Z hint: 	git config --global init.defaultBranch <name>
+build-test	Checkout	2025-12-09T14:50:41.4231714Z hint:
+build-test	Checkout	2025-12-09T14:50:41.4232321Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build-test	Checkout	2025-12-09T14:50:41.4233303Z hint: 'development'. The just-created branch can be renamed via this command:
+build-test	Checkout	2025-12-09T14:50:41.4234249Z hint:
+build-test	Checkout	2025-12-09T14:50:41.4234889Z hint: 	git branch -m <name>
+build-test	Checkout	2025-12-09T14:50:41.4235511Z hint:
+build-test	Checkout	2025-12-09T14:50:41.4236175Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build-test	Checkout	2025-12-09T14:50:41.4237584Z Initialized empty Git repository in /home/runner/work/colleco-mvp/colleco-mvp/.git/
+build-test	Checkout	2025-12-09T14:50:41.4241408Z [command]/usr/bin/git remote add origin https://github.com/collecokzn-creator/colleco-mvp
+build-test	Checkout	2025-12-09T14:50:41.4278900Z ##[endgroup]
+build-test	Checkout	2025-12-09T14:50:41.4279706Z ##[group]Disabling automatic garbage collection
+build-test	Checkout	2025-12-09T14:50:41.4283102Z [command]/usr/bin/git config --local gc.auto 0
+build-test	Checkout	2025-12-09T14:50:41.4313141Z ##[endgroup]
+build-test	Checkout	2025-12-09T14:50:41.4313898Z ##[group]Setting up auth
+build-test	Checkout	2025-12-09T14:50:41.4320606Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-test	Checkout	2025-12-09T14:50:41.4352589Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-test	Checkout	2025-12-09T14:50:41.4730742Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-test	Checkout	2025-12-09T14:50:41.4761598Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-test	Checkout	2025-12-09T14:50:41.4991952Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-test	Checkout	2025-12-09T14:50:41.5027734Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-test	Checkout	2025-12-09T14:50:41.5272183Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build-test	Checkout	2025-12-09T14:50:41.5309175Z ##[endgroup]
+build-test	Checkout	2025-12-09T14:50:41.5310193Z ##[group]Fetching the repository
+build-test	Checkout	2025-12-09T14:50:41.5319052Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +5d2e8f95a8e5f4c1f712c5adc7bac6557ba9ec71:refs/remotes/origin/main
+build-test	Checkout	2025-12-09T14:50:42.4562626Z From https://github.com/collecokzn-creator/colleco-mvp
+build-test	Checkout	2025-12-09T14:50:42.4564386Z  * [new ref]         5d2e8f95a8e5f4c1f712c5adc7bac6557ba9ec71 -> origin/main
+build-test	Checkout	2025-12-09T14:50:42.4598605Z ##[endgroup]
+build-test	Checkout	2025-12-09T14:50:42.4600652Z ##[group]Determining the checkout info
+build-test	Checkout	2025-12-09T14:50:42.4603045Z ##[endgroup]
+build-test	Checkout	2025-12-09T14:50:42.4608226Z [command]/usr/bin/git sparse-checkout disable
+build-test	Checkout	2025-12-09T14:50:42.4654041Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build-test	Checkout	2025-12-09T14:50:42.4682767Z ##[group]Checking out the ref
+build-test	Checkout	2025-12-09T14:50:42.4687292Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+build-test	Checkout	2025-12-09T14:50:42.6049282Z Switched to a new branch 'main'
+build-test	Checkout	2025-12-09T14:50:42.6051626Z branch 'main' set up to track 'origin/main'.
+build-test	Checkout	2025-12-09T14:50:42.6064541Z ##[endgroup]
+build-test	Checkout	2025-12-09T14:50:42.6106434Z [command]/usr/bin/git log -1 --format=%H
+build-test	Checkout	2025-12-09T14:50:42.6132186Z 5d2e8f95a8e5f4c1f712c5adc7bac6557ba9ec71
+build-test	Setup Node	´╗┐2025-12-09T14:50:42.6447944Z ##[group]Run actions/setup-node@v4
+build-test	Setup Node	2025-12-09T14:50:42.6449184Z with:
+build-test	Setup Node	2025-12-09T14:50:42.6450001Z   node-version: 20.19.0
+build-test	Setup Node	2025-12-09T14:50:42.6450951Z   cache: npm
+build-test	Setup Node	2025-12-09T14:50:42.6451796Z   always-auth: false
+build-test	Setup Node	2025-12-09T14:50:42.6452748Z   check-latest: false
+build-test	Setup Node	2025-12-09T14:50:42.6454014Z   token: ***
+build-test	Setup Node	2025-12-09T14:50:42.6454845Z ##[endgroup]
+build-test	Setup Node	2025-12-09T14:50:42.8349328Z Attempting to download 20.19.0...
+build-test	Setup Node	2025-12-09T14:50:43.2323579Z Acquiring 20.19.0 - x64 from https://github.com/actions/node-versions/releases/download/20.19.0-13838090974/node-20.19.0-linux-x64.tar.gz
+build-test	Setup Node	2025-12-09T14:50:43.7402762Z Extracting ...
+build-test	Setup Node	2025-12-09T14:50:43.7505901Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/6290a077-4a36-4c2d-b1e8-d348be635dae -f /home/runner/work/_temp/977c892d-78c6-4245-b8b3-0541047c45d6
+build-test	Setup Node	2025-12-09T14:50:44.7494364Z Adding to the cache ...
+build-test	Setup Node	2025-12-09T14:50:46.4660404Z ##[group]Environment details
+build-test	Setup Node	2025-12-09T14:50:46.7954512Z node: v20.19.0
+build-test	Setup Node	2025-12-09T14:50:46.7955475Z npm: 10.8.2
+build-test	Setup Node	2025-12-09T14:50:46.7956010Z yarn: 1.22.22
+build-test	Setup Node	2025-12-09T14:50:46.7957258Z ##[endgroup]
+build-test	Setup Node	2025-12-09T14:50:46.7981012Z [command]/opt/hostedtoolcache/node/20.19.0/x64/bin/npm config get cache
+build-test	Setup Node	2025-12-09T14:50:46.8998494Z /home/runner/.npm
+build-test	Setup Node	2025-12-09T14:50:46.9954557Z Cache hit for: node-cache-Linux-x64-npm-90e5674eac67ef38c625b66a7269bb94a0c44b017e2c8ca420db3b3891a85615
+build-test	Setup Node	2025-12-09T14:50:47.4190599Z Received 59522545 of 59522545 (100.0%), 152.6 MBs/sec
+build-test	Setup Node	2025-12-09T14:50:47.4191560Z Cache Size: ~57 MB (59522545 B)
+build-test	Setup Node	2025-12-09T14:50:47.4327757Z [command]/usr/bin/tar -xf /home/runner/work/_temp/898dff44-0843-4b17-b085-d939789965f1/cache.tzst -P -C /home/runner/work/colleco-mvp/colleco-mvp --use-compress-program unzstd
+build-test	Setup Node	2025-12-09T14:50:47.6449674Z Cache restored successfully
+build-test	Setup Node	2025-12-09T14:50:47.6575125Z Cache restored from key: node-cache-Linux-x64-npm-90e5674eac67ef38c625b66a7269bb94a0c44b017e2c8ca420db3b3891a85615
+build-test	Install dependencies	´╗┐2025-12-09T14:50:47.6745592Z ##[group]Run npm ci
+build-test	Install dependencies	2025-12-09T14:50:47.6745926Z [36;1mnpm ci[0m
+build-test	Install dependencies	2025-12-09T14:50:47.6785876Z shell: /usr/bin/bash -e {0}
+build-test	Install dependencies	2025-12-09T14:50:47.6786170Z ##[endgroup]
+build-test	Install dependencies	2025-12-09T14:50:50.8799612Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+build-test	Install dependencies	2025-12-09T14:50:50.9851053Z npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+build-test	Install dependencies	2025-12-09T14:50:51.0176131Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+build-test	Install dependencies	2025-12-09T14:50:51.0309684Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+build-test	Install dependencies	2025-12-09T14:50:51.1489901Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+build-test	Install dependencies	2025-12-09T14:50:51.1515325Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+build-test	Install dependencies	2025-12-09T14:50:51.1519875Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+build-test	Install dependencies	2025-12-09T14:50:51.4636769Z npm warn deprecated fstream@1.0.12: This package is no longer supported.
+build-test	Install dependencies	2025-12-09T14:50:53.1894530Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+build-test	Install dependencies	2025-12-09T14:51:08.0994628Z 
+build-test	Install dependencies	2025-12-09T14:51:08.0995787Z > collecotravel-frontend@0.1.0 prepare
+build-test	Install dependencies	2025-12-09T14:51:08.0996694Z > husky install || true
+build-test	Install dependencies	2025-12-09T14:51:08.0996952Z 
+build-test	Install dependencies	2025-12-09T14:51:08.1417759Z husky - install command is DEPRECATED
+build-test	Install dependencies	2025-12-09T14:51:08.1652032Z 
+build-test	Install dependencies	2025-12-09T14:51:08.1653005Z added 907 packages, and audited 908 packages in 20s
+build-test	Install dependencies	2025-12-09T14:51:08.1653484Z 
+build-test	Install dependencies	2025-12-09T14:51:08.1653786Z 219 packages are looking for funding
+build-test	Install dependencies	2025-12-09T14:51:08.1667424Z   run `npm fund` for details
+build-test	Install dependencies	2025-12-09T14:51:08.1718978Z 
+build-test	Install dependencies	2025-12-09T14:51:08.1719927Z 2 vulnerabilities (1 low, 1 high)
+build-test	Install dependencies	2025-12-09T14:51:08.1720566Z 
+build-test	Install dependencies	2025-12-09T14:51:08.1721064Z To address all issues, run:
+build-test	Install dependencies	2025-12-09T14:51:08.1721842Z   npm audit fix
+build-test	Install dependencies	2025-12-09T14:51:08.1729163Z 
+build-test	Install dependencies	2025-12-09T14:51:08.1729462Z Run `npm audit` for details.
+build-test	Lint	´╗┐2025-12-09T14:51:08.2313394Z ##[group]Run npm run lint --if-present
+build-test	Lint	2025-12-09T14:51:08.2313748Z [36;1mnpm run lint --if-present[0m
+build-test	Lint	2025-12-09T14:51:08.2348889Z shell: /usr/bin/bash -e {0}
+build-test	Lint	2025-12-09T14:51:08.2349150Z ##[endgroup]
+build-test	Lint	2025-12-09T14:51:08.3515787Z 
+build-test	Lint	2025-12-09T14:51:08.3516810Z > collecotravel-frontend@0.1.0 lint
+build-test	Lint	2025-12-09T14:51:08.3517862Z > eslint . --ext .js,.jsx
+build-test	Lint	2025-12-09T14:51:08.3518079Z 
+build-test	Lint	2025-12-09T14:51:14.2512591Z 
+build-test	Lint	2025-12-09T14:51:14.2513636Z /home/runner/work/colleco-mvp/colleco-mvp/cypress/e2e/gamification.cy.js
+build-test	Lint	2025-12-09T14:51:14.2542632Z ##[warning]  34:11  warning  'allCount' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2549208Z 
+build-test	Lint	2025-12-09T14:51:14.2549578Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/AIAgent.jsx
+build-test	Lint	2025-12-09T14:51:14.2551572Z ##[warning]  141:9  warning  'smartReply' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2552849Z 
+build-test	Lint	2025-12-09T14:51:14.2553322Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/AccommodationSelector.jsx
+build-test	Lint	2025-12-09T14:51:14.2554588Z ##[warning]    1:38  warning  'useRef' is defined but never used. Allowed unused vars must match /^(React|_)/u                    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2556186Z ##[warning]    4:3   warning  'DollarSign' is defined but never used. Allowed unused vars must match /^(React|_)/u                no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2558018Z ##[warning]    7:3   warning  'Shield' is defined but never used. Allowed unused vars must match /^(React|_)/u                    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2559547Z ##[warning]   12:3   warning  'Filter' is defined but never used. Allowed unused vars must match /^(React|_)/u                    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2561152Z ##[warning]   13:3   warning  'ArrowUpDown' is defined but never used. Allowed unused vars must match /^(React|_)/u               no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2562709Z ##[warning]   27:3   warning  'ChevronDown' is defined but never used. Allowed unused vars must match /^(React|_)/u               no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2564235Z ##[warning]   28:3   warning  'ChevronUp' is defined but never used. Allowed unused vars must match /^(React|_)/u                 no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2565830Z ##[warning]   52:10  warning  'hoveredProperty' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2567716Z ##[warning]  285:13  warning  'prices' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u           no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2569283Z ##[warning]  728:50  warning  'idx' is defined but never used. Allowed unused args must match /^_/u                               no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2570098Z 
+build-test	Lint	2025-12-09T14:51:14.2570436Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/AdminRevenueMetrics.jsx
+build-test	Lint	2025-12-09T14:51:14.2571460Z ##[warning]    2:52  warning  'AlertCircle' is defined but never used. Allowed unused vars must match /^(React|_)/u          no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2572967Z ##[warning]    2:65  warning  'Download' is defined but never used. Allowed unused vars must match /^(React|_)/u             no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2574483Z ##[warning]  139:45  warning  'payoutData' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2575323Z 
+build-test	Lint	2025-12-09T14:51:14.2575633Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/CarHireSelector.jsx
+build-test	Lint	2025-12-09T14:51:14.2577003Z ##[warning]    4:3  warning  'DollarSign' is defined but never used. Allowed unused vars must match /^(React|_)/u                                   no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2578878Z ##[warning]   50:6  warning  React Hook useEffect has a missing dependency: 'fetchAvailableCars'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2580468Z ##[warning]  129:7  warning  Unexpected console statement                                                                                           no-console
+build-test	Lint	2025-12-09T14:51:14.2581612Z 
+build-test	Lint	2025-12-09T14:51:14.2581939Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/FlightSelector.jsx
+build-test	Lint	2025-12-09T14:51:14.2583278Z ##[warning]    4:3  warning  'DollarSign' is defined but never used. Allowed unused vars must match /^(React|_)/u                                      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2585166Z ##[warning]   49:6  warning  React Hook useEffect has a missing dependency: 'fetchAvailableFlights'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2587004Z ##[warning]  102:7  warning  Unexpected console statement                                                                                              no-console
+build-test	Lint	2025-12-09T14:51:14.2587806Z 
+build-test	Lint	2025-12-09T14:51:14.2588134Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/GamificationWidget.jsx
+build-test	Lint	2025-12-09T14:51:14.2589312Z ##[warning]  22:6  warning  React Hook useEffect has a missing dependency: 'loadData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2591126Z ##[warning]  38:6  warning  React Hook useEffect has a missing dependency: 'loadData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2592113Z 
+build-test	Lint	2025-12-09T14:51:14.2592467Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/LeaderboardConsentBanner.jsx
+build-test	Lint	2025-12-09T14:51:14.2593431Z ##[warning]   72:71  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2594689Z ##[warning]   72:78  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2595913Z ##[warning]   72:81  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2597439Z ##[warning]   72:88  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2598680Z ##[warning]  121:87  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2599904Z ##[warning]  121:99  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2601155Z ##[warning]  135:43  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2602410Z ##[warning]  135:56  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2603124Z 
+build-test	Lint	2025-12-09T14:51:14.2603403Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/LiveMap.jsx
+build-test	Lint	2025-12-09T14:51:14.2604481Z ##[warning]    6:10  warning  'markers' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                           no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2605931Z ##[warning]   13:3   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2607534Z ##[warning]   17:7   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2608868Z ##[warning]   21:5   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2610171Z ##[warning]   34:7   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2611477Z ##[warning]  219:5   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2612777Z ##[warning]  222:7   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2614387Z ##[warning]  235:7   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2615877Z ##[warning]  239:9   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2617500Z ##[warning]  241:11  warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2618816Z ##[warning]  253:7   warning  Unexpected console statement                                                                                         no-console
+build-test	Lint	2025-12-09T14:51:14.2620428Z ##[warning]  256:6   warning  React Hook useEffect has a missing dependency: 'initMap'. Either include it or remove the dependency array           react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2622253Z ##[warning]  262:6   warning  React Hook useEffect has a missing dependency: 'updateMapMarkers'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2624053Z ##[warning]  268:6   warning  React Hook useEffect has a missing dependency: 'drawRoute'. Either include it or remove the dependency array         react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2624977Z 
+build-test	Lint	2025-12-09T14:51:14.2625269Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/MealSelector.jsx
+build-test	Lint	2025-12-09T14:51:14.2626692Z ##[warning]  59:6  warning  React Hook useEffect has a missing dependency: 'calculatePricing'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2627649Z 
+build-test	Lint	2025-12-09T14:51:14.2627981Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/PrivacyConsentModal.jsx
+build-test	Lint	2025-12-09T14:51:14.2628970Z ##[warning]  6:3  warning  'CONSENT_TYPES' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2629768Z 
+build-test	Lint	2025-12-09T14:51:14.2630098Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/ProductOwnerChatModal.jsx
+build-test	Lint	2025-12-09T14:51:14.2631083Z ##[warning]   7:10  warning  'thread' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2633409Z ##[error]  41:5   error    'setReceipts' is not defined                                                               no-undef
+build-test	Lint	2025-12-09T14:51:14.2634894Z ##[error]  42:22  error    'setReceipts' is not defined                                                               no-undef
+build-test	Lint	2025-12-09T14:51:14.2636142Z ##[error]  43:22  error    'setReceipts' is not defined                                                               no-undef
+build-test	Lint	2025-12-09T14:51:14.2637638Z ##[error]  46:12  error    'receipts' is not defined                                                                  no-undef
+build-test	Lint	2025-12-09T14:51:14.2638830Z ##[error]  46:28  error    'receipts' is not defined                                                                  no-undef
+build-test	Lint	2025-12-09T14:51:14.2639560Z 
+build-test	Lint	2025-12-09T14:51:14.2639866Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/RideSelector.jsx
+build-test	Lint	2025-12-09T14:51:14.2641025Z ##[warning]    4:3   warning  'DollarSign' is defined but never used. Allowed unused vars must match /^(React|_)/u                                    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2642688Z ##[warning]   12:3   warning  'MapPin' is defined but never used. Allowed unused vars must match /^(React|_)/u                                        no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2644482Z ##[warning]   39:6   warning  React Hook useEffect has a missing dependency: 'fetchAvailableRides'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2646040Z ##[warning]  125:7   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2647950Z ##[warning]  140:9   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2649327Z ##[warning]  174:5   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2650924Z ##[warning]  189:7   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2652267Z ##[warning]  192:7   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2653597Z ##[warning]  196:9   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2654934Z ##[warning]  198:9   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2656496Z ##[warning]  202:7   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2657925Z ##[warning]  233:5   warning  Unexpected console statement                                                                                            no-console
+build-test	Lint	2025-12-09T14:51:14.2659531Z ##[warning]  254:9   warning  'autoPickBestRide' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                     no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2661079Z ##[warning]  544:25  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                         react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2662522Z ##[warning]  544:53  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                         react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2663312Z 
+build-test	Lint	2025-12-09T14:51:14.2663651Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/SubscriptionManagement.jsx
+build-test	Lint	2025-12-09T14:51:14.2664861Z ##[warning]   2:46  warning  'AlertCircle' is defined but never used. Allowed unused vars must match /^(React|_)/u                                                                  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2666823Z ##[warning]   2:72  warning  'Clock' is defined but never used. Allowed unused vars must match /^(React|_)/u                                                                        no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2668675Z ##[warning]  19:10  warning  'selectedUpgrade' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                                                     no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2670539Z ##[warning]  19:27  warning  'setSelectedUpgrade' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                                                  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2672361Z ##[warning]  20:19  warning  'setShowROI' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                                                          no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2674446Z ##[warning]  26:6   warning  React Hook useEffect has missing dependencies: 'loadBillingHistory' and 'loadSubscriptionDetails'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2675525Z 
+build-test	Lint	2025-12-09T14:51:14.2675855Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/SubscriptionSelector.jsx
+build-test	Lint	2025-12-09T14:51:14.2677086Z ##[warning]   2:62  warning  'Crown' is defined but never used. Allowed unused vars must match /^(React|_)/u            no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2678593Z ##[warning]   2:69  warning  'Zap' is defined but never used. Allowed unused vars must match /^(React|_)/u              no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2680237Z ##[warning]   3:10  warning  'getPlan' is defined but never used. Allowed unused vars must match /^(React|_)/u          no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2681723Z ##[warning]   3:53  warning  'simulateUpgrade' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2683356Z ##[warning]  93:26  warning  'e' is defined but never used. Allowed unused args must match /^_/u                        no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2684167Z 
+build-test	Lint	2025-12-09T14:51:14.2684468Z /home/runner/work/colleco-mvp/colleco-mvp/src/components/VoiceAssistant.jsx
+build-test	Lint	2025-12-09T14:51:14.2685320Z ##[warning]  149:24  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2686851Z ##[warning]  149:91  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2687644Z 
+build-test	Lint	2025-12-09T14:51:14.2687954Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/AccommodationBooking.jsx
+build-test	Lint	2025-12-09T14:51:14.2689229Z ##[warning]    6:16  warning  'Calendar' is defined but never used. Allowed unused vars must match /^(React|_)/u                             no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2690868Z ##[warning]    6:26  warning  'Users' is defined but never used. Allowed unused vars must match /^(React|_)/u                                no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2692461Z ##[warning]    6:52  warning  'Plus' is defined but never used. Allowed unused vars must match /^(React|_)/u                                 no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2694048Z ##[warning]    6:58  warning  'Trash2' is defined but never used. Allowed unused vars must match /^(React|_)/u                               no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2695769Z ##[warning]   51:6   warning  React Hook useEffect has a missing dependency: 'propertyId'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2697822Z ##[warning]  193:13  warning  'loyaltyResult' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u               no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2699391Z ##[warning]  868:72  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2700830Z ##[warning]  868:98  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2701624Z 
+build-test	Lint	2025-12-09T14:51:14.2701902Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/AdminBookings.jsx
+build-test	Lint	2025-12-09T14:51:14.2703078Z ##[warning]  23:6  warning  React Hook useEffect has a missing dependency: 'loadBookings'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2704025Z 
+build-test	Lint	2025-12-09T14:51:14.2704273Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/Bookings.jsx
+build-test	Lint	2025-12-09T14:51:14.2705281Z ##[warning]  164:9  warning  'recommendation' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2706162Z 
+build-test	Lint	2025-12-09T14:51:14.2706706Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/BusinessAccountDetail.jsx
+build-test	Lint	2025-12-09T14:51:14.2707821Z ##[warning]   4:32  warning  'Mail' is defined but never used. Allowed unused vars must match /^(React|_)/u                                          no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2709510Z ##[warning]   4:38  warning  'Phone' is defined but never used. Allowed unused vars must match /^(React|_)/u                                         no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2711158Z ##[warning]   4:45  warning  'MapPin' is defined but never used. Allowed unused vars must match /^(React|_)/u                                        no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2712814Z ##[warning]   5:40  warning  'TrendingUp' is defined but never used. Allowed unused vars must match /^(React|_)/u                                    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2715746Z ##[warning]   6:16  warning  'Settings' is defined but never used. Allowed unused vars must match /^(React|_)/u                                      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2718473Z ##[warning]  21:6   warning  React Hook useEffect has a missing dependency: 'fetchAccountDetails'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2719724Z 
+build-test	Lint	2025-12-09T14:51:14.2720044Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/BusinessDashboard.jsx
+build-test	Lint	2025-12-09T14:51:14.2721022Z ##[warning]  4:21  warning  'TrendingUp' is defined but never used. Allowed unused vars must match /^(React|_)/u   no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2722790Z ##[warning]  5:19  warning  'Filter' is defined but never used. Allowed unused vars must match /^(React|_)/u       no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2724356Z ##[warning]  5:58  warning  'Clock' is defined but never used. Allowed unused vars must match /^(React|_)/u        no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2725838Z ##[warning]  6:17  warning  'AlertCircle' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2726974Z 
+build-test	Lint	2025-12-09T14:51:14.2727257Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/CarBooking.jsx
+build-test	Lint	2025-12-09T14:51:14.2728203Z ##[warning]    5:15  warning  'Calendar' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2729618Z ##[warning]  354:39  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                     react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2730981Z ##[warning]  430:72  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                     react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2732326Z ##[warning]  430:98  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                     react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2733668Z ##[warning]  507:68  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                     react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2734506Z 
+build-test	Lint	2025-12-09T14:51:14.2734782Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/Checkout.jsx
+build-test	Lint	2025-12-09T14:51:14.2735858Z ##[warning]  171:9  warning  'getIncludedServices' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2737042Z 
+build-test	Lint	2025-12-09T14:51:14.2737328Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/FlightBooking.jsx
+build-test	Lint	2025-12-09T14:51:14.2738271Z ##[warning]    5:17  warning  'Calendar' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2739708Z ##[warning]    5:27  warning  'Users' is defined but never used. Allowed unused vars must match /^(React|_)/u     no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2741291Z ##[warning]  418:72  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                     react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2743433Z ##[warning]  418:98  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                     react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2744271Z 
+build-test	Lint	2025-12-09T14:51:14.2744557Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/Gamification.jsx
+build-test	Lint	2025-12-09T14:51:14.2745546Z ##[warning]  24:9   warning  'navigate' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2747282Z ##[warning]  88:11  warning  Unexpected console statement                                                                 no-console
+build-test	Lint	2025-12-09T14:51:14.2748077Z 
+build-test	Lint	2025-12-09T14:51:14.2748364Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/LoyaltyDashboard.jsx
+build-test	Lint	2025-12-09T14:51:14.2749330Z ##[warning]    8:3   warning  'Share2' is defined but never used. Allowed unused vars must match /^(React|_)/u              no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2750873Z ##[warning]   11:3   warning  'Target' is defined but never used. Allowed unused vars must match /^(React|_)/u              no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2752628Z ##[warning]   12:3   warning  'ArrowRight' is defined but never used. Allowed unused vars must match /^(React|_)/u          no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2754225Z ##[warning]   17:3   warning  'ChevronRight' is defined but never used. Allowed unused vars must match /^(React|_)/u        no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2756611Z ##[warning]   26:3   warning  'CHALLENGES' is defined but never used. Allowed unused vars must match /^(React|_)/u          no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2758275Z ##[warning]   82:9   warning  'tierColor' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2759747Z ##[warning]  452:20  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                               react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2760563Z 
+build-test	Lint	2025-12-09T14:51:14.2760892Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/ManageBusinessAccounts.jsx
+build-test	Lint	2025-12-09T14:51:14.2762011Z ##[warning]   4:14  warning  'Users' is defined but never used. Allowed unused vars must match /^(React|_)/u                                         no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2763690Z ##[warning]   5:32  warning  'TrendingUp' is defined but never used. Allowed unused vars must match /^(React|_)/u                                    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2765363Z ##[warning]   6:33  warning  'FileText' is defined but never used. Allowed unused vars must match /^(React|_)/u                                      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2767346Z ##[warning]   6:54  warning  'Settings' is defined but never used. Allowed unused vars must match /^(React|_)/u                                      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2769118Z ##[warning]  26:10  warning  'selectedAccount' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2770885Z ##[warning]  26:27  warning  'setSelectedAccount' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                   no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2772744Z ##[warning]  42:6   warning  React Hook useEffect has a missing dependency: 'applyFiltersAndSort'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2773729Z 
+build-test	Lint	2025-12-09T14:51:14.2773989Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/MyTrips.jsx
+build-test	Lint	2025-12-09T14:51:14.2775185Z ##[warning]  39:6  warning  React Hook useEffect has a missing dependency: 'applyFiltersAndSort'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2776170Z 
+build-test	Lint	2025-12-09T14:51:14.2776769Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/PartnerApplicationStatus.jsx
+build-test	Lint	2025-12-09T14:51:14.2777972Z ##[warning]    3:83  warning  'UserCheck' is defined but never used. Allowed unused vars must match /^(React|_)/u                                                         no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2780020Z ##[warning]   62:6   warning  React Hook useEffect has missing dependencies: 'fetchApplicationStatus' and 'navigate'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2781945Z ##[warning]   97:17  warning  'isPending' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                                                no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2784409Z ##[warning]  156:48  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                             react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2787376Z ##[warning]  254:55  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                             react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2788730Z 
+build-test	Lint	2025-12-09T14:51:14.2789237Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/PartnerEarnings.jsx
+build-test	Lint	2025-12-09T14:51:14.2790900Z ##[warning]   38:6   warning  React Hook useEffect has a missing dependency: 'loadData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2793385Z ##[warning]  173:22  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                              react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2795181Z ##[warning]  226:27  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                              react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2796004Z 
+build-test	Lint	2025-12-09T14:51:14.2796623Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/PartnerSuccessDashboard.jsx
+build-test	Lint	2025-12-09T14:51:14.2797806Z ##[warning]   22:3   warning  'getTierProgression' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2799348Z ##[warning]  374:64  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                               react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2800172Z 
+build-test	Lint	2025-12-09T14:51:14.2800492Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/PartnerVerification.jsx
+build-test	Lint	2025-12-09T14:51:14.2801722Z ##[warning]  73:10  warning  'canScrollLeft' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                                            no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2803604Z ##[warning]  73:25  warning  'setCanScrollLeft' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                                         no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2805483Z ##[warning]  74:10  warning  'canScrollRight' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                                           no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2807724Z ##[warning]  74:26  warning  'setCanScrollRight' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                                        no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2809916Z ##[warning]  97:6   warning  React Hook useEffect has missing dependencies: 'fetchApplicationStatus' and 'navigate'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2810984Z 
+build-test	Lint	2025-12-09T14:51:14.2811275Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/PrivacySettings.jsx
+build-test	Lint	2025-12-09T14:51:14.2812486Z ##[warning]  31:6  warning  React Hook useEffect has a missing dependency: 'loadConsentData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2813463Z 
+build-test	Lint	2025-12-09T14:51:14.2813721Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/Quotes.jsx
+build-test	Lint	2025-12-09T14:51:14.2814625Z ##[warning]  8:8  warning  'globeIcon' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2815453Z 
+build-test	Lint	2025-12-09T14:51:14.2815744Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/SavedItineraries.jsx
+build-test	Lint	2025-12-09T14:51:14.2817119Z ##[warning]   5:25  warning  'ArrowRight' is defined but never used. Allowed unused vars must match /^(React|_)/u                                    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2818881Z ##[warning]   6:3   warning  'Filter' is defined but never used. Allowed unused vars must match /^(React|_)/u                                        no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2820575Z ##[warning]   6:11  warning  'Download' is defined but never used. Allowed unused vars must match /^(React|_)/u                                      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2822413Z ##[warning]  23:6   warning  React Hook useEffect has a missing dependency: 'applyFiltersAndSort'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2823398Z 
+build-test	Lint	2025-12-09T14:51:14.2823695Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/SubscriptionTiers.jsx
+build-test	Lint	2025-12-09T14:51:14.2824512Z ##[warning]  80:98  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2825474Z 
+build-test	Lint	2025-12-09T14:51:14.2825762Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/TermsStandalone.jsx
+build-test	Lint	2025-12-09T14:51:14.2826832Z ##[warning]   45:31  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2828372Z ##[warning]   45:40  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2829696Z ##[warning]   66:25  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2831932Z ##[warning]  221:39  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2833281Z ##[warning]  221:45  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2834065Z 
+build-test	Lint	2025-12-09T14:51:14.2834390Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/Transfers.jsx
+build-test	Lint	2025-12-09T14:51:14.2835575Z ##[warning]    39:10   warning  'formErrors' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u                           no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2837742Z ##[warning]   106:6    warning  React Hook React.useEffect has a missing dependency: 'estimatePrice'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+build-test	Lint	2025-12-09T14:51:14.2839442Z ##[warning]   460:113  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                         react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2840919Z ##[warning]  1033:68   warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                         react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2842377Z ##[warning]  1033:94   warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                         react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2843191Z 
+build-test	Lint	2025-12-09T14:51:14.2843490Z /home/runner/work/colleco-mvp/colleco-mvp/src/pages/TravelerDashboard.jsx
+build-test	Lint	2025-12-09T14:51:14.2844458Z ##[warning]    5:33  warning  'AlertCircle' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2845923Z ##[warning]  212:44  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                        react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2847847Z ##[warning]  212:51  warning  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                        react/no-unescaped-entities
+build-test	Lint	2025-12-09T14:51:14.2848675Z 
+build-test	Lint	2025-12-09T14:51:14.2848996Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/competitorBenchmarking.js
+build-test	Lint	2025-12-09T14:51:14.2850148Z ##[warning]  234:46  warning  'partnerMetrics' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2850998Z 
+build-test	Lint	2025-12-09T14:51:14.2851293Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/complianceChecks.js
+build-test	Lint	2025-12-09T14:51:14.2852367Z ##[warning]  114:40  warning  'checkData' is defined but never used. Allowed unused args must match /^_/u                                  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2854064Z ##[warning]  390:9   warning  'total_insurance_coverage' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2855757Z ##[warning]  391:9   warning  'verified_policies' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u         no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2857012Z 
+build-test	Lint	2025-12-09T14:51:14.2857300Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/contentFilter.js
+build-test	Lint	2025-12-09T14:51:14.2858380Z ##[warning]   2:7   warning  'PROFANITY_PATTERNS' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2860027Z ##[warning]  18:11  warning  'severity' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u            no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2861097Z 
+build-test	Lint	2025-12-09T14:51:14.2861392Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/disputeResolution.js
+build-test	Lint	2025-12-09T14:51:14.2862033Z ##[error]  146:3  error    'dispatch' is not defined     no-undef
+build-test	Lint	2025-12-09T14:51:14.2863222Z ##[warning]  472:3  warning  Unexpected console statement  no-console
+build-test	Lint	2025-12-09T14:51:14.2864246Z ##[warning]  477:3  warning  Unexpected console statement  no-console
+build-test	Lint	2025-12-09T14:51:14.2865255Z ##[warning]  482:3  warning  Unexpected console statement  no-console
+build-test	Lint	2025-12-09T14:51:14.2865938Z 
+build-test	Lint	2025-12-09T14:51:14.2866519Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/gamificationEngine.js
+build-test	Lint	2025-12-09T14:51:14.2867585Z ##[warning]    9:7   warning  'CHALLENGES_KEY' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2869175Z ##[warning]  879:54  warning  'k' is defined but never used. Allowed unused args must match /^_/u                                no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2870698Z ##[warning]  880:54  warning  'k' is defined but never used. Allowed unused args must match /^_/u                                no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2872197Z ##[warning]  881:52  warning  'k' is defined but never used. Allowed unused args must match /^_/u                                no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2873704Z ##[warning]  882:56  warning  'k' is defined but never used. Allowed unused args must match /^_/u                                no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2874536Z 
+build-test	Lint	2025-12-09T14:51:14.2874851Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/gamificationIntegration.js
+build-test	Lint	2025-12-09T14:51:14.2875879Z ##[warning]   13:3   warning  'POINT_VALUES' is defined but never used. Allowed unused vars must match /^(React|_)/u             no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2877619Z ##[warning]   31:11  warning  'bookingId' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u       no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2879203Z ##[warning]   31:35  warning  'bookingType' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u     no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2880780Z ##[warning]  103:11  warning  'destination' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u     no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2882355Z ##[warning]  138:30  warning  'hasText' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u         no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2883935Z ##[warning]  183:9   warning  'pointsResult' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2885540Z ##[warning]  201:11  warning  'referredUserId' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2887502Z ##[warning]  217:11  warning  'referredUserId' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2889164Z ##[warning]  217:27  warning  'bookingAmount' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u   no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2890768Z ##[warning]  286:26  warning  'reviewCount' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u     no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2891646Z 
+build-test	Lint	2025-12-09T14:51:14.2891922Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/loyaltySystem.js
+build-test	Lint	2025-12-09T14:51:14.2892883Z ##[warning]  427:15  warning  'code' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2894424Z ##[warning]  509:42  warning  'currency' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2895284Z 
+build-test	Lint	2025-12-09T14:51:14.2895559Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/partnerMetrics.js
+build-test	Lint	2025-12-09T14:51:14.2896845Z ##[warning]  332:11  warning  'gap' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u     no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2898424Z ##[warning]  344:11  warning  'excess' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2899453Z 
+build-test	Lint	2025-12-09T14:51:14.2899732Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/payoutsSystem.js
+build-test	Lint	2025-12-09T14:51:14.2900780Z ##[warning]  7:10  warning  'getPartnerTransactions' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2902407Z ##[warning]  8:10  warning  'getPartnerSubscription' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2903284Z 
+build-test	Lint	2025-12-09T14:51:14.2903556Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/pricingEngine.js
+build-test	Lint	2025-12-09T14:51:14.2904544Z ##[warning]   89:5   warning  'propertyType' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2906110Z ##[warning]  380:59  warning  'los' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u           no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2907118Z 
+build-test	Lint	2025-12-09T14:51:14.2907395Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/privacyGuard.js
+build-test	Lint	2025-12-09T14:51:14.2908139Z ##[error]  222:7  error  Unexpected lexical declaration in case block  no-case-declarations
+build-test	Lint	2025-12-09T14:51:14.2909333Z ##[error]  239:7  error  Unexpected lexical declaration in case block  no-case-declarations
+build-test	Lint	2025-12-09T14:51:14.2910091Z 
+build-test	Lint	2025-12-09T14:51:14.2910374Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/reviewModeration.js
+build-test	Lint	2025-12-09T14:51:14.2911387Z ##[warning]  145:11  warning  'avg_confidence' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2912277Z 
+build-test	Lint	2025-12-09T14:51:14.2912566Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/smartNotifications.js
+build-test	Lint	2025-12-09T14:51:14.2913447Z ##[warning]  347:32  warning  'context' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2914280Z 
+build-test	Lint	2025-12-09T14:51:14.2914569Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/subscriptionManager.js
+build-test	Lint	2025-12-09T14:51:14.2915614Z ##[warning]   7:19  warning  'SUBSCRIPTION_PLANS' is defined but never used. Allowed unused vars must match /^(React|_)/u           no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2917400Z ##[warning]  11:7   warning  'BILLING_CYCLES_KEY' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2918303Z 
+build-test	Lint	2025-12-09T14:51:14.2918585Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/subscriptionPlans.js
+build-test	Lint	2025-12-09T14:51:14.2919557Z ##[warning]  232:9   warning  'netCost' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2921117Z ##[warning]  420:58  warning  'monthlyRevenue' is defined but never used. Allowed unused args must match /^_/u            no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2921994Z 
+build-test	Lint	2025-12-09T14:51:14.2922281Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/trustSafetyEngine.js
+build-test	Lint	2025-12-09T14:51:14.2923121Z ##[warning]  19:35  warning  'data' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2923932Z 
+build-test	Lint	2025-12-09T14:51:14.2924216Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/userVerification.js
+build-test	Lint	2025-12-09T14:51:14.2925146Z ##[warning]  53:58  warning  'cvv' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2925992Z 
+build-test	Lint	2025-12-09T14:51:14.2926466Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/voiceAgent.js
+build-test	Lint	2025-12-09T14:51:14.2927379Z ##[warning]   77:7   warning  Unexpected console statement                                                  no-console
+build-test	Lint	2025-12-09T14:51:14.2928762Z ##[warning]  181:14  warning  Unexpected console statement                                                  no-console
+build-test	Lint	2025-12-09T14:51:14.2930354Z ##[warning]  476:38  warning  'transcript' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2931810Z ##[warning]  623:23  warning  'transcript' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2932797Z 
+build-test	Lint	2025-12-09T14:51:14.2933090Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/workflowAutomation.js
+build-test	Lint	2025-12-09T14:51:14.2933984Z ##[warning]  189:28  warning  'booking' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2935447Z ##[warning]  189:37  warning  'rules' is defined but never used. Allowed unused args must match /^_/u    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2936446Z 
+build-test	Lint	2025-12-09T14:51:14.2936733Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/zolaAIEngine.js
+build-test	Lint	2025-12-09T14:51:14.2937721Z ##[warning]  173:23  warning  'context' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2938612Z 
+build-test	Lint	2025-12-09T14:51:14.2938896Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/zolaConversation.js
+build-test	Lint	2025-12-09T14:51:14.2939839Z ##[warning]  8:9  warning  'lower' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2940704Z 
+build-test	Lint	2025-12-09T14:51:14.2940978Z /home/runner/work/colleco-mvp/colleco-mvp/src/utils/zolaPAFeatures.js
+build-test	Lint	2025-12-09T14:51:14.2941920Z ##[warning]   77:11  warning  'prefs' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2943434Z ##[warning]   92:28  warning  'destination' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2944941Z ##[warning]   92:41  warning  'activities' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2946572Z ##[warning]  394:27  warning  'userId' is defined but never used. Allowed unused args must match /^_/u                  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2948129Z ##[warning]  401:31  warning  'listingData' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2992592Z ##[warning]  438:22  warning  'partnerId' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2994216Z ##[warning]  454:19  warning  'partnerId' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2995739Z ##[warning]  454:30  warning  'days' is defined but never used. Allowed unused args must match /^_/u                    no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2996764Z 
+build-test	Lint	2025-12-09T14:51:14.2997084Z /home/runner/work/colleco-mvp/colleco-mvp/tests/gamificationEngine.test.js
+build-test	Lint	2025-12-09T14:51:14.2998147Z ##[warning]  5:44  warning  'vi' is defined but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.2998992Z 
+build-test	Lint	2025-12-09T14:51:14.2999329Z /home/runner/work/colleco-mvp/colleco-mvp/tests/trustSafety.contentFilter.test.js
+build-test	Lint	2025-12-09T14:51:14.3000404Z ##[warning]  231:13  warning  'privateResult' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.3001306Z 
+build-test	Lint	2025-12-09T14:51:14.3001620Z /home/runner/work/colleco-mvp/colleco-mvp/tests/trustSafety.reporting.test.js
+build-test	Lint	2025-12-09T14:51:14.3002638Z ##[warning]   87:13  warning  'firstReport' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.3004206Z ##[warning]  308:13  warning  'history' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.3005079Z 
+build-test	Lint	2025-12-09T14:51:14.3005412Z /home/runner/work/colleco-mvp/colleco-mvp/tests/trustSafety.riskManagement.test.js
+build-test	Lint	2025-12-09T14:51:14.3006591Z ##[warning]  514:13  warning  'stronger' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.3007743Z 
+build-test	Lint	2025-12-09T14:51:14.3008073Z /home/runner/work/colleco-mvp/colleco-mvp/tests/trustSafety.verification.test.js
+build-test	Lint	2025-12-09T14:51:14.3009191Z ##[warning]  477:13  warning  'firstVerification' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.3010313Z 
+build-test	Lint	2025-12-09T14:51:14.3010570Z /home/runner/work/colleco-mvp/colleco-mvp/tests/zolaAI.test.js
+build-test	Lint	2025-12-09T14:51:14.3011502Z ##[warning]  421:13  warning  'esc' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u      no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.3013018Z ##[warning]  846:13  warning  'invoice' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u  no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.3014541Z ##[warning]  990:13  warning  'config' is assigned a value but never used. Allowed unused vars must match /^(React|_)/u   no-unused-vars
+build-test	Lint	2025-12-09T14:51:14.3015407Z 
+build-test	Lint	2025-12-09T14:51:14.3015806Z Ô£û 231 problems (8 errors, 223 warnings)
+build-test	Lint	2025-12-09T14:51:14.3016001Z 
+build-test	Lint	2025-12-09T14:51:14.3019385Z ##[error]Process completed with exit code 1.
+build-test	Upload coverage artifact	´╗┐2025-12-09T14:51:14.3090674Z ##[group]Run actions/upload-artifact@v4
+build-test	Upload coverage artifact	2025-12-09T14:51:14.3090977Z with:
+build-test	Upload coverage artifact	2025-12-09T14:51:14.3091156Z   name: vitest-coverage
+build-test	Upload coverage artifact	2025-12-09T14:51:14.3091354Z   path: coverage
+build-test	Upload coverage artifact	2025-12-09T14:51:14.3091547Z   if-no-files-found: ignore
+build-test	Upload coverage artifact	2025-12-09T14:51:14.3091768Z   compression-level: 6
+build-test	Upload coverage artifact	2025-12-09T14:51:14.3091962Z   overwrite: false
+build-test	Upload coverage artifact	2025-12-09T14:51:14.3092159Z   include-hidden-files: false
+build-test	Upload coverage artifact	2025-12-09T14:51:14.3092378Z ##[endgroup]
+build-test	Upload coverage artifact	2025-12-09T14:51:14.5458082Z With the provided path, there will be 53 files uploaded
+build-test	Upload coverage artifact	2025-12-09T14:51:14.5462846Z Artifact name is valid!
+build-test	Upload coverage artifact	2025-12-09T14:51:14.5464043Z Root directory input is valid!
+build-test	Upload coverage artifact	2025-12-09T14:51:14.6535663Z Beginning upload of artifact content to blob storage
+build-test	Upload coverage artifact	2025-12-09T14:51:15.0799508Z Uploaded bytes 1390626
+build-test	Upload coverage artifact	2025-12-09T14:51:15.1073595Z Finished uploading artifact content to blob storage!
+build-test	Upload coverage artifact	2025-12-09T14:51:15.1077504Z SHA256 digest of uploaded artifact zip is f9caf79a5e7562be03966ed277f5fcdd53e7f18dcdd9612934b4fbcbff67d64b
+build-test	Upload coverage artifact	2025-12-09T14:51:15.1079284Z Finalizing artifact upload
+build-test	Upload coverage artifact	2025-12-09T14:51:15.2018816Z Artifact vitest-coverage.zip successfully finalized. Artifact ID 4812086616
+build-test	Upload coverage artifact	2025-12-09T14:51:15.2020616Z Artifact vitest-coverage has been successfully uploaded! Final size is 1390626 bytes. Artifact ID is 4812086616
+build-test	Upload coverage artifact	2025-12-09T14:51:15.2028141Z Artifact download URL: https://github.com/collecokzn-creator/colleco-mvp/actions/runs/20067671966/artifacts/4812086616
+build-test	Post Checkout	´╗┐2025-12-09T14:51:15.2180844Z Post job cleanup.
+build-test	Post Checkout	2025-12-09T14:51:15.3163429Z [command]/usr/bin/git version
+build-test	Post Checkout	2025-12-09T14:51:15.3202300Z git version 2.52.0
+build-test	Post Checkout	2025-12-09T14:51:15.3248440Z Temporarily overriding HOME='/home/runner/work/_temp/a8a8dac6-3536-4889-b73d-c73f3891c62c' before making global git config changes
+build-test	Post Checkout	2025-12-09T14:51:15.3249975Z Adding repository directory to the temporary git global config as a safe directory
+build-test	Post Checkout	2025-12-09T14:51:15.3262976Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/colleco-mvp/colleco-mvp
+build-test	Post Checkout	2025-12-09T14:51:15.3300006Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-test	Post Checkout	2025-12-09T14:51:15.3335084Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-test	Post Checkout	2025-12-09T14:51:15.3574678Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-test	Post Checkout	2025-12-09T14:51:15.3597843Z http.https://github.com/.extraheader
+build-test	Post Checkout	2025-12-09T14:51:15.3611838Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build-test	Post Checkout	2025-12-09T14:51:15.3644626Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-test	Post Checkout	2025-12-09T14:51:15.3880055Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-test	Post Checkout	2025-12-09T14:51:15.3912545Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-test	Complete job	´╗┐2025-12-09T14:51:15.4274223Z Cleaning up orphan processes

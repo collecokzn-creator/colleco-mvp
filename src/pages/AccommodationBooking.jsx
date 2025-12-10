@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';

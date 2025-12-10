@@ -1,95 +1,14 @@
 #!/usr/bin/env sh
 # Simple wrapper that invokes the Node-based pre-commit script.
-# Uses the script directory to locate `.husky/pre-commit.js` and calls node directly.
+# It calls the local `.husky/pre-commit.js` using Node if available.
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 NODE_SCRIPT="$SCRIPT_DIR/pre-commit.js"
 
-if [ -x "$(command -v node 2>/dev/null)" ]; then
+if command -v node >/dev/null 2>&1; then
   node "$NODE_SCRIPT" "$@"
-  status=$?
-  exit $status
+  exit $?
 else
   echo "node runtime not found in PATH; skipping husky pre-commit check"
   exit 0
 fi
-#!/usr/bin/env node
-/**
- * Pre-commit hook to prevent accidental secret commits
- * Scans staged files for potential API keys, tokens, and credentials
- * Note: May be skipped on Windows PowerShell (use Git Bash instead)
- */
-
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-
-// Patterns that indicate potential secrets
-const SECRET_PATTERNS = [
-  // API Keys
-  { pattern: /AIza[0-9A-Za-z_-]{35}/, name: 'Google API Key' },
-  { pattern: /sk_live_[0-9a-zA-Z]{24,}/, name: 'Stripe Live Key' },
-  { pattern: /pk_live_[0-9a-zA-Z]{24,}/, name: 'Stripe Publishable Key' },
-  { pattern: /AKIA[0-9A-Z]{16}/, name: 'AWS Access Key' },
-  
-  // Generic patterns
-  { pattern: /api[_-]?key[\s]*[=:][\s]*['"][a-zA-Z0-9_-]{20,}['"]/, name: 'Generic API Key' },
-  { pattern: /secret[\s]*[=:][\s]*['"][a-zA-Z0-9_-]{20,}['"]/, name: 'Generic Secret' },
-  { pattern: /password[\s]*[=:][\s]*['"][^'"]{8,}['"]/, name: 'Password' },
-  { pattern: /token[\s]*[=:][\s]*['"][a-zA-Z0-9_-]{20,}['"]/, name: 'Token' },
-  
-  // Private keys
-  { pattern: /-----BEGIN (RSA |EC |DSA )?PRIVATE KEY-----/, name: 'Private Key' },
-  { pattern: /-----BEGIN OPENSSH PRIVATE KEY-----/, name: 'SSH Private Key' },
-  
-  // Database URLs
-  { pattern: /(postgres|mysql|mongodb):\/\/[^\s'"]+:[^\s'"]+@/, name: 'Database URL with credentials' },
-];
-
-// Files to always ignore
-const IGNORE_FILES = [
-  '.gitignore',
-  'package-lock.json',
-  'yarn.lock',
-  'pnpm-lock.yaml',
-  '.git/',
-  'node_modules/',
-];
-
-function getStagedFiles() {
-  try {
-    const output = execSync('git diff --cached --name-only --diff-filter=ACM', {
-      encoding: 'utf8',
-    });
-    return output.trim().split('\n').filter(Boolean);
-  } catch (error) {
-    console.error('Error getting staged files:', error.message);
-    return [];
-  }
-}
-
-function shouldIgnoreFile(filePath) {
-  return IGNORE_FILES.some(ignore => filePath.includes(ignore));
-}
-
-function scanFileForSecrets(filePath) {
-  if (!fs.existsSync(filePath)) return [];
-  if (shouldIgnoreFile(filePath)) return [];
-  
-  #!/usr/bin/env sh
-  # Cross-platform Husky pre-commit wrapper
-  # Runs the actual Node-based secret scan via Node or PowerShell on Windows
-  # This avoids direct execution of a JS file as a shell script which can fail on some environments.
-
-  ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-
-  if command -v pwsh >/dev/null 2>&1; then
-    # Use PowerShell Core if available (Windows, cross-platform)
-    pwsh -NoProfile -NonInteractive -Command "node '$ROOT_DIR/.husky/pre-commit.js'"
-  else
-    # Fallback to POSIX shell environment (git bash, macOS, Linux)
-    node "$ROOT_DIR/.husky/pre-commit.js"
-  fi
-
-  exit $?
-      });

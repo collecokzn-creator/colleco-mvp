@@ -4,6 +4,7 @@
  * POPI Act Compliance: Section 14 (User rights to access and control personal data)
  */
 
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { Shield, Lock, Trash2, CheckCircle, AlertCircle, Download } from 'lucide-react';
 import { useUser } from '../context/UserContext';

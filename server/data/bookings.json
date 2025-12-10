@@ -636,5 +636,2267 @@
       "location": "Test Location"
     },
     "suppliersTermsVersion": 1
+  },
+  "BK-89666EEE-309": {
+    "id": "BK-89666EEE-309",
+    "supplierId": "beekman",
+    "userId": "test_user_1765291437808",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-09T14:43:57.808Z",
+    "checkOutDate": "2025-12-11T14:43:57.904Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-16T14:43:58.414Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-09T14:43:58.414Z",
+    "updatedAt": "2025-12-09T14:43:58.414Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-38BA6514-7B8": {
+    "id": "BK-38BA6514-7B8",
+    "supplierId": "beekman",
+    "userId": "test_user_1765293365589",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-09T15:16:05.589Z",
+    "checkOutDate": "2025-12-11T15:16:05.589Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-16T15:16:05.744Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-09T15:16:05.744Z",
+    "updatedAt": "2025-12-09T15:16:05.744Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-D8D6927C-527": {
+    "id": "BK-D8D6927C-527",
+    "supplierId": "beekman",
+    "userId": "test_user_1765352365406",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T07:39:25.406Z",
+    "checkOutDate": "2025-12-12T07:39:25.406Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T07:39:26.071Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T07:39:26.071Z",
+    "updatedAt": "2025-12-10T07:39:26.071Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-DEDBBE76-128": {
+    "id": "BK-DEDBBE76-128",
+    "supplierId": "beekman",
+    "userId": "test_user_1765354650241",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T08:17:30.241Z",
+    "checkOutDate": "2025-12-12T08:17:30.241Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T08:17:30.306Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T08:17:30.306Z",
+    "updatedAt": "2025-12-10T08:17:30.306Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-47A59CC4-DC5": {
+    "id": "BK-47A59CC4-DC5",
+    "supplierId": "beekman",
+    "userId": "test_user_1765374694158",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T13:51:34.159Z",
+    "checkOutDate": "2025-12-12T13:51:34.161Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T13:51:34.217Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T13:51:34.217Z",
+    "updatedAt": "2025-12-10T13:51:34.217Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-B58060A3-B25": {
+    "id": "BK-B58060A3-B25",
+    "supplierId": "beekman",
+    "userId": "test_user_1765375604744",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T14:06:44.744Z",
+    "checkOutDate": "2025-12-12T14:06:44.745Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T14:06:44.834Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T14:06:44.834Z",
+    "updatedAt": "2025-12-10T14:06:44.834Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-68FF16ED-E01": {
+    "id": "BK-68FF16ED-E01",
+    "supplierId": "beekman",
+    "userId": "test_user_1765376043869",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T14:14:03.869Z",
+    "checkOutDate": "2025-12-12T14:14:03.869Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T14:14:03.934Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T14:14:03.934Z",
+    "updatedAt": "2025-12-10T14:14:03.934Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-B00F2A25-A84": {
+    "id": "BK-B00F2A25-A84",
+    "supplierId": "beekman",
+    "userId": "test_user_1765376356937",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T14:19:16.937Z",
+    "checkOutDate": "2025-12-12T14:19:16.937Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T14:19:16.984Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T14:19:16.984Z",
+    "updatedAt": "2025-12-10T14:19:16.984Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-898EE854-478": {
+    "id": "BK-898EE854-478",
+    "supplierId": "beekman",
+    "userId": "test_user_1765376969034",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T14:29:29.034Z",
+    "checkOutDate": "2025-12-12T14:29:29.034Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T14:29:29.089Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T14:29:29.089Z",
+    "updatedAt": "2025-12-10T14:29:29.089Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-2417B1E5-BD2": {
+    "id": "BK-2417B1E5-BD2",
+    "supplierId": "beekman",
+    "userId": "test_user_1765377082785",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T14:31:22.785Z",
+    "checkOutDate": "2025-12-12T14:31:22.786Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T14:31:22.831Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T14:31:22.831Z",
+    "updatedAt": "2025-12-10T14:31:22.831Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-8B094BC6-880": {
+    "id": "BK-8B094BC6-880",
+    "supplierId": "beekman",
+    "userId": "test_user_1765377324196",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T14:35:24.196Z",
+    "checkOutDate": "2025-12-12T14:35:24.196Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T14:35:24.238Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T14:35:24.238Z",
+    "updatedAt": "2025-12-10T14:35:24.238Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-8F9370E4-3A8": {
+    "id": "BK-8F9370E4-3A8",
+    "supplierId": "beekman",
+    "userId": "test_user_1765377871128",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T14:44:31.128Z",
+    "checkOutDate": "2025-12-12T14:44:31.128Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T14:44:31.174Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T14:44:31.174Z",
+    "updatedAt": "2025-12-10T14:44:31.174Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-BF25D2D3-1C4": {
+    "id": "BK-BF25D2D3-1C4",
+    "supplierId": "beekman",
+    "userId": "test_user_1765378565035",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T14:56:05.035Z",
+    "checkOutDate": "2025-12-12T14:56:05.055Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T14:56:05.120Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T14:56:05.120Z",
+    "updatedAt": "2025-12-10T14:56:05.120Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-6EEA58F8-8DA": {
+    "id": "BK-6EEA58F8-8DA",
+    "supplierId": "beekman",
+    "userId": "test_user_1765379181487",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T15:06:21.487Z",
+    "checkOutDate": "2025-12-12T15:06:21.487Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T15:06:21.538Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T15:06:21.538Z",
+    "updatedAt": "2025-12-10T15:06:21.538Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-1BB4EFB6-AAE": {
+    "id": "BK-1BB4EFB6-AAE",
+    "supplierId": "beekman",
+    "userId": "test_user_1765379541724",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T15:12:21.724Z",
+    "checkOutDate": "2025-12-12T15:12:21.724Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T15:12:21.774Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T15:12:21.774Z",
+    "updatedAt": "2025-12-10T15:12:21.774Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-47FDA9FF-6D2": {
+    "id": "BK-47FDA9FF-6D2",
+    "supplierId": "beekman",
+    "userId": "test_user_1765380271656",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T15:24:31.656Z",
+    "checkOutDate": "2025-12-12T15:24:31.657Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T15:24:31.705Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T15:24:31.705Z",
+    "updatedAt": "2025-12-10T15:24:31.705Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-2685110E-0E7": {
+    "id": "BK-2685110E-0E7",
+    "supplierId": "beekman",
+    "userId": "test_user_1765380751244",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T15:32:31.244Z",
+    "checkOutDate": "2025-12-12T15:32:31.245Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T15:32:31.434Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T15:32:31.434Z",
+    "updatedAt": "2025-12-10T15:32:31.434Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-CA6B6DD2-E9A": {
+    "id": "BK-CA6B6DD2-E9A",
+    "supplierId": "beekman",
+    "userId": "test_user_1765381157052",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T15:39:17.052Z",
+    "checkOutDate": "2025-12-12T15:39:17.052Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T15:39:17.101Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T15:39:17.101Z",
+    "updatedAt": "2025-12-10T15:39:17.101Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-E69ED3F5-5B4": {
+    "id": "BK-E69ED3F5-5B4",
+    "supplierId": "beekman",
+    "userId": "test_user_1765381611969",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T15:46:51.969Z",
+    "checkOutDate": "2025-12-12T15:46:51.969Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T15:46:52.017Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T15:46:52.017Z",
+    "updatedAt": "2025-12-10T15:46:52.017Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-F527F2B4-5FC": {
+    "id": "BK-F527F2B4-5FC",
+    "supplierId": "beekman",
+    "userId": "test_user_1765382000849",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T15:53:20.849Z",
+    "checkOutDate": "2025-12-12T15:53:20.849Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T15:53:20.900Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T15:53:20.900Z",
+    "updatedAt": "2025-12-10T15:53:20.900Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-1BF6871E-A25": {
+    "id": "BK-1BF6871E-A25",
+    "supplierId": "beekman",
+    "userId": "test_user_1765382443213",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T16:00:43.213Z",
+    "checkOutDate": "2025-12-12T16:00:43.213Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T16:00:43.269Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T16:00:43.269Z",
+    "updatedAt": "2025-12-10T16:00:43.269Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-33FA4F67-3DD": {
+    "id": "BK-33FA4F67-3DD",
+    "supplierId": "beekman",
+    "userId": "test_user_1765383104514",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T16:11:44.514Z",
+    "checkOutDate": "2025-12-12T16:11:44.514Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T16:11:44.574Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T16:11:44.574Z",
+    "updatedAt": "2025-12-10T16:11:44.574Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-C5E04282-17C": {
+    "id": "BK-C5E04282-17C",
+    "supplierId": "beekman",
+    "userId": "test_user_1765383698463",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T16:21:38.463Z",
+    "checkOutDate": "2025-12-12T16:21:38.465Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T16:21:38.566Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T16:21:38.566Z",
+    "updatedAt": "2025-12-10T16:21:38.566Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-18856315-B01": {
+    "id": "BK-18856315-B01",
+    "supplierId": "beekman",
+    "userId": "test_user_1765384133874",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T16:28:53.874Z",
+    "checkOutDate": "2025-12-12T16:28:53.875Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T16:28:53.929Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T16:28:53.929Z",
+    "updatedAt": "2025-12-10T16:28:53.929Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-3D32AC7C-E90": {
+    "id": "BK-3D32AC7C-E90",
+    "supplierId": "beekman",
+    "userId": "test_user_1765385082356",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T16:44:42.356Z",
+    "checkOutDate": "2025-12-12T16:44:42.448Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T16:44:42.533Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T16:44:42.533Z",
+    "updatedAt": "2025-12-10T16:44:42.533Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-EE759694-EAF": {
+    "id": "BK-EE759694-EAF",
+    "supplierId": "beekman",
+    "userId": "test_user_1765386305666",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T17:05:05.666Z",
+    "checkOutDate": "2025-12-12T17:05:05.667Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T17:05:05.714Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T17:05:05.714Z",
+    "updatedAt": "2025-12-10T17:05:05.714Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-775DED4B-E86": {
+    "id": "BK-775DED4B-E86",
+    "supplierId": "beekman",
+    "userId": "test_user_1765386545303",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T17:09:05.303Z",
+    "checkOutDate": "2025-12-12T17:09:05.303Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T17:09:05.401Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T17:09:05.401Z",
+    "updatedAt": "2025-12-10T17:09:05.401Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-27B0228A-4ED": {
+    "id": "BK-27B0228A-4ED",
+    "supplierId": "beekman",
+    "userId": "test_user_1765387124167",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T17:18:44.167Z",
+    "checkOutDate": "2025-12-12T17:18:44.168Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T17:18:44.225Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T17:18:44.225Z",
+    "updatedAt": "2025-12-10T17:18:44.225Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-751273A2-A25": {
+    "id": "BK-751273A2-A25",
+    "supplierId": "beekman",
+    "userId": "test_user_1765387302144",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T17:21:42.144Z",
+    "checkOutDate": "2025-12-12T17:21:42.144Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T17:21:42.190Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T17:21:42.190Z",
+    "updatedAt": "2025-12-10T17:21:42.190Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-28FB4A4F-666": {
+    "id": "BK-28FB4A4F-666",
+    "supplierId": "beekman",
+    "userId": "test_user_1765387516554",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T17:25:16.554Z",
+    "checkOutDate": "2025-12-12T17:25:16.554Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T17:25:16.594Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T17:25:16.594Z",
+    "updatedAt": "2025-12-10T17:25:16.594Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-FA82F2E7-A3D": {
+    "id": "BK-FA82F2E7-A3D",
+    "supplierId": "beekman",
+    "userId": "test_user_1765387997767",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T17:33:17.767Z",
+    "checkOutDate": "2025-12-12T17:33:17.768Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T17:33:17.838Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T17:33:17.838Z",
+    "updatedAt": "2025-12-10T17:33:17.838Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-1A940BEA-82F": {
+    "id": "BK-1A940BEA-82F",
+    "supplierId": "beekman",
+    "userId": "test_user_1765388563921",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T17:42:43.922Z",
+    "checkOutDate": "2025-12-12T17:42:43.922Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T17:42:43.967Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T17:42:43.967Z",
+    "updatedAt": "2025-12-10T17:42:43.967Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-7BD1D02B-43E": {
+    "id": "BK-7BD1D02B-43E",
+    "supplierId": "beekman",
+    "userId": "test_user_1765389284737",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T17:54:44.737Z",
+    "checkOutDate": "2025-12-12T17:54:44.737Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T17:54:44.795Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T17:54:44.795Z",
+    "updatedAt": "2025-12-10T17:54:44.795Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-078880A3-4E6": {
+    "id": "BK-078880A3-4E6",
+    "supplierId": "beekman",
+    "userId": "test_user_1765389680465",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T18:01:20.465Z",
+    "checkOutDate": "2025-12-12T18:01:20.465Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T18:01:20.811Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T18:01:20.811Z",
+    "updatedAt": "2025-12-10T18:01:20.811Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-54DE334E-951": {
+    "id": "BK-54DE334E-951",
+    "supplierId": "beekman",
+    "userId": "test_user_1765389993061",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T18:06:33.061Z",
+    "checkOutDate": "2025-12-12T18:06:33.061Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T18:06:33.112Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T18:06:33.112Z",
+    "updatedAt": "2025-12-10T18:06:33.112Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-33FA2116-257": {
+    "id": "BK-33FA2116-257",
+    "supplierId": "beekman",
+    "userId": "test_user_1765390550696",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T18:15:50.696Z",
+    "checkOutDate": "2025-12-12T18:15:50.696Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T18:15:50.744Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T18:15:50.744Z",
+    "updatedAt": "2025-12-10T18:15:50.744Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-713F6A59-F99": {
+    "id": "BK-713F6A59-F99",
+    "supplierId": "beekman",
+    "userId": "test_user_1765390836836",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T18:20:36.836Z",
+    "checkOutDate": "2025-12-12T18:20:36.836Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T18:20:36.891Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T18:20:36.891Z",
+    "updatedAt": "2025-12-10T18:20:36.891Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-89912AA5-70D": {
+    "id": "BK-89912AA5-70D",
+    "supplierId": "beekman",
+    "userId": "test_user_1765391441329",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T18:30:41.329Z",
+    "checkOutDate": "2025-12-12T18:30:41.329Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T18:30:41.688Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T18:30:41.688Z",
+    "updatedAt": "2025-12-10T18:30:41.688Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-0D3160E0-6A4": {
+    "id": "BK-0D3160E0-6A4",
+    "supplierId": "beekman",
+    "userId": "test_user_1765392176230",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-10T18:42:56.230Z",
+    "checkOutDate": "2025-12-12T18:42:56.230Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "10.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 45,
+        "finalPrice": 450,
+        "partnerReceives": 405,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 45
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 45,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 45,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 1,
+      "dueDays": 7,
+      "shortLeadDueDays": 2,
+      "depositDueDate": "2025-12-17T18:42:56.286Z",
+      "balanceDueDate": null,
+      "depositAmount": 450,
+      "balanceAmount": 0
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-10T18:42:56.286Z",
+    "updatedAt": "2025-12-10T18:42:56.286Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
   }
 }

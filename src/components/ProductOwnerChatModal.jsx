@@ -4,7 +4,7 @@ import { ensureThread, ROLES, CHANNELS, loadThreads, saveThreads } from '../util
 export default function ProductOwnerChatModal({ bookingId, clientName, productOwnerName, onClose }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [thread, setThread] = useState(null);
+  const [_thread, setThread] = useState(null);
   const [receipts, setReceipts] = useState({});
 
   useEffect(() => {

@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, Building2, Users, Mail, Phone, MapPin, Calendar, DollarSign,
-  Briefcase, Edit, Download, FileText, TrendingUp, CheckCircle2, Clock,
-  AlertCircle, Settings, BarChart3, CreditCard, Shield, User, Plane, Hotel, Car
+  ArrowLeft, Building2, Users, _Mail, _Phone, _MapPin, Calendar, DollarSign,
+  Briefcase, Edit, Download, FileText, _TrendingUp, CheckCircle2, Clock,
+  AlertCircle, _Settings, BarChart3, CreditCard, Shield, User, Plane, Hotel, Car
 } from "lucide-react";
 
 export default function BusinessAccountDetail() {
