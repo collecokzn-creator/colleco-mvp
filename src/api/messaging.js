@@ -10,6 +10,7 @@
  */
 
 // ==================== MESSAGING API ====================
+import logger from '../utils/logger';
 
 /**
  * Send a message
@@ -28,7 +29,7 @@ export const sendMessage = async (messageData) => {
     if (!response.ok) throw new Error('Failed to send message');
     return await response.json();
   } catch (error) {
-    console.error('Send message error:', error);
+    logger.error('Send message error:', error);
     throw error;
   }
 };
@@ -47,7 +48,7 @@ export const getConversation = async (conversationId) => {
     if (!response.ok) throw new Error('Failed to fetch conversation');
     return await response.json();
   } catch (error) {
-    console.error('Get conversation error:', error);
+    logger.error('Get conversation error:', error);
     throw error;
   }
 };
@@ -66,7 +67,7 @@ export const getConversations = async (userId) => {
     if (!response.ok) throw new Error('Failed to fetch conversations');
     return await response.json();
   } catch (error) {
-    console.error('Get conversations error:', error);
+    logger.error('Get conversations error:', error);
     throw error;
   }
 };
@@ -88,7 +89,7 @@ export const markAsRead = async (conversationId, userId) => {
     if (!response.ok) throw new Error('Failed to mark as read');
     return await response.json();
   } catch (error) {
-    console.error('Mark as read error:', error);
+    logger.error('Mark as read error:', error);
     throw error;
   }
 };
@@ -112,7 +113,7 @@ export const uploadAttachment = async (file) => {
     if (!response.ok) throw new Error('Failed to upload attachment');
     return await response.json();
   } catch (error) {
-    console.error('Upload attachment error:', error);
+    logger.error('Upload attachment error:', error);
     throw error;
   }
 };
@@ -165,7 +166,7 @@ export class WebSocketManager {
         this.connect();
       }, delay);
     } else {
-      console.error('Max reconnection attempts reached');
+      logger.error('Max reconnection attempts reached');
       this.notifyStatusHandlers('failed');
     }
   }
@@ -174,7 +175,7 @@ export class WebSocketManager {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(data));
     } else {
-      console.error('WebSocket is not connected');
+      logger.error('WebSocket is not connected');
     }
   }
 
@@ -221,7 +222,7 @@ export const getNotifications = async (userId, filter = {}) => {
     if (!response.ok) throw new Error('Failed to fetch notifications');
     return await response.json();
   } catch (error) {
-    console.error('Get notifications error:', error);
+    logger.error('Get notifications error:', error);
     throw error;
   }
 };
@@ -243,7 +244,7 @@ export const createNotification = async (notificationData) => {
     if (!response.ok) throw new Error('Failed to create notification');
     return await response.json();
   } catch (error) {
-    console.error('Create notification error:', error);
+    logger.error('Create notification error:', error);
     throw error;
   }
 };
@@ -263,7 +264,7 @@ export const markNotificationAsRead = async (notificationId) => {
     if (!response.ok) throw new Error('Failed to mark notification as read');
     return await response.json();
   } catch (error) {
-    console.error('Mark notification as read error:', error);
+    logger.error('Mark notification as read error:', error);
     throw error;
   }
 };
@@ -285,7 +286,7 @@ export const subscribeToPushNotifications = async (subscription) => {
     if (!response.ok) throw new Error('Failed to subscribe to push notifications');
     return await response.json();
   } catch (error) {
-    console.error('Subscribe to push error:', error);
+    logger.error('Subscribe to push error:', error);
     throw error;
   }
 };
@@ -309,7 +310,7 @@ export const sendEmail = async (emailData) => {
     if (!response.ok) throw new Error('Failed to send email');
     return await response.json();
   } catch (error) {
-    console.error('Send email error:', error);
+    logger.error('Send email error:', error);
     throw error;
   }
 };
@@ -331,7 +332,7 @@ export const sendQuoteEmail = async (quoteId, recipientEmail) => {
     if (!response.ok) throw new Error('Failed to send quote email');
     return await response.json();
   } catch (error) {
-    console.error('Send quote email error:', error);
+    logger.error('Send quote email error:', error);
     throw error;
   }
 };
@@ -351,7 +352,7 @@ export const sendBookingConfirmationEmail = async (bookingId) => {
     if (!response.ok) throw new Error('Failed to send booking confirmation');
     return await response.json();
   } catch (error) {
-    console.error('Send booking confirmation error:', error);
+    logger.error('Send booking confirmation error:', error);
     throw error;
   }
 };
@@ -375,7 +376,7 @@ export const sendSMS = async (phoneNumber, message) => {
     if (!response.ok) throw new Error('Failed to send SMS');
     return await response.json();
   } catch (error) {
-    console.error('Send SMS error:', error);
+    logger.error('Send SMS error:', error);
     throw error;
   }
 };
@@ -397,7 +398,7 @@ export const getPartners = async (filters = {}) => {
     if (!response.ok) throw new Error('Failed to fetch partners');
     return await response.json();
   } catch (error) {
-    console.error('Get partners error:', error);
+    logger.error('Get partners error:', error);
     throw error;
   }
 };
@@ -419,7 +420,7 @@ export const searchPartners = async (searchQuery, filters = {}) => {
     if (!response.ok) throw new Error('Failed to search partners');
     return await response.json();
   } catch (error) {
-    console.error('Search partners error:', error);
+    logger.error('Search partners error:', error);
     throw error;
   }
 };
@@ -443,7 +444,7 @@ export const createCollaboration = async (collaborationData) => {
     if (!response.ok) throw new Error('Failed to create collaboration');
     return await response.json();
   } catch (error) {
-    console.error('Create collaboration error:', error);
+    logger.error('Create collaboration error:', error);
     throw error;
   }
 };
@@ -462,7 +463,7 @@ export const getCollaborations = async (userId) => {
     if (!response.ok) throw new Error('Failed to fetch collaborations');
     return await response.json();
   } catch (error) {
-    console.error('Get collaborations error:', error);
+    logger.error('Get collaborations error:', error);
     throw error;
   }
 };
@@ -484,7 +485,7 @@ export const updateCollaborationStatus = async (collaborationId, status) => {
     if (!response.ok) throw new Error('Failed to update collaboration status');
     return await response.json();
   } catch (error) {
-    console.error('Update collaboration status error:', error);
+    logger.error('Update collaboration status error:', error);
     throw error;
   }
 };
@@ -506,7 +507,7 @@ export const addCollaborationMessage = async (collaborationId, message) => {
     if (!response.ok) throw new Error('Failed to add message');
     return await response.json();
   } catch (error) {
-    console.error('Add collaboration message error:', error);
+    logger.error('Add collaboration message error:', error);
     throw error;
   }
 };

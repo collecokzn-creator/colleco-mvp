@@ -6,6 +6,7 @@ import WorkflowPanel from '../components/WorkflowPanel';
 import Button from '../components/ui/Button.jsx';
 import * as api from '../api/quotes';
 import globeIcon from '../assets/Globeicon.png';
+import logger from '../utils/logger';
 
 export default function Quotes() {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function Quotes() {
     try {
       await api.deleteQuote(id);
       setQuotes(prev => prev.filter(p => p.id !== id));
-    } catch (e) { console.warn('delete failed', e); }
+    } catch (e) { logger.warn('delete failed', e); }
   }
 
   async function handleClone(id) {
@@ -42,7 +43,7 @@ export default function Quotes() {
     try {
       const created = await api.createQuote(copy);
       setQuotes(prev => [created, ...prev]);
-    } catch (e) { console.warn('clone failed', e); }
+    } catch (e) { logger.warn('clone failed', e); }
   }
 
   return (

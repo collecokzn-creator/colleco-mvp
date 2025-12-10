@@ -10,6 +10,7 @@
  */
 
 import { API_BASE_URL } from '../config';
+import logger from './logger';
 
 /**
  * Send push notification via backend
@@ -56,7 +57,7 @@ export async function sendPushNotification({
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error('Failed to send push notification:', error);
+    logger.error('Failed to send push notification:', error);
     return { ok: false, error: error.message };
   }
 }
@@ -347,7 +348,7 @@ export async function getSubscriptionStatus(userId) {
 
     return await response.json();
   } catch (error) {
-    console.error('Failed to get subscription status:', error);
+    logger.error('Failed to get subscription status:', error);
     return { ok: false, error: error.message };
   }
 }
@@ -370,7 +371,7 @@ export async function trackNotificationAnalytics({ action, type, userId }) {
       })
     });
   } catch (error) {
-    console.error('Failed to track notification analytics:', error);
+    logger.error('Failed to track notification analytics:', error);
   }
 }
 

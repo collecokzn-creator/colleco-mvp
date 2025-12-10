@@ -4,6 +4,7 @@
  */
 
 const isDev = process.env.NODE_ENV !== 'production';
+import logger from './logger';
 
 const DEFAULT_CONFIG = {
   maxRetries: 3,
@@ -95,8 +96,7 @@ export async function withRetry(fn, options = {}) {
       const isRetryable = isRetryableError(error);
 
       if (isDev) {
-        // eslint-disable-next-line no-console
-        console.warn(
+        logger.warn(
           `[retry] Attempt ${attempt + 1}/${config.maxRetries + 1} failed${
             isRetryable ? ' (will retry)' : ' (not retryable)'
           }:`,
@@ -118,8 +118,7 @@ export async function withRetry(fn, options = {}) {
       );
 
       if (isDev) {
-        // eslint-disable-next-line no-console
-        console.log(`[retry] Waiting ${delay}ms before retry...`);
+        logger.dbg(`[retry] Waiting ${delay}ms before retry...`);
       }
 
       await new Promise((resolve) => setTimeout(resolve, delay));
@@ -175,8 +174,7 @@ export async function apiCallWithRetry(url, options = {}) {
     return await response.json();
   } catch (error) {
     if (isDev) {
-      // eslint-disable-next-line no-console
-      console.error(`[API] Failed to fetch ${url}:`, error);
+      logger.error(`[API] Failed to fetch ${url}:`, error);
     }
     throw error;
   }
@@ -202,16 +200,14 @@ export function watchNetworkStatus(onOnline, onOffline) {
 
   window.addEventListener('online', () => {
     if (isDev) {
-      // eslint-disable-next-line no-console
-      console.log('[network] Back online');
+      logger.dbg('[network] Back online');
     }
     onOnline?.();
   });
 
   window.addEventListener('offline', () => {
     if (isDev) {
-      // eslint-disable-next-line no-console
-      console.log('[network] Gone offline');
+      logger.dbg('[network] Gone offline');
     }
     onOffline?.();
   });
@@ -255,8 +251,7 @@ class APICallQueue {
         await fn();
       } catch (error) {
         if (isDev) {
-          // eslint-disable-next-line no-console
-          console.error('[queue] Failed to process queued call:', error);
+          logger.error('[queue] Failed to process queued call:', error);
         }
       }
     }
