@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronRight, Check, TrendingUp, AlertCircle, Star, Crown, Zap } from 'lucide-react';
+import { ChevronRight, Check, TrendingUp, AlertCircle, Star, Crown as _Crown, Zap as _Zap } from 'lucide-react';
 import { getPlan, getAllPlans, calculateMonthlyROI, simulateUpgrade } from '../utils/subscriptionPlans.js';
 import { createROIAnalyzer } from '../utils/subscriptionAnalytics.js';
 

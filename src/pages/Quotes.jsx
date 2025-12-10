@@ -5,7 +5,7 @@ import { generateQuotePdf } from '../utils/pdfGenerators';
 import WorkflowPanel from '../components/WorkflowPanel';
 import Button from '../components/ui/Button.jsx';
 import * as api from '../api/quotes';
-import globeIcon from '../assets/Globeicon.png';
+// removed unused globeIcon import
 import logger from '../utils/logger';
 
 export default function Quotes() {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Star, 
-  DollarSign, 
+  DollarSign as _DollarSign, 
   TrendingUp, 
   Plane,
   Shield, 

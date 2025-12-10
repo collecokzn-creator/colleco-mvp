@@ -16,7 +16,7 @@ export default function SubscriptionManagement({
 }) {
   const [subscription, setSubscription] = useState(null);
   const [billingHistory, setBillingHistory] = useState([]);
-  const [selectedUpgrade, setSelectedUpgrade] = useState(null);
+  const [_selectedUpgrade, _setSelectedUpgrade] = useState(null);
   const [showROI, setShowROI] = useState(true);
 
   useEffect(() => {

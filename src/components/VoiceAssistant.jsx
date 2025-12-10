@@ -146,7 +146,7 @@ export default function VoiceAssistant() {
                   Click the microphone button or type below to start a conversation
                 </p>
                 <p className="text-xs mt-2 text-gray-400">
-                  Try: "Book a shuttle from Durban to Port Shepstone on 27/11/2025 at 10am"
+                  Try: &quot;Book a shuttle from Durban to Port Shepstone on 27/11/2025 at 10am&quot;
                 </p>
               </div>
             ) : (
