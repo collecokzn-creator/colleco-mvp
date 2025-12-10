@@ -305,7 +305,7 @@ describe('User Reporting System', () => {
         reason: 'harassment'
       });
 
-      const history = getReportHistory('repeat_violator');
+      const _history = getReportHistory('repeat_violator');
       const report2 = reportUserContent({
         reportedUserId: 'repeat_violator',
         contentId: 'msg2',

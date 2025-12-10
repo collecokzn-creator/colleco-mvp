@@ -842,9 +842,9 @@ describe('Zola PA Features', () => {
         items: [{ description: 'Hotel', quantity: 1, price: 1000 }]
       });
 
-        const invoice = zolaPA.generateInvoice('USER-1', quotation.id);
+        const _invoice = zolaPA.generateInvoice('USER-1', quotation.id);
 
-        const allInvoices = zolaPA.getInvoices('USER-1');
+        const _allInvoices = zolaPA.getInvoices('USER-1');
       const outstandingInvoices = zolaPA.getInvoices('USER-1', { outstanding: true });
       expect(outstandingInvoices.length).toBeGreaterThan(0);
     });
@@ -979,7 +979,7 @@ describe('Zola PA Features', () => {
     });
 
     it('should persist tax configuration to localStorage', () => {
-      const config = zolaPA.setBusinessTaxConfig('USER-1', {
+      const _config = zolaPA.setBusinessTaxConfig('USER-1', {
         isVATVendor: true,
         taxRate: 0.2,
         taxName: 'VAT'
