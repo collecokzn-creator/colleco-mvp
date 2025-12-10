@@ -50,7 +50,7 @@ function verifyUserIdentity(userId, data) {
 }
 
 function linkPaymentMethod(userId, data) {
-  const { cardType, cardNumber, expiryMonth, expiryYear, cvv, billingName } = data;
+  const { cardType, cardNumber, expiryMonth, expiryYear, cvv: _cvv, billingName } = data;
   const testCards = ['4532123456789012', '5425233010103010'];
   if (!testCards.includes(cardNumber) && !luhnCheck(cardNumber)) throw new Error('Invalid card number');
   
@@ -158,3 +158,4 @@ module.exports = {
   getVerificationLevel, isVerified, shouldRequireAdditionalVerification,
   generateVerificationChallenge, validateVerificationResponse
 };
+
