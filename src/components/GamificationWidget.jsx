@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Trophy, Star, Flame, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,28 +16,7 @@ export default function GamificationWidget({ userId, compact = false }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [justEarnedPoints, setJustEarnedPoints] = useState(null);
 
-  useEffect(() => {
-    if (!userId) return;
-    loadData();
-  }, [userId]);
-
-  useEffect(() => {
-    // Listen for point awards
-    const handlePointsAwarded = (event) => {
-      if (event.detail.userId === userId) {
-        setJustEarnedPoints(event.detail.points);
-        loadData();
-        
-        // Clear animation after 3 seconds
-        setTimeout(() => setJustEarnedPoints(null), 3000);
-      }
-    };
-    
-    window.addEventListener('gamification:points-awarded', handlePointsAwarded);
-    return () => window.removeEventListener('gamification:points-awarded', handlePointsAwarded);
-  }, [userId]);
-
-  const loadData = () => {
+  const loadData = useCallback(() => {
     const achievementsData = getAchievements(userId);
     const streaksData = getStreaks(userId);
     const tierData = getRewardTier(userId);
@@ -45,7 +24,30 @@ export default function GamificationWidget({ userId, compact = false }) {
     setAchievements(achievementsData);
     setStreaks(streaksData);
     setRewardTier(tierData);
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return;
+    loadData();
+  }, [loadData]);
+
+  useEffect(() => {
+    // Listen for point awards
+    const handlePointsAwarded = (event) => {
+      if (event.detail.userId === userId) {
+        setJustEarnedPoints(event.detail.points);
+        loadData();
+
+        // Clear animation after 3 seconds
+        setTimeout(() => setJustEarnedPoints(null), 3000);
+      }
+    };
+
+    window.addEventListener('gamification:points-awarded', handlePointsAwarded);
+    return () => window.removeEventListener('gamification:points-awarded', handlePointsAwarded);
+  }, [userId, loadData]);
+
+  
 
   if (!achievements) return null;
 

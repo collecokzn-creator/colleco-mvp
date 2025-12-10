@@ -69,7 +69,7 @@ export default function LeaderboardConsentBanner({ userId, userType, onConsent }
                   <li className="flex items-start gap-2">
                     <span className="text-green-600 mt-1">✓</span>
                     <span>
-                      <strong>Anonymization:</strong> Other users see "User 1", "User 2", etc. - never your real name
+                      <strong>Anonymization:</strong> Other users see &quot;User 1&quot;, &quot;User 2&quot;, etc. - never your real name
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -118,7 +118,7 @@ export default function LeaderboardConsentBanner({ userId, userType, onConsent }
                   className="mt-1 w-4 h-4 text-brand-orange focus:ring-brand-orange"
                 />
                 <span className="text-sm text-gray-700">
-                  <strong>I consent to appear on leaderboards</strong> (anonymized as "User [Rank]")
+                  <strong>I consent to appear on leaderboards</strong> (anonymized as &quot;User [Rank]&quot;)
                 </span>
               </label>
 
@@ -132,7 +132,7 @@ export default function LeaderboardConsentBanner({ userId, userType, onConsent }
                       className="mt-1 w-4 h-4 text-brand-orange focus:ring-brand-orange"
                     />
                     <span className="text-sm text-gray-600">
-                      Show my city (e.g., "Johannesburg") - optional
+                      Show my city (e.g., &quot;Johannesburg&quot;) - optional
                     </span>
                   </label>
 
@@ -177,7 +177,7 @@ export default function LeaderboardConsentBanner({ userId, userType, onConsent }
             </div>
 
             <p className="text-xs text-gray-500 mt-3">
-              By declining, you can still earn points and complete challenges privately. 
+              By declining, you can still earn points and complete challenges privately.
               Your rank will be visible only to you.
             </p>
           </div>
