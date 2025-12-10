@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
 import MealSelector from '../components/MealSelector';
 import Button from '../components/ui/Button.jsx';
-import { Home, Calendar as _Calendar, Users as _Users, Clock, DollarSign, Plus as _Plus, Trash2 as _Trash2 } from 'lucide-react';
+import { Home, Calendar, Users, Clock, DollarSign, Plus, Trash2 } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function AccommodationBooking(){
@@ -84,14 +83,14 @@ export default function AccommodationBooking(){
   // Set minimum check-out date to check-in + 1 day
   const minCheckOut = checkIn ? new Date(new Date(checkIn).getTime() + 86400000).toISOString().split('T')[0] : today;
 
-  function handleSkipPropertySelection(properties) {
+  const handleSkipPropertySelection = useCallback((properties) => {
     setAvailableProperties(properties);
     setShowPropertySelector(false);
     setPropertyPending(true);
     setSelectedProperty(null);
-  }
+  }, []);
 
-  async function autoAssignCheapestProperty() {
+  const autoAssignCheapestProperty = useCallback(async () => {
     if (!availableProperties || availableProperties.length === 0) {
       alert('No available properties to assign. Please try again.');
       return;
@@ -100,19 +99,15 @@ export default function AccommodationBooking(){
     const cheapestProperty = availableProperties.reduce((min, property) => 
       property.pricePerNight < min.pricePerNight ? property : min
     );
-              {import.meta?.env?.VITE_DEMO_ACCOMMODATION === '1' && (
-                <div className="mt-2 text-xs text-gray-500">Demo mode: showing sample properties if live data is unavailable.</div>
-              )}
-
     await confirmPropertySelection(cheapestProperty);
-  }
+  }, [availableProperties, confirmPropertySelection]);
 
-  function reopenPropertySelector() {
+  const reopenPropertySelector = useCallback(() => {
     setPropertyPending(false);
     setShowPropertySelector(true);
-  }
+  }, []);
 
-  async function confirmPropertySelection(property) {
+  const confirmPropertySelection = useCallback(async (property) => {
     setSelectedProperty(property);
     setShowPropertySelector(false);
     setPropertyPending(false);
@@ -212,9 +207,9 @@ export default function AccommodationBooking(){
       alert(`Booking failed: ${error.message}\n\nPlease try again or contact support.`);
       setLoading(false);
     }
-  }
+  }, [properties, propertyId, checkIn, checkOut, roomType, mealPricing, bookingType, guests, location, specialRequests]);
 
-  async function handleSubmit(e) {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     
     // Validate form
@@ -234,7 +229,7 @@ export default function AccommodationBooking(){
     
     setFormErrors({});
     setShowPropertySelector(true);
-  }
+  }, [location, checkIn, checkOut, guests]);
 
   return (
     <div className="bg-cream min-h-screen overflow-x-hidden">
