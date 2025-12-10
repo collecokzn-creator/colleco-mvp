@@ -79,7 +79,7 @@ export default function LoyaltyDashboard() {
     );
   }
 
-  const tierColor = currentTier.color;
+  const _tierColor = currentTier.color;
   const currencyValue = pointsToCurrency(loyaltyData.availablePoints);
 
   return (

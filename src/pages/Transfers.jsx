@@ -36,7 +36,7 @@ export default function Transfers() {
   const [nearbyDrivers, setNearbyDrivers] = useState([]);
   const [loadingNearby, setLoadingNearby] = useState(false);
   const [routeInfo, setRouteInfo] = useState(null);
-  const [formErrors, setFormErrors] = useState({});
+  const [_formErrors, setFormErrors] = useState({});
   const [showRideSelector, setShowRideSelector] = useState(false);
   const [selectedRide, setSelectedRide] = useState(null);
   const [ridePending, setRidePending] = useState(false);

@@ -170,7 +170,7 @@ export default function PartnerEarnings() {
                   Lower Your Commission Rate!
                 </h3>
                 <p className="mb-4">
-                  You're currently on the <strong>{subscription.planName}</strong> plan with a {subscription.currentRate}% commission rate.
+                  You&apos;re currently on the <strong>{subscription.planName}</strong> plan with a {subscription.currentRate}% commission rate.
                   Upgrade to <strong>Pro</strong> (12%) or <strong>Enterprise</strong> (8%) to keep more of your earnings.
                 </p>
                 <div className="flex items-center gap-4">

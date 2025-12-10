@@ -190,7 +190,7 @@ export default function AccommodationBooking(){
       const booking = await response.json();
       
       // Process loyalty rewards
-      const loyaltyResult = processBookingRewards({
+      const _loyaltyResult = processBookingRewards({
         id: booking.id,
         type: 'accommodation',
         amount: booking.pricing.total,

@@ -371,7 +371,7 @@ export default function PartnerSuccessDashboard() {
             ) : (
               <div className="bg-white rounded-lg p-8 text-center border border-cream-border">
                 <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
-                <p className="text-brand-brown font-medium">You're optimized!</p>
+                <p className="text-brand-brown font-medium">You&apos;re optimized!</p>
                 <p className="text-sm text-brand-brown/60">No immediate opportunities identified.</p>
               </div>
             )}
