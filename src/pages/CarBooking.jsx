@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BookingNav from '../components/BookingNav';
 import CarHireSelector from '../components/CarHireSelector';
 import Button from '../components/ui/Button.jsx';
-import { Car, Calendar, Clock, DollarSign } from 'lucide-react';
+import { Car, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function CarBooking(){

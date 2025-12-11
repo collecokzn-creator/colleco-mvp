@@ -50,13 +50,7 @@ export default function MyTrips() {
     fetchTrips();
   }, [fetchTrips]);
 
-  useEffect(() => {
-    applyFiltersAndSort();
-  }, [trips, activeFilter, sortBy, searchQuery]);
-
-  
-
-  const applyFiltersAndSort = () => {
+  const applyFiltersAndSort = useCallback(() => {
     let result = [...trips];
 
     // Apply status filter
@@ -98,7 +92,15 @@ export default function MyTrips() {
     });
 
     setFilteredTrips(result);
-  };
+  }, [trips, activeFilter, sortBy, searchQuery]);
+
+  useEffect(() => {
+    applyFiltersAndSort();
+  }, [applyFiltersAndSort]);
+
+  
+
+  
 
   const getStatusConfig = (trip) => {
     const now = new Date();

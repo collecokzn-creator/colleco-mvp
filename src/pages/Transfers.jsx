@@ -94,18 +94,7 @@ export default function Transfers() {
   }, [pickup]);
 
   // Estimate price when route details change
-  React.useEffect(() => {
-    if (pickup && dropoff && pickup.length > 3 && dropoff.length > 3) {
-      const timer = setTimeout(() => {
-        estimatePrice();
-      }, 800);
-      return () => clearTimeout(timer);
-    } else {
-      setEstimatedPrice(null);
-    }
-  }, [pickup, dropoff, vehicleType, pax, luggage, isRoundTrip, additionalStops]);
-
-  async function estimatePrice() {
+  const estimatePrice = React.useCallback(async () => {
     try {
       const stops = additionalStops.filter(s => s.trim());
       const res = await fetch('/api/transfers/estimate', {
@@ -120,7 +109,18 @@ export default function Transfers() {
     } catch (e) {
       console.error('[transfers] price estimation failed', e);
     }
-  }
+  }, [pickup, dropoff, vehicleType, pax, luggage, isRoundTrip, additionalStops]);
+
+  React.useEffect(() => {
+    if (pickup && dropoff && pickup.length > 3 && dropoff.length > 3) {
+      const timer = setTimeout(() => {
+        estimatePrice();
+      }, 800);
+      return () => clearTimeout(timer);
+    } else {
+      setEstimatedPrice(null);
+    }
+  }, [pickup, dropoff, vehicleType, pax, luggage, isRoundTrip, additionalStops, estimatePrice]);
 
   async function cancelRequest() {
     if (!request?.id) return;

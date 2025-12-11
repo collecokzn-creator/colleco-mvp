@@ -3,7 +3,7 @@ import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
 import MealSelector from '../components/MealSelector';
 import Button from '../components/ui/Button.jsx';
-import { Home, Calendar, Users, Clock, DollarSign, Plus, Trash2 } from 'lucide-react';
+import { Home, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function AccommodationBooking(){
@@ -48,7 +48,7 @@ export default function AccommodationBooking(){
     
     const timer = setTimeout(searchProperties, 300); // Debounce
     return () => clearTimeout(timer);
-  }, [location]);
+  }, [location, propertyId]);
   
   React.useEffect(() => {
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
