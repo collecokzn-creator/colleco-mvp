@@ -71,7 +71,7 @@
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.268.0",
     "multer": "^2.0.2",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^7.0.11",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
@@ -117,5 +117,9 @@
     "lint-staged": {
       "optional": true
     }
+  }
+  ,
+  "overrides": {
+    "jws": "4.0.1"
   }
 }
