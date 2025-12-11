@@ -52,3 +52,7 @@ server/data/collab.json
 SECURITY_AUDIT_REPORT.md
 
 \n# Ignore CI/runtime artifacts\n/artifacts/\n
+
+# runtime/test data
+/server/data/*.json
+/server/data/*.log
