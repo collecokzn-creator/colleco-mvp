@@ -31,48 +31,47 @@ export default function WeatherWidget({ city, country }){
   const { loading, error, data } = state;
 
   return (
-    <div className="mb-4 rounded-xl overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-blue-500 shadow-lg">
+    <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-blue-500 shadow-md">
       {/* Current Weather & Quick Forecast */}
-      <div className="p-4 sm:p-5">
+      <div className="p-3 sm:p-4">
         {loading && <div className="text-white/90 text-sm">Loading weather…</div>}
         {error && <div role="alert" className="text-white/90 text-sm bg-white/20 px-3 py-2 rounded-lg">{error}</div>}
         {data && (
           <div>
             {/* Header */}
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h3 className="text-white text-lg font-bold">Weather</h3>
-                <p className="text-white/80 text-sm">{data.locationName || city || country || ''}</p>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <div className="text-3xl sm:text-4xl">{data.current.icon}</div>
+                <div>
+                  <h3 className="text-white text-base sm:text-lg font-bold">{data.locationName || city || country || ''}</h3>
+                  <div className="text-white/80 text-xs sm:text-sm">{data.current.text}</div>
+                </div>
               </div>
+              <div className="text-right">
+                <div className="text-3xl sm:text-4xl font-bold text-white">{Math.round(data.current.temp)}°</div>
+                {Number.isFinite(data.current.feelsLike) && (
+                  <div className="text-white/70 text-xs">Feels {Math.round(data.current.feelsLike)}°</div>
+                )}
+              </div>
+            </div>
+
+            {/* Toggle Button */}
+            <div className="mb-3">
               <button
                 type="button"
                 onClick={() => setShowExtended(!showExtended)}
-                className="text-xs px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white font-medium transition-colors"
+                className="w-full text-xs px-3 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-white font-medium transition-colors"
                 aria-expanded={showExtended}
               >
-                {showExtended ? '📊 Simple' : '📅 7-Day'}
+                {showExtended ? '📊 Show Simple View' : '📅 Show 7-Day Forecast'}
               </button>
             </div>
 
-            {/* Current Temperature & Condition */}
-            <div className="mb-6">
-              <div className="flex items-center gap-4">
-                <div className="text-6xl sm:text-7xl">{data.current.icon}</div>
-                <div>
-                  <div className="text-5xl sm:text-6xl font-bold text-white">{Math.round(data.current.temp)}°</div>
-                  <div className="text-white/90 text-lg">{data.current.text}</div>
-                  {Number.isFinite(data.current.feelsLike) && (
-                    <div className="text-white/70 text-sm mt-1">Feels like {Math.round(data.current.feelsLike)}°</div>
-                  )}
-                </div>
-              </div>
-                  </div>
-
-            {/* Hourly Forecast (Simple View) */}
+            {/* Hourly Forecast (Simple View) - Compact */}
             {!showExtended && (
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                <div className="flex items-center justify-between overflow-x-auto gap-3 pb-1">
-                  {[0, 1, 2, 3, 4, 5].map((hourOffset) => {
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
+                <div className="flex items-center justify-between overflow-x-auto gap-2 pb-1">
+                  {[0, 2, 4, 6].map((hourOffset) => {
                     const now = new Date();
                     const hour = new Date(now.getTime() + hourOffset * 60 * 60 * 1000);
                     const hourStr = hour.getHours();
@@ -81,17 +80,14 @@ export default function WeatherWidget({ city, country }){
                     
                     return (
                       <div key={hourOffset} className="text-center flex-shrink-0">
-                        <div className="text-white text-xs mb-1">{Math.round(data.current.temp)}°</div>
-                        <div className="text-2xl mb-1">
+                        <div className="text-white text-xs mb-0.5">{Math.round(data.current.temp)}°</div>
+                        <div className="text-xl mb-0.5">
                           {hourStr >= 6 && hourStr < 12 ? '🌤️' : 
                            hourStr >= 12 && hourStr < 18 ? (forecast.popMax > 40 ? '⛈️' : '☀️') :
                            hourStr >= 18 && hourStr < 20 ? '🌥️' : '🌙'}
                         </div>
-                        {forecast.popMax > 30 && hourStr >= 12 && hourStr < 20 && (
-                          <div className="text-white/80 text-xs">{Math.round(forecast.popMax)}%</div>
-                        )}
-                        <div className="text-white/70 text-xs mt-1">
-                          {isNow ? 'Now' : `${String(hourStr).padStart(2, '0')}:00`}
+                        <div className="text-white/70 text-[10px]">
+                          {isNow ? 'Now' : `${String(hourStr).padStart(2, '0')}h`}
                         </div>
                       </div>
                     );
@@ -100,27 +96,22 @@ export default function WeatherWidget({ city, country }){
               </div>
             )}
 
-            {/* Weekly Forecast (Simple View) */}
+            {/* Weekly Forecast (Simple View) - Compact */}
             {!showExtended && (
-              <div className="mt-4 flex items-center gap-2 overflow-x-auto pb-2">
+              <div className="mt-3 flex items-center gap-1.5 overflow-x-auto pb-1">
                 {data.forecast.slice(0, 5).map(f => {
                   const date = new Date(f.date);
                   const isToday = date.toDateString() === new Date().toDateString();
                   
                   return (
-                    <div key={f.date} className="bg-white/10 backdrop-blur-sm rounded-xl px-3 py-2 flex-shrink-0 min-w-[70px] text-center">
-                      <div className="flex items-center gap-1 justify-center mb-1">
-                        <div className="text-white/90 text-xs font-medium">
-                          {isToday ? 'Wed' : date.toLocaleDateString(undefined, { weekday: 'short' })}
-                        </div>
-                        {f.popMax > 30 && (
-                          <div className="text-blue-200 text-xs">💧</div>
-                        )}
+                    <div key={f.date} className="bg-white/10 backdrop-blur-sm rounded-lg px-2 py-1.5 flex-shrink-0 min-w-[60px] text-center">
+                      <div className="text-white/90 text-[10px] font-medium mb-0.5">
+                        {isToday ? 'Today' : date.toLocaleDateString(undefined, { weekday: 'short' })}
                       </div>
-                      <div className="text-2xl mb-1">{f.icon}</div>
-                      <div className="text-white text-sm">{Math.round(f.tmax)}°/{Math.round(f.tmin)}°</div>
+                      <div className="text-xl mb-0.5">{f.icon}</div>
+                      <div className="text-white text-xs font-medium">{Math.round(f.tmax)}°/{Math.round(f.tmin)}°</div>
                       {f.popMax > 30 && (
-                        <div className="text-white/70 text-xs mt-0.5">{Math.round(f.popMax)}%</div>
+                        <div className="text-blue-200 text-[10px] mt-0.5">💧{Math.round(f.popMax)}%</div>
                       )}
                     </div>
                   );
@@ -131,13 +122,13 @@ export default function WeatherWidget({ city, country }){
         )}
       </div>
 
-      {/* Decorative Trees Illustration (bottom) */}
+      {/* Decorative Trees Illustration (bottom) - Compact on mobile */}
       {data && !showExtended && (
-        <div className="h-16 bg-gradient-to-t from-green-600 via-green-500 to-transparent relative overflow-hidden">
+        <div className="h-10 sm:h-14 bg-gradient-to-t from-green-600 via-green-500 to-transparent relative overflow-hidden">
           <div className="absolute bottom-0 left-0 right-0 flex items-end justify-around h-full">
             {[...Array(7)].map((_, i) => (
-              <div key={i} className="w-8 h-10 sm:h-12 bg-green-700 rounded-t-full" style={{ 
-                height: `${Math.random() * 20 + 35}px`,
+              <div key={i} className="w-4 sm:w-6 bg-green-700 rounded-t-full" style={{ 
+                height: `${Math.random() * 15 + 20}px`,
                 opacity: 0.7 + Math.random() * 0.3
               }} />
             ))}
