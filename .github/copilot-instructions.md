@@ -4,7 +4,7 @@
 
 CollEco Travel is a React + Vite SPA with an Express backend for travel collaboration and events aggregation. The app supports location-aware product discovery, events from external providers, and role-based collaboration workflows.
 
-**Tech Stack**: React 18, React Router v7, Vite 7, Tailwind CSS, Express, Vitest, Cypress
+**Tech Stack**: React 18, React Router v7, Vite 7, Tailwind CSS, Express, Vitest, Playwright
 
 ## Architecture Patterns
 
@@ -19,7 +19,7 @@ CollEco Travel is a React + Vite SPA with an Express backend for travel collabor
 - **Roles**: Admin, Partner, Client, Influencer (see `docs/architecture-overview.md`)
 - **Role storage**: Current role stored in localStorage as `colleco.sidebar.role`
 - **Route guards**: `GuardedRoute` component in `src/App.jsx` checks `meta.requiresAuth` and `meta.roles` from pages.json
-- **E2E race condition**: In Cypress tests with `window.__E2E__`, the guard reads localStorage directly to avoid timing issues
+- **E2E race condition**: In Playwright tests with `window.__E2E__`, the guard reads localStorage directly to avoid timing issues
 
 ### State Management
 - **localStorage-first**: Primary state persistence via `src/useLocalStorageState.js` custom hook
@@ -64,11 +64,11 @@ $env:TICKETMASTER_API_KEY="key"; $env:SEATGEEK_CLIENT_ID="id"; npm run server
 
 ### Testing Strategy
 - **Unit tests**: Vitest (`npm run test`) for helper functions
-- **E2E smoke**: Cypress smoke suite via `npm run smoke:all` (builds → starts stack → runs tests)
-- **Full E2E**: `npm run e2e:orchestrate` uses `scripts/orchestrate-e2e.js` to manage ports, health checks, and Cypress execution
-- **Mobile E2E**: CI workflow `.github/workflows/cypress-mobile.yml` runs mobile-specific specs with viewport configs (iPhone SE, iPhone 12, Galaxy S5)
-- **Interactive E2E**: `npm run cy:open` for local debugging
-- **Retry strategy**: Cypress configured with `retries: { runMode: 2, openMode: 0 }` for CI stability
+- **E2E smoke**: Playwright smoke suite via `npm run smoke:all` (builds → starts stack → runs tests)
+- **Full E2E**: `npm run test:e2e` runs all Playwright tests across configured browsers and viewports
+- **Mobile E2E**: CI workflow `.github/workflows/playwright-mobile.yml` runs mobile-specific specs with viewport configs (iPhone SE, iPhone 12, Galaxy S5)
+- **Interactive E2E**: `npm run test:e2e:ui` for local debugging with Playwright UI mode
+- **Retry strategy**: Playwright configured with `retries: 2` on CI, 0 locally for stability
 
 ### CI/CD Pipeline
 - **Main workflows**: `.github/workflows/{ci.yml, e2e.yml, e2e-smoke.yml, deploy.yml}`
@@ -91,7 +91,7 @@ $env:TICKETMASTER_API_KEY="key"; $env:SEATGEEK_CLIENT_ID="id"; npm run server
 - `src/config/pages.json`: Route definitions, RBAC metadata, component mappings
 - `src/config/pageTemplate.json`: Base template definitions with extends/merge support
 - `vite.config.js`: Dev server (port 5180/5173), proxy rules for `/api` and `/health`, GitHub Pages base path handling
-- `cypress.config.js`: E2E base URL `http://127.0.0.1:5173`, retries, custom tasks for browser console logging
+- `playwright.config.ts`: E2E base URL `http://127.0.0.1:5173`, retries, multiple browser configs (Chromium, Firefox, WebKit), mobile viewports
 
 ### Data Flow Examples
 - **Search**: `src/components/SearchBar.jsx` → `/api/search/suggestions` → backend `server/server.js` search endpoint
@@ -143,10 +143,10 @@ $env:TICKETMASTER_API_KEY="key"; $env:SEATGEEK_CLIENT_ID="id"; npm run server
 4. Component auto-discovered via glob pattern, no manual import needed
 
 ### Debugging E2E Failures
-1. Check `cypress/logs/` and `cypress/screenshots/` for local runs
+1. Check `test-results/` and `playwright-report/` for local runs
 2. For CI failures, use `scripts/ci-watch-all.ps1` to auto-download artifacts
 3. Apply `e2e-diag` label to PR for verbose diagnostics job
-4. Review `orchestrator.log` in `cypress-logs/` for port/health issues
+4. Use `npx playwright show-report` to view HTML test report with traces and screenshots
 
 ### Enabling Live Events
 1. Obtain API keys from Ticketmaster Developer Portal and SeatGeek

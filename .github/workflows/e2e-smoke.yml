@@ -17,7 +17,7 @@ jobs:
     env:
       SITEMINDER_USE_MOCK: '1'
       SITEMINDER_MOCK_PORT: '4015'
-      CYPRESS_BASE_URL: 'http://127.0.0.1:5173'
+      PLAYWRIGHT_BASE_URL: 'http://127.0.0.1:5173'
       API_BASE: 'http://127.0.0.1:4001'
     steps:
       - name: Checkout
@@ -30,6 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
 
       - name: Build
         run: npm run build
@@ -75,22 +78,20 @@ jobs:
           tail -n 200 preview.log || true
           exit 1
 
-      - name: Cypress run (smoke)
+      - name: Run Playwright smoke tests
         env:
           API_BASE: http://127.0.0.1:4001
           CI: true
-        run: |
-          SPECS="cypress/e2e/smoke.cy.js"
-          npx cypress run --browser electron --config video=false --spec "$SPECS"
+        run: npx playwright test e2e/smoke.spec.ts --project=chromium
 
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-smoke-artifacts
+          name: playwright-smoke-artifacts
           path: |
-            cypress/videos
-            cypress/screenshots
+            playwright-report/
+            test-results/
             server.log
             preview.log
           if-no-files-found: ignore

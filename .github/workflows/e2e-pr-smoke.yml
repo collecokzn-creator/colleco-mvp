@@ -19,6 +19,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
       - name: Start API server
         run: |
           nohup node server/server.js > server.log 2>&1 &
@@ -34,30 +37,35 @@ jobs:
         run: |
           n=0; until curl -fsS http://127.0.0.1:5173/ >/dev/null 2>&1 && curl -fsS http://127.0.0.1:4000/health >/dev/null 2>&1 || [ $n -ge 120 ]; do n=$((n+1)); echo "waiting... $n"; sleep 1; done
 
-      - name: Run quick smoke E2E (smoke + navbar + booking modal + login smoke)
+      - name: Run quick smoke E2E (smoke + navbar + booking modal)
+        env:
+          PLAYWRIGHT_BASE_URL: 'http://127.0.0.1:5173'
         run: |
-          npx cypress run --browser electron --config video=false --spec "cypress/e2e/smoke.cy.js,cypress/e2e/nav_mobile.cy.js,cypress/e2e/booking_modal.cy.js,cypress/e2e/login_register_smoke.cy.js,cypress/e2e/login_smoke_minimal.cy.js"
+          npx playwright test e2e/smoke.spec.ts e2e/nav_mobile.spec.ts e2e/booking_modal.spec.ts --project=chromium
 
       - name: Collect diagnostics
         run: |
-          # Ensure cypress logs dir exists so upload-artifact has something
-          mkdir -p cypress/logs || true
-          echo "Workspace file list:" > cypress/logs/ci_files.txt
-          ls -la >> cypress/logs/ci_files.txt || true
-          echo "Top-level files:" > cypress/logs/top_files.txt
-          ls -la . | head -n 200 >> cypress/logs/top_files.txt || true
-          echo "Cypress tree:" > cypress/logs/cypress_tree.txt
-          ls -la cypress || true >> cypress/logs/cypress_tree.txt
-          echo "Cypress logs tree:" > cypress/logs/cypress_logs_tree.txt
-          ls -la cypress/logs || true >> cypress/logs/cypress_logs_tree.txt
-          echo "Server and Vite logs (last 200 lines):" > cypress/logs/server_vite_tail.txt
-          if [ -f server.log ]; then echo "--- server.log ---" >> cypress/logs/server_vite_tail.txt; tail -n 200 server.log >> cypress/logs/server_vite_tail.txt; else echo "server.log missing" >> cypress/logs/server_vite_tail.txt; fi
-          if [ -f vite.log ]; then echo "--- vite.log ---" >> cypress/logs/server_vite_tail.txt; tail -n 200 vite.log >> cypress/logs/server_vite_tail.txt; else echo "vite.log missing" >> cypress/logs/server_vite_tail.txt; fi
+          # Ensure logs dir exists
+          mkdir -p test-results || true
+          echo "Workspace file list:" > test-results/ci_files.txt
+          ls -la >> test-results/ci_files.txt || true
+          echo "Top-level files:" > test-results/top_files.txt
+          ls -la . | head -n 200 >> test-results/top_files.txt || true
+          echo "Server and Vite logs (last 200 lines):" > test-results/server_vite_tail.txt
+          if [ -f server.log ]; then echo "--- server.log ---" >> test-results/server_vite_tail.txt; tail -n 200 server.log >> test-results/server_vite_tail.txt; else echo "server.log missing" >> test-results/server_vite_tail.txt; fi
+          if [ -f vite.log ]; then echo "--- vite.log ---" >> test-results/server_vite_tail.txt; tail -n 200 vite.log >> test-results/server_vite_tail.txt; else echo "vite.log missing" >> test-results/server_vite_tail.txt; fi
 
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
+          name: playwright-pr-smoke-artifacts
+          path: |
+            playwright-report/
+            test-results/
+            server.log
+            vite.log
+          if-no-files-found: ignore
           name: cypress-smoke-artifacts
           path: |
             cypress/screenshots

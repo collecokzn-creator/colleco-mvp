@@ -4348,5 +4348,1220 @@
       "location": "Test Location"
     },
     "suppliersTermsVersion": 1
+  },
+  "BK-2CBB49B9-5D6": {
+    "id": "BK-2CBB49B9-5D6",
+    "supplierId": "beekman",
+    "userId": "test_user_1765718264703",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-14T13:17:44.703Z",
+    "checkOutDate": "2025-12-16T13:17:44.703Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 450,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 67.5,
+        "finalPrice": 450,
+        "partnerReceives": 382.5,
+        "description": "Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 450,
+        "totalRetail": 450,
+        "serviceFee": 67.5
+      }
+    ],
+    "pricing": {
+      "baseTotal": 450,
+      "retailTotal": 450,
+      "commissionTotal": 67.5,
+      "subtotal": 391.3,
+      "vat": 58.7,
+      "serviceFee": 67.5,
+      "total": 450,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:17:44.737Z",
+      "balanceDueDate": "2025-12-07T13:17:44.703Z",
+      "depositAmount": 225,
+      "balanceAmount": 225
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:17:44.737Z",
+    "updatedAt": "2025-12-14T13:17:44.737Z",
+    "metadata": {
+      "propertyName": "Test Hotel",
+      "location": "Test Location"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-ADF0F1DD-6F2": {
+    "id": "BK-ADF0F1DD-6F2",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718710844",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:10.844Z",
+    "checkOutDate": "2025-12-23T13:25:10.844Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:10.895Z",
+      "balanceDueDate": "2025-12-14T13:25:10.844Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "paid",
+    "paymentId": "charge_test_1765718710911",
+    "paidAt": "2025-12-14T13:25:10.993Z",
+    "lastPaymentUpdate": "2025-12-14T13:25:10.993Z",
+    "paymentProcessor": "yoco",
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:10.895Z",
+    "updatedAt": "2025-12-14T13:25:10.895Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-D6CE9401-CD7": {
+    "id": "BK-D6CE9401-CD7",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718711008",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:11.008Z",
+    "checkOutDate": "2025-12-23T13:25:11.008Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:11.010Z",
+      "balanceDueDate": "2025-12-14T13:25:11.008Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:11.010Z",
+    "updatedAt": "2025-12-14T13:25:11.010Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-5F76337A-23A": {
+    "id": "BK-5F76337A-23A",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718711025",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:11.025Z",
+    "checkOutDate": "2025-12-23T13:25:11.025Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:11.027Z",
+      "balanceDueDate": "2025-12-14T13:25:11.025Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:11.027Z",
+    "updatedAt": "2025-12-14T13:25:11.027Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-B75FA1DC-E50": {
+    "id": "BK-B75FA1DC-E50",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718711040",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:11.040Z",
+    "checkOutDate": "2025-12-23T13:25:11.040Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:11.042Z",
+      "balanceDueDate": "2025-12-14T13:25:11.040Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "failed",
+    "paymentId": "ch_test_failed_1765718711047",
+    "paidAt": null,
+    "lastPaymentUpdate": "2025-12-14T13:25:11.053Z",
+    "paymentProcessor": "yoco",
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:11.042Z",
+    "updatedAt": "2025-12-14T13:25:11.042Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-5A1D542B-616": {
+    "id": "BK-5A1D542B-616",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718711062",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:11.062Z",
+    "checkOutDate": "2025-12-23T13:25:11.062Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:11.066Z",
+      "balanceDueDate": "2025-12-14T13:25:11.062Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:11.066Z",
+    "updatedAt": "2025-12-14T13:25:11.066Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-2C9B4A05-C48": {
+    "id": "BK-2C9B4A05-C48",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718711076",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:11.076Z",
+    "checkOutDate": "2025-12-23T13:25:11.076Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:11.078Z",
+      "balanceDueDate": "2025-12-14T13:25:11.076Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "paid",
+    "paymentId": "ch_test_amount_mismatch_1765718711084",
+    "paidAt": "2025-12-14T13:25:11.090Z",
+    "lastPaymentUpdate": "2025-12-14T13:25:11.090Z",
+    "paymentProcessor": "yoco",
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:11.078Z",
+    "updatedAt": "2025-12-14T13:25:11.078Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-195F6160-B4E": {
+    "id": "BK-195F6160-B4E",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718752802",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:52.802Z",
+    "checkOutDate": "2025-12-23T13:25:52.803Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:52.854Z",
+      "balanceDueDate": "2025-12-14T13:25:52.802Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "paid",
+    "paymentId": "charge_test_1765718752871",
+    "paidAt": "2025-12-14T13:25:52.963Z",
+    "lastPaymentUpdate": "2025-12-14T13:25:52.963Z",
+    "paymentProcessor": "yoco",
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:52.854Z",
+    "updatedAt": "2025-12-14T13:25:52.854Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-A8E61594-D20": {
+    "id": "BK-A8E61594-D20",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718752982",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:52.982Z",
+    "checkOutDate": "2025-12-23T13:25:52.982Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:52.986Z",
+      "balanceDueDate": "2025-12-14T13:25:52.982Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:52.986Z",
+    "updatedAt": "2025-12-14T13:25:52.986Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-79E0EE5C-5D7": {
+    "id": "BK-79E0EE5C-5D7",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718753004",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:53.004Z",
+    "checkOutDate": "2025-12-23T13:25:53.004Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:53.011Z",
+      "balanceDueDate": "2025-12-14T13:25:53.004Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:53.011Z",
+    "updatedAt": "2025-12-14T13:25:53.011Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-A335421F-C65": {
+    "id": "BK-A335421F-C65",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718753029",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:53.029Z",
+    "checkOutDate": "2025-12-23T13:25:53.029Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:53.032Z",
+      "balanceDueDate": "2025-12-14T13:25:53.029Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "failed",
+    "paymentId": "ch_test_failed_1765718753038",
+    "paidAt": null,
+    "lastPaymentUpdate": "2025-12-14T13:25:53.047Z",
+    "paymentProcessor": "yoco",
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:53.032Z",
+    "updatedAt": "2025-12-14T13:25:53.032Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-6E88663F-CCA": {
+    "id": "BK-6E88663F-CCA",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718753062",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:53.062Z",
+    "checkOutDate": "2025-12-23T13:25:53.062Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:53.065Z",
+      "balanceDueDate": "2025-12-14T13:25:53.062Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:53.065Z",
+    "updatedAt": "2025-12-14T13:25:53.065Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-A0EBAF79-BC1": {
+    "id": "BK-A0EBAF79-BC1",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718753088",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:25:53.088Z",
+    "checkOutDate": "2025-12-23T13:25:53.088Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:25:53.103Z",
+      "balanceDueDate": "2025-12-14T13:25:53.088Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:25:53.103Z",
+    "updatedAt": "2025-12-14T13:25:53.103Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-E51B47AD-75A": {
+    "id": "BK-E51B47AD-75A",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718792777",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:26:32.777Z",
+    "checkOutDate": "2025-12-23T13:26:32.777Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:26:32.809Z",
+      "balanceDueDate": "2025-12-14T13:26:32.777Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "paid",
+    "paymentId": "charge_test_1765718792826",
+    "paidAt": "2025-12-14T13:26:32.859Z",
+    "lastPaymentUpdate": "2025-12-14T13:26:32.859Z",
+    "paymentProcessor": "yoco",
+    "status": "pending",
+    "createdAt": "2025-12-14T13:26:32.809Z",
+    "updatedAt": "2025-12-14T13:26:32.809Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-717071C7-83D": {
+    "id": "BK-717071C7-83D",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718792873",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:26:32.873Z",
+    "checkOutDate": "2025-12-23T13:26:32.873Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:26:32.876Z",
+      "balanceDueDate": "2025-12-14T13:26:32.873Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:26:32.876Z",
+    "updatedAt": "2025-12-14T13:26:32.876Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-19057149-222": {
+    "id": "BK-19057149-222",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718792890",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:26:32.890Z",
+    "checkOutDate": "2025-12-23T13:26:32.890Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:26:32.892Z",
+      "balanceDueDate": "2025-12-14T13:26:32.890Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:26:32.892Z",
+    "updatedAt": "2025-12-14T13:26:32.892Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-45844DE9-EC5": {
+    "id": "BK-45844DE9-EC5",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718792907",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:26:32.907Z",
+    "checkOutDate": "2025-12-23T13:26:32.907Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:26:32.909Z",
+      "balanceDueDate": "2025-12-14T13:26:32.907Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "failed",
+    "paymentId": "ch_test_failed_1765718792915",
+    "paidAt": null,
+    "lastPaymentUpdate": "2025-12-14T13:26:32.919Z",
+    "paymentProcessor": "yoco",
+    "status": "pending",
+    "createdAt": "2025-12-14T13:26:32.909Z",
+    "updatedAt": "2025-12-14T13:26:32.909Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-565EDFC6-BA9": {
+    "id": "BK-565EDFC6-BA9",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718792931",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:26:32.931Z",
+    "checkOutDate": "2025-12-23T13:26:32.931Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:26:32.933Z",
+      "balanceDueDate": "2025-12-14T13:26:32.931Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:26:32.933Z",
+    "updatedAt": "2025-12-14T13:26:32.933Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
+  },
+  "BK-7C0EA225-9D8": {
+    "id": "BK-7C0EA225-9D8",
+    "supplierId": "beekman",
+    "userId": "test_yoco_user_1765718792942",
+    "bookingType": "FIT",
+    "checkInDate": "2025-12-21T13:26:32.942Z",
+    "checkOutDate": "2025-12-23T13:26:32.942Z",
+    "lineItems": [
+      {
+        "supplierId": "beekman",
+        "serviceType": "accommodation",
+        "basePrice": 500,
+        "quantity": 1,
+        "commissionRate": "15.0%",
+        "commissionModel": "discount",
+        "commissionAmount": 75,
+        "finalPrice": 500,
+        "partnerReceives": 425,
+        "description": "Yoco Test Hotel - Standard Room",
+        "nights": 2,
+        "retailPrice": 500,
+        "totalRetail": 500,
+        "serviceFee": 75
+      }
+    ],
+    "pricing": {
+      "baseTotal": 500,
+      "retailTotal": 500,
+      "commissionTotal": 75,
+      "subtotal": 434.78,
+      "vat": 65.22,
+      "serviceFee": 75,
+      "total": 500,
+      "itemCount": 1
+    },
+    "paymentTerms": {
+      "deposit": 0.5,
+      "dueDays": 30,
+      "balanceDueDays": 7,
+      "methods": [
+        "card",
+        "eft"
+      ],
+      "currency": "ZAR",
+      "depositDueDate": "2026-01-13T13:26:32.946Z",
+      "balanceDueDate": "2025-12-14T13:26:32.942Z",
+      "depositAmount": 250,
+      "balanceAmount": 250
+    },
+    "paymentStatus": "pending",
+    "paymentId": null,
+    "paidAt": null,
+    "lastPaymentUpdate": null,
+    "paymentProcessor": null,
+    "status": "pending",
+    "createdAt": "2025-12-14T13:26:32.946Z",
+    "updatedAt": "2025-12-14T13:26:32.946Z",
+    "metadata": {
+      "propertyName": "Yoco Test Hotel",
+      "location": "Cape Town",
+      "customerEmail": "test@example.com"
+    },
+    "suppliersTermsVersion": 1
   }
 }

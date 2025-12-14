@@ -12,18 +12,21 @@ dist/
 security-reports/
 !security-reports/.gitkeep
 
-# Ignore CI/debug artifact folders and Cypress artifacts created during CI runs
+# Ignore CI/debug artifact folders and E2E test artifacts created during CI runs
 ci-artifacts*/
 gh-artifacts*/
 ci-artifacts/
 gh-artifacts-
 colleco-ci-logs/
 
-# Cypress generated artifacts (screenshots/videos) - keep them out of the repo
+# E2E test generated artifacts (screenshots/videos/reports)
+test-results/
+playwright-report/
+.playwright/
+
+# Legacy Cypress artifacts (if any remain)
 cypress/screenshots/
 cypress/videos/
-
-# Local CI artifact folder produced by triage runs and previous debug runs
 cypress-logs/
 
 # Temporary CI images/logs
