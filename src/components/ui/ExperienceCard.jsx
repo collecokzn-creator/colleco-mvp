@@ -11,10 +11,10 @@ export default function ExperienceCard({ title, subtitle, time, notes, onAdd, on
         </div>
         <div className="flex gap-2 flex-shrink-0">
           {onAdd ? (
-            <button className="px-2 py-1 text-sm rounded border border-brand-brown text-brand-brown hover:bg-brand-brown/10" onClick={onAdd}>Add</button>
+            <button className="px-3 py-1.5 text-sm rounded-lg bg-brand-orange/10 text-brand-orange hover:bg-brand-orange/20 font-medium transition-colors" onClick={onAdd}>Add</button>
           ) : null}
           {onRemove ? (
-            <button className="px-2 py-1 text-sm rounded border border-cream-border text-brand-brown hover:bg-cream-hover" onClick={onRemove}>Remove</button>
+            <button className="px-3 py-1.5 text-sm rounded-lg bg-red-50 text-red-600 hover:bg-red-100 font-medium transition-colors" onClick={onRemove}>Remove</button>
           ) : null}
         </div>
       </div>
