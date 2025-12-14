@@ -181,7 +181,12 @@ function createBooking(data) {
   bookings[bookingId] = booking;
   saveBookings(bookings);
 
-  console.log(`[bookings] Created booking ${bookingId} for supplier ${supplierId} with ${lineItems.length} line items`);
+  try {
+    const { sanitizeLog } = require('./safeLog');
+    console.log('[bookings] Created booking %s for supplier %s with %d line items', sanitizeLog(bookingId), sanitizeLog(supplierId), Number(lineItems.length));
+  } catch (e) {
+    console.log('[bookings] Created booking', bookingId);
+  }
   return booking;
 }
 

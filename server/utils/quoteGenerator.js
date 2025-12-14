@@ -17,6 +17,25 @@ require('jspdf-autotable');
 const fs = require('fs');
 const path = require('path');
 
+// Safe path resolver to avoid path traversal when working with filenames
+function isValidFilename(name){
+  if(!name) return false;
+  // Allow letters, numbers, dot, underscore and hyphen only
+  return /^[a-zA-Z0-9._-]+$/.test(name);
+}
+
+function safeResolve(baseDir, filename){
+  if(!isValidFilename(filename)){
+    throw new Error('Invalid filename');
+  }
+  const resolved = path.resolve(baseDir, filename);
+  const baseResolved = path.resolve(baseDir) + path.sep;
+  if(!resolved.startsWith(baseResolved)){
+    throw new Error('Path traversal detected');
+  }
+  return resolved;
+}
+
 /**
  * Company information (editable configuration)
  */
@@ -409,7 +428,7 @@ function saveQuoteFile(quote, filename) {
   }
 
   const quoteFilename = filename || `Quote_${quote.quoteNumber || quote.id}_${Date.now()}.pdf`;
-  const filePath = path.join(quotesDir, quoteFilename);
+  const filePath = safeResolve(quotesDir, quoteFilename);
 
   fs.writeFileSync(filePath, Buffer.from(pdfBuffer));
 
@@ -427,12 +446,9 @@ function saveQuoteFile(quote, filename) {
  */
 function getQuoteFile(quoteFilename) {
   const quotesDir = path.join(__dirname, '../data/quotes');
-  const filePath = path.join(quotesDir, quoteFilename);
-
-  if (!fs.existsSync(filePath)) {
-    return null;
-  }
-
+  if (!isValidFilename(quoteFilename)) return null;
+  const filePath = safeResolve(quotesDir, quoteFilename);
+  if (!fs.existsSync(filePath)) return null;
   return fs.readFileSync(filePath);
 }
 
@@ -443,13 +459,12 @@ function getQuoteFile(quoteFilename) {
  */
 function deleteQuoteFile(quoteFilename) {
   const quotesDir = path.join(__dirname, '../data/quotes');
-  const filePath = path.join(quotesDir, quoteFilename);
-
+  if (!isValidFilename(quoteFilename)) return false;
+  const filePath = safeResolve(quotesDir, quoteFilename);
   if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath);
     return true;
   }
-
   return false;
 }
 
@@ -468,7 +483,8 @@ function listQuotes() {
   return files
     .filter(f => f.endsWith('.pdf'))
     .map(f => {
-      const stats = fs.statSync(path.join(quotesDir, f));
+      const fp = safeResolve(quotesDir, f);
+      const stats = fs.statSync(fp);
       return {
         filename: f,
         size: stats.size,

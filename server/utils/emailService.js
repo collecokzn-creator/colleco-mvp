@@ -24,10 +24,16 @@ const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@colleco.com';
 const FROM_NAME = process.env.FROM_NAME || 'CollEco Travel';
 
 // Log configuration (without sensitive data)
-if (SMTP_USER) {
-  console.log(`[email] Configured SMTP: ${SMTP_HOST}:${SMTP_PORT} from ${SMTP_USER}`);
-} else {
-  console.warn('[email] SMTP not configured - email sending will be disabled');
+try {
+  const { sanitizeLog } = require('./safeLog');
+  if (SMTP_USER) {
+    console.log('[email] Configured SMTP: %s:%d from %s', sanitizeLog(SMTP_HOST), Number(SMTP_PORT), sanitizeLog(SMTP_USER));
+  } else {
+    console.warn('[email] SMTP not configured - email sending will be disabled');
+  }
+} catch (e) {
+  // fallback
+  if (SMTP_USER) console.log('[email] Configured SMTP');
 }
 
 /**
@@ -71,7 +77,7 @@ async function sendEmail({ to, subject, html, text, replyTo = FROM_EMAIL, attach
   const transport = getTransporter();
 
   if (!transport) {
-    console.warn(`[email] SMTP not configured - email would be sent to ${to} (subject: ${subject})`);
+    try { const { sanitizeLog } = require('./safeLog'); console.warn('[email] SMTP not configured - email would be sent to %s (subject: %s)', sanitizeLog(to), sanitizeLog(subject)); } catch(e){ console.warn('[email] SMTP not configured - email would be sent'); }
     return {
       success: false,
       error: 'SMTP not configured',
@@ -91,7 +97,7 @@ async function sendEmail({ to, subject, html, text, replyTo = FROM_EMAIL, attach
       attachments
     });
 
-    console.log(`[email] Sent to ${to}: ${subject} (${info.messageId})`);
+    try { const { sanitizeLog } = require('./safeLog'); console.log('[email] Sent to %s: %s (%s)', sanitizeLog(to), sanitizeLog(subject), sanitizeLog(info && info.messageId)); } catch(e){ console.log('[email] Sent'); }
     return {
       success: true,
       messageId: info.messageId,
@@ -100,7 +106,7 @@ async function sendEmail({ to, subject, html, text, replyTo = FROM_EMAIL, attach
       sentAt: new Date().toISOString()
     };
   } catch (error) {
-    console.error(`[email] Failed to send to ${to}:`, error.message);
+    try { const { sanitizeLog } = require('./safeLog'); console.error('[email] Failed to send to %s: %s', sanitizeLog(to), sanitizeLog(error && error.message)); } catch(e){ console.error('[email] Failed to send'); }
     return {
       success: false,
       error: error.message,

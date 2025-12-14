@@ -59,7 +59,8 @@ function AccommodationBookingInner(){
     
     // Add print styles
     const style = document.createElement('style');
-    style.innerHTML = `
+    // Use textContent to avoid inserting HTML or scripts via innerHTML
+    style.textContent = `
       @media print {
         @page { margin: 1cm; }
         body * { visibility: hidden; }
