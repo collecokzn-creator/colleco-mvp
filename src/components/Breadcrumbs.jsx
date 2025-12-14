@@ -10,7 +10,7 @@ const routeLabels = {
   '/packages': 'Packages',
   '/transfers': 'Transfers',
   '/collaboration': 'Collaboration',
-  '/partner': 'Partner Dashboard',
+  '/partner': 'Partner Hub',
   '/settings': 'Settings',
   '/profile': 'Profile',
   '/account': 'Account',

@@ -312,8 +312,17 @@ export default function Bookings() {
 					<div className="py-12 sm:py-16 text-center">
 						<div className="text-6xl mb-4">📋</div>
 						<p className="text-brand-brown/70 text-base sm:text-lg mb-2">No bookings found</p>
-						{statusFilter !== 'all' && (
+						{statusFilter !== 'all' ? (
 							<p className="text-sm text-brand-russty">Try changing the filter to see more results</p>
+						) : (
+							<div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center items-center">
+								<Link to="/plan-trip">
+									<Button variant="primary" size="md">🗺️ Plan a Trip</Button>
+								</Link>
+								<Link to="/packages">
+									<Button variant="outline" size="md">📦 Browse Packages</Button>
+								</Link>
+							</div>
 						)}
 					</div>
 				) : (
@@ -344,7 +353,7 @@ export default function Bookings() {
 											</div>
 										</div>
 									</div>
-									<div className="flex items-start">
+									<div className="flex flex-col items-end gap-2">
 										<span className={`px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap ${
 											item.status === 'confirmed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
 											item.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
@@ -352,6 +361,13 @@ export default function Bookings() {
 										}`}>
 											{item.status.charAt(0).toUpperCase() + item.status.slice(1)}
 										</span>
+										{item.status === 'confirmed' && (
+											<Link to="/check-in">
+												<button className="text-xs font-medium text-brand-orange hover:text-brand-brown transition-colors underline">
+													Quick Check-In →
+												</button>
+											</Link>
+										)}
 									</div>
 								</div>
 							</div>

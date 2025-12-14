@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Footer from "../components/Footer.jsx";
 import { CheckCircle2, Clock, XCircle, AlertCircle, ArrowRight, FileText, Shield, Sparkles } from "lucide-react";
 
 const VERIFICATION_STAGES = [
@@ -364,6 +365,8 @@ export default function PartnerApplicationStatus() {
             </div>
           </div>
         </div>
+        
+        <Footer />
       </div>
     </div>
   );

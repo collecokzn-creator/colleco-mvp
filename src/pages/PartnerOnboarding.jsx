@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer.jsx";
 import { Building2, User, Phone, Mail, MapPin, FileText, CheckCircle2, ArrowRight, ArrowLeft, Briefcase, Globe, DollarSign } from "lucide-react";
 
 const PARTNER_CATEGORIES = [
@@ -675,6 +676,8 @@ export default function PartnerOnboarding() {
             </a>
           </p>
         </div>
+        
+        <Footer />
       </div>
     </div>
   );

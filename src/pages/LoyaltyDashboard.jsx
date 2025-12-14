@@ -83,12 +83,12 @@ export default function LoyaltyDashboard() {
   const currencyValue = pointsToCurrency(loyaltyData.availablePoints);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-white to-cream-sand pb-20">
+    <div className="min-h-screen bg-cream pb-20">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-brand-orange to-orange-600 text-white">
-        <div className="absolute inset-0 bg-black/10"></div>
+      <div className="relative overflow-hidden bg-brand-orange text-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-orange via-brand-orange to-orange-600 opacity-95"></div>
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%)',
         }}></div>
         
         <div className="relative max-w-6xl mx-auto px-3 sm:px-6 py-8 sm:py-12">
@@ -104,10 +104,10 @@ export default function LoyaltyDashboard() {
             {/* Tier Badge */}
             <div className="flex-shrink-0">
               <div className="relative">
-                <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border-2 border-white/30 text-center min-w-[180px]">
-                  <div className="text-5xl mb-2">{currentTier.icon}</div>
-                  <div className="text-2xl font-bold">{currentTier.name}</div>
-                  <div className="text-sm text-white/80 mt-1">{(currentTier.cashbackRate * 100).toFixed(0)}% cashback</div>
+                <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 border-2 border-white shadow-xl text-center min-w-[180px]">
+                  <div className="text-5xl mb-3">{currentTier.icon}</div>
+                  <div className="text-2xl font-bold text-brand-brown">{currentTier.name}</div>
+                  <div className="text-sm text-brand-orange font-semibold mt-2">{(currentTier.cashbackRate * 100).toFixed(0)}% cashback</div>
                 </div>
                 {!nextTierInfo.isMaxTier && (
                   <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white text-brand-orange px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap">
@@ -125,9 +125,9 @@ export default function LoyaltyDashboard() {
                 <span className="font-medium">Progress to {nextTierInfo.nextTier.name}</span>
                 <span className="font-bold">{nextTierInfo.progress.toFixed(0)}%</span>
               </div>
-              <div className="h-3 bg-white/20 rounded-full overflow-hidden">
+              <div className="h-3 bg-white/30 rounded-full overflow-hidden border border-white/40">
                 <div
-                  className="h-full bg-gradient-to-r from-white to-cream-sand transition-all duration-500"
+                  className="h-full bg-white shadow-sm transition-all duration-500"
                   style={{ width: `${nextTierInfo.progress}%` }}
                 ></div>
               </div>
@@ -156,33 +156,33 @@ export default function LoyaltyDashboard() {
           </div>
 
           {/* Total Earned */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-green-500/20">
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-brand-orange/30">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-5 w-5 text-green-600" />
+              <div className="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center">
+                <TrendingUp className="h-5 w-5 text-brand-orange" />
               </div>
-              <div className="text-sm text-gray-600">Total Earned</div>
+              <div className="text-sm text-brand-brown/70">Total Earned</div>
             </div>
             <div className="text-3xl font-bold text-brand-brown mb-1">
               {loyaltyData.totalPoints.toLocaleString()}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-brand-brown/60">
               All-time points
             </div>
           </div>
 
           {/* Badges Earned */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-purple-500/20">
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-brand-orange/30">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-                <Award className="h-5 w-5 text-purple-600" />
+              <div className="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center">
+                <Award className="h-5 w-5 text-brand-orange" />
               </div>
-              <div className="text-sm text-gray-600">Badges Earned</div>
+              <div className="text-sm text-brand-brown/70">Badges Earned</div>
             </div>
             <div className="text-3xl font-bold text-brand-brown mb-1">
               {loyaltyData.earnedBadges.length}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-brand-brown/60">
               {Object.keys(BADGES).length - loyaltyData.earnedBadges.length} to unlock
             </div>
           </div>
@@ -191,19 +191,19 @@ export default function LoyaltyDashboard() {
 
       {/* Referral Section */}
       <div className="max-w-6xl mx-auto px-3 sm:px-6 mt-8">
-        <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-6 sm:p-8 text-white shadow-xl">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-brand-orange/20">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="text-center sm:text-left">
-              <h3 className="text-2xl font-bold mb-2 flex items-center justify-center sm:justify-start gap-2">
-                <Users className="h-6 w-6" />
+              <h3 className="text-2xl font-bold mb-2 flex items-center justify-center sm:justify-start gap-2 text-brand-brown">
+                <Users className="h-6 w-6 text-brand-orange" />
                 Refer Friends, Get Rewarded
               </h3>
-              <p className="text-white/90 mb-4">Give R500, Get R500 when they book!</p>
-              <div className="flex items-center justify-center sm:justify-start gap-3 bg-white/20 backdrop-blur-sm rounded-lg p-3 max-w-sm">
-                <code className="text-lg font-mono font-bold flex-1">{loyaltyData.referralCode}</code>
+              <p className="text-brand-brown/70 mb-4">Give R500, Get R500 when they book!</p>
+              <div className="flex items-center justify-center sm:justify-start gap-3 bg-cream rounded-lg p-3 max-w-sm border border-brand-orange/20">
+                <code className="text-lg font-mono font-bold flex-1 text-brand-brown">{loyaltyData.referralCode}</code>
                 <button
                   onClick={copyReferralCode}
-                  className="px-4 py-2 bg-white text-purple-600 rounded-lg font-semibold hover:bg-white/90 transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-brand-orange text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center gap-2"
                 >
                   {copiedCode ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                   {copiedCode ? 'Copied!' : 'Copy'}
@@ -211,9 +211,9 @@ export default function LoyaltyDashboard() {
               </div>
             </div>
             <div className="flex-shrink-0 text-center">
-              <div className="text-4xl font-bold mb-1">{loyaltyData.referrals.converted.length}</div>
-              <div className="text-sm text-white/80">Friends joined</div>
-              <div className="text-xs text-white/60 mt-1">
+              <div className="text-4xl font-bold mb-1 text-brand-brown">{loyaltyData.referrals.converted.length}</div>
+              <div className="text-sm text-brand-brown/70">Friends joined</div>
+              <div className="text-xs text-brand-brown/60 mt-1">
                 +{loyaltyData.referrals.totalEarned.toLocaleString()} pts earned
               </div>
             </div>
@@ -381,22 +381,22 @@ export default function LoyaltyDashboard() {
               <div>
                 <h3 className="text-lg font-bold text-brand-brown mb-4">Redeem Points</h3>
                 
-                <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-6 mb-6 border border-green-200">
+                <div className="bg-cream rounded-xl p-6 mb-6 border-2 border-brand-orange/30">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <div className="text-sm text-gray-600 mb-1">Available to Redeem</div>
-                      <div className="text-3xl font-bold text-green-700">
+                      <div className="text-sm text-brand-brown/70 mb-1">Available to Redeem</div>
+                      <div className="text-3xl font-bold text-brand-brown">
                         {loyaltyData.availablePoints.toLocaleString()} pts
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm text-gray-600 mb-1">Value</div>
-                      <div className="text-2xl font-bold text-green-700">
+                      <div className="text-sm text-brand-brown/70 mb-1">Value</div>
+                      <div className="text-2xl font-bold text-brand-orange">
                         {currencyValue.formatted}
                       </div>
                     </div>
                   </div>
-                  <div className="text-xs text-gray-600">
+                  <div className="text-xs text-brand-brown/60">
                     Rate: 100 points = R1
                   </div>
                 </div>
@@ -410,10 +410,10 @@ export default function LoyaltyDashboard() {
                   Redeem Points for Credit
                 </button>
 
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="mt-6 p-4 bg-cream rounded-lg border-2 border-brand-orange/20">
                   <div className="flex gap-3">
-                    <Zap className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                    <div className="text-sm text-gray-700">
+                    <Zap className="h-5 w-5 text-brand-orange flex-shrink-0" />
+                    <div className="text-sm text-brand-brown/80">
                       <strong>How it works:</strong> Convert your points to booking credit that can be applied to any future reservation. Credits never expire!
                     </div>
                   </div>

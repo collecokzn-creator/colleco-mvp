@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Footer from "../components/Footer.jsx";
 import { Upload, FileText, CheckCircle2, XCircle, AlertCircle, ExternalLink, Loader } from "lucide-react";
 
 const REQUIRED_DOCUMENTS = [
@@ -509,6 +510,8 @@ export default function PartnerVerification() {
             <li>• Questions? Email <a href="mailto:verification@collecotravel.com" className="underline">verification@collecotravel.com</a></li>
           </ul>
         </div>
+        
+        <Footer />
       </div>
     </div>
   );

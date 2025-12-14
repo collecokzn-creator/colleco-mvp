@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Footer from '../components/Footer.jsx';
 import {
   TrendingUp,
   TrendingDown,
@@ -479,6 +480,8 @@ export default function PartnerSuccessDashboard() {
             )}
           </div>
         )}
+        
+        <Footer />
       </div>
     </div>
   );

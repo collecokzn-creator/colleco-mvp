@@ -54,7 +54,7 @@ export default function AIAgent() {
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState(null); // 'client' | 'partner' | 'admin'
   const [messages, setMessages] = useState([
-    { from: 'system', text: '👋 Hi! I\'m your CollEco AI Concierge. Are you a client, partner, or admin?' }
+    { from: 'system', text: 'Hi I\'m Zola, I\'m here to assist you. What can I help you with today?' }
   ]);
   // Example: user preferences, trip readiness, partner compliance, etc.
   const [progress, setProgress] = useState({ badge: 'Bronze', readiness: 40 });
@@ -270,17 +270,20 @@ export default function AIAgent() {
           <AIAgentInput onSend={send} />
         </motion.div>
       ) : (
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setOpen(true)}
-          className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-white/90 shadow-2xl shadow-brand-brown/25 backdrop-blur"
-          aria-label="Open CollEco AI chat"
-          title="Chat with CollEco AI"
-        >
-          <span className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-orange/40 via-transparent to-brand-brown/40 blur-xl" aria-hidden></span>
-          <img src={logoPng} alt="CollEco logo" className="relative h-8 w-8 object-contain" />
-        </motion.button>
+        <div className="flex flex-col items-center gap-1">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setOpen(true)}
+            className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-white/90 shadow-2xl shadow-brand-brown/25 backdrop-blur"
+            aria-label="Open Zola AI chat"
+            title="Chat with Zola"
+          >
+            <span className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-orange/40 via-transparent to-brand-brown/40 blur-xl" aria-hidden></span>
+            <img src={logoPng} alt="Zola" className="relative h-8 w-8 object-contain" />
+          </motion.button>
+          <span className="text-xs font-semibold text-brand-brown bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Zola</span>
+        </div>
       )}
       </motion.div>
     </div>

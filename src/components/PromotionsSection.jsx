@@ -1,29 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 
-// Simple, image-free promotions grid with discount badges
 export default function PromotionsSection() {
+  const [likedPromos, setLikedPromos] = useState({});
+
+  const toggleLike = (id, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikedPromos(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
   const promos = [
     {
       id: "spring-safari",
       title: "Spring Safari Flash Sale",
-      desc: "Save on 3–5 night lodge packages across Southern Africa.",
       discount: 20,
-      cta: { to: "/plan-trip?category=Safari&dest=Kruger", label: "Explore Safaris" }
+      cta: { to: "/plan-trip?category=Safari&dest=Kruger", label: "Explore Safaris" },
+      image: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&h=400&fit=crop"
     },
     {
       id: "city-long-weekend",
       title: "City Long‑Weekend Deals",
-      desc: "Cape Town and Joburg hotel bundles with activity credits.",
       discount: 15,
-      cta: { to: "/plan-trip?category=Hotels&dest=Cape%20Town", label: "View City Deals" }
+      cta: { to: "/plan-trip?category=Hotels&dest=Cape%20Town", label: "View City Deals" },
+      image: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&h=400&fit=crop"
     },
     {
       id: "island-escape",
       title: "Island Escape Specials",
-      desc: "All‑inclusive Mauritius and Zanzibar stays for groups.",
       discount: 18,
-      cta: { to: "/plan-trip?category=Resort&dest=Zanzibar", label: "Plan Island Trip" }
+      cta: { to: "/plan-trip?category=Resort&dest=Zanzibar", label: "Plan Island Trip" },
+      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop"
     },
   ];
 
@@ -35,21 +46,47 @@ export default function PromotionsSection() {
       </div>
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {promos.map((p) => (
-          <article key={p.id} className="rounded-lg border border-cream-border bg-cream p-5 shadow-sm hover:shadow transition">
-            <div className="flex items-start justify-between gap-3">
-              <h3 className="font-semibold text-lg leading-snug flex-1">{p.title}</h3>
-              <span className="shrink-0 inline-flex items-center rounded-md bg-brand-orange text-white text-xs font-semibold px-2 py-1">
+          <Link 
+            key={p.id} 
+            to={p.cta.to}
+            className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 block"
+          >
+            {/* Image */}
+            <div className="aspect-[4/3] relative overflow-hidden">
+              <img 
+                src={p.image} 
+                alt={p.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              
+              {/* Discount Badge */}
+              <div className="absolute top-3 left-3 px-3 py-1.5 rounded-md bg-brand-orange text-white text-sm font-bold shadow-lg">
                 -{p.discount}%
-              </span>
+              </div>
+
+              {/* Heart Icon */}
+              <button
+                onClick={(e) => toggleLike(p.id, e)}
+                className="absolute top-3 right-3 p-2 rounded-full transition-all duration-300 z-10"
+                aria-label={likedPromos[p.id] ? "Remove from favorites" : "Add to favorites"}
+              >
+                <Heart 
+                  className={`w-6 h-6 transition-all duration-300 ${
+                    likedPromos[p.id] 
+                      ? 'fill-brand-orange stroke-brand-orange' 
+                      : 'fill-white stroke-brand-orange'
+                  }`}
+                  strokeWidth={2}
+                />
+              </button>
+
+              {/* Minimal Strategic Text */}
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <h3 className="font-bold text-xl text-white">{p.title}</h3>
+              </div>
             </div>
-            <p className="mt-2 text-sm text-brand-russty/80">{p.desc}</p>
-            <div className="mt-4">
-              <Link to={p.cta.to} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight">
-                {p.cta.label}
-                <span aria-hidden>→</span>
-              </Link>
-            </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>

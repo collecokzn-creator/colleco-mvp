@@ -585,7 +585,7 @@ export default function Itinerary() {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl border-0 shadow-md p-4 sm:p-6">
+            <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6">
               {dayKeys.length === 0 ? (
                 <div className="text-center py-12 px-4">
                   <div className="mb-4 text-6xl opacity-20">📅</div>
@@ -609,7 +609,7 @@ export default function Itinerary() {
                     currentDate.setDate(startDate.getDate() + (Number(day) - 1));
                     
                     return (
-                    <div key={day} className="bg-gradient-to-br from-white to-cream-sand/20 rounded-2xl shadow-md border-0 p-4 sm:p-6">
+                    <div key={day} className="bg-gradient-to-br from-white to-cream-sand/20 rounded-2xl shadow-md p-4 sm:p-6">
                       <ItineraryDay day={day}>
                         <div className="flex items-center justify-between mb-4">
                           <h3 className="text-2xl sm:text-3xl font-bold text-brand-brown">Day {day}</h3>

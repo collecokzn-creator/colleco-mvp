@@ -62,7 +62,7 @@ class VoiceBookingAgent {
       this.isListening = true;
        // Only speak greeting if not using callback mode (old booking mode)
        if (!this.onTranscript) {
-         this.speak("Hi! I'm Zola, your CollEco Travel assistant. How can I help you today?");
+         this.speak("Hi I'm Zola, I'm here to assist you. How can I help you today?");
        }
       return true;
     } catch (error) {

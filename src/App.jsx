@@ -136,6 +136,8 @@ function RouteMetadataSync() {
     if (currentRoute?.meta?.title) {
       document.title = currentRoute.meta.title;
     }
+    // Scroll to top on route change
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return null;

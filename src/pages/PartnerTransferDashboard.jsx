@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Footer from '../components/Footer.jsx';
 
 export default function PartnerTransferDashboard() {
   const [requests, setRequests] = useState([]);
@@ -234,6 +235,8 @@ export default function PartnerTransferDashboard() {
             ))}
           </div>
         )}
+        
+        <Footer />
       </div>
     </div>
   );

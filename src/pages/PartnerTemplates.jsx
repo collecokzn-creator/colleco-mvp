@@ -861,6 +861,8 @@ export default function PartnerTemplates() {
             )}
           </div>
         </div>
+        
+        <Footer />
       </div>
     </div>
   );

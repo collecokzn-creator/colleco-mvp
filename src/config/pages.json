@@ -846,6 +846,248 @@
                 "requiresAuth": true,
                 "layout": "workspace"
               }
+            },
+            {
+              "path": "/client/upcoming",
+              "name": "Upcoming Trips",
+              "component": "MyTrips",
+              "meta": {
+                "title": "Upcoming Trips",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/past",
+              "name": "Past Trips",
+              "component": "MyTrips",
+              "meta": {
+                "title": "Past Trips",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/saved",
+              "name": "Saved Itineraries",
+              "component": "SavedItineraries",
+              "meta": {
+                "title": "Saved Itineraries",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/destinations",
+              "name": "Destinations",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Explore Destinations",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/packages",
+              "name": "Packages",
+              "component": "Packages",
+              "meta": {
+                "title": "Travel Packages",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/flights",
+              "name": "Flights",
+              "component": "FlightBooking",
+              "meta": {
+                "title": "Book Flights",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/stays",
+              "name": "Stays",
+              "component": "AccommodationBooking",
+              "meta": {
+                "title": "Book Accommodation",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/cars",
+              "name": "Cars",
+              "component": "CarBooking",
+              "meta": {
+                "title": "Hire a Car",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/tours",
+              "name": "Tours",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Book Tours",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/quotes",
+              "name": "Quote Builder",
+              "component": "QuoteBuilder",
+              "meta": {
+                "title": "Request Quotes",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/itinerary",
+              "name": "Itinerary Viewer",
+              "component": "Itinerary",
+              "meta": {
+                "title": "View Itinerary",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/bookings",
+              "name": "Bookings",
+              "component": "Bookings",
+              "meta": {
+                "title": "My Bookings",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/payment",
+              "name": "Payment",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Payment Methods",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/notifications",
+              "name": "Notification Center",
+              "component": "Notifications",
+              "meta": {
+                "title": "Notifications",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/reminders",
+              "name": "Trip Reminders",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Trip Reminders",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/chat",
+              "name": "Chat with Agents",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Agent Chat",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/partner-chat",
+              "name": "Partner Chat",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Partner Chat",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/vouchers",
+              "name": "Vouchers",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Travel Vouchers",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/invoices",
+              "name": "Invoices",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Invoices",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/confirmations",
+              "name": "Confirmations",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Booking Confirmations",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/reviews",
+              "name": "Reviews",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "My Reviews",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/client/feedback",
+              "name": "Feedback",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Send Feedback",
+                "role": "client",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
             }
           ]
         },
@@ -979,6 +1221,226 @@
               "component": "WorkspacePage",
               "meta": {
                 "title": "Verify & Upload Documents",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/sales",
+              "name": "Sales & Earnings",
+              "component": "PartnerEarnings",
+              "meta": {
+                "title": "Sales Dashboard",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/hotels",
+              "name": "Hotels",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Hotel Listings",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/tours",
+              "name": "Tours",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Tour Listings",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/cars",
+              "name": "Cars",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Car Rental Listings",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/activities",
+              "name": "Activities",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Activity Listings",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/calendar",
+              "name": "Calendar",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Availability Calendar",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/pricing",
+              "name": "Pricing",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Rate Management",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/allotments",
+              "name": "Allotments",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Inventory Management",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/booking-actions",
+              "name": "Booking Actions",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Confirm/Modify/Cancel",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/payouts",
+              "name": "Payouts",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Payout Management",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/commissions",
+              "name": "Commissions",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Commission Tracking",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/invoices",
+              "name": "Invoices",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Invoice Management",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/featured",
+              "name": "Featured Listings",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Featured Products",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/chat",
+              "name": "Chat",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Partner Chat",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/collaboration",
+              "name": "Collaboration",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Team Collaboration",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/documents",
+              "name": "Documents",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Document Uploads",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/verification",
+              "name": "Verification",
+              "component": "PartnerVerification",
+              "meta": {
+                "title": "Partner Verification",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/safety",
+              "name": "Safety Details",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Safety Information",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/views",
+              "name": "Views",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Views Analytics",
+                "role": "partner",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/partner/bookings-analytics",
+              "name": "Booking Analytics",
+              "component": "WorkspacePage",
+              "meta": {
+                "title": "Booking Trends",
                 "role": "partner",
                 "requiresAuth": true,
                 "layout": "workspace"
@@ -1123,7 +1585,7 @@
             {
               "path": "/admin/dashboard",
               "name": "Admin Dashboard",
-              "component": "WorkspacePage",
+              "component": "AdminDashboard",
               "meta": {
                 "title": "System Overview",
                 "role": "admin",
@@ -1134,7 +1596,7 @@
             {
               "path": "/admin/reports",
               "name": "Reports & Analytics",
-              "component": "WorkspacePage",
+              "component": "Reports",
               "meta": {
                 "title": "Operational Reports",
                 "role": "admin",
@@ -1178,7 +1640,7 @@
             {
               "path": "/admin/finance",
               "name": "Finance Reports",
-              "component": "WorkspacePage",
+              "component": "Finance",
               "meta": {
                 "title": "Revenue & Transactions",
                 "role": "admin",
@@ -1225,6 +1687,17 @@
               "component": "WorkspacePage",
               "meta": {
                 "title": "Content Library",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/analytics",
+              "name": "Analytics",
+              "component": "Analytics",
+              "meta": {
+                "title": "Platform Analytics",
                 "role": "admin",
                 "requiresAuth": true,
                 "layout": "workspace"

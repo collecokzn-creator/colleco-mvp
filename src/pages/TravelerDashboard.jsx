@@ -192,7 +192,7 @@ export default function TravelerDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
+      <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <Clock className="w-12 h-12 animate-spin text-brand-orange mx-auto mb-4" />
           <p className="text-gray-600">Loading your dashboard...</p>
@@ -202,7 +202,7 @@ export default function TravelerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-cream py-8 px-4">
+    <div className="space-y-6">
       <div className="max-w-7xl mx-auto">
         {/* Welcome Header */}
         <div className="mb-8">

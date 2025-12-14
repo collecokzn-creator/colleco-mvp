@@ -31,53 +31,77 @@ export default function WeatherWidget({ city, country }){
   const { loading, error, data } = state;
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-white shadow-md border border-gray-100">
-      {/* Current Weather - Professional Design */}
-      <div className="bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 p-4 sm:p-5 border-b border-gray-100">
-        {loading && <div className="text-gray-600 text-sm">Loading weather data...</div>}
-        {error && <div role="alert" className="text-gray-700 text-sm bg-red-50 border border-red-100 px-3 py-2 rounded-lg">{error}</div>}
-        {data && (
-          <div>
-            {/* Location & Current Conditions */}
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="text-gray-800 text-lg sm:text-xl font-semibold mb-1">
+    <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/40 shadow-lg backdrop-blur-sm">
+      {/* Current Weather - Premium Design */}
+      <div className="bg-gradient-to-br from-sky-400/90 via-blue-500/90 to-indigo-600/90 p-5 sm:p-6 text-white relative overflow-hidden">
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 80%, white 1px, transparent 1px)',
+          backgroundSize: '50px 50px'
+        }}></div>
+        
+        <div className="relative z-10">
+          {loading && <div className="text-white/90 text-sm animate-pulse">Loading weather data...</div>}
+          {error && <div role="alert" className="text-white bg-red-500/20 backdrop-blur-sm border border-white/30 px-3 py-2 rounded-xl text-sm">{error}</div>}
+          {data && (
+            <div>
+              {/* Location */}
+              <div className="mb-4">
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight drop-shadow-sm">
                   {data.locationName || city || country || ''}
                 </h3>
-                <div className="flex items-center gap-3">
-                  <div className="text-5xl sm:text-6xl">{data.current.icon}</div>
+                <div className="text-white/80 text-xs sm:text-sm mt-0.5">{data.current.text}</div>
+              </div>
+
+              {/* Current Temp & Icon */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="text-7xl sm:text-8xl drop-shadow-lg">{data.current.icon}</div>
                   <div>
-                    <div className="text-gray-700 text-sm mb-1">{data.current.text}</div>
+                    <div className="text-6xl sm:text-7xl font-extralight tracking-tighter">{Math.round(data.current.temp)}°</div>
                     {Number.isFinite(data.current.feelsLike) && (
-                      <div className="text-gray-500 text-xs">Feels like {Math.round(data.current.feelsLike)}°C</div>
+                      <div className="text-white/70 text-xs mt-1">Feels {Math.round(data.current.feelsLike)}°</div>
                     )}
                   </div>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="text-5xl sm:text-6xl font-light text-gray-800">{Math.round(data.current.temp)}°</div>
-                <div className="text-xs text-gray-500 mt-1">Celsius</div>
-              </div>
-            </div>
 
-            {/* Toggle Button */}
-            <button
-              type="button"
-              onClick={() => setShowExtended(!showExtended)}
-              className="w-full text-sm px-4 py-2.5 rounded-xl bg-white hover:bg-gray-50 text-gray-700 font-medium transition-all shadow-sm border border-gray-200"
-              aria-expanded={showExtended}
-            >
-              {showExtended ? '← Simple View' : 'View 7-Day Forecast →'}
-            </button>
-          </div>
-        )}
+              {/* Quick Stats */}
+              {(Number.isFinite(data.current.humidity) || Number.isFinite(data.current.windSpeed)) && (
+                <div className="flex gap-4 mt-4 pt-4 border-t border-white/20">
+                  {Number.isFinite(data.current.humidity) && (
+                    <div className="flex items-center gap-2 text-xs sm:text-sm">
+                      <span className="text-lg">💧</span>
+                      <span className="text-white/90">{Math.round(data.current.humidity)}%</span>
+                    </div>
+                  )}
+                  {Number.isFinite(data.current.windSpeed) && (
+                    <div className="flex items-center gap-2 text-xs sm:text-sm">
+                      <span className="text-lg">💨</span>
+                      <span className="text-white/90">{Math.round(data.current.windSpeed)} km/h</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Toggle Button */}
+              <button
+                type="button"
+                onClick={() => setShowExtended(!showExtended)}
+                className="w-full mt-4 text-xs sm:text-sm px-4 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-medium transition-all border border-white/30"
+                aria-expanded={showExtended}
+              >
+                {showExtended ? '← 5-Day View' : 'View 7-Day Details →'}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* 5-Day Forecast (Simple View) */}
+      {/* 5-Day Forecast (Simple View) - Premium Compact */}
       {data && !showExtended && (
-        <div className="p-4 bg-white">
-          <h4 className="text-sm font-semibold text-gray-700 mb-3">5-Day Forecast</h4>
-          <div className="grid grid-cols-5 gap-2">
+        <div className="p-4 sm:p-5 bg-white/50 backdrop-blur-sm">
+          <div className="flex overflow-x-auto gap-2 sm:gap-3 pb-2 scrollbar-hide">
             {data.forecast.slice(0, 5).map((f, idx) => {
               const date = new Date(f.date);
               const isToday = date.toDateString() === new Date().toDateString();
@@ -86,27 +110,32 @@ export default function WeatherWidget({ city, country }){
               return (
                 <div 
                   key={f.date} 
-                  className={`p-2.5 rounded-xl text-center transition-all ${
+                  className={`flex-shrink-0 w-20 sm:w-24 p-3 sm:p-4 rounded-2xl text-center transition-all hover:scale-105 ${
                     isToday 
-                      ? 'bg-blue-50 border-2 border-blue-200' 
-                      : 'bg-gray-50 border border-gray-200 hover:border-gray-300'
+                      ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg' 
+                      : 'bg-white/80 backdrop-blur-sm shadow-md hover:shadow-lg'
                   }`}
                 >
-                  <div className={`text-xs font-semibold mb-1.5 ${isToday ? 'text-blue-700' : 'text-gray-600'}`}>
+                  <div className={`text-xs font-bold mb-2 uppercase tracking-wide ${
+                    isToday ? 'text-white/90' : 'text-gray-600'
+                  }`}>
                     {dayName}
                   </div>
-                  <div className="text-3xl mb-2">{f.icon || '☀️'}</div>
-                  <div className="space-y-1">
-                    <div className="text-sm font-semibold text-gray-800">
+                  <div className="text-4xl my-2">{f.icon || '☀️'}</div>
+                  <div className="space-y-0.5">
+                    <div className={`text-lg font-bold ${isToday ? 'text-white' : 'text-gray-900'}`}>
                       {Math.round(f.tmax)}°
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className={`text-xs ${isToday ? 'text-white/70' : 'text-gray-500'}`}>
                       {Math.round(f.tmin)}°
                     </div>
                   </div>
                   {Number.isFinite(f.popMax) && f.popMax > 20 && (
-                    <div className="mt-1.5 text-xs text-blue-600 font-medium">
-                      {Math.round(f.popMax)}%
+                    <div className={`mt-2 text-xs font-medium flex items-center justify-center gap-1 ${
+                      isToday ? 'text-white/90' : 'text-blue-600'
+                    }`}>
+                      <span>💧</span>
+                      <span>{Math.round(f.popMax)}%</span>
                     </div>
                   )}
                 </div>
@@ -116,104 +145,130 @@ export default function WeatherWidget({ city, country }){
         </div>
       )}
 
-      {/* Extended 7-Day Forecast */}
+      {/* Extended 7-Day Forecast - Premium */}
       {data && showExtended && (
-        <div className="bg-white p-4 sm:p-6">
-          <h4 className="text-base font-semibold mb-4 text-gray-800">7-Day Detailed Forecast</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
+        <div className="bg-gradient-to-br from-white to-blue-50/20 p-4 sm:p-6">
+          <h4 className="text-base font-bold mb-5 text-gray-800 flex items-center gap-2">
+            <span className="text-xl">📅</span>
+            7-Day Detailed Forecast
+          </h4>
+          <div className="space-y-3">
             {data.forecast.map((f, idx) => {
               const date = new Date(f.date);
-              const dayName = date.toLocaleDateString(undefined, { weekday: 'short' });
+              const dayName = date.toLocaleDateString(undefined, { weekday: 'long' });
               const dateStr = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
               const isToday = date.toDateString() === new Date().toDateString();
               
               return (
                 <div 
                   key={f.date} 
-                  className={`p-3.5 rounded-xl border-2 transition-all ${
+                  className={`rounded-2xl p-4 transition-all hover:scale-[1.02] ${
                     isToday 
-                      ? 'bg-blue-50 border-blue-300 shadow-sm' 
-                      : 'bg-gray-50 border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                      ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg' 
+                      : 'bg-white/80 backdrop-blur-sm shadow-md hover:shadow-lg'
                   }`}
                 >
-                  {/* Date Header */}
-                  <div className="text-center mb-3 pb-2 border-b border-gray-200">
-                    <div className={`text-sm font-semibold ${
-                      isToday ? 'text-blue-700' : 'text-gray-700'
+                  <div className="flex items-center justify-between gap-4">
+                    {/* Date & Icon */}
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className="text-5xl">{f.icon || '☀️'}</div>
+                      <div>
+                        <div className={`font-bold text-base sm:text-lg ${
+                          isToday ? 'text-white' : 'text-gray-900'
+                        }`}>
+                          {isToday ? 'Today' : dayName}
+                        </div>
+                        <div className={`text-xs ${isToday ? 'text-white/80' : 'text-gray-500'}`}>
+                          {dateStr} • {f.text || 'Clear'}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Temperature */}
+                    <div className="text-right">
+                      <div className={`text-3xl sm:text-4xl font-bold ${isToday ? 'text-white' : 'text-gray-900'}`}>
+                        {Math.round(f.tmax)}°
+                      </div>
+                      <div className={`text-sm ${isToday ? 'text-white/70' : 'text-gray-500'}`}>
+                        Low {Math.round(f.tmin)}°
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Weather Details Grid */}
+                  {(Number.isFinite(f.popMax) || Number.isFinite(f.precipSum) || Number.isFinite(f.uvMax)) && (
+                    <div className={`mt-4 pt-4 grid grid-cols-3 gap-3 text-xs ${
+                      isToday ? 'border-t border-white/20' : 'border-t border-gray-200'
                     }`}>
-                      {isToday ? 'Today' : dayName}
+                      {Number.isFinite(f.popMax) && f.popMax > 0 && (
+                        <div className="text-center">
+                          <div className={`text-lg mb-1 ${isToday ? 'opacity-90' : ''}`}>💧</div>
+                          <div className={`font-semibold ${
+                            isToday ? 'text-white' : f.popMax > 60 ? 'text-blue-600' : 'text-gray-700'
+                          }`}>
+                            {Math.round(f.popMax)}%
+                          </div>
+                          <div className={isToday ? 'text-white/70' : 'text-gray-500'}>Rain</div>
+                        </div>
+                      )}
+                      
+                      {Number.isFinite(f.uvMax) && f.uvMax > 0 && (
+                        <div className="text-center">
+                          <div className={`text-lg mb-1 ${isToday ? 'opacity-90' : ''}`}>☀️</div>
+                          <div className={`font-semibold ${
+                            isToday ? 'text-white' : 
+                            f.uvMax >= 8 ? 'text-red-600' : 
+                            f.uvMax >= 6 ? 'text-orange-500' : 'text-gray-700'
+                          }`}>
+                            {Math.round(f.uvMax)}
+                          </div>
+                          <div className={isToday ? 'text-white/70' : 'text-gray-500'}>UV Index</div>
+                        </div>
+                      )}
+
+                      {Number.isFinite(f.precipSum) && f.precipSum > 0 && (
+                        <div className="text-center">
+                          <div className={`text-lg mb-1 ${isToday ? 'opacity-90' : ''}`}>🌧️</div>
+                          <div className={`font-semibold ${isToday ? 'text-white' : 'text-blue-600'}`}>
+                            {f.precipSum.toFixed(1)}
+                          </div>
+                          <div className={isToday ? 'text-white/70' : 'text-gray-500'}>mm</div>
+                        </div>
+                      )}
                     </div>
-                    <div className="text-xs text-gray-500 mt-0.5">{dateStr}</div>
-                  </div>
-                  
-                  {/* Weather Icon & Description */}
-                  <div className="text-center mb-3">
-                    <div className="text-4xl mb-2">{f.icon || '☀️'}</div>
-                    <div className="text-xs text-gray-600 leading-tight">{f.text || 'Clear'}</div>
-                  </div>
-                  
-                  {/* Temperature & Details */}
-                  <div className="space-y-2 text-xs">
-                    <div className="flex justify-between items-center py-1">
-                      <span className="text-gray-600">High</span>
-                      <span className="font-semibold text-gray-800">{Math.round(f.tmax)}°C</span>
-                    </div>
-                    <div className="flex justify-between items-center py-1">
-                      <span className="text-gray-600">Low</span>
-                      <span className="font-semibold text-gray-800">{Math.round(f.tmin)}°C</span>
-                    </div>
-                    
-                    {Number.isFinite(f.popMax) && f.popMax > 0 && (
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-gray-600">Rain</span>
-                        <span className={`font-semibold ${
-                          f.popMax > 60 ? 'text-blue-600' : 'text-gray-700'
-                        }`}>{Math.round(f.popMax)}%</span>
-                      </div>
-                    )}
-                    
-                    {Number.isFinite(f.precipSum) && f.precipSum > 0 && (
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-gray-600">Precip</span>
-                        <span className="font-semibold text-blue-600">{f.precipSum.toFixed(1)}mm</span>
-                      </div>
-                    )}
-                    
-                    {Number.isFinite(f.uvMax) && f.uvMax > 0 && (
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-gray-600">UV Index</span>
-                        <span className={`font-semibold ${
-                          f.uvMax >= 8 ? 'text-red-600' : f.uvMax >= 6 ? 'text-orange-500' : 'text-gray-700'
-                        }`}>{Math.round(f.uvMax)}</span>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Travel Tips - Refined */}
+                  )}
+
+                  {/* Travel Tips */}
                   {(f.popMax > 50 || f.uvMax >= 7 || f.tmax >= 30 || f.tmax <= 10) && (
-                    <div className="mt-3 pt-3 border-t border-gray-200 space-y-1.5">
+                    <div className={`mt-3 pt-3 flex flex-wrap gap-2 ${
+                      isToday ? 'border-t border-white/20' : 'border-t border-gray-200'
+                    }`}>
                       {f.popMax > 50 && (
-                        <div className="text-[11px] text-blue-700 bg-blue-50 px-2 py-1 rounded-lg flex items-center gap-1.5">
-                          <span>☂️</span>
-                          <span>Bring umbrella</span>
+                        <div className={`text-[10px] sm:text-xs px-2.5 py-1 rounded-full font-medium ${
+                          isToday ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700'
+                        }`}>
+                          ☂️ Umbrella
                         </div>
                       )}
                       {f.uvMax >= 7 && (
-                        <div className="text-[11px] text-orange-700 bg-orange-50 px-2 py-1 rounded-lg flex items-center gap-1.5">
-                          <span>☀️</span>
-                          <span>Sun protection</span>
+                        <div className={`text-[10px] sm:text-xs px-2.5 py-1 rounded-full font-medium ${
+                          isToday ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-700'
+                        }`}>
+                          🧴 Sunscreen
                         </div>
                       )}
                       {f.tmax >= 30 && (
-                        <div className="text-[11px] text-red-700 bg-red-50 px-2 py-1 rounded-lg flex items-center gap-1.5">
-                          <span>🌡️</span>
-                          <span>Stay hydrated</span>
+                        <div className={`text-[10px] sm:text-xs px-2.5 py-1 rounded-full font-medium ${
+                          isToday ? 'bg-white/20 text-white' : 'bg-red-100 text-red-700'
+                        }`}>
+                          💧 Hydrate
                         </div>
                       )}
                       {f.tmax <= 10 && (
-                        <div className="text-[11px] text-indigo-700 bg-indigo-50 px-2 py-1 rounded-lg flex items-center gap-1.5">
-                          <span>🧥</span>
-                          <span>Warm clothing</span>
+                        <div className={`text-[10px] sm:text-xs px-2.5 py-1 rounded-full font-medium ${
+                          isToday ? 'bg-white/20 text-white' : 'bg-indigo-100 text-indigo-700'
+                        }`}>
+                          🧥 Layer up
                         </div>
                       )}
                     </div>
@@ -223,45 +278,45 @@ export default function WeatherWidget({ city, country }){
             })}
           </div>
           
-          {/* Packing Suggestions - Professional */}
-          <div className="mt-6 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+          {/* Packing Suggestions - Streamlined */}
+          <div className="mt-6 p-4 sm:p-5 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-md">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-lg">🎒</span>
-              <h5 className="text-sm font-semibold text-gray-800">Packing Recommendations</h5>
+              <span className="text-2xl">🎒</span>
+              <h5 className="text-sm font-bold text-gray-900">Smart Packing Guide</h5>
             </div>
-            <div className="text-xs text-gray-700 space-y-2">
+            <div className="text-xs sm:text-sm text-gray-700 space-y-2">
               {data.forecast.some(f => f.popMax > 40) && (
-                <div className="flex items-start gap-2">
-                  <span className="text-blue-600 mt-0.5">•</span>
-                  <span>Rain gear recommended - precipitation expected during your trip</span>
+                <div className="flex items-start gap-2.5">
+                  <span className="text-blue-600 font-bold">•</span>
+                  <span>Pack rain gear - showers expected</span>
                 </div>
               )}
               {data.forecast.some(f => f.uvMax >= 7) && (
-                <div className="flex items-start gap-2">
-                  <span className="text-orange-600 mt-0.5">•</span>
-                  <span>Sunscreen and protective clothing for high UV exposure</span>
+                <div className="flex items-start gap-2.5">
+                  <span className="text-orange-600 font-bold">•</span>
+                  <span>High UV - bring sunscreen & hat</span>
                 </div>
               )}
               {data.forecast.some(f => f.tmax >= 28) && (
-                <div className="flex items-start gap-2">
-                  <span className="text-red-600 mt-0.5">•</span>
-                  <span>Light, breathable fabrics suitable for warm conditions</span>
+                <div className="flex items-start gap-2.5">
+                  <span className="text-red-600 font-bold">•</span>
+                  <span>Lightweight clothing recommended</span>
                 </div>
               )}
               {data.forecast.some(f => f.tmin <= 15) && (
-                <div className="flex items-start gap-2">
-                  <span className="text-indigo-600 mt-0.5">•</span>
-                  <span>Layered clothing for cool mornings and evenings</span>
+                <div className="flex items-start gap-2.5">
+                  <span className="text-indigo-600 font-bold">•</span>
+                  <span>Bring layers for cool evenings</span>
                 </div>
               )}
               {data.forecast.some(f => f.tmax - f.tmin > 15) && (
-                <div className="flex items-start gap-2">
-                  <span className="text-purple-600 mt-0.5">•</span>
-                  <span>Versatile layers due to significant temperature variations</span>
+                <div className="flex items-start gap-2.5">
+                  <span className="text-purple-600 font-bold">•</span>
+                  <span>Temperature swings - pack versatile layers</span>
                 </div>
               )}
               {!data.forecast.some(f => f.popMax > 40 || f.uvMax >= 7 || f.tmax >= 28 || f.tmin <= 15 || f.tmax - f.tmin > 15) && (
-                <div className="text-gray-600 italic">Conditions look favorable - standard travel attire recommended</div>
+                <div className="text-gray-600 italic text-center py-2">✨ Perfect conditions - standard attire</div>
               )}
             </div>
           </div>

@@ -27,6 +27,17 @@ import {
   Users2,
   Video,
   Wallet,
+  Bell,
+  Activity,
+  Zap,
+  Star,
+  CheckCircle2,
+  AlertCircle,
+  Bookmark,
+  Car,
+  Plane,
+  Mountain,
+  BedDouble,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -327,19 +338,34 @@ const ICON_COMPONENTS = {
   Wallet,
   ShieldCheck,
   Settings,
-  Tag,
-  Camera,
-  TrendingUp,
   CalendarCheck,
-  Briefcase,
   FileText,
-  Map,
-  HelpCircle,
-  Gift,
-  Video,
+  Tag,
+  Sparkles,
   MessageSquare,
+  Clock3,
   Shield,
+  HelpCircle,
+  TrendingUp,
+  Briefcase,
+  Map,
   Megaphone,
+  Camera,
+  Gift,
+  Star,
+  Video,
+  Globe2,
+  Home,
+  Bell,
+  Activity,
+  Zap,
+  CheckCircle2,
+  AlertCircle,
+  Bookmark,
+  Car,
+  Plane,
+  Mountain,
+  BedDouble,
 };
 
 const ROLE_OPTIONS = Object.entries((EXTERNAL_SIDEBAR_CONFIG || SIDEBAR_CONFIG).roles).map(
@@ -942,6 +968,7 @@ export default function Sidebar() {
                             }
                           }
                         } catch (e) {}
+                        
                         return (
                           <li key={item.route}>
                             <NavLink
@@ -959,7 +986,7 @@ export default function Sidebar() {
                               {ItemIcon && (
                                 <ItemIcon className="h-4 w-4 text-brand-orange" aria-hidden="true" />
                               )}
-                              <span>{displayLabel}</span>
+                              <span className="flex-1">{displayLabel}</span>
                             </NavLink>
                           </li>
                         );

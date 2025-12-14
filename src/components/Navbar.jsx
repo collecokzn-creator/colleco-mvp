@@ -81,9 +81,9 @@ export default function Navbar() {
 					<img
 						src={logoPng}
 						alt="CollEco Travel"
-						className="h-9 w-9 object-contain transition-transform duration-300 hover:scale-105"
-						width="36"
-						height="36"
+						className="h-12 sm:h-14 w-12 sm:w-14 object-contain transition-transform duration-300 hover:scale-105"
+						width="56"
+						height="56"
 					/>
 					<div className="hidden sm:flex flex-col leading-tight">
 						<span className="text-base font-bold text-brand-orange">CollEco Travel</span>

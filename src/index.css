@@ -50,6 +50,15 @@ html { overflow-y: scroll; }
 	.toast-fade, .animate-fade-in, .animate-shake { transition: none; animation: none; }
 }
 
+/* Hide scrollbar utility */
+.scrollbar-hide {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;     /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;             /* Chrome, Safari and Opera */
+}
+
 /* Custom Scrollbar Styling */
 .custom-scrollbar::-webkit-scrollbar {
 	width: 6px;

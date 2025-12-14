@@ -1,33 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { WishlistButton } from "./mvp/EnhancementStubs";
+import { Heart } from "lucide-react";
 
-// Lightweight featured packages; images omitted for now to keep bundle slim
 export default function FeaturedPackagesSection() {
+  const [likedPackages, setLikedPackages] = useState({});
+
+  const toggleLike = (id, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikedPackages(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
   const packages = [
     {
       id: "cape-winelands-getaway",
-      title: "Cape Town + Winelands Getaway",
-      highlights: ["Table Mountain", "Stellenbosch tastings", "Atlantic seaboard"],
+      title: "Cape Town + Winelands",
       nights: 4,
       priceFrom: 899,
-      to: "/plan-trip?dest=Cape%20Town&category=Tour"
+      to: "/plan-trip?dest=Cape%20Town&category=Tour",
+      image: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&h=400&fit=crop"
     },
     {
       id: "kruger-big5-lodge",
-      title: "Kruger Big 5 Lodge Stay",
-      highlights: ["Private game drives", "Sundowners", "Bush braai"],
+      title: "Kruger Big 5 Safari",
       nights: 3,
       priceFrom: 1199,
-      to: "/plan-trip?dest=Kruger&category=Safari"
+      to: "/plan-trip?dest=Kruger&category=Safari",
+      image: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&h=400&fit=crop"
     },
     {
       id: "zanzibar-group-retreat",
-      title: "Zanzibar Group Beach Retreat",
-      highlights: ["Stone Town tour", "Reef snorkelling", "Spice farm"],
+      title: "Zanzibar Beach Retreat",
       nights: 5,
       priceFrom: 1290,
-      to: "/plan-trip?dest=Zanzibar&category=Resort"
+      to: "/plan-trip?dest=Zanzibar&category=Resort",
+      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop"
     },
   ];
 
@@ -36,30 +46,46 @@ export default function FeaturedPackagesSection() {
       <h2 className="text-2xl sm:text-3xl font-bold text-brand-orange">Featured packages</h2>
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {packages.map((pkg) => (
-          <article key={pkg.id} className="rounded-lg border border-brand-gold bg-white p-5 shadow-sm hover:shadow transition">
-            <h3 className="font-semibold text-lg leading-snug text-brand-orange">{pkg.title}</h3>
-            <ul className="mt-2 text-sm text-brand-gold list-disc list-inside">
-              {pkg.highlights.map((h) => (
-                <li key={h}>{h}</li>
-              ))}
-            </ul>
-            <div className="mt-3 text-sm text-brand-orange flex items-center gap-3">
-              <span className="inline-flex items-center rounded bg-brand-gold/20 px-2 py-1 border border-brand-gold">{pkg.nights} nights</span>
-              <span className="inline-flex items-center text-brand-gold">From ${pkg.priceFrom} pp</span>
-            </div>
-            <div className="mt-4 flex flex-col gap-2">
-              <Link to={pkg.to} className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-brand-orange text-white text-sm font-semibold hover:bg-brand-highlight transition-colors shadow-sm">
-                See details
-                <span aria-hidden>→</span>
-              </Link>
-              <div className="flex gap-2">
-                <Link to="/book" className="flex-1 inline-flex items-center justify-center px-3 py-2 rounded-md bg-white text-brand-gold border-2 border-brand-gold text-sm font-semibold hover:bg-cream transition-colors shadow-sm">
-                  Quick Book
-                </Link>
-                <WishlistButton itemId={pkg.id} itemTitle={pkg.title} />
+          <Link 
+            key={pkg.id} 
+            to={pkg.to}
+            className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 block"
+          >
+            {/* Image */}
+            <div className="aspect-[4/3] relative overflow-hidden">
+              <img 
+                src={pkg.image} 
+                alt={pkg.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              
+              {/* Heart Icon */}
+              <button
+                onClick={(e) => toggleLike(pkg.id, e)}
+                className="absolute top-3 right-3 p-2 rounded-full transition-all duration-300 z-10"
+                aria-label={likedPackages[pkg.id] ? "Remove from favorites" : "Add to favorites"}
+              >
+                <Heart 
+                  className={`w-6 h-6 transition-all duration-300 ${
+                    likedPackages[pkg.id] 
+                      ? 'fill-brand-orange stroke-brand-orange' 
+                      : 'fill-white stroke-brand-orange'
+                  }`}
+                  strokeWidth={2}
+                />
+              </button>
+
+              {/* Minimal Strategic Text */}
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <h3 className="font-bold text-xl text-white mb-2">{pkg.title}</h3>
+                <div className="flex items-center justify-between text-white/90 text-sm">
+                  <span>{pkg.nights} nights</span>
+                  <span className="font-semibold">From ${pkg.priceFrom}</span>
+                </div>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>

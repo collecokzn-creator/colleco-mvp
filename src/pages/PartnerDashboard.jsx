@@ -4,6 +4,7 @@
 import React from "react";
 import Button from "../components/ui/Button.jsx";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
+import Footer from "../components/Footer.jsx";
 import { Link } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
 import { BedDouble, Mountain, UtensilsCrossed, Ticket, Car, Plane, BarChart3, CreditCard, ShieldCheck, Megaphone, BookOpen, MessageSquare, CheckCircle2 } from "lucide-react";
@@ -56,7 +57,7 @@ export default function PartnerDashboard() {
   const { user } = useUser();
 
   return (
-    <div className="min-h-screen bg-cream overflow-x-hidden">
+    <div className="space-y-6 overflow-x-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       <Breadcrumbs />
       
@@ -193,6 +194,8 @@ export default function PartnerDashboard() {
           <AdvantageItem text="24/7 partner support" />
         </ul>
       </section>
+      
+      <Footer />
     </div>
     </div>
   );

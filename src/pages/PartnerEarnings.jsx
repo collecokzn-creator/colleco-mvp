@@ -20,6 +20,7 @@ import {
 } from '../utils/payoutsSystem.js';
 import { getPartnerSubscription } from '../utils/subscriptionManager.js';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
+import Footer from '../components/Footer.jsx';
 
 export default function PartnerEarnings() {
   const { user } = useUser();
@@ -460,6 +461,8 @@ export default function PartnerEarnings() {
             </div>
           </div>
         )}
+        
+        <Footer />
       </div>
     </div>
   );
