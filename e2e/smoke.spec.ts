@@ -14,8 +14,8 @@ test.describe('Smoke', () => {
     // Wait for root element to exist
     await expect(page.locator('#root')).toBeVisible({ timeout: 60000 });
 
-    // Check navigation is visible
-    await expect(page.locator('nav')).toBeVisible({ timeout: 60000 });
+    // Check navigation is visible (use specific selector to avoid matching sidebar nav)
+    await expect(page.locator('nav[data-testid="navbar-primary"]')).toBeVisible({ timeout: 60000 });
 
     // Check footer exists (visibility can be unreliable due to layout)
     await expect(page.locator('footer')).toBeAttached({ timeout: 60000 });
