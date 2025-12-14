@@ -68,9 +68,10 @@ Created three public pages (no auth required):
 ### When Yoco credentials arrive (bank verification complete):
 1. Fill `YOCO_SECRET_KEY`, `YOCO_PUBLIC_KEY` in `.env`
 2. Optionally set `YOCO_WEBHOOK_SECRET` for webhook verification
-3. Set `YOCO_TEST_MODE=0` when going live
-4. Yoco will automatically send webhooks to `https://<your-domain>/api/webhooks/yoco`
-5. PayFast will send to `https://<your-domain>/api/webhooks/payfast`
+3. Optionally set `YOCO_API_URL` to override the Yoco API base URL (default: `https://online.yoco.com/api/v1`)
+4. Set `YOCO_TEST_MODE=0` when going live
+5. Yoco will automatically send webhooks to `https://<your-domain>/api/webhooks/yoco`
+6. PayFast will send to `https://<your-domain>/api/webhooks/payfast`
 
 ### Next phases (ready to build):
 - **Phase 2**: Checkout UI with PayFast/Yoco processor selector

@@ -50,6 +50,8 @@
     "setup:env:github": "node scripts/setup-environments.js --check-github",
     "validate:push": "node scripts/validate-push.js",
     "prepare": "husky install || true"
+    ,
+    "e2e:webhook:local": "node scripts/e2e_local_webhook_test.js"
   },
   "husky": {
     "hooks": {
@@ -81,6 +83,7 @@
   },
   "devDependencies": {
     "@octokit/rest": "^22.0.0",
+    "@playwright/test": "^1.57.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@vitejs/plugin-react": "^4.0.0",
@@ -117,8 +120,7 @@
     "lint-staged": {
       "optional": true
     }
-  }
-  ,
+  },
   "overrides": {
     "jws": "4.0.1"
   }

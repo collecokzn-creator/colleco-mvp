@@ -31,12 +31,23 @@ function getPaymentConfig() {
     yoco: {
       secretKey: process.env.YOCO_SECRET_KEY || config.yoco?.secretKey || '',
       publicKey: process.env.YOCO_PUBLIC_KEY || config.yoco?.publicKey || '',
+      apiUrl: process.env.YOCO_API_URL || config.yoco?.apiUrl || 'https://online.yoco.com/api/v1',
       testMode: process.env.YOCO_TEST_MODE === '1' || config.yoco?.testMode !== false,
       webhookSecret: process.env.YOCO_WEBHOOK_SECRET || config.yoco?.webhookSecret || '',
       successUrl: process.env.YOCO_SUCCESS_URL || config.yoco?.successUrl || 'https://staging.colleco.travel/pay/success',
       cancelUrl: process.env.YOCO_CANCEL_URL || config.yoco?.cancelUrl || 'https://staging.colleco.travel/pay/cancel',
     },
-    defaultProcessor: config.defaultProcessor || 'payfast', // fallback if customer doesn't choose
+    paystack: {
+      secretKey: process.env.PAYSTACK_SECRET_KEY || config.paystack?.secretKey || '',
+      publicKey: process.env.PAYSTACK_PUBLIC_KEY || config.paystack?.publicKey || '',
+      testMode: process.env.PAYSTACK_TEST_MODE === '1' || config.paystack?.testMode !== false,
+      apiUrl: process.env.PAYSTACK_API_URL || config.paystack?.apiUrl || 'https://api.paystack.co',
+      successUrl: process.env.PAYSTACK_SUCCESS_URL || config.paystack?.successUrl || 'https://staging.colleco.travel/pay/success',
+      cancelUrl: process.env.PAYSTACK_CANCEL_URL || config.paystack?.cancelUrl || 'https://staging.colleco.travel/pay/cancel',
+      webhookSecret: process.env.PAYSTACK_WEBHOOK_SECRET || config.paystack?.webhookSecret || '',
+    },
+    // No default processor chosen by server; frontend should require user selection
+    defaultProcessor: config.defaultProcessor || '', // empty = client must choose
   };
 }
 

@@ -56,3 +56,6 @@ SECURITY_AUDIT_REPORT.md
 # runtime/test data
 /server/data/*.json
 /server/data/*.log
+
+# Local server secrets (do NOT commit this file)
+/server/.env.local

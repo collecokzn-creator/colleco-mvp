@@ -249,9 +249,11 @@ router.post('/yoco', express.json(), async (req, res) => {
     return res.status(200).json({ ok: true });
   }
 
-  if (Math.abs(paidAmount - booking.amount) > 0.01) {
+  // Determine expected amount: prefer booking.pricing.total, fall back to legacy fields
+  const expectedAmount = Number((booking.pricing && booking.pricing.total) || booking.amount || booking.fees?.total || 0);
+  if (Math.abs(paidAmount - expectedAmount) > 0.01) {
     console.warn('[webhook] Yoco: amount mismatch', {
-      expected: booking.amount,
+      expected: expectedAmount,
       received: paidAmount,
     });
     logPaymentEvent({
@@ -259,13 +261,18 @@ router.post('/yoco', express.json(), async (req, res) => {
       processor: 'yoco',
       type: 'amount_mismatch',
       bookingId,
-      expected: booking.amount,
+      expected: expectedAmount,
       received: paidAmount,
       eventType,
       ip,
     });
     return res.status(200).json({ ok: true });
   }
+
+  // Map event types to bookingStatus
+  let bookingStatus = 'pending';
+  if (['checkout.completed', 'checkout.paid', 'charge.succeeded'].includes(eventType)) bookingStatus = 'paid';
+  if (eventType === 'charge.failed') bookingStatus = 'failed';
 
   if (bookingStatus === 'paid') {
     booking.paidAt = new Date().toISOString();
@@ -294,13 +301,12 @@ router.post('/yoco', express.json(), async (req, res) => {
       console.error('[webhook] Failed to send confirmation emails:', emailError.message);
       // Don't fail the webhook if email fails
     }
-  } else if (eventType === 'charge.failed') {
-    bookingStatus = 'failed';
+  } else if (bookingStatus === 'failed') {
     console.log('[webhook] Yoco payment failed:', bookingId);
   }
 
   // Update booking
-  booking.paymentStatus = bookingStatus;
+  booking.paymentStatus = bookingStatus === 'paid' ? 'paid' : bookingStatus === 'failed' ? 'failed' : 'pending';
   booking.paymentId = chargeId || checkoutId;
   booking.lastPaymentUpdate = new Date().toISOString();
   booking.paymentProcessor = 'yoco';

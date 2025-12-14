@@ -85,6 +85,22 @@ For any internet-exposed deployment of the Express server, set these environment
 - ALLOWED_ORIGINS=https://your-domain.com,https://<user>.github.io/<repo>
 - AI_ANALYTICS=0 (set to 1 only if you need local analytics logs)
 
+### Payment processors (Yoco setup)
+
+To enable Yoco hosted checkouts and webhook verification set the following backend environment variables:
+
+```env
+# Yoco
+YOCO_SECRET_KEY=<from-yoco-dashboard>
+YOCO_PUBLIC_KEY=<from-yoco-dashboard>
+YOCO_WEBHOOK_SECRET=<from-yoco-dashboard>
+# Optional: override Yoco API base URL
+YOCO_API_URL=https://online.yoco.com/api/v1
+YOCO_TEST_MODE=1  # set to 0 for live
+```
+
+After setting these, start the backend and generate a checkout URL via `POST /api/payments/generate-url` with `processor: "yoco"`.
+
 See SECURITY.md for complete hardening guidance (headers, CORS, rate limits, auth).
 
 ### UI Layering (z-index) Policy

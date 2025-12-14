@@ -14,7 +14,18 @@ const crypto = require('crypto');
 const pricingEngine = require('./pricingEngine');
 const webpush = require('web-push');
 const legalRouter = require('./routes/legal');
-require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
+// Load environment variables: prefer repo root .env.local, but allow server/.env.local to override
+const dotenv = require('dotenv');
+const rootEnv = path.join(__dirname, '..', '.env.local');
+const serverEnv = path.join(__dirname, '.env.local');
+// Load root first (if present)
+if (fs.existsSync(rootEnv)) {
+  dotenv.config({ path: rootEnv });
+}
+// Then load server-local env which should override root values for secrets
+if (fs.existsSync(serverEnv)) {
+  dotenv.config({ path: serverEnv });
+}
 // --- Search suggest mock ---
 const DEFAULT_SUGGESTIONS = [
   { type: 'flight', label: 'JNB → CPT' },
@@ -264,6 +275,20 @@ app.use('/api/payments', paymentsRouter);
 // --- Register bookings API (multi-supplier support) ---
 const bookingsRouter = require('./routes/bookings');
 app.use('/api/bookings', bookingsRouter);
+
+// Payment configuration sanity checks (helpful dev-time warnings)
+try {
+  const { getPaymentConfig } = require('./config/payments');
+  const paymentConfig = getPaymentConfig();
+  const yocoCfg = paymentConfig.yoco || {};
+  if (!yocoCfg.secretKey || !yocoCfg.webhookSecret) {
+    console.warn('[payments] Yoco not fully configured. Set YOCO_SECRET_KEY and YOCO_WEBHOOK_SECRET to enable Yoco checkouts/webhooks.');
+  } else {
+    console.log('[payments] Yoco configuration detected. Yoco checkout and webhook handlers are active.');
+  }
+} catch (e) {
+  console.warn('[payments] Failed to read payment config for sanity checks:', e.message);
+}
 
 // --- Register suppliers API (internal/admin only) ---
 const suppliersRouter = require('./routes/suppliers');
