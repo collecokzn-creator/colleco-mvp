@@ -128,8 +128,10 @@ function createBooking(data) {
   // Calculate due dates
   const depositDue = new Date(now + paymentTerms.dueDays * 24 * 60 * 60 * 1000);
   let balanceDue = null;
-  if (paymentTerms.balanceDueDays) {
-    balanceDue = new Date(checkInDate - paymentTerms.balanceDueDays * 24 * 60 * 60 * 1000);
+  // normalize checkInDate to timestamp to support ISO string or numeric input
+  const checkInTs = (typeof checkInDate === 'string') ? Date.parse(checkInDate) : Number(checkInDate);
+  if (paymentTerms.balanceDueDays && !isNaN(checkInTs)) {
+    balanceDue = new Date(checkInTs - paymentTerms.balanceDueDays * 24 * 60 * 60 * 1000);
   }
 
   const depositAmount = totalRetailPrice * paymentTerms.deposit;
@@ -144,7 +146,7 @@ function createBooking(data) {
     supplierId,
     userId,
     bookingType,
-    checkInDate: new Date(checkInDate).toISOString(),
+    checkInDate: new Date(checkInTs || checkInDate).toISOString(),
     checkOutDate: new Date(checkOutDate).toISOString(),
     lineItems: processedItems,
     pricing: {
