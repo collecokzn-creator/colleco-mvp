@@ -1,0 +1,88 @@
+[
+  {
+    "id": "beekman",
+    "name": "Beekman Hotel",
+    "type": "hotel",
+    "status": "active",
+    "commission": {
+      "accommodation": 0.15,
+      "meals": 0.10,
+      "conference": 0.12,
+      "events": 0.10
+    },
+    "paymentTerms": {
+      "FIT": {
+        "deposit": 0.5,
+        "dueDays": 30,
+        "balanceDueDays": 7,
+        "methods": ["card", "eft"],
+        "currency": "ZAR"
+      },
+      "Groups": {
+        "deposit": 0.3,
+        "dueDays": 45,
+        "balanceDueDays": 14,
+        "methods": ["card", "eft", "invoice"],
+        "currency": "ZAR"
+      }
+    },
+    "rateParity": {
+      "enforce": false
+    },
+    "refundPolicy": {
+      "tiers": [
+        { "daysBeforeEvent": 30, "refundPercentage": 1.0 },
+        { "daysBeforeEvent": 14, "refundPercentage": 0.5 },
+        { "daysBeforeEvent": 7, "refundPercentage": 0.25 }
+      ]
+    },
+    "dataPolicy": {
+      "POPIA": true,
+      "retentionDays": 365,
+      "destroyOnTermination": true
+    }
+  },
+  {
+    "id": "premier",
+    "name": "Premier Hotels & Resorts",
+    "type": "hotel_group",
+    "status": "active",
+    "commission": {
+      "accommodation": 0.18,
+      "meals": 0.12,
+      "conference": 0.15,
+      "events": 0.12
+    },
+    "paymentTerms": {
+      "FIT": {
+        "deposit": 0.5,
+        "dueDays": 30,
+        "balanceDueDays": 7,
+        "methods": ["card", "eft"],
+        "currency": "ZAR"
+      },
+      "Groups": {
+        "deposit": 0.3,
+        "dueDays": 45,
+        "balanceDueDays": 14,
+        "methods": ["card", "eft", "invoice"],
+        "currency": "ZAR"
+      }
+    },
+    "rateParity": {
+      "enforce": false
+    },
+    "refundPolicy": {
+      "tiers": [
+        { "daysBeforeEvent": 30, "refundPercentage": 1.0 },
+        { "daysBeforeEvent": 14, "refundPercentage": 0.5 },
+        { "daysBeforeEvent": 7, "refundPercentage": 0.25 }
+      ]
+    },
+    "dataPolicy": {
+      "POPIA": true,
+      "retentionDays": 365,
+      "destroyOnTermination": true
+    }
+  }
+]
