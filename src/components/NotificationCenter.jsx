@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { /* UserContext */ } from '../context/UserContext';
-import { API_BASE_URL, VAPID_PUBLIC_KEY } from '../config';
+import { API_BASE_URL } from '../config';
 
 /**
  * NotificationContext
@@ -467,7 +467,7 @@ export class PushNotificationService {
       
       if (!subscription) {
         // Subscribe with VAPID public key from environment
-        const vapidPublicKey = VAPID_PUBLIC_KEY || 
+        const vapidPublicKey = (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_VAPID_PUBLIC_KEY) ||
           'BEl62iUYgUivxIkv69yViEuiBIa-Ib37gp2ENSg1CYQ2vUJ6_4L7pj_b9O8z6rKrC2xkx-z7xXOsqJQSk4JC_2Y';
         
         subscription = await registration.pushManager.subscribe({
