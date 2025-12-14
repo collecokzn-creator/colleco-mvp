@@ -196,13 +196,27 @@ function verifyYocoSignature(payload, signature) {
   const yoco = config.yoco;
 
   if (!yoco.webhookSecret) return false;
+  if (!signature) return false;
 
-  const expectedSignature = crypto
-    .createHmac('sha256', yoco.webhookSecret)
-    .update(payload)
-    .digest('hex');
+  try {
+    const expectedSignature = crypto
+      .createHmac('sha256', yoco.webhookSecret)
+      .update(payload)
+      .digest('hex');
 
-  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature));
+    // Ensure both are strings and same length for timing-safe comparison
+    const sig = String(signature).toLowerCase();
+    const expected = String(expectedSignature).toLowerCase();
+    
+    if (sig.length !== expected.length) {
+      return false;
+    }
+
+    return crypto.timingSafeEqual(Buffer.from(sig, 'utf8'), Buffer.from(expected, 'utf8'));
+  } catch (err) {
+    console.error('[payments] Yoco signature verification error:', err.message);
+    return false;
+  }
 }
 
 module.exports = {
