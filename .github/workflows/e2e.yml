@@ -41,19 +41,37 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Start backend and frontend
+      - name: Start backend server
         run: |
-          npx concurrently -k -s first -n api,web -c blue,green \
-            "cross-env PORT=4010 node server/server.js" \
-            "npx serve -s dist -l 5173" &
-          
-          # Wait for health check
-          timeout=60
-          elapsed=0
-          until curl -f http://127.0.0.1:4010/health || [ $elapsed -ge $timeout ]; do
-            sleep 2
-            elapsed=$((elapsed + 2))
+          PORT=4010 nohup node server/server.js > server.log 2>&1 &
+          echo $! > server.pid
+
+      - name: Start preview server
+        run: |
+          nohup npx serve -s dist -l 5173 > preview.log 2>&1 &
+          echo $! > preview.pid
+
+      - name: Wait for services
+        run: |
+          set -e
+          BACKEND_OK=0
+          PREVIEW_OK=0
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:4010/health >/dev/null 2>&1; then
+              echo "Backend ready"; BACKEND_OK=1
+            fi
+            if curl -fsS http://127.0.0.1:5173 >/dev/null 2>&1; then
+              echo "Preview ready"; PREVIEW_OK=1
+            fi
+            if [ "$BACKEND_OK" -eq 1 ] && [ "$PREVIEW_OK" -eq 1 ]; then
+              echo "All services ready"; exit 0
+            fi
+            sleep 1
           done
+          echo "Services failed to start"
+          tail -n 50 server.log || true
+          tail -n 50 preview.log || true
+          exit 1
 
       - name: Run Playwright tests
         run: npm run test:e2e
@@ -66,6 +84,8 @@ jobs:
           path: |
             playwright-report/
             test-results/
+            server.log
+            preview.log
           retention-days: 7
 
       - name: Show basic environment info
