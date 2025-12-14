@@ -10,6 +10,47 @@ const dir = argv.dir || argv.d || path.join(process.cwd(), 'dist');
 
 const app = express();
 
+// Simple proxy for API routes to local backend (useful for previewing SPA with backend)
+app.use('/api', async (req, res, next) => {
+  try {
+    const backendBase = process.env.PREVIEW_API_BASE || 'http://127.0.0.1:4000';
+    const target = backendBase + req.originalUrl;
+
+    // Build fetch options
+    const headers = Object.assign({}, req.headers);
+    // Remove host to avoid proxy host mismatch
+    delete headers.host;
+
+    const opts = {
+      method: req.method,
+      headers
+    };
+
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      // Collect body
+      const chunks = [];
+      for await (const chunk of req) chunks.push(chunk);
+      if (chunks.length) opts.body = Buffer.concat(chunks);
+    }
+
+    const backendRes = await fetch(target, opts);
+    // Copy status and headers
+    res.status(backendRes.status);
+    backendRes.headers.forEach((v, k) => {
+      // Skip hop-by-hop headers
+      if (['transfer-encoding', 'connection'].includes(k.toLowerCase())) return;
+      res.setHeader(k, v);
+    });
+
+    const arrayBuffer = await backendRes.arrayBuffer();
+    const buf = Buffer.from(arrayBuffer);
+    res.send(buf);
+  } catch (err) {
+    console.error('API proxy error:', err && err.message);
+    next(err);
+  }
+});
+
 // Health endpoint for orchestration checks
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
 
