@@ -49,7 +49,9 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
   const [mealPlanFilter, setMealPlanFilter] = useState(''); // Filter: '', 'room_only', 'breakfast', 'half_board', 'full_board'
   const [propertyMealPlans, setPropertyMealPlans] = useState({}); // Store selected meal plan per property
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState('list'); // 'list', 'grid', or 'map'
+  // Default to 'grid' (house icon) for mobile, 'list' for desktop
+  const isMobile = window.innerWidth < 768;
+  const [viewMode, setViewMode] = useState(isMobile ? 'grid' : 'list'); // 'list', 'grid', or 'map'
   const [hoveredProperty, setHoveredProperty] = useState(null);
   
   // Google Maps search URL
@@ -388,11 +390,13 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
         </div>
 
         {/* Toolbar */}
-        <div className="p-2 sm:p-4 border-b bg-gray-50 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
-          <div className="flex items-center gap-3 flex-1">
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg transition-all ${
+        <div className="p-2 sm:p-4 border-b bg-gray-50">
+          {/* First row: Filters and Sort */}
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-2 sm:mb-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-1">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 border-2 rounded-lg transition-all ${
                 showFilters || activeFilters > 0
                   ? 'border-brand-orange bg-brand-orange text-white'
                   : 'border-gray-300 bg-white hover:border-brand-orange'
@@ -405,55 +409,59 @@ export default function AccommodationSelector({ onSelectProperty, onSkip, onCanc
                   {activeFilters}
                 </span>
               )}
-            </button>
+              </button>
 
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-brand-orange focus:outline-none"
-            >
-              <option value="recommended">Recommended</option>
-              <option value="price_low">Price: Low to High</option>
-              <option value="price_high">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-              <option value="stars">Most Stars</option>
-              <option value="distance">Closest First</option>
-            </select>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-brand-orange focus:outline-none text-sm sm:text-base"
+              >
+                <option value="recommended">Recommended</option>
+                <option value="price_low">Price: Low to High</option>
+                <option value="price_high">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+                <option value="stars">Most Stars</option>
+                <option value="distance">Closest First</option>
+              </select>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-lg transition-colors ${
-                viewMode === 'list' ? 'bg-brand-orange text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-              title="List view"
-            >
-              <List className="h-5 w-5" />
-            </button>
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-lg transition-colors ${
-                viewMode === 'grid' ? 'bg-brand-orange text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-              title="Grid view"
-            >
-              <Home className="h-5 w-5" />
-            </button>
-            <button
-              onClick={() => setViewMode('map')}
-              className={`p-2 rounded-lg transition-colors ${
-                viewMode === 'map' ? 'bg-brand-orange text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-              title="Map view"
-            >
-              <MapIcon className="h-5 w-5" />
-            </button>
-          </div>
+          {/* Second row: View mode buttons and property count */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-lg transition-colors ${
+                  viewMode === 'list' ? 'bg-brand-orange text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                title="List view"
+              >
+                <List className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-lg transition-colors ${
+                  viewMode === 'grid' ? 'bg-brand-orange text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                title="Grid view (Best for mobile)"
+              >
+                <Home className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('map')}
+                className={`p-2 rounded-lg transition-colors ${
+                  viewMode === 'map' ? 'bg-brand-orange text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                title="Map view"
+              >
+                <MapIcon className="h-5 w-5" />
+              </button>
+            </div>
 
-          <span className="text-sm text-gray-600">
-            {filteredProperties.length} of {properties.length} properties
-          </span>
+            <span className="text-xs sm:text-sm text-gray-600">
+              {filteredProperties.length} of {properties.length}
+            </span>
+          </div>
         </div>
 
         {/* Filters Panel */}
