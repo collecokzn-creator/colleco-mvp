@@ -15,6 +15,279 @@
   "_accomHolds": {},
   "_quotes": [
     {
+      "id": "7ow8g0n639kmj33sm22",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765558246826,
+      "updatedAt": 1765558246847
+    },
+    {
+      "id": "3xv0fac51wwmj33sm0y",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765558246786,
+      "updatedAt": 1765558246786
+    },
+    {
+      "id": "qdrnbtju01mj33sm06",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765558246758,
+      "updatedAt": 1765558246758
+    },
+    {
+      "id": "6aexf5bh4a5mj33kb1i",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765557859302,
+      "updatedAt": 1765557859340
+    },
+    {
+      "id": "5apb3ips7d3mj33kb03",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765557859251,
+      "updatedAt": 1765557859251
+    },
+    {
+      "id": "pn3hd4j0amamj33kazf",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765557859227,
+      "updatedAt": 1765557859227
+    },
+    {
+      "id": "gv6xj9e0mbomj33hegb",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765557723755,
+      "updatedAt": 1765557723776
+    },
+    {
+      "id": "1os3ibkzeqimj33hefi",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765557723726,
+      "updatedAt": 1765557723726
+    },
+    {
+      "id": "qhyvoayfs9pmj33heeq",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765557723698,
+      "updatedAt": 1765557723698
+    },
+    {
+      "id": "73ftsc1ph93mj1edz81",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765455107473,
+      "updatedAt": 1765455107495
+    },
+    {
+      "id": "p8pirlt545amj1edz72",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765455107438,
+      "updatedAt": 1765455107438
+    },
+    {
+      "id": "g9bza1g367rmj1edz69",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765455107409,
+      "updatedAt": 1765455107409
+    },
+    {
+      "id": "saz5vm9seyqmj1cfse0",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765451832696,
+      "updatedAt": 1765451832807
+    },
+    {
+      "id": "zick5e3hk4mj1cfsbm",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765451832610,
+      "updatedAt": 1765451832610
+    },
+    {
+      "id": "lny944wtzymj1cfsaf",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765451832567,
+      "updatedAt": 1765451832567
+    },
+    {
+      "id": "fqrwmmtaeemj1b83cq",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765449794042,
+      "updatedAt": 1765449794083
+    },
+    {
+      "id": "hn5tm5rg8kmj1b83bh",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765449793997,
+      "updatedAt": 1765449793997
+    },
+    {
+      "id": "4rfgr8qcc06mj1b83ai",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765449793962,
+      "updatedAt": 1765449793962
+    },
+    {
+      "id": "ty6drcckxfmj18t9gg",
+      "clientName": "Updated Name",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765445742880,
+      "updatedAt": 1765445742900
+    },
+    {
+      "id": "s88daq0j59mj18t9f9",
+      "clientName": "List Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765445742837,
+      "updatedAt": 1765445742837
+    },
+    {
+      "id": "zps0kxdvfakmj18t9ei",
+      "clientName": "Test Client",
+      "clientEmail": "",
+      "currency": "USD",
+      "items": [],
+      "taxRate": 0,
+      "discountRate": 0,
+      "notes": "",
+      "status": "Draft",
+      "createdAt": 1765445742810,
+      "updatedAt": 1765445742810
+    },
+    {
       "id": "0mnj6oyxq5omj17d93k",
       "clientName": "Updated Name",
       "clientEmail": "",
@@ -4154,6 +4427,90 @@
       "status": "pending",
       "createdAt": 1765441044526,
       "amount": 1605
+    },
+    "eihs3c3rfp7mj18tca0": {
+      "bookingId": "uo3sr856nimj18tc6b",
+      "status": "pending",
+      "createdAt": 1765445746536,
+      "amount": 2825
+    },
+    "1meoqpzf3exmj18tcav": {
+      "bookingId": "zfqnf138xnpmj18tcal",
+      "status": "pending",
+      "createdAt": 1765445746567,
+      "amount": 1605
+    },
+    "65nyk0ovpv6mj1b7zcg": {
+      "bookingId": "z4hd0z5a1umj1b7zc4",
+      "status": "pending",
+      "createdAt": 1765449788848,
+      "amount": 2825
+    },
+    "svonq0r1xenmj1b7zgf": {
+      "bookingId": "bocwh1b4jnmj1b7zd0",
+      "status": "pending",
+      "createdAt": 1765449788991,
+      "amount": 1605
+    },
+    "gxa2n6gl2dmmj1cfzmi": {
+      "bookingId": "byt8i18z37imj1cfzm5",
+      "status": "pending",
+      "createdAt": 1765451842074,
+      "amount": 2825
+    },
+    "k6jlpw5le8bmj1cfznf": {
+      "bookingId": "o1zeser7xpmj1cfzn6",
+      "status": "pending",
+      "createdAt": 1765451842107,
+      "amount": 1605
+    },
+    "z4tbatjmxymj1ee3xt": {
+      "bookingId": "bfpwa1b09nmj1ee3w2",
+      "status": "pending",
+      "createdAt": 1765455113585,
+      "amount": 2825
+    },
+    "q2z3qlq2hylmj1ee40r": {
+      "bookingId": "cf88gcrnaocmj1ee3yx",
+      "status": "pending",
+      "createdAt": 1765455113691,
+      "amount": 1605
+    },
+    "zop3dcpp34hmj33hi5d": {
+      "bookingId": "uoz8oijpt5mj33hi50",
+      "status": "pending",
+      "createdAt": 1765557728545,
+      "amount": 2825
+    },
+    "h3f27yetfcmj33hi6a": {
+      "bookingId": "qodif654bpmj33hi5w",
+      "status": "pending",
+      "createdAt": 1765557728578,
+      "amount": 1605
+    },
+    "v5v5m3cubzmj33kets": {
+      "bookingId": "u6fvzkohqp8mj33ket2",
+      "status": "pending",
+      "createdAt": 1765557864208,
+      "amount": 2825
+    },
+    "uadgeya1usmj33keuk": {
+      "bookingId": "w0z7qcgrwjmj33keu9",
+      "status": "pending",
+      "createdAt": 1765557864236,
+      "amount": 1605
+    },
+    "v387svd2d7nmj33sc55": {
+      "bookingId": "i86n56dk1icmj33sc4m",
+      "status": "pending",
+      "createdAt": 1765558233977,
+      "amount": 2825
+    },
+    "0dbv7a0rdy7amj33sc6w": {
+      "bookingId": "buwvv7nnpxqmj33sc6f",
+      "status": "pending",
+      "createdAt": 1765558234040,
+      "amount": 1605
     }
   },
   "c8wv7sw2makmhiw0ato": {
@@ -4201,7 +4558,7 @@
         "status": "In-Flight",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355467502
+        "updatedAt": 1765706506789
       }
     ],
     "customer": {
@@ -4210,7 +4567,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762159062773,
-    "updatedAt": 1765355467502,
+    "updatedAt": 1765706506789,
     "pricing": {
       "items": [
         {
@@ -4463,10 +4820,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355500124
+        "updatedAt": 1765706366477
       }
     ],
     "customer": {
@@ -4475,7 +4832,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762187073441,
-    "updatedAt": 1765355500124,
+    "updatedAt": 1765706366477,
     "pricing": {
       "items": [
         {
@@ -4728,10 +5085,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Delayed",
+        "status": "In-Flight",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355544410
+        "updatedAt": 1765706496725
       }
     ],
     "customer": {
@@ -4740,7 +5097,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762187485600,
-    "updatedAt": 1765355544410,
+    "updatedAt": 1765706496725,
     "pricing": {
       "items": [
         {
@@ -4993,10 +5350,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Delayed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355564102
+        "updatedAt": 1765706466702
       }
     ],
     "customer": {
@@ -5005,7 +5362,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762187616000,
-    "updatedAt": 1765355564102,
+    "updatedAt": 1765706466702,
     "pricing": {
       "items": [
         {
@@ -5196,7 +5553,7 @@
         "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355366191
+        "updatedAt": 1765706506853
       }
     ],
     "customer": {
@@ -5205,7 +5562,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762187909835,
-    "updatedAt": 1765355366191,
+    "updatedAt": 1765706506853,
     "pricing": {
       "items": [
         {
@@ -5461,7 +5818,7 @@
         "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355510137
+        "updatedAt": 1765706306373
       }
     ],
     "customer": {
@@ -5470,7 +5827,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762188082762,
-    "updatedAt": 1765355510137,
+    "updatedAt": 1765706306373,
     "pricing": {
       "items": [
         {
@@ -5723,10 +6080,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355164629
+        "updatedAt": 1765706416568
       }
     ],
     "customer": {
@@ -5735,7 +6092,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762193377185,
-    "updatedAt": 1765355164629,
+    "updatedAt": 1765706416568,
     "pricing": {
       "items": [
         {
@@ -6053,10 +6410,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Boarding",
+        "status": "In-Flight",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355564343
+        "updatedAt": 1765706486721
       }
     ],
     "customer": {
@@ -6065,7 +6422,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762196254754,
-    "updatedAt": 1765355564343,
+    "updatedAt": 1765706486721,
     "pricing": {
       "items": [
         {
@@ -6253,10 +6610,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355618545
+        "updatedAt": 1765706326439
       }
     ],
     "customer": {
@@ -6265,7 +6622,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1762196483257,
-    "updatedAt": 1765355618583,
+    "updatedAt": 1765706326439,
     "pricing": {
       "items": [
         {
@@ -7064,7 +7421,7 @@
         "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355564352
+        "updatedAt": 1765706486728
       }
     ],
     "customer": {
@@ -7073,7 +7430,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1763635748743,
-    "updatedAt": 1765355564352,
+    "updatedAt": 1765706486728,
     "pricing": {
       "items": [
         {
@@ -7326,10 +7683,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355479981
+        "updatedAt": 1765706476740
       }
     ],
     "customer": {
@@ -7338,7 +7695,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764000982633,
-    "updatedAt": 1765355479981,
+    "updatedAt": 1765706476740,
     "pricing": {
       "items": [
         {
@@ -7591,10 +7948,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355356155
+        "updatedAt": 1765706496735
       }
     ],
     "customer": {
@@ -7603,7 +7960,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764009726592,
-    "updatedAt": 1765355356155,
+    "updatedAt": 1765706496735,
     "pricing": {
       "items": [
         {
@@ -7791,10 +8148,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Boarding",
+        "status": "Landed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355500191
+        "updatedAt": 1765706406538
       }
     ],
     "customer": {
@@ -7803,7 +8160,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764010012146,
-    "updatedAt": 1765355500191,
+    "updatedAt": 1765706406538,
     "pricing": {
       "items": [
         {
@@ -8056,10 +8413,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Delayed",
+        "status": "Landed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355651266
+        "updatedAt": 1765706506900
       }
     ],
     "customer": {
@@ -8068,7 +8425,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764010091597,
-    "updatedAt": 1765355651267,
+    "updatedAt": 1765706506900,
     "pricing": {
       "items": [
         {
@@ -8386,10 +8743,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "In-Flight",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355564355
+        "updatedAt": 1765706326470
       }
     ],
     "customer": {
@@ -8398,7 +8755,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764776017240,
-    "updatedAt": 1765355564355,
+    "updatedAt": 1765706326470,
     "pricing": {
       "items": [
         {
@@ -8651,10 +9008,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Cancelled",
+        "status": "In-Flight",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355500197
+        "updatedAt": 1765706506918
       }
     ],
     "customer": {
@@ -8663,7 +9020,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764839740163,
-    "updatedAt": 1765355500197,
+    "updatedAt": 1765706506918,
     "pricing": {
       "items": [
         {
@@ -8851,10 +9208,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Delayed",
+        "status": "Completed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355546872
+        "updatedAt": 1765706356469
       }
     ],
     "customer": {
@@ -8863,7 +9220,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764840037377,
-    "updatedAt": 1765355546872,
+    "updatedAt": 1765706356469,
     "pricing": {
       "items": [
         {
@@ -9184,7 +9541,7 @@
         "status": "Completed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355406384
+        "updatedAt": 1765706426620
       }
     ],
     "customer": {
@@ -9193,7 +9550,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764840535884,
-    "updatedAt": 1765355406384,
+    "updatedAt": 1765706426620,
     "pricing": {
       "items": [
         {
@@ -9446,10 +9803,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Completed",
+        "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355688943
+        "updatedAt": 1765706386509
       }
     ],
     "customer": {
@@ -9458,7 +9815,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764840875761,
-    "updatedAt": 1765355688944,
+    "updatedAt": 1765706386509,
     "pricing": {
       "items": [
         {
@@ -9711,10 +10068,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Completed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355549631
+        "updatedAt": 1765706386531
       }
     ],
     "customer": {
@@ -9723,7 +10080,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764864265049,
-    "updatedAt": 1765355549631,
+    "updatedAt": 1765706386531,
     "pricing": {
       "items": [
         {
@@ -9976,10 +10333,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Cancelled",
+        "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355376207
+        "updatedAt": 1765706476767
       }
     ],
     "customer": {
@@ -9988,7 +10345,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764864334082,
-    "updatedAt": 1765355376207,
+    "updatedAt": 1765706476767,
     "pricing": {
       "items": [
         {
@@ -10176,10 +10533,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Landed",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765355761513
+        "updatedAt": 1765706346494
       }
     ],
     "customer": {
@@ -10188,7 +10545,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1764877047328,
-    "updatedAt": 1765355761514,
+    "updatedAt": 1765706346494,
     "pricing": {
       "items": [
         {
@@ -10441,9 +10798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Boarding",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706246359
       }
     ],
     "customer": {
@@ -10452,7 +10810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765374678743,
-    "updatedAt": 1765374678743,
+    "updatedAt": 1765706246359,
     "pricing": {
       "items": [
         {
@@ -10640,9 +10998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Boarding",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706506933
       }
     ],
     "customer": {
@@ -10651,7 +11010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765375597202,
-    "updatedAt": 1765375597202,
+    "updatedAt": 1765706506933,
     "pricing": {
       "items": [
         {
@@ -10841,7 +11200,8 @@
         "flightNumber": null,
         "status": "Scheduled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706446703
       }
     ],
     "customer": {
@@ -10850,7 +11210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765376041453,
-    "updatedAt": 1765376041453,
+    "updatedAt": 1765706446703,
     "pricing": {
       "items": [
         {
@@ -11038,9 +11398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706506948
       }
     ],
     "customer": {
@@ -11049,7 +11410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765376351313,
-    "updatedAt": 1765376351313,
+    "updatedAt": 1765706506948,
     "pricing": {
       "items": [
         {
@@ -11237,9 +11598,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Landed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706456699
       }
     ],
     "customer": {
@@ -11248,7 +11610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765377318482,
-    "updatedAt": 1765377318482,
+    "updatedAt": 1765706456699,
     "pricing": {
       "items": [
         {
@@ -11436,9 +11798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706426664
       }
     ],
     "customer": {
@@ -11447,7 +11810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765377863256,
-    "updatedAt": 1765377863256,
+    "updatedAt": 1765706426664,
     "pricing": {
       "items": [
         {
@@ -11635,9 +11998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Boarding",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706486746
       }
     ],
     "customer": {
@@ -11646,7 +12010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765379532056,
-    "updatedAt": 1765379532056,
+    "updatedAt": 1765706486746,
     "pricing": {
       "items": [
         {
@@ -11834,9 +12198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706316421
       }
     ],
     "customer": {
@@ -11845,7 +12210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765380262822,
-    "updatedAt": 1765380262822,
+    "updatedAt": 1765706316421,
     "pricing": {
       "items": [
         {
@@ -12033,9 +12398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Cancelled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706486752
       }
     ],
     "customer": {
@@ -12044,7 +12410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765380745782,
-    "updatedAt": 1765380745782,
+    "updatedAt": 1765706486752,
     "pricing": {
       "items": [
         {
@@ -12232,9 +12598,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Cancelled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706366603
       }
     ],
     "customer": {
@@ -12243,7 +12610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765381153047,
-    "updatedAt": 1765381153047,
+    "updatedAt": 1765706366603,
     "pricing": {
       "items": [
         {
@@ -12431,9 +12798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706466778
       }
     ],
     "customer": {
@@ -12442,7 +12810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765381605535,
-    "updatedAt": 1765381605535,
+    "updatedAt": 1765706466778,
     "pricing": {
       "items": [
         {
@@ -12630,9 +12998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Boarding",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706486759
       }
     ],
     "customer": {
@@ -12641,7 +13010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765381992413,
-    "updatedAt": 1765381992413,
+    "updatedAt": 1765706486759,
     "pricing": {
       "items": [
         {
@@ -12831,7 +13200,8 @@
         "flightNumber": null,
         "status": "Scheduled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706496743
       }
     ],
     "customer": {
@@ -12840,7 +13210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765382434817,
-    "updatedAt": 1765382434817,
+    "updatedAt": 1765706496743,
     "pricing": {
       "items": [
         {
@@ -13028,9 +13398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706436648
       }
     ],
     "customer": {
@@ -13039,7 +13410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765383096983,
-    "updatedAt": 1765383096983,
+    "updatedAt": 1765706436648,
     "pricing": {
       "items": [
         {
@@ -13227,9 +13598,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706416590
       }
     ],
     "customer": {
@@ -13238,7 +13610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765384130636,
-    "updatedAt": 1765384130636,
+    "updatedAt": 1765706416590,
     "pricing": {
       "items": [
         {
@@ -13426,9 +13798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "In-Flight",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706486766
       }
     ],
     "customer": {
@@ -13437,7 +13810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765385067475,
-    "updatedAt": 1765385067475,
+    "updatedAt": 1765706486766,
     "pricing": {
       "items": [
         {
@@ -13625,9 +13998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706476804
       }
     ],
     "customer": {
@@ -13636,7 +14010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765386310977,
-    "updatedAt": 1765386310977,
+    "updatedAt": 1765706476804,
     "pricing": {
       "items": [
         {
@@ -13824,9 +14198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Landed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706366615
       }
     ],
     "customer": {
@@ -13835,7 +14210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765386538384,
-    "updatedAt": 1765386538384,
+    "updatedAt": 1765706366615,
     "pricing": {
       "items": [
         {
@@ -14023,9 +14398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Landed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706426674
       }
     ],
     "customer": {
@@ -14034,7 +14410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765387119362,
-    "updatedAt": 1765387119362,
+    "updatedAt": 1765706426674,
     "pricing": {
       "items": [
         {
@@ -14222,9 +14598,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706446727
       }
     ],
     "customer": {
@@ -14233,7 +14610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765387294692,
-    "updatedAt": 1765387294692,
+    "updatedAt": 1765706446727,
     "pricing": {
       "items": [
         {
@@ -14421,9 +14798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706466786
       }
     ],
     "customer": {
@@ -14432,7 +14810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765387509185,
-    "updatedAt": 1765387509185,
+    "updatedAt": 1765706466786,
     "pricing": {
       "items": [
         {
@@ -14620,9 +14998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Cancelled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706486771
       }
     ],
     "customer": {
@@ -14631,7 +15010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765387990012,
-    "updatedAt": 1765387990012,
+    "updatedAt": 1765706486771,
     "pricing": {
       "items": [
         {
@@ -14819,9 +15198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706496750
       }
     ],
     "customer": {
@@ -14830,7 +15210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765388559896,
-    "updatedAt": 1765388559896,
+    "updatedAt": 1765706496750,
     "pricing": {
       "items": [
         {
@@ -15018,9 +15398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Landed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706506965
       }
     ],
     "customer": {
@@ -15029,7 +15410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765389275478,
-    "updatedAt": 1765389275478,
+    "updatedAt": 1765706506965,
     "pricing": {
       "items": [
         {
@@ -15217,9 +15598,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706356513
       }
     ],
     "customer": {
@@ -15228,7 +15610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765389676262,
-    "updatedAt": 1765389676262,
+    "updatedAt": 1765706356513,
     "pricing": {
       "items": [
         {
@@ -15416,9 +15798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Landed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706396558
       }
     ],
     "customer": {
@@ -15427,7 +15810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765389996744,
-    "updatedAt": 1765389996744,
+    "updatedAt": 1765706396558,
     "pricing": {
       "items": [
         {
@@ -15615,9 +15998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Landed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706446765
       }
     ],
     "customer": {
@@ -15626,7 +16010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765390546383,
-    "updatedAt": 1765390546383,
+    "updatedAt": 1765706446765,
     "pricing": {
       "items": [
         {
@@ -15814,9 +16198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706386554
       }
     ],
     "customer": {
@@ -15825,7 +16210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765390828675,
-    "updatedAt": 1765390828675,
+    "updatedAt": 1765706386554,
     "pricing": {
       "items": [
         {
@@ -16013,9 +16398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706446797
       }
     ],
     "customer": {
@@ -16024,7 +16410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765391432855,
-    "updatedAt": 1765391432855,
+    "updatedAt": 1765706446797,
     "pricing": {
       "items": [
         {
@@ -16212,9 +16598,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706466795
       }
     ],
     "customer": {
@@ -16223,7 +16610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765392184793,
-    "updatedAt": 1765392184793,
+    "updatedAt": 1765706466795,
     "pricing": {
       "items": [
         {
@@ -16411,9 +16798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "In-Flight",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706496756
       }
     ],
     "customer": {
@@ -16422,7 +16810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765393105210,
-    "updatedAt": 1765393105210,
+    "updatedAt": 1765706496756,
     "pricing": {
       "items": [
         {
@@ -16610,9 +16998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Landed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706406702
       }
     ],
     "customer": {
@@ -16621,7 +17010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765393918810,
-    "updatedAt": 1765393918810,
+    "updatedAt": 1765706406702,
     "pricing": {
       "items": [
         {
@@ -16809,9 +17198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706466852
       }
     ],
     "customer": {
@@ -16820,7 +17210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765394039915,
-    "updatedAt": 1765394039915,
+    "updatedAt": 1765706466852,
     "pricing": {
       "items": [
         {
@@ -17010,7 +17400,8 @@
         "flightNumber": null,
         "status": "Scheduled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706476815
       }
     ],
     "customer": {
@@ -17019,7 +17410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765394350882,
-    "updatedAt": 1765394350882,
+    "updatedAt": 1765706476815,
     "pricing": {
       "items": [
         {
@@ -17207,9 +17598,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Cancelled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706506972
       }
     ],
     "customer": {
@@ -17218,7 +17610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765394663575,
-    "updatedAt": 1765394663575,
+    "updatedAt": 1765706506972,
     "pricing": {
       "items": [
         {
@@ -17406,9 +17798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706446813
       }
     ],
     "customer": {
@@ -17417,7 +17810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765394856589,
-    "updatedAt": 1765394856589,
+    "updatedAt": 1765706446813,
     "pricing": {
       "items": [
         {
@@ -17605,9 +17998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Cancelled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706456717
       }
     ],
     "customer": {
@@ -17616,7 +18010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765395786551,
-    "updatedAt": 1765395786551,
+    "updatedAt": 1765706456717,
     "pricing": {
       "items": [
         {
@@ -17804,9 +18198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706506980
       }
     ],
     "customer": {
@@ -17815,7 +18210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765396235943,
-    "updatedAt": 1765396235943,
+    "updatedAt": 1765706506980,
     "pricing": {
       "items": [
         {
@@ -18003,9 +18398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706386570
       }
     ],
     "customer": {
@@ -18014,7 +18410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765396581046,
-    "updatedAt": 1765396581046,
+    "updatedAt": 1765706386570,
     "pricing": {
       "items": [
         {
@@ -18204,7 +18600,8 @@
         "flightNumber": null,
         "status": "Scheduled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706416651
       }
     ],
     "customer": {
@@ -18213,7 +18610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765397030363,
-    "updatedAt": 1765397030363,
+    "updatedAt": 1765706416651,
     "pricing": {
       "items": [
         {
@@ -18401,9 +18798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Departed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706446838
       }
     ],
     "customer": {
@@ -18412,7 +18810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765397367613,
-    "updatedAt": 1765397367613,
+    "updatedAt": 1765706446838,
     "pricing": {
       "items": [
         {
@@ -18600,9 +18998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706436729
       }
     ],
     "customer": {
@@ -18611,7 +19010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765397723828,
-    "updatedAt": 1765397723828,
+    "updatedAt": 1765706436729,
     "pricing": {
       "items": [
         {
@@ -18799,9 +19198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706286601
       }
     ],
     "customer": {
@@ -18810,7 +19210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765398300931,
-    "updatedAt": 1765398300931,
+    "updatedAt": 1765706286601,
     "pricing": {
       "items": [
         {
@@ -18998,9 +19398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Cancelled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706376531
       }
     ],
     "customer": {
@@ -19009,7 +19410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765398719486,
-    "updatedAt": 1765398719486,
+    "updatedAt": 1765706376531,
     "pricing": {
       "items": [
         {
@@ -19197,9 +19598,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Completed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706436754
       }
     ],
     "customer": {
@@ -19208,7 +19610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765399149032,
-    "updatedAt": 1765399149032,
+    "updatedAt": 1765706436754,
     "pricing": {
       "items": [
         {
@@ -19396,9 +19798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706486794
       }
     ],
     "customer": {
@@ -19407,7 +19810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765399579092,
-    "updatedAt": 1765399579092,
+    "updatedAt": 1765706486794,
     "pricing": {
       "items": [
         {
@@ -19595,9 +19998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Boarding",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706266520
       }
     ],
     "customer": {
@@ -19606,7 +20010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765400005565,
-    "updatedAt": 1765400005565,
+    "updatedAt": 1765706266520,
     "pricing": {
       "items": [
         {
@@ -19794,9 +20198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Landed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706506987
       }
     ],
     "customer": {
@@ -19805,7 +20210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765401132842,
-    "updatedAt": 1765401132842,
+    "updatedAt": 1765706506987,
     "pricing": {
       "items": [
         {
@@ -19993,9 +20398,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706507003
       }
     ],
     "customer": {
@@ -20004,7 +20410,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765401458904,
-    "updatedAt": 1765401458904,
+    "updatedAt": 1765706507003,
     "pricing": {
       "items": [
         {
@@ -20194,7 +20600,8 @@
         "flightNumber": null,
         "status": "Scheduled",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706416677
       }
     ],
     "customer": {
@@ -20203,7 +20610,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765401808175,
-    "updatedAt": 1765401808175,
+    "updatedAt": 1765706416677,
     "pricing": {
       "items": [
         {
@@ -20391,9 +20798,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "In-Flight",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706326652
       }
     ],
     "customer": {
@@ -20402,7 +20810,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765402747011,
-    "updatedAt": 1765402747011,
+    "updatedAt": 1765706326652,
     "pricing": {
       "items": [
         {
@@ -20590,9 +20998,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Delayed",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706486801
       }
     ],
     "customer": {
@@ -20601,7 +21010,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765403307192,
-    "updatedAt": 1765403307192,
+    "updatedAt": 1765706486801,
     "pricing": {
       "items": [
         {
@@ -20789,9 +21198,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "Boarding",
         "amount": 2500,
-        "netRate": 2500
+        "netRate": 2500,
+        "updatedAt": 1765706316518
       }
     ],
     "customer": {
@@ -20800,7 +21210,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765441044443,
-    "updatedAt": 1765441044443,
+    "updatedAt": 1765706316518,
     "pricing": {
       "items": [
         {
@@ -20885,6 +21295,1406 @@
     "status": "PendingPayment",
     "createdAt": 1765441044517,
     "updatedAt": 1765441044517,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "wl4lc4560mhmj18tc0l": {
+    "id": "wl4lc4560mhmj18tc0l",
+    "ref": "BKG-mj18tc",
+    "items": [
+      {
+        "id": "40u6do2wvozmj18tc0l",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1765445746197,
+    "updatedAt": 1765445746197,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1765445746214
+  },
+  "uo3sr856nimj18tc6b": {
+    "id": "uo3sr856nimj18tc6b",
+    "ref": "BKG-mj18tc",
+    "items": [
+      {
+        "id": "0gd3isflqslwmj18tc6b",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Delayed",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1765706486806
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765445746403,
+    "updatedAt": 1765706486806,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "zfqnf138xnpmj18tcal": {
+    "id": "zfqnf138xnpmj18tcal",
+    "ref": "BKG-mj18tc",
+    "items": [
+      {
+        "id": "54mmjeobhtemj18tcal",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765445746557,
+    "updatedAt": 1765445746557,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "mwoz7li5i69mj1b7zam": {
+    "id": "mwoz7li5i69mj1b7zam",
+    "ref": "BKG-mj1b7z",
+    "items": [
+      {
+        "id": "avkux252m7pmj1b7zam",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1765449788782,
+    "updatedAt": 1765449788782,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1765449788799
+  },
+  "z4hd0z5a1umj1b7zc4": {
+    "id": "z4hd0z5a1umj1b7zc4",
+    "ref": "BKG-mj1b7z",
+    "items": [
+      {
+        "id": "eg7fcbccxfmj1b7zc4",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "In-Flight",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1765706486815
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765449788836,
+    "updatedAt": 1765706486815,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "bocwh1b4jnmj1b7zd0": {
+    "id": "bocwh1b4jnmj1b7zd0",
+    "ref": "BKG-mj1b7z",
+    "items": [
+      {
+        "id": "g93gns31838mj1b7zd0",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765449788868,
+    "updatedAt": 1765449788868,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "xh1k3cjo8rmj1cfzks": {
+    "id": "xh1k3cjo8rmj1cfzks",
+    "ref": "BKG-mj1cfz",
+    "items": [
+      {
+        "id": "m59detbv5ujmj1cfzkt",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1765451842013,
+    "updatedAt": 1765451842013,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1765451842022
+  },
+  "byt8i18z37imj1cfzm5": {
+    "id": "byt8i18z37imj1cfzm5",
+    "ref": "BKG-mj1cfz",
+    "items": [
+      {
+        "id": "3uhypotmir7mj1cfzm5",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Boarding",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1765706507013
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765451842061,
+    "updatedAt": 1765706507013,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "o1zeser7xpmj1cfzn6": {
+    "id": "o1zeser7xpmj1cfzn6",
+    "ref": "BKG-mj1cfz",
+    "items": [
+      {
+        "id": "oijtqw9mu3mj1cfzn6",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765451842098,
+    "updatedAt": 1765451842098,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "ipfa5u53pxsmj1ee3uj": {
+    "id": "ipfa5u53pxsmj1ee3uj",
+    "ref": "BKG-mj1ee3",
+    "items": [
+      {
+        "id": "mshguz7hxymj1ee3uj",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1765455113468,
+    "updatedAt": 1765455113468,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1765455113488
+  },
+  "bfpwa1b09nmj1ee3w2": {
+    "id": "bfpwa1b09nmj1ee3w2",
+    "ref": "BKG-mj1ee3",
+    "items": [
+      {
+        "id": "rpsk05wle9lmj1ee3wz",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Scheduled",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1765706436790
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765455113555,
+    "updatedAt": 1765706436790,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "cf88gcrnaocmj1ee3yx": {
+    "id": "cf88gcrnaocmj1ee3yx",
+    "ref": "BKG-mj1ee3",
+    "items": [
+      {
+        "id": "xkxc1civzfmj1ee3yx",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765455113625,
+    "updatedAt": 1765455113625,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "san8whwnprhmj33hi3r": {
+    "id": "san8whwnprhmj33hi3r",
+    "ref": "BKG-mj33hi",
+    "items": [
+      {
+        "id": "h2g1u39zdfcmj33hi3r",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1765557728487,
+    "updatedAt": 1765557728487,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1765557728501
+  },
+  "uoz8oijpt5mj33hi50": {
+    "id": "uoz8oijpt5mj33hi50",
+    "ref": "BKG-mj33hi",
+    "items": [
+      {
+        "id": "bfba5co5rcomj33hi50",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Completed",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1765706416756
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765557728532,
+    "updatedAt": 1765706416756,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "qodif654bpmj33hi5w": {
+    "id": "qodif654bpmj33hi5w",
+    "ref": "BKG-mj33hi",
+    "items": [
+      {
+        "id": "zwotpkpm51dmj33hi5w",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765557728564,
+    "updatedAt": 1765557728564,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "rsxzuu4qebnmj33kern": {
+    "id": "rsxzuu4qebnmj33kern",
+    "ref": "BKG-mj33ke",
+    "items": [
+      {
+        "id": "hfbs3enkg4rmj33kern",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1765557864131,
+    "updatedAt": 1765557864131,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1765557864140
+  },
+  "u6fvzkohqp8mj33ket2": {
+    "id": "u6fvzkohqp8mj33ket2",
+    "ref": "BKG-mj33ke",
+    "items": [
+      {
+        "id": "sgut6jria8gmj33ket2",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "Boarding",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1765706356562
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765557864182,
+    "updatedAt": 1765706356562,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "w0z7qcgrwjmj33keu9": {
+    "id": "w0z7qcgrwjmj33keu9",
+    "ref": "BKG-mj33ke",
+    "items": [
+      {
+        "id": "udq8iihboymj33keu9",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765557864225,
+    "updatedAt": 1765557864225,
+    "pricing": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "car",
+          "title": "SUV hire for 3 day(s)",
+          "name": "SUV hire for 3 day(s)",
+          "days": 3,
+          "pickupLocation": null,
+          "dropoffLocation": null,
+          "pickupTime": null,
+          "dropoffTime": null,
+          "extras": [],
+          "insurancePrice": 0,
+          "amount": 1500,
+          "netRate": 1500,
+          "net": 1500,
+          "serviceFee": 105,
+          "totalWithFee": 1605,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 1500,
+      "totalServiceFees": 105,
+      "commission": 225,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 330,
+      "partnerReceives": 1275,
+      "total": 1605
+    }
+  },
+  "ojlcboylz4bmj33sc0z": {
+    "id": "ojlcboylz4bmj33sc0z",
+    "ref": "BKG-mj33sc",
+    "items": [
+      {
+        "id": "2nceb1ly6bcmj33sc0z",
+        "type": "accommodation",
+        "title": "Test Hotel",
+        "name": "Test Hotel",
+        "roomType": null,
+        "nights": 2,
+        "unitPrice": 0,
+        "extras": [],
+        "amount": 0,
+        "netRate": 0,
+        "startDate": null,
+        "endDate": null
+      }
+    ],
+    "customer": {
+      "name": "Alice"
+    },
+    "metadata": {},
+    "status": "Confirmed",
+    "createdAt": 1765558233827,
+    "updatedAt": 1765558233827,
+    "inventoryApplied": true,
+    "inventoryAppliedAt": 1765558233858
+  },
+  "i86n56dk1icmj33sc4m": {
+    "id": "i86n56dk1icmj33sc4m",
+    "ref": "BKG-mj33sc",
+    "items": [
+      {
+        "id": "n2za0n6h6mmj33sc4m",
+        "type": "flight",
+        "title": "Flight JNB→CPT on 2025-11-01",
+        "name": "Flight JNB→CPT on 2025-11-01",
+        "from": "JNB",
+        "to": "CPT",
+        "date": "2025-11-01",
+        "flightNumber": null,
+        "status": "In-Flight",
+        "amount": 2500,
+        "netRate": 2500,
+        "updatedAt": 1765706346718
+      }
+    ],
+    "customer": {
+      "name": "Bob"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765558233958,
+    "updatedAt": 1765706346718,
+    "pricing": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    },
+    "fees": {
+      "items": [
+        {
+          "type": "flight",
+          "title": "Flight JNB→CPT on 2025-11-01",
+          "name": "Flight JNB→CPT on 2025-11-01",
+          "from": "JNB",
+          "to": "CPT",
+          "date": "2025-11-01",
+          "flightNumber": null,
+          "status": "Scheduled",
+          "amount": 2500,
+          "netRate": 2500,
+          "net": 2500,
+          "serviceFee": 325,
+          "totalWithFee": 2825,
+          "currency": "ZAR"
+        }
+      ],
+      "subtotal": 2500,
+      "totalServiceFees": 325,
+      "commission": 375,
+      "commissionRate": 0.15,
+      "commissionTier": "Bronze",
+      "collEcoEarns": 700,
+      "partnerReceives": 2125,
+      "total": 2825
+    }
+  },
+  "buwvv7nnpxqmj33sc6f": {
+    "id": "buwvv7nnpxqmj33sc6f",
+    "ref": "BKG-mj33sc",
+    "items": [
+      {
+        "id": "r0h1y6vsgvdmj33sc6f",
+        "type": "car",
+        "title": "SUV hire for 3 day(s)",
+        "name": "SUV hire for 3 day(s)",
+        "days": 3,
+        "pickupLocation": null,
+        "dropoffLocation": null,
+        "pickupTime": null,
+        "dropoffTime": null,
+        "extras": [],
+        "insurancePrice": 0,
+        "amount": 1500,
+        "netRate": 1500
+      }
+    ],
+    "customer": {
+      "name": "Carol"
+    },
+    "metadata": {},
+    "status": "PendingPayment",
+    "createdAt": 1765558234023,
+    "updatedAt": 1765558234023,
     "pricing": {
       "items": [
         {

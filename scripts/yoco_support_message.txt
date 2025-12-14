@@ -1,0 +1,29 @@
+Subject: subscription_limit_exceeded when registering webhook for merchant (please clear quota)
+
+Hello Yoco Support,
+
+We're attempting to register a webhook for our merchant via POST https://payments.yoco.com/api/webhooks and we received an account-side quota error. Please review and clear or increase the webhook subscription quota for the merchant/API key associated with our account.
+
+Details we can provide securely on request (do NOT expose secrets here):
+- Our registration request body (example):
+  { "name": "colleco-mvp-webhook", "url": "https://cordately-uriniferous-tiara.ngrok-free.dev/api/webhooks/yoco" }
+- Date/time (UTC): 2025-12-14T19:59:00Z (approx — adjust if needed)
+
+Yoco API response (copied verbatim):
+{
+  "type" : "fatal",
+  "code" : "subscription_limit_exceeded",
+  "description" : "Your business has reached the maximum number of allowed subscriptions."
+}
+
+What we need from Yoco:
+- Please check the merchant/account tied to our API key and either delete old webhook subscriptions for this merchant or increase the allowed number of subscriptions so we can register our webhook and receive the webhook secret in the registration response.
+- If you need merchant identifiers or non-secret request headers, we can share them securely.
+
+Repo reference / support context:
+- Project: colleco-mvp (local dev)
+- Helper script used: scripts/register_yoco_webhook.js
+- Public test evidence: our signed public test reached our server at https://cordately-uriniferous-tiara.ngrok-free.dev (server accepted a signed test webhook and returned HTTP 200).
+
+Thank you,
+[Your name / team]

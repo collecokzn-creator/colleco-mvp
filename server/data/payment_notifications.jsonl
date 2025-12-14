@@ -1,0 +1,8 @@
+{"ts":1765643208978,"processor":"yoco","type":"signature_failed","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765643231301,"processor":"yoco","type":"signature_failed","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765643363418,"processor":"yoco","type":"booking_not_found","bookingId":"TESTBOOKING123","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765646201134,"processor":"yoco","type":"signature_failed","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765647198835,"processor":"yoco","type":"signature_failed","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765647221800,"processor":"yoco","type":"booking_not_found","bookingId":"TESTBOOKING123","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765647551771,"processor":"yoco","type":"booking_not_found","bookingId":"E2E_TEST_1765647551712","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765649008951,"processor":"yoco","type":"booking_not_found","bookingId":"TESTBOOKING_PUBLIC","eventType":"checkout.paid","ip":"41.193.244.216"}

@@ -3402,5 +3402,14 @@
       "itinerary": []
     },
     "createdAt": 1765443373192
+  },
+  "lk35rn34r79mj5k08eb": {
+    "id": "lk35rn34r79mj5k08eb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765706408579
   }
 }
