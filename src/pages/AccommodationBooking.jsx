@@ -900,6 +900,14 @@ function AccommodationBookingInner(){
   );
 }
 
+    export default function AccommodationBooking() {
+      return (
+        <ErrorBoundary>
+          <AccommodationBookingInner />
+        </ErrorBoundary>
+      );
+    }
+
 export default function AccommodationBooking(){
   return (
     <ErrorBoundary>
