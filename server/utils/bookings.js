@@ -76,6 +76,10 @@ function createBooking(data) {
     throw new Error('Missing required booking fields (supplierId, userId, checkInDate, checkOutDate, lineItems)');
   }
 
+  // Normalize dates to timestamps to avoid "Invalid time value"
+  const checkInTs = typeof checkInDate === 'string' ? new Date(checkInDate).getTime() : checkInDate;
+  const checkOutTs = typeof checkOutDate === 'string' ? new Date(checkOutDate).getTime() : checkOutDate;
+
   const supplier = getSupplier(supplierId);
   if (!supplier) {
     throw new Error(`Supplier ${supplierId} not found`);
@@ -129,7 +133,7 @@ function createBooking(data) {
   const depositDue = new Date(now + paymentTerms.dueDays * 24 * 60 * 60 * 1000);
   let balanceDue = null;
   if (paymentTerms.balanceDueDays) {
-    balanceDue = new Date(checkInDate - paymentTerms.balanceDueDays * 24 * 60 * 60 * 1000);
+    balanceDue = new Date(checkInTs - paymentTerms.balanceDueDays * 24 * 60 * 60 * 1000);
   }
 
   const depositAmount = totalRetailPrice * paymentTerms.deposit;
@@ -144,8 +148,8 @@ function createBooking(data) {
     supplierId,
     userId,
     bookingType,
-    checkInDate: new Date(checkInDate).toISOString(),
-    checkOutDate: new Date(checkOutDate).toISOString(),
+    checkInDate: new Date(checkInTs).toISOString(),
+    checkOutDate: new Date(checkOutTs).toISOString(),
     lineItems: processedItems,
     pricing: {
       baseTotal: parseFloat(totalBasePrice.toFixed(2)),

@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SUPPLIERS_FILE = path.join(__dirname, '..', 'data', 'suppliers.json');
+const SUPPLIERS_EXAMPLE_FILE = path.join(__dirname, '..', 'data', 'suppliers.example.json');
 
 /**
  * Load suppliers configuration from file
@@ -9,8 +10,10 @@ const SUPPLIERS_FILE = path.join(__dirname, '..', 'data', 'suppliers.json');
  */
 function loadSuppliers() {
   try {
-    if (fs.existsSync(SUPPLIERS_FILE)) {
-      const raw = fs.readFileSync(SUPPLIERS_FILE, 'utf8');
+    // Try to load from suppliers.json first, then fall back to .example
+    const fileToLoad = fs.existsSync(SUPPLIERS_FILE) ? SUPPLIERS_FILE : SUPPLIERS_EXAMPLE_FILE;
+    if (fs.existsSync(fileToLoad)) {
+      const raw = fs.readFileSync(fileToLoad, 'utf8');
       return Array.isArray(JSON.parse(raw)) ? JSON.parse(raw) : [];
     }
   } catch (e) {
