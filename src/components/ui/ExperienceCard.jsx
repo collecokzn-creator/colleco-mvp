@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ExperienceCard({ title, subtitle, time, notes, onAdd, onRemove }) {
   return (
-    <div className="rounded border border-cream-border bg-cream-sand p-3 w-full overflow-hidden">
+    <div className="rounded-lg bg-cream-sand/30 p-3 w-full overflow-hidden hover:bg-cream-sand/50 transition-colors">
       <div className="flex items-start sm:items-center justify-between gap-2">
         <div className="flex-1 min-w-0">
           <div className="font-semibold text-brand-brown break-words">{title}</div>

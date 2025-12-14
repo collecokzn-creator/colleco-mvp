@@ -609,7 +609,7 @@ export default function Itinerary() {
                     currentDate.setDate(startDate.getDate() + (Number(day) - 1));
                     
                     return (
-                    <div key={day} className="border-2 border-cream-border rounded-xl p-5 bg-gradient-to-br from-white to-cream/10">
+                    <div key={day} className="bg-white rounded-xl shadow-sm p-5">
                       <ItineraryDay day={day}>
                         <div className="flex items-center justify-between mb-4">
                           <h3 className="text-xl font-bold text-brand-brown">Day {day}</h3>
