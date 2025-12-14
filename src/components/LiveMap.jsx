@@ -18,7 +18,7 @@ const _log = (level, ...args) => {
 export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = true, nearbyDrivers = [], height = '400px', waypoints = [], onRouteInfo }) {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState({ pickup: null, dropoff: null, driver: null });
+  const [_markers, setMarkers] = useState({ pickup: null, dropoff: null, driver: null });
   const nearbyMarkersRef = useRef([]); // use ref to avoid effect dependency loop
   const [_waypointMarkers, _setWaypointMarkers] = useState([]); // unused currently; reserved for future waypoint visuals
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
@@ -274,13 +274,13 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
     if (map && window.google) {
       updateMapMarkers();
     }
-  }, [updateMapMarkers]);
+  }, [updateMapMarkers, map]);
 
   useEffect(() => {
     if (map && window.google && showRoute && pickup && dropoff) {
       drawRoute();
     }
-  }, [drawRoute]);
+  }, [drawRoute, map, showRoute, pickup, dropoff]);
 
   // Update nearby drivers markers
   useEffect(() => {

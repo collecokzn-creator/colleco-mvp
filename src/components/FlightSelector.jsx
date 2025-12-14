@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Star, DollarSign, TrendingUp, Plane, Shield, Award, Heart, CheckCircle2, Filter, ArrowUpDown, Clock, Briefcase, Coffee, Wifi, MonitorPlay, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, TrendingUp, Plane, Shield, Award, Heart, CheckCircle2, Filter, ArrowUpDown, Clock, Briefcase, Coffee, Wifi, MonitorPlay, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function FlightSelector({ 
   from,
@@ -132,15 +132,7 @@ export default function FlightSelector({
   }, [fetchAvailableFlights, loadFavoriteFlights]);
 
 
-  const checkScrollButtons = () => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-    
-    setCanScrollLeft(container.scrollTop > 0);
-    setCanScrollRight(
-      container.scrollTop < container.scrollHeight - container.clientHeight - 10
-    );
-  };
+  // scroll button checks are handled in the effect below
 
   useEffect(() => {
     const checkScrollButtons = () => {

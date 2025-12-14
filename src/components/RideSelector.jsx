@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Star, 
-  DollarSign, 
+  
   TrendingUp, 
   User, 
   Car, 
@@ -9,7 +9,6 @@ import {
   Award,
   Heart,
   Clock,
-  MapPin,
   CheckCircle2,
   Filter,
   ArrowUpDown
@@ -260,7 +259,7 @@ export default function RideSelector({
     return score;
   };
 
-  const autoPickBestRide = () => {
+  const _autoPickBestRide = () => {
     const list = getFilteredAndSortedRides();
     if (!list.length) return;
     const best = list
@@ -550,7 +549,7 @@ export default function RideSelector({
                     {/* Recent Review Snippet */}
                     {ride.latestReview && (
                       <div className="mt-3 p-2 bg-gray-50 rounded text-xs text-gray-600 italic border-l-2 border-brand-orange">
-                        "{ride.latestReview.comment}" - {ride.latestReview.author}
+                        &quot;{ride.latestReview.comment}&quot; - {ride.latestReview.author}
                       </div>
                     )}
                   </div>

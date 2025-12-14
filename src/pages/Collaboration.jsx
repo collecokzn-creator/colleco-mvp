@@ -101,7 +101,7 @@ export default function Collaboration() {
       es.addEventListener("read", refresh);
     } catch {}
     return () => { try { es?.close(); } catch {} };
-  }, [currentRole, isApiEnabled]);
+  }, [currentRole]);
 
   // Ensure selection reacts to threads list and current bookingId
   useEffect(() => {

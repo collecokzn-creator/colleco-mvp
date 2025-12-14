@@ -11,7 +11,7 @@ export default function Checkout() {
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [processor, setProcessor] = useState('payfast'); // payfast or yoco
+  const [processor, setProcessor] = useState(''); // client must choose: 'yoco' or 'paystack'
   const [redirecting, setRedirecting] = useState(false);
   const [customerEmail, setCustomerEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -44,6 +44,11 @@ export default function Checkout() {
 
   async function handlePayment() {
     if (!booking) return;
+
+    if (!processor) {
+      setError('Please select a payment provider before continuing');
+      return;
+    }
 
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -347,22 +352,6 @@ export default function Checkout() {
               <input
                 type="radio"
                 name="processor"
-                value="payfast"
-                checked={processor === 'payfast'}
-                onChange={e => setProcessor(e.target.value)}
-                className="w-4 h-4 text-brand-orange"
-              />
-              <div className="flex-1">
-                <p className="font-semibold text-brand-brown">PayFast</p>
-                <p className="text-xs text-gray-600">Credit card, EFT, instant EFT</p>
-              </div>
-              <CreditCard className="h-5 w-5 text-gray-400" />
-            </label>
-
-            <label className="flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer hover:border-brand-orange transition-colors">
-              <input
-                type="radio"
-                name="processor"
                 value="yoco"
                 checked={processor === 'yoco'}
                 onChange={e => setProcessor(e.target.value)}
@@ -374,6 +363,22 @@ export default function Checkout() {
               </div>
               <CreditCard className="h-5 w-5 text-gray-400" />
             </label>
+
+            <label className="flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer hover:border-brand-orange transition-colors">
+              <input
+                type="radio"
+                name="processor"
+                value="paystack"
+                checked={processor === 'paystack'}
+                onChange={e => setProcessor(e.target.value)}
+                className="w-4 h-4 text-brand-orange"
+              />
+              <div className="flex-1">
+                <p className="font-semibold text-brand-brown">Paystack</p>
+                <p className="text-xs text-gray-600">Credit card, local payment methods</p>
+              </div>
+              <CreditCard className="h-5 w-5 text-gray-400" />
+            </label>
           </div>
         </div>
 
@@ -381,13 +386,13 @@ export default function Checkout() {
         <Button
           fullWidth
           onClick={handlePayment}
-          disabled={redirecting}
+          disabled={redirecting || !processor}
           className="py-4 text-lg"
         >
           {redirecting ? (
             <span className="flex items-center justify-center gap-2">
               <Loader className="h-5 w-5 animate-spin" />
-              Redirecting to {processor === 'payfast' ? 'PayFast' : 'Yoco'}...
+              Redirecting to {processor ? processor.charAt(0).toUpperCase() + processor.slice(1) : 'payment provider'}...
             </span>
           ) : (
             <span className="flex items-center justify-center gap-2">
@@ -398,7 +403,7 @@ export default function Checkout() {
         </Button>
 
         <p className="text-center text-xs text-gray-500 mt-4">
-          Secure payment powered by {processor === 'payfast' ? 'PayFast' : 'Yoco'}.
+          Secure payment powered by {processor ? processor.charAt(0).toUpperCase() + processor.slice(1) : 'our payment processors'}.
           Your payment information is encrypted and secure.
         </p>
       </div>

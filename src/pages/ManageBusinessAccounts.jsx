@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Building2, Users, Search, Filter as _Filter, Download as _Download, Eye, Edit, Mail,
-  Phone, DollarSign, Calendar, TrendingUp, CheckCircle2, AlertCircle,
-  Clock, XCircle, MoreVertical, FileText as _FileText, BarChart3, Settings
+  Building2, Search, Filter as _Filter, Download as _Download, Eye, Edit, Mail,
+  Phone, DollarSign, Calendar, CheckCircle2, AlertCircle,
+  XCircle, MoreVertical, FileText as _FileText, BarChart3, Clock
 } from "lucide-react";
 
 const ACCOUNT_STATUS_FILTERS = ["all", "active", "pending", "suspended", "inactive"];

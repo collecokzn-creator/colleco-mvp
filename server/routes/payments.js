@@ -33,14 +33,14 @@ router.post('/generate-url', async (req, res) => {
       });
     }
 
-    if (!['payfast', 'yoco'].includes(processor)) {
+    if (!['payfast', 'yoco', 'paystack'].includes(processor)) {
       return res.status(400).json({
-        error: 'Invalid processor. Must be "payfast" or "yoco"'
+        error: 'Invalid processor. Must be "payfast", "yoco" or "paystack"'
       });
     }
 
     // Generate payment URL
-    const paymentUrl = generatePaymentUrl({
+    const paymentUrl = await generatePaymentUrl({
       bookingId,
       processor,
       amount,

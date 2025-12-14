@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BookingNav from '../components/BookingNav';
 import FlightSelector from '../components/FlightSelector';
 import Button from '../components/ui/Button.jsx';
-import { Plane, Calendar, Users, Clock, DollarSign } from 'lucide-react';
+import { Plane, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
 export default function FlightBooking(){

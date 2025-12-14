@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { CreditCard, Download, ChevronRight, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { CreditCard, Download, ChevronRight, CheckCircle } from 'lucide-react';
 import { getPlan, calculateMonthlyROI } from '../utils/subscriptionPlans.js';
 import { createROIAnalyzer } from '../utils/subscriptionAnalytics.js';
 

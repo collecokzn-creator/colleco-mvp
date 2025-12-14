@@ -3,10 +3,12 @@ import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
 import MealSelector from '../components/MealSelector';
 import Button from '../components/ui/Button.jsx';
-import { Home, Calendar, Users, Clock, DollarSign, Plus, Trash2 } from 'lucide-react';
+import { Home, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
-export default function AccommodationBooking(){
+import ErrorBoundary from '../components/ErrorBoundary';
+
+function AccommodationBookingInner(){
   const [location, setLocation] = useState('');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
@@ -48,7 +50,7 @@ export default function AccommodationBooking(){
     
     const timer = setTimeout(searchProperties, 300); // Debounce
     return () => clearTimeout(timer);
-  }, [location]);
+  }, [location, propertyId]);
   
   React.useEffect(() => {
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
@@ -89,24 +91,6 @@ export default function AccommodationBooking(){
     setPropertyPending(true);
     setSelectedProperty(null);
   }, []);
-
-  const autoAssignCheapestProperty = useCallback(async () => {
-    if (!availableProperties || availableProperties.length === 0) {
-      alert('No available properties to assign. Please try again.');
-      return;
-    }
-
-    const cheapestProperty = availableProperties.reduce((min, property) => 
-      property.pricePerNight < min.pricePerNight ? property : min
-    );
-    await confirmPropertySelection(cheapestProperty);
-  }, [availableProperties, confirmPropertySelection]);
-
-  const reopenPropertySelector = useCallback(() => {
-    setPropertyPending(false);
-    setShowPropertySelector(true);
-  }, []);
-
   const confirmPropertySelection = useCallback(async (property) => {
     setSelectedProperty(property);
     setShowPropertySelector(false);
@@ -208,6 +192,23 @@ export default function AccommodationBooking(){
       setLoading(false);
     }
   }, [properties, propertyId, checkIn, checkOut, roomType, mealPricing, bookingType, guests, location, specialRequests]);
+
+  const autoAssignCheapestProperty = useCallback(async () => {
+    if (!availableProperties || availableProperties.length === 0) {
+      alert('No available properties to assign. Please try again.');
+      return;
+    }
+
+    const cheapestProperty = availableProperties.reduce((min, property) => 
+      property.pricePerNight < min.pricePerNight ? property : min
+    );
+    await confirmPropertySelection(cheapestProperty);
+  }, [availableProperties, confirmPropertySelection]);
+
+  const reopenPropertySelector = useCallback(() => {
+    setPropertyPending(false);
+    setShowPropertySelector(true);
+  }, []);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -895,5 +896,13 @@ export default function AccommodationBooking(){
         />
       )}
     </div>
+  );
+}
+
+export default function AccommodationBooking(){
+  return (
+    <ErrorBoundary>
+      <AccommodationBookingInner />
+    </ErrorBoundary>
   );
 }

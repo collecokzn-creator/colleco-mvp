@@ -11,10 +11,20 @@
   "yoco": {
     "secretKey": "TEST_SECRET_KEY",
     "publicKey": "TEST_PUBLIC_KEY",
+    "apiUrl": "https://online.yoco.com/api/v1",
     "testMode": true,
     "webhookSecret": "TEST_WEBHOOK_SECRET",
     "successUrl": "https://staging.colleco.travel/pay/success",
     "cancelUrl": "https://staging.colleco.travel/pay/cancel"
   },
-  "defaultProcessor": "payfast"
+  "paystack": {
+    "secretKey": "TEST_PAYSTACK_SECRET",
+    "publicKey": "TEST_PAYSTACK_PUBLIC",
+    "testMode": true,
+    "apiUrl": "https://api.paystack.co",
+    "successUrl": "https://staging.colleco.travel/pay/success",
+    "cancelUrl": "https://staging.colleco.travel/pay/cancel",
+    "webhookSecret": "TEST_PAYSTACK_WEBHOOK"
+  },
+  "defaultProcessor": ""
 }

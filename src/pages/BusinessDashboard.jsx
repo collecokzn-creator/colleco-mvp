@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Users, Briefcase, TrendingUp, DollarSign, Calendar, MapPin,
-  Download, Plus, Filter as _Filter, Settings, BarChart3, FileText, Clock,
+  Users, Briefcase, DollarSign, Calendar, MapPin,
+  Download, Plus, Filter as _Filter, BarChart3, FileText,
   CheckCircle2, AlertCircle as _AlertCircle, User, Plane, Hotel, Car
 } from "lucide-react";
 

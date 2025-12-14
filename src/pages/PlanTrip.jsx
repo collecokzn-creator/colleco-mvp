@@ -58,7 +58,7 @@ export default function PlanTrip() {
         } catch {}
       }, 0);
       return () => clearTimeout(t);
-    }, [selectedProduct]);
+    }, []);
     // Focus trap
     useEffect(() => {
       function handleTrap(e) {

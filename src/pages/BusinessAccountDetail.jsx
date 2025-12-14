@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, Building2, Users, Mail, Phone, MapPin, Calendar, DollarSign,
-  Briefcase, Edit, Download, FileText, TrendingUp, CheckCircle2, Clock,
-  AlertCircle, Settings, BarChart3, CreditCard, Shield, User, Plane, Hotel, Car
+  ArrowLeft, Building2, Users, Calendar, DollarSign,
+  Briefcase, Edit, Download, FileText, CheckCircle2, Clock,
+  AlertCircle, BarChart3, CreditCard, Shield, User, Plane, Hotel, Car
 } from "lucide-react";
 
 export default function BusinessAccountDetail() {

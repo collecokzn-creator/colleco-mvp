@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { CheckCircle2, Clock, XCircle, AlertCircle, ArrowRight, FileText, Shield, UserCheck, Sparkles } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, AlertCircle, ArrowRight, FileText, Shield, Sparkles } from "lucide-react";
 
 const VERIFICATION_STAGES = [
   {

@@ -42,6 +42,8 @@ export default function PrivacySettings() {
   }, [user?.id, user?.email]);
 
   // Load consent data on mount / when user changes
+  // loadConsentData already lists `user?.id` and `user?.email` in its dependencies.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!user?.id && !user?.email) {
       setError('Please log in to view privacy settings');
@@ -50,7 +52,7 @@ export default function PrivacySettings() {
     }
 
     loadConsentData();
-  }, [loadConsentData]);
+  }, [loadConsentData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleWithdrawConsent = async () => {
     if (!withdrawalReason.trim()) {
