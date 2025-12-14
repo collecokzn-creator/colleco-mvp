@@ -1,0 +1,3406 @@
+{
+  "xi7i20cur09mg594vgb": {
+    "id": "xi7i20cur09mg594vgb",
+    "prompt": "Family trip to Rome and Florence for 6 nights in June, 2 adults 1 child, budget $4000, love food and history",
+    "data": {
+      "original": "Family trip to Rome and Florence for 6 nights in June, 2 adults 1 child, budget $4000, love food and history",
+      "destinations": [
+        "Family",
+        "Rome",
+        "Florence",
+        "June"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 6,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": 4000,
+        "perPerson": false
+      },
+      "interests": [
+        "food",
+        "family",
+        "history"
+      ],
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      },
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Rome",
+          "destination": "Rome",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Florence",
+          "destination": "Florence",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 4,
+          "title": "Day 4 - June",
+          "destination": "June",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 5,
+          "title": "Day 5 - June",
+          "destination": "June",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        },
+        {
+          "day": 6,
+          "title": "Day 6 - June",
+          "destination": "June",
+          "activities": [
+            "Local culinary tour",
+            "Cultural site visit"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 2880,
+        "breakdown": {
+          "lodging": 1800,
+          "activities": 450,
+          "food": 630
+        },
+        "note": "Heuristic estimate"
+      }
+    },
+    "createdAt": 1759157802299
+  },
+  "na4q5olwbxpmguwzc7d": {
+    "id": "na4q5olwbxpmguwzc7d",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760709509257
+  },
+  "9cu7i8y5pa7mguy26a7": {
+    "id": "9cu7i8y5pa7mguy26a7",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760711321167
+  },
+  "b01pijtw4mmguy6xpr": {
+    "id": "b01pijtw4mmguy6xpr",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760711543343
+  },
+  "faabj37znfcmguyfhsz": {
+    "id": "faabj37znfcmguyfhsz",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760711942627
+  },
+  "6jzim1u20d8mguz4en5": {
+    "id": "6jzim1u20d8mguz4en5",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760713104929
+  },
+  "bf2p9i2s9pmguzagw1": {
+    "id": "bf2p9i2s9pmguzagw1",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760713387777
+  },
+  "293r2xkssoamguzbvfm": {
+    "id": "293r2xkssoamguzbvfm",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760713453282
+  },
+  "7pr7z4ucljamguztr6p": {
+    "id": "7pr7z4ucljamguztr6p",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760714287585
+  },
+  "g2pdmopqr6mguzzqi1": {
+    "id": "g2pdmopqr6mguzzqi1",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760714566633
+  },
+  "i7prfdlawxbmgv01xx8": {
+    "id": "i7prfdlawxbmgv01xx8",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760714669564
+  },
+  "lbb35dwerwmgv0blwo": {
+    "id": "lbb35dwerwmgv0blwo",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760715120552
+  },
+  "2hr4zehgr35mgv0jhvz": {
+    "id": "2hr4zehgr35mgv0jhvz",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760715488591
+  },
+  "peo8zbrza1mgv0ns5t": {
+    "id": "peo8zbrza1mgv0ns5t",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760715688529
+  },
+  "dycasn0zxt6mgv0tikz": {
+    "id": "dycasn0zxt6mgv0tikz",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760715956051
+  },
+  "nulb3v1pmsmgv0xr9c": {
+    "id": "nulb3v1pmsmgv0xr9c",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760716153920
+  },
+  "9jywb11svitmgv1a1jl": {
+    "id": "9jywb11svitmgv1a1jl",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760716727121
+  },
+  "rnar8idv8tmmgv1g8s3": {
+    "id": "rnar8idv8tmmgv1g8s3",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760717016435
+  },
+  "ypkg49tbimgv1qo1l": {
+    "id": "ypkg49tbimgv1qo1l",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760717502777
+  },
+  "q7vsmlhuavkmgv2w5aj": {
+    "id": "q7vsmlhuavkmgv2w5aj",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760719438027
+  },
+  "ghu2ukm1y9fmgv4o79c": {
+    "id": "ghu2ukm1y9fmgv4o79c",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760722426560
+  },
+  "dlf64p8goqimgv4sz82": {
+    "id": "dlf64p8goqimgv4sz82",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760722649426
+  },
+  "zlmacbnnrqmgv4w9xy": {
+    "id": "zlmacbnnrqmgv4w9xy",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760722803286
+  },
+  "ki5tzjrwo5smgv5g0ny": {
+    "id": "ki5tzjrwo5smgv5g0ny",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760723724382
+  },
+  "9v6dsyvp6ymgv8rlqn": {
+    "id": "9v6dsyvp6ymgv8rlqn",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760729303761
+  },
+  "5v1sibrrc8jmgvba558": {
+    "id": "5v1sibrrc8jmgvba558",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760733527948
+  },
+  "yffsqv20zomgvbvta0": {
+    "id": "yffsqv20zomgvbvta0",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760734539000
+  },
+  "2uzh955nv8umgvc1xst": {
+    "id": "2uzh955nv8umgvc1xst",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1760734824797
+  },
+  "1dgbre4g8i5mgveu0jr": {
+    "id": "1dgbre4g8i5mgveu0jr",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760739493960
+  },
+  "6jlsm0btmzqmgvfahtc": {
+    "id": "6jlsm0btmzqmgvfahtc",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760740262832
+  },
+  "6h654143w6lmgvffw8e": {
+    "id": "6h654143w6lmgvffw8e",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760740514801
+  },
+  "bqbuc97sb4dmgy6vniv": {
+    "id": "bqbuc97sb4dmgy6vniv",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760907531992
+  },
+  "x3999joikmgy8iavy": {
+    "id": "x3999joikmgy8iavy",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760910268318
+  },
+  "4gcuqwxkep5mgy8lxu2": {
+    "id": "4gcuqwxkep5mgy8lxu2",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760910438026
+  },
+  "a96ktc5obp6mgy8uu1o": {
+    "id": "a96ktc5obp6mgy8uu1o",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760910853020
+  },
+  "qb3lp8q59vmgy9gfj9": {
+    "id": "qb3lp8q59vmgy9gfj9",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760911860645
+  },
+  "sszbi6f3asnmgyc5xzk": {
+    "id": "sszbi6f3asnmgyc5xzk",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760916410193
+  },
+  "4a9ix1csb1kmgyc8xib": {
+    "id": "4a9ix1csb1kmgyc8xib",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760916549539
+  },
+  "51zecls0c1umgyckgs0": {
+    "id": "51zecls0c1umgyckgs0",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760917087728
+  },
+  "xrqq8zvdvvamgyrr1x9": {
+    "id": "xrqq8zvdvvamgyrr1x9",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760942589309
+  },
+  "ksatom84m1mgyuv16w": {
+    "id": "ksatom84m1mgyuv16w",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760947813832
+  },
+  "gvdg5qq62domgyuxe58": {
+    "id": "gvdg5qq62domgyuxe58",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760947923932
+  },
+  "e14qn3f4d5mgyxqvqn": {
+    "id": "e14qn3f4d5mgyxqvqn",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760952658991
+  },
+  "xwrwlka6m6mgyy9gb0": {
+    "id": "xwrwlka6m6mgyy9gb0",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760953525452
+  },
+  "jrmxezf1hmmgz0v2ks": {
+    "id": "jrmxezf1hmmgz0v2ks",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760957893324
+  },
+  "o3r78oj3mopmgz2klep": {
+    "id": "o3r78oj3mopmgz2klep",
+    "prompt": "Family trip to Cape Town for 3 nights, beach and food",
+    "data": {
+      "original": "Family trip to Cape Town for 3 nights, beach and food",
+      "destinations": [
+        "Family",
+        "Cape Town"
+      ],
+      "startDate": null,
+      "endDate": null,
+      "nights": 3,
+      "travelers": {
+        "adults": 2,
+        "children": 0
+      },
+      "budget": {
+        "currency": "USD",
+        "amount": null,
+        "perPerson": false
+      },
+      "interests": [
+        "beach",
+        "food",
+        "family"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Day 1 - Family",
+          "destination": "Family",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 2,
+          "title": "Day 2 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        },
+        {
+          "day": 3,
+          "title": "Day 3 - Cape Town",
+          "destination": "Cape Town",
+          "activities": [
+            "Local culinary tour",
+            "Relax at the beach"
+          ]
+        }
+      ],
+      "pricing": {
+        "currency": "USD",
+        "total": 1440,
+        "breakdown": {
+          "lodging": 900,
+          "activities": 225,
+          "food": 315
+        },
+        "note": "Heuristic estimate"
+      },
+      "meta": {
+        "heuristic": true,
+        "version": 1
+      }
+    },
+    "createdAt": 1760960763745
+  },
+  "uozsikr3g3mh15729b": {
+    "id": "uozsikr3g3mh15729b",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761086103599
+  },
+  "6dazebvcyl6mh15esom": {
+    "id": "6dazebvcyl6mh15esom",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761086464438
+  },
+  "8tnd6q3c1kfmh15ktcr": {
+    "id": "8tnd6q3c1kfmh15ktcr",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761086745243
+  },
+  "1whbjis0iq4mh15qv1k": {
+    "id": "1whbjis0iq4mh15qv1k",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761087027368
+  },
+  "296rpbt5babmh168x9q": {
+    "id": "296rpbt5babmh168x9q",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761087870062
+  },
+  "ta75va2p6pmh16d61p": {
+    "id": "ta75va2p6pmh16d61p",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761088068061
+  },
+  "4ldg1badzzqmh16j1u8": {
+    "id": "4ldg1badzzqmh16j1u8",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761088342544
+  },
+  "f9t2oajwdkimh16p5yv": {
+    "id": "f9t2oajwdkimh16p5yv",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761088627831
+  },
+  "h5k0v7o0eahmh16v7bw": {
+    "id": "h5k0v7o0eahmh16v7bw",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761088909532
+  },
+  "vypxdwdxcltmh1ncpfb": {
+    "id": "vypxdwdxcltmh1ncpfb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761116599991
+  },
+  "duou578omn4mh1nh1yh": {
+    "id": "duou578omn4mh1nh1yh",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761116802857
+  },
+  "tlurfgf3wmh1nwenr": {
+    "id": "tlurfgf3wmh1nwenr",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761117519159
+  },
+  "r1cdrzxpiomh1nyeib": {
+    "id": "r1cdrzxpiomh1nyeib",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1761117612275
+  },
+  "3j2rxh0ee2kmhiw0mgz": {
+    "id": "3j2rxh0ee2kmhiw0mgz",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762159077827
+  },
+  "q4he3rqsoumhjcoxxw": {
+    "id": "q4he3rqsoumhjcoxxw",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762187086292
+  },
+  "k81j349jcrmhjcxlhk": {
+    "id": "k81j349jcrmhjcxlhk",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762187490056
+  },
+  "3v8pi07u4sjmhjd0fsm": {
+    "id": "3v8pi07u4sjmhjd0fsm",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762187622646
+  },
+  "z0774fup11mhjd6tie": {
+    "id": "z0774fup11mhjd6tie",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762187920358
+  },
+  "0in418r1bcr8mhjdajy2": {
+    "id": "0in418r1bcr8mhjdajy2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762188094586
+  },
+  "ga2sy2i64kmhjgga65": {
+    "id": "ga2sy2i64kmhjgga65",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762193400701
+  },
+  "0v15cms4ctfkmhji5kn7": {
+    "id": "0v15cms4ctfkmhji5kn7",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762196260291
+  },
+  "tykwzc0t6rmhjianyq": {
+    "id": "tykwzc0t6rmhjianyq",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1762196497875
+  },
+  "m2b1kcg6jwmi7b70lb": {
+    "id": "m2b1kcg6jwmi7b70lb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1763635758527
+  },
+  "i76ho9q40smi8yis92": {
+    "id": "i76ho9q40smi8yis92",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1763735404934
+  },
+  "oxwg7futbaimidcn10h": {
+    "id": "oxwg7futbaimidcn10h",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764000982241
+  },
+  "96ju297srxhmidhuluq": {
+    "id": "96ju297srxhmidhuluq",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764009733922
+  },
+  "p9a9ym8u0llmidi0ri2": {
+    "id": "p9a9ym8u0llmidi0ri2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764010021178
+  },
+  "1hbisgyo5ulmidi2dab": {
+    "id": "1hbisgyo5ulmidi2dab",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764010096068
+  },
+  "pcolbsaeqsmidjfpu6": {
+    "id": "pcolbsaeqsmidjfpu6",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764012398478
+  },
+  "iyjeso93y7midjsnax": {
+    "id": "iyjeso93y7midjsnax",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764013001722
+  },
+  "abh0lsyza8wmiea0hmb": {
+    "id": "abh0lsyza8wmiea0hmb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764057037619
+  },
+  "bejsw1mvqlkmieeszwb": {
+    "id": "bejsw1mvqlkmieeszwb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764065086139
+  },
+  "4f1pl13nspamieewp6u": {
+    "id": "4f1pl13nspamieewp6u",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764065258886
+  },
+  "9a6pum8yp66mieeyt8f": {
+    "id": "9a6pum8yp66mieeyt8f",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764065357440
+  },
+  "p1anz5527omiefq8i2": {
+    "id": "p1anz5527omiefq8i2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764066636938
+  },
+  "sc1v0pmv61lmiet79bl": {
+    "id": "sc1v0pmv61lmiet79bl",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764089266161
+  },
+  "xbg5z2yncqmmif1xmwp": {
+    "id": "xbg5z2yncqmmif1xmwp",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764103933754
+  },
+  "t7l9vifomrcmiq630a4": {
+    "id": "t7l9vifomrcmiq630a4",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764776030764
+  },
+  "zuweqclvpvdmir80d08": {
+    "id": "zuweqclvpvdmir80d08",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764839732696
+  },
+  "l5nfbluxggmir86y5x": {
+    "id": "l5nfbluxggmir86y5x",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764840040053
+  },
+  "xuzup7hc3nmir8hecu": {
+    "id": "xuzup7hc3nmir8hecu",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764840527598
+  },
+  "q17s44jhn2mir8osod": {
+    "id": "q17s44jhn2mir8osod",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764840872749
+  },
+  "drv0uz1pvwmirmm7qm": {
+    "id": "drv0uz1pvwmirmm7qm",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764864266926
+  },
+  "hrqw500ou4kmirmnop3": {
+    "id": "hrqw500ou4kmirmnop3",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764864335559
+  },
+  "kplvrypyl6miru8e7z": {
+    "id": "kplvrypyl6miru8e7z",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764877059071
+  },
+  "12pewv8tklrhmisvj2q7": {
+    "id": "12pewv8tklrhmisvj2q7",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764939703183
+  },
+  "2ps984msrymisw9x9z": {
+    "id": "2ps984msrymisw9x9z",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764940955997
+  },
+  "lkvc1cdqwlmiswe74u": {
+    "id": "lkvc1cdqwlmiswe74u",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764941155230
+  },
+  "xf2t71a6rhnmiswn77i": {
+    "id": "xf2t71a6rhnmiswn77i",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764941575231
+  },
+  "b436d1fyewamiswuy1j": {
+    "id": "b436d1fyewamiswuy1j",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764941936599
+  },
+  "poyenpdnd4misx4x55": {
+    "id": "poyenpdnd4misx4x55",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764942401994
+  },
+  "xy51ogk03vemisxaw0f": {
+    "id": "xy51ogk03vemisxaw0f",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1764942680463
+  },
+  "um7itj4hl8miwu4bjr": {
+    "id": "um7itj4hl8miwu4bjr",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765179199863
+  },
+  "wk6c9rknnemiwu7ur1": {
+    "id": "wk6c9rknnemiwu7ur1",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765179364717
+  },
+  "celgmy749olmiwukb69": {
+    "id": "celgmy749olmiwukb69",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765179945875
+  },
+  "ieu5iuvoukmiwuniv4": {
+    "id": "ieu5iuvoukmiwuniv4",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765180095808
+  },
+  "14dqvl1ln2xmiwurb7f": {
+    "id": "14dqvl1ln2xmiwurb7f",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765180272507
+  },
+  "n9p12bvxc6smiwv5e55": {
+    "id": "n9p12bvxc6smiwv5e55",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765180929497
+  },
+  "zm2k5utjp58miwvm9nm": {
+    "id": "zm2k5utjp58miwvm9nm",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765181716834
+  },
+  "iyl2mhely7miwwu2ei": {
+    "id": "iyl2mhely7miwwu2ei",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765183760298
+  },
+  "cdzevkah7zmmiwx7mlw": {
+    "id": "cdzevkah7zmmiwx7mlw",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765184393012
+  },
+  "q95myesonemiwxaxi1": {
+    "id": "q95myesonemiwxaxi1",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765184547097
+  },
+  "yw8uzfqxn7qmiwxc60w": {
+    "id": "yw8uzfqxn7qmiwxc60w",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765184604800
+  },
+  "9lggo2pvq2cmiwxe4e9": {
+    "id": "9lggo2pvq2cmiwxe4e9",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765184696001
+  },
+  "j802o4os0rmiwxnqib": {
+    "id": "j802o4os0rmiwxnqib",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765185144563
+  },
+  "pijro10cr4bmiwy5nsw": {
+    "id": "pijro10cr4bmiwy5nsw",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765185980864
+  },
+  "tr4oe2o9bz9miwydunt": {
+    "id": "tr4oe2o9bz9miwydunt",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765186363001
+  },
+  "n3imzjwmk5jmiwz6o2g": {
+    "id": "n3imzjwmk5jmiwz6o2g",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765187707481
+  },
+  "tuj26dcqwgamiwzgvxj": {
+    "id": "tuj26dcqwgamiwzgvxj",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765188184231
+  },
+  "y74d5p2jj2amiwzz8gt": {
+    "id": "y74d5p2jj2amiwzz8gt",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765189040285
+  },
+  "h734ieh98lgmix01wwa": {
+    "id": "h734ieh98lgmix01wwa",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765189165258
+  },
+  "iogkotpf2lmix07l1q": {
+    "id": "iogkotpf2lmix07l1q",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765189429838
+  },
+  "25s2e4y1hd8mix09pi3": {
+    "id": "25s2e4y1hd8mix09pi3",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765189528923
+  },
+  "hkqq2adc1w7mix0mkc9": {
+    "id": "hkqq2adc1w7mix0mkc9",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765190128761
+  },
+  "l7iputh6jomix1b6io": {
+    "id": "l7iputh6jomix1b6io",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765191277248
+  },
+  "r669w9v0rlmix26em0": {
+    "id": "r669w9v0rlmix26em0",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765192734072
+  },
+  "japvczqt4bmix28c23": {
+    "id": "japvczqt4bmix28c23",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765192824075
+  },
+  "jwovthioxwhmix3ld8i": {
+    "id": "jwovthioxwhmix3ld8i",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765195111746
+  },
+  "clbvs4wf6u8mix3n592": {
+    "id": "clbvs4wf6u8mix3n592",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765195194711
+  },
+  "5q6wojbwtumix3plog": {
+    "id": "5q6wojbwtumix3plog",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765195309313
+  },
+  "y2xqn5sed4mix510po": {
+    "id": "y2xqn5sed4mix510po",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765197521629
+  },
+  "4zp1xi56hgdmix52ioy": {
+    "id": "4zp1xi56hgdmix52ioy",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765197591586
+  },
+  "30wofootpaymix5fvh4": {
+    "id": "30wofootpaymix5fvh4",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765198214680
+  },
+  "3ubwy0rpmj6mix5htu2": {
+    "id": "3ubwy0rpmj6mix5htu2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765198305866
+  },
+  "wvcgp5upmimix5k7hg": {
+    "id": "wvcgp5upmimix5k7hg",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765198416868
+  },
+  "sfyy9acoismix5m9os": {
+    "id": "sfyy9acoismix5m9os",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765198513036
+  },
+  "5xl2vj4tybmix5t4ah": {
+    "id": "5xl2vj4tybmix5t4ah",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765198832633
+  },
+  "pudoqo5ksmbmix5uruu": {
+    "id": "pudoqo5ksmbmix5uruu",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765198909830
+  },
+  "35f0ycsddtemix65f1i": {
+    "id": "35f0ycsddtemix65f1i",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765199406438
+  },
+  "r5ada86bxkmix67mbi": {
+    "id": "r5ada86bxkmix67mbi",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765199509182
+  },
+  "xlamf6pr8dgmix6aexu": {
+    "id": "xlamf6pr8dgmix6aexu",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765199639586
+  },
+  "hv0p8hp3i47mix7mz7k": {
+    "id": "hv0p8hp3i47mix7mz7k",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765201905344
+  },
+  "bwaf88yhhbjmix7w7yc": {
+    "id": "bwaf88yhhbjmix7w7yc",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765202336580
+  },
+  "zr172mnc6j9mix7zfz2": {
+    "id": "zr172mnc6j9mix7zfz2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765202486942
+  },
+  "9mnte6o2i19mix84xym": {
+    "id": "9mnte6o2i19mix84xym",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765202743534
+  },
+  "n2w733p1krmix86qa7": {
+    "id": "n2w733p1krmix86qa7",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765202826895
+  },
+  "m3h88bqztjmix89529": {
+    "id": "m3h88bqztjmix89529",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765202939361
+  },
+  "i300ykdb4rcmix8il3k": {
+    "id": "i300ykdb4rcmix8il3k",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765203380048
+  },
+  "8m06x11ycyimix8qrz0": {
+    "id": "8m06x11ycyimix8qrz0",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765203762205
+  },
+  "0ox427n8fsjemix90ym3": {
+    "id": "0ox427n8fsjemix90ym3",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765204237371
+  },
+  "xi13u33fgsmix97avn": {
+    "id": "xi13u33fgsmix97avn",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765204533203
+  },
+  "i3be9t1ys1bmix9amph": {
+    "id": "i3be9t1ys1bmix9amph",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765204688501
+  },
+  "6lb747ddkdgmix9e9b8": {
+    "id": "6lb747ddkdgmix9e9b8",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765204857764
+  },
+  "jz2tfzcg9fmix9g2er": {
+    "id": "jz2tfzcg9fmix9g2er",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765204942131
+  },
+  "88ssx4dpog3mix9nwh6": {
+    "id": "88ssx4dpog3mix9nwh6",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765205307690
+  },
+  "k1c97ezhf8omixa389j": {
+    "id": "k1c97ezhf8omixa389j",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765206022807
+  },
+  "wifh9dvukpmixa575g": {
+    "id": "wifh9dvukpmixa575g",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765206114676
+  },
+  "hj3gwlfjheemixa8blx": {
+    "id": "hj3gwlfjheemixa8blx",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765206260421
+  },
+  "4bwrrrt7pqdmixanoyg": {
+    "id": "4bwrrrt7pqdmixanoyg",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765206977560
+  },
+  "959snhq5ifqmiyi4hyn": {
+    "id": "959snhq5ifqmiyi4hyn",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765279985135
+  },
+  "1m1nrjybik4miyi9mo2": {
+    "id": "1m1nrjybik4miyi9mo2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765280224515
+  },
+  "tcvvri8n35miyikka7": {
+    "id": "tcvvri8n35miyikka7",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765280734640
+  },
+  "xe265v3tabcmiyj1lec": {
+    "id": "xe265v3tabcmiyj1lec",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765281529237
+  },
+  "ildzl4z1wxmiyji9wk": {
+    "id": "ildzl4z1wxmiyji9wk",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765282307493
+  },
+  "isz9o78stomiykdsl1": {
+    "id": "isz9o78stomiykdsl1",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765283778037
+  },
+  "h8mdr5m45odmiykrog1": {
+    "id": "h8mdr5m45odmiykrog1",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765284425860
+  },
+  "87qkprda2tqmiymrsl3": {
+    "id": "87qkprda2tqmiymrsl3",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765287790455
+  },
+  "z32aui6fm3miyn8rg3": {
+    "id": "z32aui6fm3miyn8rg3",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765288582131
+  },
+  "7jfbkwm0lppmiyoxgwf": {
+    "id": "7jfbkwm0lppmiyoxgwf",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765291414479
+  },
+  "3blcnrouzlxmiyq415n": {
+    "id": "3blcnrouzlxmiyq415n",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765293400287
+  },
+  "5rreg8qdjatmizp5x73": {
+    "id": "5rreg8qdjatmizp5x73",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765352275207
+  },
+  "og1u1ioy9cemizqkc0y": {
+    "id": "og1u1ioy9cemizqkc0y",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765354627042
+  },
+  "sumxcc8deq8mj02if6k": {
+    "id": "sumxcc8deq8mj02if6k",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765374693212
+  },
+  "r94w0f2r0umj031yjw": {
+    "id": "r94w0f2r0umj031yjw",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765375604780
+  },
+  "jf1oebbof2bmj03b8ed": {
+    "id": "jf1oebbof2bmj03b8ed",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765376037445
+  },
+  "lnoc5l3blhamj03i58h": {
+    "id": "lnoc5l3blhamj03i58h",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765376359937
+  },
+  "vz9e5r66nnomj03v2k4": {
+    "id": "vz9e5r66nnomj03v2k4",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765376962996
+  },
+  "0thuctuixj0emj03xpx4": {
+    "id": "0thuctuixj0emj03xpx4",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765377086584
+  },
+  "f1bkx7abk4wmj042tai": {
+    "id": "f1bkx7abk4wmj042tai",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765377324234
+  },
+  "elqmtbrer4umj04eg0k": {
+    "id": "elqmtbrer4umj04eg0k",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765377866900
+  },
+  "tc2rrv9nekmj04teo0": {
+    "id": "tc2rrv9nekmj04teo0",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765378564992
+  },
+  "qx3w9dtorkrmj056ddz": {
+    "id": "qx3w9dtorkrmj056ddz",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765379169863
+  },
+  "ss1g2f92689mj05ecg1": {
+    "id": "ss1g2f92689mj05ecg1",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765379541889
+  },
+  "bsd0qunmgmj05tx25": {
+    "id": "bsd0qunmgmj05tx25",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765380268445
+  },
+  "omskb13463fmj06429h": {
+    "id": "omskb13463fmj06429h",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765380741749
+  },
+  "nvcgmu5ogrrmj06d3jr": {
+    "id": "nvcgmu5ogrrmj06d3jr",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765381163319
+  },
+  "qnn6e8kgk1jmj06mmkh": {
+    "id": "qnn6e8kgk1jmj06mmkh",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765381607873
+  },
+  "32l4rol4n5mmj06v0x5": {
+    "id": "32l4rol4n5mmj06v0x5",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765381999721
+  },
+  "qecufwla8igmj074j6i": {
+    "id": "qecufwla8igmj074j6i",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765382443290
+  },
+  "3o4860nk9vmmj07ile8": {
+    "id": "3o4860nk9vmmj07ile8",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765383099344
+  },
+  "zwpxh1kt45mj07va8i": {
+    "id": "zwpxh1kt45mj07va8i",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765383691410
+  },
+  "rbi3dl7qo2cmj084flw": {
+    "id": "rbi3dl7qo2cmj084flw",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765384118277
+  },
+  "574x55k2r6nmj08p1su": {
+    "id": "574x55k2r6nmj08p1su",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765385080160
+  },
+  "v3gojdps9nmj09fg82": {
+    "id": "v3gojdps9nmj09fg82",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765386311907
+  },
+  "uw4s505hp9mj09kdda": {
+    "id": "uw4s505hp9mj09kdda",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765386541486
+  },
+  "xm12gfdcjjmj09x10o": {
+    "id": "xm12gfdcjjmj09x10o",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765387132008
+  },
+  "2rf7kqn4x9kmj0a0l4t": {
+    "id": "2rf7kqn4x9kmj0a0l4t",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765387298045
+  },
+  "kv7qk59m8unmj0a592v": {
+    "id": "kv7qk59m8unmj0a592v",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765387515703
+  },
+  "l82cfxofkydmj0afexy": {
+    "id": "l82cfxofkydmj0afexy",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765387989862
+  },
+  "eijyckgwxdkmj0arovz": {
+    "id": "eijyckgwxdkmj0arovz",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765388562624
+  },
+  "7i7mxwbhsp5mj0b722t": {
+    "id": "7i7mxwbhsp5mj0b722t",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765389279558
+  },
+  "v9k1rh59bnpmj0bfrhq": {
+    "id": "v9k1rh59bnpmj0bfrhq",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765389685742
+  },
+  "bm71gcwtcqjmj0bmjev": {
+    "id": "bm71gcwtcqjmj0bmjev",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765390001863
+  },
+  "lnu398ayrqmj0byder": {
+    "id": "lnu398ayrqmj0byder",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765390553955
+  },
+  "a2jsv56o32bmj0c4cuf": {
+    "id": "a2jsv56o32bmj0c4cuf",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765390833159
+  },
+  "aegkzrg2cfhmj0chcbj": {
+    "id": "aegkzrg2cfhmj0chcbj",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765391439007
+  },
+  "ar55eo65bcdmj0cxbpa": {
+    "id": "ar55eo65bcdmj0cxbpa",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765392184702
+  },
+  "w7tggbqccamj0dgzda": {
+    "id": "w7tggbqccamj0dgzda",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765393101838
+  },
+  "o4b25lk81ybmj0dylkb": {
+    "id": "o4b25lk81ybmj0dylkb",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765393923755
+  },
+  "3wox4iey1k2mj0e17ir": {
+    "id": "3wox4iey1k2mj0e17ir",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765394045523
+  },
+  "n8ukalljrkbmj0e7zww": {
+    "id": "n8ukalljrkbmj0e7zww",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765394362256
+  },
+  "aj26dbnux9dmj0eep9c": {
+    "id": "aj26dbnux9dmj0eep9c",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765394675040
+  },
+  "pku3fyzzckmj0eimng": {
+    "id": "pku3fyzzckmj0eimng",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765394858284
+  },
+  "cc4c6i64zm9mj0f2ijj": {
+    "id": "cc4c6i64zm9mj0f2ijj",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765395786079
+  },
+  "wmz5rfinmximj0fcb0l": {
+    "id": "wmz5rfinmximj0fcb0l",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765396242885
+  },
+  "20ua3c561k9mj0fk4jn": {
+    "id": "20ua3c561k9mj0fk4jn",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765396607747
+  },
+  "astg2n8k6n6mj0ft0tv": {
+    "id": "astg2n8k6n6mj0ft0tv",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765397022836
+  },
+  "vcbiq8g0qkamj0g0hax": {
+    "id": "vcbiq8g0qkamj0g0hax",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765397370777
+  },
+  "3lurxk65kxpmj0g84m9": {
+    "id": "3lurxk65kxpmj0g84m9",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765397727585
+  },
+  "igix05a27l8mj0gkizn": {
+    "id": "igix05a27l8mj0gkizn",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765398306083
+  },
+  "7uz30tzz4qvmj0gtj2d": {
+    "id": "7uz30tzz4qvmj0gtj2d",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765398726085
+  },
+  "s373raa5l9mj0h2may": {
+    "id": "s373raa5l9mj0h2may",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765399150186
+  },
+  "dl6wsc4hdecmj0hbvx2": {
+    "id": "dl6wsc4hdecmj0hbvx2",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765399582550
+  },
+  "pk67ssae9qmj0hl6dv": {
+    "id": "pk67ssae9qmj0hl6dv",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765400016019
+  },
+  "nz5ljvsjjxfmj0i9414": {
+    "id": "nz5ljvsjjxfmj0i9414",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765401132712
+  },
+  "yuhyv9y5cdmj0ig4c8": {
+    "id": "yuhyv9y5cdmj0ig4c8",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765401459704
+  },
+  "ueb5hjyvo5mj0inklm": {
+    "id": "ueb5hjyvo5mj0inklm",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765401807371
+  },
+  "zadumo6luwjmj0ivbqy": {
+    "id": "zadumo6luwjmj0ivbqy",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765402169146
+  },
+  "cme21hfllalmj0j819n": {
+    "id": "cme21hfllalmj0j819n",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765402762092
+  },
+  "g7slod2a5rmj0jkfus": {
+    "id": "g7slod2a5rmj0jkfus",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765403340900
+  },
+  "3cmq7amuwa6mj160jfk": {
+    "id": "3cmq7amuwa6mj160jfk",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765441043552
+  },
+  "ovubpy1bkpemj17egl7": {
+    "id": "ovubpy1bkpemj17egl7",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765443373192
+  }
+}
