@@ -10,11 +10,8 @@
     },
     "layout": {
       "header": {
-        "showBreadcrumbs": true,
-        "breadcrumbs": [
-          { "label": "Dashboard", "path": "/dashboard" },
-          { "label": "Current Page", "path": "/current" }
-        ],
+        "showBreadcrumbs": false,
+        "breadcrumbs": [],
         "showActionBar": true,
         "actionButtons": [
           {

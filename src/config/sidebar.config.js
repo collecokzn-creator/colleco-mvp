@@ -19,7 +19,7 @@ export default {
           items: [
             { name: "Users", icon: "Users", route: "/admin/users" },
             { name: "Partners", icon: "Briefcase", route: "/admin/partners" },
-            { name: "Verification", icon: "ShieldCheck", route: "/admin/partners" }
+            { name: "Partner Verification", icon: "ShieldCheck", route: "/admin/partner-approval" }
           ]
         },
         {

@@ -327,9 +327,9 @@ export function getTopDownloadCountries(limit = 10) {
 export function getDeviceBreakdown() {
   const stats = getDownloadStats();
   return {
-    byOS: stats.byOS,
-    byDevice: stats.byDevice,
-    byBrowser: stats.byBrowser
+    byOS: stats.byOS || {},
+    byDevice: stats.byDevice || {},
+    byBrowser: stats.byBrowser || {}
   };
 }
 

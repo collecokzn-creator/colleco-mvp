@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { Plane, DollarSign, Calendar, CheckCircle2, Palmtree } from "lucide-react";
 import { useUser } from '../context/UserContext.jsx';
 import { getDownloadStats, getTopDownloadCountries, getDeviceBreakdown } from '../utils/downloadTracker.js';
 import { getUsageStats, getFeatureAdoption, getConversionFunnel, getTopPages } from '../utils/usageAnalytics.js';
@@ -65,99 +67,143 @@ export default function Analytics() {
   }, [timeRange]);
 
   return (
-    <div className="overflow-x-hidden bg-cream min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-brand-brown">CollEco Analytics Dashboard</h1>
-          <p className="text-brand-russty mt-2">Track app performance, user engagement, and travel insights</p>
+    <div className="space-y-10 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      {/* Header */}
+      <header className="space-y-3">
+        <span className="inline-flex items-center rounded-full border border-brand-orange/30 bg-brand-orange/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-orange/90">
+          Analytics workspace
+        </span>
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold leading-snug text-brand-brown sm:text-3xl">CollEco Analytics Dashboard</h1>
+          <p className="max-w-3xl text-base text-brand-brown/75">
+            Track app performance, user engagement, and travel insights
+          </p>
         </div>
+      </header>
 
-        {/* Tabs */}
-        <div className="flex gap-4 mb-6 border-b border-gray-300">
-          <button
-            onClick={() => setActiveTab('user')}
-            className={`px-4 py-2 font-medium ${activeTab === 'user' ? 'text-brand-orange border-b-2 border-brand-orange' : 'text-gray-600'}`}
-          >
-            User Travel
-          </button>
-          <button
-            onClick={() => setActiveTab('downloads')}
-            className={`px-4 py-2 font-medium ${activeTab === 'downloads' ? 'text-brand-orange border-b-2 border-brand-orange' : 'text-gray-600'}`}
-          >
-            📥 Downloads
-          </button>
-          <button
-            onClick={() => setActiveTab('usage')}
-            className={`px-4 py-2 font-medium ${activeTab === 'usage' ? 'text-brand-orange border-b-2 border-brand-orange' : 'text-gray-600'}`}
-          >
-            📊 Usage
-          </button>
+      {/* Tabs */}
+      <div className="flex gap-4 border-b border-cream-border">
+        <button
+          onClick={() => setActiveTab('user')}
+          className={`px-4 py-2 font-medium transition-colors ${
+            activeTab === 'user'
+              ? 'border-b-2 border-brand-orange text-brand-orange'
+              : 'text-brand-brown/60 hover:text-brand-brown'
+          }`}
+        >
+          User Travel
+        </button>
+        <button
+          onClick={() => setActiveTab('downloads')}
+          className={`px-4 py-2 font-medium transition-colors ${
+            activeTab === 'downloads'
+              ? 'border-b-2 border-brand-orange text-brand-orange'
+              : 'text-brand-brown/60 hover:text-brand-brown'
+          }`}
+        >
+          Downloads
+        </button>
+        <button
+          onClick={() => setActiveTab('usage')}
+          className={`px-4 py-2 font-medium transition-colors ${
+            activeTab === 'usage'
+              ? 'border-b-2 border-brand-orange text-brand-orange'
+              : 'text-brand-brown/60 hover:text-brand-brown'
+          }`}
+        >
+          Usage
+        </button>
+      </div>
+
+      {/* Time Range Selector */}
+      {(activeTab === 'downloads' || activeTab === 'usage') && (
+        <div className="flex gap-2">
+          <button onClick={() => setTimeRange('24h')} className={`rounded-lg px-3 py-1 text-sm font-medium transition-colors ${
+            timeRange === '24h'
+              ? 'bg-brand-orange text-white'
+              : 'bg-white/80 text-brand-brown/70 hover:bg-cream-sand'
+          }`}>24h</button>
+          <button onClick={() => setTimeRange('7d')} className={`rounded-lg px-3 py-1 text-sm font-medium transition-colors ${
+            timeRange === '7d'
+              ? 'bg-brand-orange text-white'
+              : 'bg-white/80 text-brand-brown/70 hover:bg-cream-sand'
+          }`}>7d</button>
+          <button onClick={() => setTimeRange('30d')} className={`rounded-lg px-3 py-1 text-sm font-medium transition-colors ${
+            timeRange === '30d'
+              ? 'bg-brand-orange text-white'
+              : 'bg-white/80 text-brand-brown/70 hover:bg-cream-sand'
+          }`}>30d</button>
+          <button onClick={() => setTimeRange('all')} className={`rounded-lg px-3 py-1 text-sm font-medium transition-colors ${
+            timeRange === 'all'
+              ? 'bg-brand-orange text-white'
+              : 'bg-white/80 text-brand-brown/70 hover:bg-cream-sand'
+          }`}>All</button>
         </div>
-
-        {/* Time Range Selector */}
-        {(activeTab === 'downloads' || activeTab === 'usage') && (
-          <div className="mb-6 flex gap-2">
-            <button onClick={() => setTimeRange('24h')} className={`px-3 py-1 rounded ${timeRange === '24h' ? 'bg-brand-orange text-white' : 'bg-white text-gray-700'}`}>24h</button>
-            <button onClick={() => setTimeRange('7d')} className={`px-3 py-1 rounded ${timeRange === '7d' ? 'bg-brand-orange text-white' : 'bg-white text-gray-700'}`}>7d</button>
-            <button onClick={() => setTimeRange('30d')} className={`px-3 py-1 rounded ${timeRange === '30d' ? 'bg-brand-orange text-white' : 'bg-white text-gray-700'}`}>30d</button>
-            <button onClick={() => setTimeRange('all')} className={`px-3 py-1 rounded ${timeRange === 'all' ? 'bg-brand-orange text-white' : 'bg-white text-gray-700'}`}>All</button>
-          </div>
-        )}
+      )}
 
         {/* USER TRAVEL TAB */}
         {activeTab === 'user' && (
           <>
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Total Trips</p>
-                    <p className="text-3xl font-bold text-brand-orange">{stats.totalTrips}</p>
+                    <p className="text-sm text-brand-brown/70">Total Trips</p>
+                    <p className="mt-1 text-2xl font-bold text-brand-brown">{stats.totalTrips}</p>
                   </div>
-                  <div className="text-4xl">✈️</div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-orange/10">
+                    <Plane className="h-5 w-5 text-brand-orange" />
+                  </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Total Spent</p>
-                    <p className="text-3xl font-bold text-brand-orange">R {stats.totalSpent.toFixed(2)}</p>
+                    <p className="text-sm text-brand-brown/70">Total Spent</p>
+                    <p className="mt-1 text-2xl font-bold text-brand-brown">R {stats.totalSpent.toFixed(2)}</p>
                   </div>
-                  <div className="text-4xl">💰</div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-orange/10">
+                    <DollarSign className="h-5 w-5 text-brand-orange" />
+                  </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Upcoming Trips</p>
-                    <p className="text-3xl font-bold text-brand-orange">{stats.upcomingTrips}</p>
+                    <p className="text-sm text-brand-brown/70">Upcoming Trips</p>
+                    <p className="mt-1 text-2xl font-bold text-brand-brown">{stats.upcomingTrips}</p>
                   </div>
-                  <div className="text-4xl">📅</div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-orange/10">
+                    <Calendar className="h-5 w-5 text-brand-orange" />
+                  </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Completed</p>
-                    <p className="text-3xl font-bold text-brand-russty">{stats.completedTrips}</p>
+                    <p className="text-sm text-brand-brown/70">Completed</p>
+                    <p className="mt-1 text-2xl font-bold text-brand-brown">{stats.completedTrips}</p>
                   </div>
-                  <div className="text-4xl">✅</div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-orange/10">
+                    <CheckCircle2 className="h-5 w-5 text-brand-orange" />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-brand-orange to-brand-gold rounded-lg shadow-md p-6 mb-8 text-white">
+            <div className="rounded-2xl border border-cream-border bg-white/85 p-6 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm opacity-90">Favorite Destination</p>
-                  <p className="text-4xl font-bold mt-2">{stats.favoriteDestination}</p>
+                  <p className="text-sm text-brand-brown/70">Favorite Destination</p>
+                  <p className="mt-2 text-3xl font-bold text-brand-brown">{stats.favoriteDestination}</p>
                 </div>
-                <div className="text-6xl">🏖️</div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-orange/10">
+                  <Palmtree className="h-7 w-7 text-brand-orange" />
+                </div>
               </div>
             </div>
           </>
@@ -167,58 +213,58 @@ export default function Analytics() {
         {activeTab === 'downloads' && downloadStats && (
           <>
             {/* Download Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <p className="text-sm text-gray-600">Total Downloads</p>
-                <p className="text-3xl font-bold text-brand-orange">{downloadStats.totalDownloads}</p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <p className="text-sm text-brand-brown/70">Total Downloads</p>
+                <p className="mt-1 text-2xl font-bold text-brand-brown">{downloadStats.totalDownloads}</p>
               </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <p className="text-sm text-gray-600">Unique Countries</p>
-                <p className="text-3xl font-bold text-brand-orange">{downloadStats.uniqueCountries}</p>
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <p className="text-sm text-brand-brown/70">Unique Countries</p>
+                <p className="mt-1 text-2xl font-bold text-brand-brown">{downloadStats.uniqueCountries}</p>
               </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <p className="text-sm text-gray-600">Unique Devices</p>
-                <p className="text-3xl font-bold text-brand-orange">{downloadStats.uniqueDevices}</p>
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <p className="text-sm text-brand-brown/70">Unique Devices</p>
+                <p className="mt-1 text-2xl font-bold text-brand-brown">{downloadStats.uniqueDevices}</p>
               </div>
             </div>
 
             {/* Device & OS Breakdown */}
             {deviceBreakdown && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {/* By OS */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-bold text-brand-brown mb-4">Downloads by OS</h3>
-                  <div className="space-y-2">
+                <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                  <h3 className="text-lg font-semibold text-brand-brown">Downloads by OS</h3>
+                  <div className="mt-4 space-y-2">
                     {Object.entries(deviceBreakdown.byOS).map(([os, count]) => (
-                      <div key={os} className="flex justify-between items-center">
-                        <span className="text-gray-700">{os}</span>
-                        <span className="font-bold text-brand-orange">{count}</span>
+                      <div key={os} className="flex items-center justify-between">
+                        <span className="text-sm text-brand-brown/70">{os}</span>
+                        <span className="font-medium text-brand-brown">{count}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* By Device */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-bold text-brand-brown mb-4">Downloads by Device</h3>
-                  <div className="space-y-2">
+                <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                  <h3 className="text-lg font-semibold text-brand-brown">Downloads by Device</h3>
+                  <div className="mt-4 space-y-2">
                     {Object.entries(deviceBreakdown.byDevice).map(([device, count]) => (
-                      <div key={device} className="flex justify-between items-center">
-                        <span className="text-gray-700">{device}</span>
-                        <span className="font-bold text-brand-orange">{count}</span>
+                      <div key={device} className="flex items-center justify-between">
+                        <span className="text-sm text-brand-brown/70">{device}</span>
+                        <span className="font-medium text-brand-brown">{count}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* By Browser */}
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-bold text-brand-brown mb-4">Downloads by Browser</h3>
-                  <div className="space-y-2">
+                <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                  <h3 className="text-lg font-semibold text-brand-brown">Downloads by Browser</h3>
+                  <div className="mt-4 space-y-2">
                     {Object.entries(deviceBreakdown.byBrowser).map(([browser, count]) => (
-                      <div key={browser} className="flex justify-between items-center">
-                        <span className="text-gray-700">{browser}</span>
-                        <span className="font-bold text-brand-orange">{count}</span>
+                      <div key={browser} className="flex items-center justify-between">
+                        <span className="text-sm text-brand-brown/70">{browser}</span>
+                        <span className="font-medium text-brand-brown">{count}</span>
                       </div>
                     ))}
                   </div>
@@ -227,27 +273,27 @@ export default function Analytics() {
             )}
 
             {/* By Source */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-bold text-brand-brown mb-4">Downloads by Source</h3>
-                <div className="space-y-2">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <h3 className="text-lg font-semibold text-brand-brown">Downloads by Source</h3>
+                <div className="mt-4 space-y-2">
                   {Object.entries(downloadStats.bySource).map(([source, count]) => (
-                    <div key={source} className="flex justify-between items-center">
-                      <span className="text-gray-700">{source}</span>
-                      <span className="font-bold text-brand-orange">{count}</span>
+                    <div key={source} className="flex items-center justify-between">
+                      <span className="text-sm text-brand-brown/70">{source}</span>
+                      <span className="font-medium text-brand-brown">{count}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Top Countries */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-bold text-brand-brown mb-4">Top 10 Countries</h3>
-                <div className="space-y-2">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <h3 className="text-lg font-semibold text-brand-brown">Top 10 Countries</h3>
+                <div className="mt-4 space-y-2">
                   {topCountries.map(({ country, count }, idx) => (
-                    <div key={idx} className="flex justify-between items-center">
-                      <span className="text-gray-700">{country}</span>
-                      <span className="font-bold text-brand-orange">{count}</span>
+                    <div key={idx} className="flex items-center justify-between">
+                      <span className="text-sm text-brand-brown/70">{country}</span>
+                      <span className="font-medium text-brand-brown">{count}</span>
                     </div>
                   ))}
                 </div>
@@ -260,46 +306,46 @@ export default function Analytics() {
         {activeTab === 'usage' && usageStats && (
           <>
             {/* Usage Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <p className="text-sm text-gray-600">Sessions</p>
-                <p className="text-3xl font-bold text-brand-orange">{usageStats.totalSessions}</p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <p className="text-sm text-brand-brown/70">Sessions</p>
+                <p className="mt-1 text-2xl font-bold text-brand-brown">{usageStats.totalSessions}</p>
               </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <p className="text-sm text-gray-600">Page Views</p>
-                <p className="text-3xl font-bold text-brand-orange">{usageStats.totalPageViews}</p>
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <p className="text-sm text-brand-brown/70">Page Views</p>
+                <p className="mt-1 text-2xl font-bold text-brand-brown">{usageStats.totalPageViews}</p>
               </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <p className="text-sm text-gray-600">Conversions</p>
-                <p className="text-3xl font-bold text-brand-orange">{usageStats.totalConversions}</p>
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <p className="text-sm text-brand-brown/70">Conversions</p>
+                <p className="mt-1 text-2xl font-bold text-brand-brown">{usageStats.totalConversions}</p>
               </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <p className="text-sm text-gray-600">Conversion Rate</p>
-                <p className="text-3xl font-bold text-brand-orange">{(usageStats.conversionRate * 100).toFixed(1)}%</p>
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <p className="text-sm text-brand-brown/70">Conversion Rate</p>
+                <p className="mt-1 text-2xl font-bold text-brand-brown">{(usageStats.conversionRate * 100).toFixed(1)}%</p>
               </div>
             </div>
 
             {/* Feature Adoption & Funnel */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-bold text-brand-brown mb-4">Top Features by Adoption</h3>
-                <div className="space-y-2">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <h3 className="text-lg font-semibold text-brand-brown">Top Features by Adoption</h3>
+                <div className="mt-4 space-y-2">
                   {featureAdoption.slice(0, 5).map((f, idx) => (
-                    <div key={idx} className="flex justify-between items-center">
-                      <span className="text-gray-700">{f.feature}</span>
-                      <span className="font-bold text-brand-orange">{f.adoptionRate}</span>
+                    <div key={idx} className="flex items-center justify-between">
+                      <span className="text-sm text-brand-brown/70">{f.feature}</span>
+                      <span className="font-medium text-brand-brown">{f.adoptionRate}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-bold text-brand-brown mb-4">Conversion Funnel</h3>
-                <div className="space-y-2">
+              <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+                <h3 className="text-lg font-semibold text-brand-brown">Conversion Funnel</h3>
+                <div className="mt-4 space-y-2">
                   {conversionFunnel.slice(0, 5).map((c, idx) => (
-                    <div key={idx} className="flex justify-between items-center">
-                      <span className="text-gray-700">{c.conversionType}</span>
-                      <span className="font-bold text-brand-orange">{c.count}</span>
+                    <div key={idx} className="flex items-center justify-between">
+                      <span className="text-sm text-brand-brown/70">{c.conversionType}</span>
+                      <span className="font-medium text-brand-brown">{c.count}</span>
                     </div>
                   ))}
                 </div>
@@ -307,20 +353,28 @@ export default function Analytics() {
             </div>
 
             {/* Top Pages */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-              <h3 className="text-lg font-bold text-brand-brown mb-4">Most Visited Pages</h3>
-              <div className="space-y-2">
+            <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm">
+              <h3 className="text-lg font-semibold text-brand-brown">Most Visited Pages</h3>
+              <div className="mt-4 space-y-2">
                 {topPages.map((p, idx) => (
-                  <div key={idx} className="flex justify-between items-center pb-2 border-b border-gray-200">
-                    <span className="text-gray-700">{p.page}</span>
-                    <span className="font-bold text-brand-orange">{p.views} views</span>
+                  <div key={idx} className="flex items-center justify-between border-b border-cream-border pb-2 last:border-0 last:pb-0">
+                    <span className="text-sm text-brand-brown/70">{p.page}</span>
+                    <span className="font-medium text-brand-brown">{p.views} views</span>
                   </div>
                 ))}
               </div>
             </div>
           </>
         )}
-      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-cream-border pt-6 text-sm text-brand-brown/70">
+        <p>© CollEco Travel – The Odyssey of Adventure</p>
+        <div className="mt-2 flex flex-wrap gap-3 text-xs">
+          <NavLink to="/legal/privacy" className="hover:text-brand-brown">Privacy Policy</NavLink>
+          <NavLink to="/legal/terms" className="hover:text-brand-brown">Terms</NavLink>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -3,9 +3,7 @@
 // add compliance status indicators and document expiry notifications.
 import React from "react";
 import Button from "../components/ui/Button.jsx";
-import Breadcrumbs from "../components/Breadcrumbs.jsx";
-import Footer from "../components/Footer.jsx";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
 import { BedDouble, Mountain, UtensilsCrossed, Ticket, Car, Plane, BarChart3, CreditCard, ShieldCheck, Megaphone, BookOpen, MessageSquare, CheckCircle2 } from "lucide-react";
 import { useLocalStorageState } from "../useLocalStorageState";
@@ -57,35 +55,27 @@ export default function PartnerDashboard() {
   const { user } = useUser();
 
   return (
-    <div className="space-y-6 overflow-x-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-      <Breadcrumbs />
-      
+    <div className="space-y-10 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
       {/* Partner Hub Header */}
-      <div className="mb-8 bg-white rounded-xl shadow-sm border border-cream-border p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 data-testid="partner-hub-title" className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">
-              Partner Business Hub
-            </h1>
-            <p className="text-brand-russty">
-              Manage your products, documents, and business operations on CollEco Travel
-            </p>
-          </div>
-          <div className="hidden sm:block">
-            <div className="text-right">
-              <div className="text-sm text-brand-russty">Logged in as</div>
-              <div className="text-lg font-bold text-brand-orange">{user?.businessName || user?.name || 'Partner'}</div>
-            </div>
-          </div>
+      <header className="space-y-3">
+        <span className="inline-flex items-center rounded-full border border-brand-orange/30 bg-brand-orange/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-orange/90">
+          Partner workspace
+        </span>
+        <div className="space-y-2">
+          <h1 data-testid="partner-hub-title" className="text-2xl font-bold leading-snug text-brand-brown sm:text-3xl">
+            Partner Business Hub
+          </h1>
+          <p className="max-w-3xl text-base text-brand-brown/75">
+            Manage your products, documents, and business operations on CollEco Travel
+          </p>
         </div>
-      </div>
+      </header>
 
       {/* Auto-sync notice */}
-      <div className="mb-8"><AutoSyncBanner message="Your partner dashboard syncs automatically with your listings and bookings" /></div>
+      <AutoSyncBanner message="Your partner dashboard syncs automatically with your listings and bookings" />
 
       {/* Snapshots */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <LiveStatCard title="Bookings this month" value="—" to="/bookings" icon={Ticket} />
         <LiveStatCard title="Revenue earned" value="—" to="/reports" icon={BarChart3} />
         <LiveStatCard title="Documents status" value={<span className="inline-flex items-center gap-2">Valid <VerifiedBadge verified /></span>} to="/compliance" icon={ShieldCheck} highlight="bg-emerald-500" />
@@ -95,7 +85,7 @@ export default function PartnerDashboard() {
       </section>
 
       {/* Partner Type Selection */}
-      <div className="flex items-center gap-2 mb-8 p-4 bg-white rounded-lg shadow-sm border border-cream-border">
+      <div className="flex items-center gap-2 p-4 bg-white/80 rounded-xl shadow-sm border border-cream-border">
         <span className="text-sm font-semibold text-brand-brown">Partner Type:</span>
         <span className="px-3 py-1.5 rounded-lg bg-brand-orange text-white text-sm font-bold shadow-sm">
           {(() => {
@@ -114,7 +104,7 @@ export default function PartnerDashboard() {
 
       {/* If no role selected, show grouped partner categories */}
       {!role && (
-        <section className="bg-white p-6 border border-cream-border rounded-xl shadow-sm mb-8">
+        <section className="bg-white/80 p-6 border border-cream-border rounded-xl shadow-sm">
           <h3 className="text-xl font-bold text-brand-brown mb-4">Choose Your Partner Type</h3>
           <p className="text-brand-russty mb-6">Select the category that best describes your business:</p>
           <div className="space-y-6">
@@ -138,7 +128,7 @@ export default function PartnerDashboard() {
       )}
 
       {/* Main Partner Categories (tiles with icons) */}
-      <section className="mb-6">
+      <section>
         <h3 className="font-bold mb-2">Where to manage your business</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <CategoryTile icon={BedDouble} title="Hotels & Lodges" desc="Manage rooms, rates, availability, commissions." onClick={() => setRole("hotel")} />
@@ -151,7 +141,7 @@ export default function PartnerDashboard() {
       </section>
 
       {/* Tools & Features */}
-      <section className="mb-6">
+      <section>
         <h3 className="font-bold mb-2">Tools</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <ToolTile icon={BarChart3} title="Performance" to="/partner/success" desc="Analytics and revenue optimization." />
@@ -166,7 +156,7 @@ export default function PartnerDashboard() {
       </section>
 
       {/* Engagement & Support */}
-      <section className="bg-cream-sand p-4 border border-cream-border rounded mb-6">
+      <section className="bg-cream-sand p-4 border border-cream-border rounded-xl">
         <h3 className="font-bold mb-2">Engagement & Support</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <div className="p-3 rounded border border-cream-border">
@@ -185,7 +175,7 @@ export default function PartnerDashboard() {
       </section>
 
       {/* CollEco Advantage */}
-      <section className="bg-cream p-4 border border-cream-border rounded">
+      <section className="bg-cream p-4 border border-cream-border rounded-xl">
         <h3 className="font-bold mb-2">Why partners love CollEco</h3>
         <ul className="space-y-1 text-sm">
           <AdvantageItem text="Visibility to international clients" />
@@ -194,9 +184,15 @@ export default function PartnerDashboard() {
           <AdvantageItem text="24/7 partner support" />
         </ul>
       </section>
-      
-      <Footer />
-    </div>
+
+      {/* Footer */}
+      <footer className="border-t border-cream-border pt-6 text-sm text-brand-brown/70">
+        <p>© CollEco Travel – The Odyssey of Adventure</p>
+        <div className="mt-2 flex flex-wrap gap-3 text-xs">
+          <NavLink to="/legal/privacy" className="hover:text-brand-brown">Privacy Policy</NavLink>
+          <NavLink to="/legal/terms" className="hover:text-brand-brown">Terms</NavLink>
+        </div>
+      </footer>
     </div>
   );
 }

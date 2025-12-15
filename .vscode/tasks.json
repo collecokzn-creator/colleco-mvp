@@ -85,6 +85,12 @@
 			"command": "npm run mobile:all",
 			"isBackground": false,
 			"group": "test"
+		},
+		{
+			"label": "Run E2E smoke tests",
+			"type": "shell",
+			"command": "npm run smoke:all",
+			"group": "test"
 		}
 	]
 }

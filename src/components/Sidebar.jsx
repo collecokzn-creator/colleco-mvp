@@ -123,78 +123,39 @@ const SIDEBAR_CONFIG = {
           items: [
             { name: "Dashboard", icon: "LayoutDashboard", route: "/partner/dashboard" },
             { name: "Sales & Earnings", icon: "BarChart3", route: "/partner/sales" },
-            { name: "Performance Trends", icon: "TrendingUp", route: "/partner/performance" },
+            { name: "Performance", icon: "TrendingUp", route: "/partner/performance" },
           ],
         },
         {
-          title: "Product Listings",
+          title: "Inventory Management",
           items: [
-            { name: "Hotels", icon: "Briefcase", route: "/partner/hotels" },
-            { name: "Tours", icon: "Map", route: "/partner/tours" },
-            { name: "Cars", icon: "Car", route: "/partner/cars" },
-            { name: "Packages", icon: "Gift", route: "/partner/packages" },
-            { name: "Activities", icon: "Sparkles", route: "/partner/activities" },
-          ],
-        },
-        {
-          title: "Availability & Rates",
-          items: [
+            { name: "Products & Packages", icon: "Briefcase", route: "/partner/products" },
             { name: "Calendar", icon: "CalendarCheck", route: "/partner/calendar" },
             { name: "Pricing", icon: "Tag", route: "/partner/pricing" },
-            { name: "Allotments", icon: "Clock3", route: "/partner/allotments" },
           ],
         },
         {
-          title: "Booking Management",
+          title: "Booking & Leads",
           items: [
             { name: "Bookings", icon: "CalendarCheck", route: "/partner/bookings" },
-            { name: "Confirm/Modify/Cancel", icon: "ShieldCheck", route: "/partner/booking-actions" },
+            { name: "Leads", icon: "UserPlus", route: "/partner/leads" },
+            { name: "Quotes Builder", icon: "FileText", route: "/partner/quotes" },
+            { name: "Itineraries", icon: "Map", route: "/partner/itineraries" },
           ],
         },
         {
           title: "Finance",
           items: [
             { name: "Payouts", icon: "Wallet", route: "/partner/payouts" },
-            { name: "Commissions", icon: "Gift", route: "/partner/commissions" },
-            { name: "Invoices", icon: "FileText", route: "/partner/invoices" },
           ],
         },
         {
-          title: "Marketing Tools",
+          title: "Compliance & Support",
           items: [
-            { name: "Promotions", icon: "Tag", route: "/partner/promotions" },
-            { name: "Featured Listings", icon: "Sparkles", route: "/partner/featured" },
-            { name: "Packages", icon: "Gift", route: "/partner/packages" },
-          ],
-        },
-        {
-          title: "Communication & Collaboration",
-          items: [
-            { name: "Chat", icon: "MessageSquare", route: "/partner/chat" },
-            { name: "Collaboration", icon: "Users", route: "/partner/collaboration" },
-          ],
-        },
-        {
-          title: "Compliance",
-          items: [
-            { name: "Document Uploads", icon: "FileText", route: "/partner/documents" },
+            { name: "Documents", icon: "FileText", route: "/partner/documents" },
             { name: "Verification", icon: "ShieldCheck", route: "/partner/verification" },
-            { name: "Safety Details", icon: "Shield", route: "/partner/safety" },
-          ],
-        },
-        {
-          title: "Analytics",
-          items: [
-            { name: "Views", icon: "BarChart3", route: "/partner/views" },
-            { name: "Bookings", icon: "CalendarCheck", route: "/partner/bookings-analytics" },
-            { name: "Performance Trends", icon: "TrendingUp", route: "/partner/performance" },
-          ],
-        },
-        {
-          title: "Settings",
-          items: [
-            { name: "Notifications", icon: "Megaphone", route: "/settings/notifications" },
-            { name: "Account Settings", icon: "Settings", route: "/settings" },
+            { name: "Compliance", icon: "Shield", route: "/partner/compliance" },
+            { name: "Help Center", icon: "HelpCircle", route: "/partner/help" },
           ],
         },
       ],
@@ -203,77 +164,27 @@ const SIDEBAR_CONFIG = {
       label: "Client (Traveler)",
       sections: [
         {
-          title: "Dashboard",
+          title: "My Travel",
           items: [
-            { name: "Upcoming Trips", icon: "CalendarCheck", route: "/client/upcoming" },
-            { name: "Past Trips", icon: "Clock3", route: "/client/past" },
-            { name: "Saved Itineraries", icon: "Map", route: "/client/saved" },
+            { name: "Dashboard", icon: "LayoutDashboard", route: "/client/dashboard" },
+            { name: "My Trips", icon: "Map", route: "/client/itineraries" },
+            { name: "Bookings", icon: "CalendarCheck", route: "/client/bookings" },
+            { name: "Quotes", icon: "FileText", route: "/client/quotes" },
           ],
         },
         {
-          title: "Search & Discovery",
+          title: "Explore & Book",
           items: [
             { name: "Destinations", icon: "Globe2", route: "/client/destinations" },
             { name: "Packages", icon: "Gift", route: "/client/packages" },
-            { name: "Flights", icon: "Plane", route: "/client/flights" },
-            { name: "Stays", icon: "Briefcase", route: "/client/stays" },
-            { name: "Cars", icon: "Car", route: "/client/cars" },
-            { name: "Tours", icon: "Map", route: "/client/tours" },
           ],
         },
         {
-          title: "Quote & Itinerary",
+          title: "Support & Safety",
           items: [
-            { name: "Quote Builder", icon: "FileText", route: "/client/quotes" },
-            { name: "Itinerary Viewer", icon: "Map", route: "/client/itinerary" },
-          ],
-        },
-        {
-          title: "Booking & Payment",
-          items: [
-            { name: "Bookings", icon: "CalendarCheck", route: "/client/bookings" },
-            { name: "Self Check-In", icon: "Camera", route: "/check-in" },
-            { name: "Payment", icon: "Wallet", route: "/client/payment" },
-            // Quick booking links moved from Navbar
-            { name: "Book Stay", icon: "Briefcase", route: "/book/accommodation" },
-            { name: "Book Flight", icon: "BarChart3", route: "/book/flight" },
-            { name: "Car Hire", icon: "Map", route: "/book/car" },
-          ],
-        },
-        {
-          title: "Notifications & Settings",
-          items: [
-            { name: "Notification Center", icon: "Megaphone", route: "/client/notifications" },
-            { name: "Notification Settings", icon: "Settings", route: "/settings/notifications" },
-            { name: "Trip Reminders", icon: "Clock3", route: "/client/reminders" },
-          ],
-        },
-        {
-          title: "Collaboration",
-          items: [
-            { name: "Chat with Agents", icon: "MessageSquare", route: "/client/chat" },
-            { name: "Partner Chat", icon: "Users2", route: "/client/partner-chat" },
-          ],
-        },
-        {
-          title: "Travel Documents",
-          items: [
-            { name: "Vouchers", icon: "FileText", route: "/client/vouchers" },
-            { name: "Invoices", icon: "FileText", route: "/client/invoices" },
-            { name: "Confirmations", icon: "ShieldCheck", route: "/client/confirmations" },
-          ],
-        },
-        {
-          title: "Reviews & Feedback",
-          items: [
-            { name: "Reviews", icon: "Star", route: "/client/reviews" },
-            { name: "Feedback", icon: "MessageSquare", route: "/client/feedback" },
-          ],
-        },
-        {
-          title: "Safety & Emergency",
-          items: [
-            { name: "Safety & Emergency Support", icon: "Shield", route: "/client/safety" },
+            { name: "Messages", icon: "MessageSquare", route: "/client/messages" },
+            { name: "Safety & Help", icon: "ShieldCheck", route: "/client/safety" },
+            { name: "Payment Methods", icon: "Wallet", route: "/client/payment" },
           ],
         },
       ],
@@ -898,6 +809,17 @@ export default function Sidebar() {
                         onClick={() => {
                           setRole(option.value);
                           setRoleMenuOpen(false);
+                          // Navigate to the appropriate dashboard when role changes
+                          const dashboardPaths = {
+                            admin: '/admin/dashboard',
+                            partner: '/partner/dashboard',
+                            client: '/client/dashboard',
+                            influencer: '/influencer/dashboard'
+                          };
+                          const targetPath = dashboardPaths[option.value];
+                          if (targetPath && location.pathname !== targetPath) {
+                            navigate(targetPath);
+                          }
                         }}
                         role="option"
                         aria-selected={role === option.value}

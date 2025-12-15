@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import {
   Users, Briefcase, DollarSign, Calendar, MapPin,
   Download, Plus, Filter as _Filter, BarChart3, FileText,
@@ -34,20 +34,126 @@ export default function BusinessDashboard() {
   const fetchDashboardData = async () => {
     setIsLoading(true);
     try {
-      // Fetch all dashboard data
-      const [statsRes, bookingsRes, tripsRes, travelersRes, spendRes] = await Promise.all([
-        fetch('/api/business-travelers/stats').then(r => r.json()),
-        fetch('/api/business-travelers/bookings/recent').then(r => r.json()),
-        fetch('/api/business-travelers/trips/upcoming').then(r => r.json()),
-        fetch('/api/business-travelers/travelers/top').then(r => r.json()),
-        fetch('/api/business-travelers/spend/by-category').then(r => r.json())
-      ]);
+      // Try API first
+      try {
+        const [statsRes, bookingsRes, tripsRes, travelersRes, spendRes] = await Promise.all([
+          fetch('/api/business-travelers/stats').then(r => r.json()),
+          fetch('/api/business-travelers/bookings/recent').then(r => r.json()),
+          fetch('/api/business-travelers/trips/upcoming').then(r => r.json()),
+          fetch('/api/business-travelers/travelers/top').then(r => r.json()),
+          fetch('/api/business-travelers/spend/by-category').then(r => r.json())
+        ]);
 
-      setStats(statsRes);
-      setRecentBookings(bookingsRes);
-      setUpcomingTrips(tripsRes);
-      setTopTravelers(travelersRes);
-      setSpendByCategory(spendRes);
+        setStats(statsRes);
+        setRecentBookings(bookingsRes);
+        setUpcomingTrips(tripsRes);
+        setTopTravelers(travelersRes);
+        setSpendByCategory(spendRes);
+      } catch (apiError) {
+        console.log('API not available, using localStorage fallback');
+        
+        // Fallback to localStorage
+        const bookings = JSON.parse(localStorage.getItem('colleco.bookings') || '[]');
+        const travelHistory = JSON.parse(localStorage.getItem('colleco.travel.history') || '[]');
+        const users = JSON.parse(localStorage.getItem('colleco.users') || '[]');
+        
+        // Calculate stats from localStorage
+        const now = new Date();
+        const activeTrips = bookings.filter(b => {
+          if (!b.date || !b.endDate) return false;
+          const start = new Date(b.date);
+          const end = new Date(b.endDate);
+          return start <= now && end >= now;
+        }).length;
+        
+        const totalSpend = [...bookings, ...travelHistory]
+          .reduce((sum, x) => sum + (x.amount || 0), 0);
+        
+        const businessTravelers = users.filter(u => u.role === 'business-traveler' || u.type === 'business');
+        
+        const avgTripCost = bookings.length > 0 
+          ? Math.round(totalSpend / bookings.length) 
+          : 0;
+        
+        const pendingApprovals = bookings.filter(b => b.status === 'pending').length;
+        
+        // Use demo data if localStorage is empty
+        if (bookings.length === 0 && users.length === 0) {
+          setStats({
+            totalBookings: 156,
+            activeTrips: 12,
+            totalSpend: 342500,
+            activeTravelers: 45,
+            pendingApprovals: 8,
+            avgTripCost: 8750
+          });
+          
+          setRecentBookings([
+            { id: 1, traveler: 'John Smith', destination: 'Cape Town', date: new Date().toISOString(), amount: 12500, status: 'confirmed' },
+            { id: 2, traveler: 'Jane Doe', destination: 'Johannesburg', date: new Date(Date.now() - 86400000).toISOString(), amount: 8900, status: 'pending' }
+          ]);
+          
+          setUpcomingTrips([
+            { id: 1, destination: 'Durban', startDate: new Date(Date.now() + 7 * 86400000).toISOString(), travelers: 2, totalAmount: 15600 }
+          ]);
+          
+          setTopTravelers([
+            { id: 1, name: 'John Smith', trips: 12, spend: 45000 },
+            { id: 2, name: 'Jane Doe', trips: 8, spend: 32000 }
+          ]);
+          
+          setSpendByCategory([
+            { category: 'Accommodation', amount: 195000, percentage: 57 },
+            { category: 'Transport', amount: 99000, percentage: 29 },
+            { category: 'Tours', amount: 48500, percentage: 14 }
+          ]);
+        } else {
+          setStats({
+            totalBookings: bookings.length,
+            activeTrips,
+            totalSpend,
+            activeTravelers: businessTravelers.length,
+            pendingApprovals,
+            avgTripCost
+          });
+          
+          setRecentBookings(bookings.slice(0, 10).map(b => ({
+            ...b,
+            traveler: b.user || 'Guest User'
+          })));
+          
+          setUpcomingTrips(bookings.filter(b => {
+            if (!b.date) return false;
+            return new Date(b.date) > now;
+          }).slice(0, 5));
+          
+          // Calculate top travelers
+          const travelerSpend = {};
+          bookings.forEach(b => {
+            const userId = b.userId || b.user;
+            if (!travelerSpend[userId]) {
+              travelerSpend[userId] = { trips: 0, spend: 0, name: b.user || userId };
+            }
+            travelerSpend[userId].trips++;
+            travelerSpend[userId].spend += (b.amount || 0);
+          });
+          
+          const topTravelersData = Object.values(travelerSpend)
+            .sort((a, b) => b.spend - a.spend)
+            .slice(0, 5)
+            .map((t, idx) => ({ id: idx + 1, ...t }));
+          
+          setTopTravelers(topTravelersData);
+          
+          // Calculate spend by category (estimate if not categorized)
+          const totalAmount = bookings.reduce((sum, b) => sum + (b.amount || 0), 0);
+          setSpendByCategory([
+            { category: 'Accommodation', amount: Math.round(totalAmount * 0.57), percentage: 57 },
+            { category: 'Transport', amount: Math.round(totalAmount * 0.29), percentage: 29 },
+            { category: 'Tours', amount: Math.round(totalAmount * 0.14), percentage: 14 }
+          ]);
+        }
+      }
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
     } finally {
@@ -96,7 +202,7 @@ export default function BusinessDashboard() {
     ];
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card, idx) => {
           const Icon = card.icon;
           const colorClasses = {
@@ -342,34 +448,29 @@ export default function BusinessDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-cream py-8 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Success Message */}
-        {successMessage && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-green-600" />
-            <p className="text-green-800 font-medium">{successMessage}</p>
-          </div>
-        )}
-
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-brand-brown mb-2">
-              Business Travel Dashboard
-            </h1>
-            <p className="text-gray-600">Manage your corporate travel and team bookings</p>
-          </div>
-          <div className="flex items-center gap-3 mt-4 md:mt-0">
-            <button
-              onClick={() => navigate('/business/settings')}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:border-brand-orange transition-colors"
-            >
-              <Settings className="w-4 h-4" />
-              <span className="font-medium">Settings</span>
-            </button>
-          </div>
+    <div className="space-y-10 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      {/* Success Message */}
+      {successMessage && (
+        <div className="p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3 shadow-sm">
+          <CheckCircle2 className="w-5 h-5 text-green-600" />
+          <p className="text-green-800 font-medium">{successMessage}</p>
         </div>
+      )}
+
+      {/* Header */}
+      <header className="space-y-3">
+        <span className="inline-flex items-center rounded-full border border-brand-orange/30 bg-brand-orange/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-orange/90">
+          Business workspace
+        </span>
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold leading-snug text-brand-brown sm:text-3xl">
+            Business Travel Dashboard
+          </h1>
+          <p className="max-w-3xl text-base text-brand-brown/75">
+            Manage your corporate travel and team bookings
+          </p>
+        </div>
+      </header>
 
         {/* Stats Cards */}
         {renderStatsCards()}
@@ -400,7 +501,7 @@ export default function BusinessDashboard() {
         </div>
 
         {/* Help Section */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
           <div className="flex items-start gap-4">
             <div className="p-3 bg-blue-100 rounded-lg">
               <FileText className="w-6 h-6 text-blue-600" />
@@ -426,7 +527,15 @@ export default function BusinessDashboard() {
             </div>
           </div>
         </div>
-      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-cream-border pt-6 text-sm text-brand-brown/70">
+        <p>© CollEco Travel – The Odyssey of Adventure</p>
+        <div className="mt-2 flex flex-wrap gap-3 text-xs">
+          <NavLink to="/legal/privacy" className="hover:text-brand-brown">Privacy Policy</NavLink>
+          <NavLink to="/legal/terms" className="hover:text-brand-brown">Terms</NavLink>
+        </div>
+      </footer>
     </div>
   );
 }

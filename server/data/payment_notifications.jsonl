@@ -33,3 +33,9 @@
 {"ts":1765783957426,"processor":"yoco","type":"notification_received","bookingId":"BK-CFBC43E8-F3F","eventType":"charge.failed","status":"failed","checkoutId":"ch_test_failed_1765783957418","chargeId":null,"ip":"::ffff:127.0.0.1"}
 {"ts":1765783957488,"processor":"yoco","type":"signature_failed","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
 {"ts":1765783957700,"processor":"yoco","type":"amount_mismatch","bookingId":"BK-1D7AE492-4D7","expected":500,"received":600,"eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765794801685,"processor":"yoco","type":"notification_received","bookingId":"BK-FCAB49F7-EF0","eventType":"checkout.paid","status":"paid","checkoutId":"ch_test_1765794801364","chargeId":"charge_test_1765794801364","ip":"::ffff:127.0.0.1"}
+{"ts":1765794801769,"processor":"yoco","type":"signature_failed","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765794801837,"processor":"yoco","type":"signature_failed","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765794801956,"processor":"yoco","type":"notification_received","bookingId":"BK-20D63053-247","eventType":"charge.failed","status":"failed","checkoutId":"ch_test_failed_1765794801870","chargeId":null,"ip":"::ffff:127.0.0.1"}
+{"ts":1765794802040,"processor":"yoco","type":"signature_failed","eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}
+{"ts":1765794802120,"processor":"yoco","type":"amount_mismatch","bookingId":"BK-FA385C26-89C","expected":500,"received":600,"eventType":"checkout.paid","ip":"::ffff:127.0.0.1"}

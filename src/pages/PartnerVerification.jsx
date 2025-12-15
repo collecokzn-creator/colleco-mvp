@@ -2,70 +2,16 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Footer from "../components/Footer.jsx";
 import { Upload, FileText, CheckCircle2, XCircle, AlertCircle, ExternalLink, Loader } from "lucide-react";
-
-const REQUIRED_DOCUMENTS = [
-  {
-    id: "business_registration",
-    label: "Business Registration Certificate",
-    description: "CIPC registration or equivalent",
-    required: true,
-    formats: [".pdf", ".jpg", ".png"],
-    maxSize: 5 // MB
-  },
-  {
-    id: "tax_clearance",
-    label: "Tax Clearance Certificate",
-    description: "Valid tax compliance certificate",
-    required: true,
-    formats: [".pdf"],
-    maxSize: 5
-  },
-  {
-    id: "liability_insurance",
-    label: "Public Liability Insurance",
-    description: "Minimum R5M coverage",
-    required: true,
-    formats: [".pdf"],
-    maxSize: 5
-  },
-  {
-    id: "trade_license",
-    label: "Trade License / Tourism Registration",
-    description: "e.g., SATSA, TGCSA, or relevant authority",
-    required: false,
-    formats: [".pdf", ".jpg", ".png"],
-    maxSize: 5
-  },
-  {
-    id: "banking_details",
-    label: "Banking Details",
-    description: "Proof of banking (bank letter or cancelled cheque)",
-    required: true,
-    formats: [".pdf", ".jpg", ".png"],
-    maxSize: 3
-  },
-  {
-    id: "id_document",
-    label: "ID/Passport of Director/Owner",
-    description: "Valid identification document",
-    required: true,
-    formats: [".pdf", ".jpg", ".png"],
-    maxSize: 3
-  },
-  {
-    id: "bbbee_certificate",
-    label: "B-BBEE Certificate",
-    description: "South African partners (if applicable)",
-    required: false,
-    formats: [".pdf"],
-    maxSize: 3
-  }
-];
+import { getDocumentsForCategory } from "../config/documentTypes.js";
 
 export default function PartnerVerification() {
   const navigate = useNavigate();
   const location = useLocation();
   const applicationId = location.state?.applicationId || localStorage.getItem('colleco.partner.applicationId');
+  const partnerCategory = location.state?.partnerCategory || localStorage.getItem('colleco.partner.category') || 'accommodation';
+
+  // Get documents for this partner category
+  const REQUIRED_DOCUMENTS = getDocumentsForCategory(partnerCategory);
 
   // Accommodation selection state
   const [properties, setProperties] = useState([]);

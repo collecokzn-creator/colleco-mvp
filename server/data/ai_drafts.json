@@ -43,5 +43,14 @@
       "itinerary": []
     },
     "createdAt": 1765783952178
+  },
+  "4zewymvocb7mj70ng72": {
+    "id": "4zewymvocb7mj70ng72",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765794831806
   }
 }

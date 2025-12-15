@@ -15,6 +15,8 @@ const crypto = require('crypto');
 const pricingEngine = require('./pricingEngine');
 const webpush = require('web-push');
 const legalRouter = require('./routes/legal');
+const DocumentVerificationService = require('./services/documentVerification');
+const verificationService = new DocumentVerificationService();
 // Load environment variables: prefer repo root .env.local, but allow server/.env.local to override
 const dotenv = require('dotenv');
 const rootEnv = path.join(__dirname, '..', '.env.local');
@@ -3627,28 +3629,78 @@ app.patch('/api/notifications/preferences', (req, res) => {
   res.json({ ok: true, preferences });
 });
 
-app.post('/api/partners/:id/documents', (req, res) => {
+app.post('/api/partners/:id/documents', async (req, res) => {
   const app = partnerApplications[req.params.id];
   if (!app) return res.status(404).json({ error: 'Application not found' });
   
-  // Mock document upload (in production, handle file upload with multer/similar)
-  const doc = {
-    id: `DOC-${Date.now()}`,
-    type: req.body.type,
-    label: req.body.label || req.body.type,
-    url: `/uploads/documents/${req.params.id}/${req.body.type}.pdf`,
-    uploadedAt: new Date().toISOString(),
-    status: 'pending_review'
-  };
-  
-  app.documents.push(doc);
-  res.json({ ok: true, document: doc, url: doc.url, uploadedAt: doc.uploadedAt });
+  try {
+    // Mock document upload (in production, handle file upload with multer/similar)
+    // Extract document type and mock file data from request
+    const docType = req.body.type;
+    const mockFileData = {
+      type: docType,
+      content: 'base64_encoded_content_here', // In production, this would be actual file data
+      mimeType: 'application/pdf'
+    };
+    
+    // Verify document using verification service (mock mode by default)
+    const verificationResult = await verificationService.verifyDocument(mockFileData);
+    
+    const doc = {
+      id: `DOC-${Date.now()}`,
+      type: docType,
+      label: req.body.label || docType,
+      url: `/uploads/documents/${req.params.id}/${docType}.pdf`,
+      uploadedAt: new Date().toISOString(),
+      status: verificationResult.verified ? 'approved' : 'pending_review',
+      verification: {
+        verified: verificationResult.verified,
+        confidence: verificationResult.confidence,
+        provider: verificationResult.provider,
+        checks: verificationResult.checks,
+        extractedData: verificationResult.extractedData,
+        warnings: verificationResult.warnings,
+        verifiedAt: new Date().toISOString()
+      }
+    };
+    
+    app.documents.push(doc);
+    res.json({ 
+      ok: true, 
+      document: doc, 
+      url: doc.url, 
+      uploadedAt: doc.uploadedAt,
+      verification: doc.verification
+    });
+  } catch (error) {
+    console.error('Document verification error:', error);
+    res.status(500).json({ error: 'Document verification failed', details: error.message });
+  }
 });
 
 app.get('/api/partners/:id/status', (req, res) => {
   const app = partnerApplications[req.params.id];
   if (!app) return res.status(404).json({ error: 'Application not found' });
   res.json(app);
+});
+
+// Get verification details for a specific document
+app.get('/api/verification/document/:docId', (req, res) => {
+  const { docId } = req.params;
+  
+  // Find document across all applications
+  for (const app of Object.values(partnerApplications)) {
+    const doc = app.documents?.find(d => d.id === docId);
+    if (doc) {
+      return res.json({
+        ok: true,
+        document: doc,
+        verification: doc.verification || null
+      });
+    }
+  }
+  
+  res.status(404).json({ error: 'Document not found' });
 });
 
 app.post('/api/partners/:id/submit-for-review', (req, res) => {

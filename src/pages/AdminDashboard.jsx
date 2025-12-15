@@ -1,57 +1,106 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { BarChart3, Users, Package, DollarSign, TrendingUp, Shield, Settings } from "lucide-react";
 import GamificationWidget from "../components/GamificationWidget";
 
 export default function AdminDashboard() {
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    activePackages: 0,
+    monthRevenue: 0,
+    totalBookings: 0
+  });
+
+  useEffect(() => {
+    // Load stats from localStorage
+    const bookings = JSON.parse(localStorage.getItem('colleco.bookings') || '[]');
+    const users = JSON.parse(localStorage.getItem('colleco.users') || '[]');
+    const listings = JSON.parse(localStorage.getItem('colleco.listings') || '[]');
+    
+    // Calculate current month revenue
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    const monthBookings = bookings.filter(b => {
+      if (!b.date) return false;
+      const bookingDate = new Date(b.date);
+      return bookingDate.getMonth() === currentMonth && bookingDate.getFullYear() === currentYear;
+    });
+    
+    const monthRevenue = monthBookings.reduce((sum, b) => sum + (b.amount || 0), 0);
+    
+    // If no data, use demo values
+    if (bookings.length === 0 && users.length === 0) {
+      setStats({
+        totalUsers: 1234,
+        activePackages: 56,
+        monthRevenue: 45678,
+        totalBookings: 234
+      });
+    } else {
+      setStats({
+        totalUsers: users.length || 12,
+        activePackages: listings.filter(l => l.status === 'active').length || listings.length || 8,
+        monthRevenue,
+        totalBookings: bookings.length
+      });
+    }
+  }, []);
+
   return (
-    <div className="space-y-6">
-      <div className="mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-brand-brown">Admin Dashboard</h1>
-          <p className="mt-2 text-brand-brown/70">
+    <div className="space-y-10 px-4 pb-32 pt-6 sm:px-6 lg:px-8">
+      {/* Header */}
+      <header className="space-y-3">
+        <span className="inline-flex items-center rounded-full border border-brand-orange/30 bg-brand-orange/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-orange/90">
+          Admin workspace
+        </span>
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold leading-snug text-brand-brown sm:text-3xl">Admin Dashboard</h1>
+          <p className="max-w-3xl text-base text-brand-brown/75">
             CollEco Travel Platform Administration
           </p>
         </div>
+      </header>
 
-        {/* Stats Grid */}
-        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Stats Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             icon={Users}
             label="Total Users"
-            value="1,234"
+            value={stats.totalUsers.toLocaleString()}
             change="+12%"
             positive
           />
           <StatCard
             icon={Package}
             label="Active Packages"
-            value="56"
+            value={stats.activePackages.toString()}
             change="+8%"
             positive
           />
           <StatCard
             icon={DollarSign}
             label="Revenue (Month)"
-            value="$45,678"
+            value={`R ${stats.monthRevenue.toLocaleString()}`}
             change="+15%"
             positive
           />
           <StatCard
             icon={TrendingUp}
             label="Bookings"
-            value="234"
+            value={stats.totalBookings.toString()}
             change="+23%"
             positive
           />
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Left Column */}
-          <div className="space-y-6 lg:col-span-2">
-            {/* Quick Actions */}
-            <div className="rounded-xl border border-cream-border bg-white p-6 shadow-sm">
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Left Column */}
+        <div className="space-y-6 lg:col-span-2">
+          {/* Quick Actions */}
+          <div className="rounded-xl border border-cream-border bg-white/80 p-6 shadow-sm">
               <h2 className="mb-4 text-xl font-semibold text-brand-brown">
                 Quick Actions
               </h2>
@@ -59,28 +108,28 @@ export default function AdminDashboard() {
                 <ActionButton
                   icon={Users}
                   label="Manage Users"
-                  onClick={() => console.log('Manage Users')}
+                  to="/admin/users"
                 />
                 <ActionButton
                   icon={Package}
                   label="Manage Packages"
-                  onClick={() => console.log('Manage Packages')}
+                  to="/admin/listings"
                 />
                 <ActionButton
                   icon={Shield}
                   label="Security Settings"
-                  onClick={() => console.log('Security')}
+                  to="/admin/compliance"
                 />
                 <ActionButton
                   icon={Settings}
                   label="Platform Settings"
-                  onClick={() => console.log('Settings')}
+                  to="/admin/settings"
                 />
               </div>
             </div>
 
-            {/* Recent Activity */}
-            <div className="rounded-xl border border-cream-border bg-white p-6 shadow-sm">
+          {/* Recent Activity */}
+          <div className="rounded-xl border border-cream-border bg-white/80 p-6 shadow-sm">
               <h2 className="mb-4 text-xl font-semibold text-brand-brown">
                 Recent Activity
               </h2>
@@ -109,13 +158,13 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Right Column */}
-          <div className="space-y-6">
-            {/* Gamification Widget */}
-            <GamificationWidget />
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* Gamification Widget */}
+          <GamificationWidget />
 
-            {/* System Status */}
-            <div className="rounded-xl border border-cream-border bg-white p-6 shadow-sm">
+          {/* System Status */}
+          <div className="rounded-xl border border-cream-border bg-white/80 p-6 shadow-sm">
               <h2 className="mb-4 text-xl font-semibold text-brand-brown">
                 System Status
               </h2>
@@ -126,26 +175,30 @@ export default function AdminDashboard() {
                 <StatusItem label="Database" status="operational" />
               </div>
             </div>
-          </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-cream-border pt-6 text-sm text-brand-brown/70">
+        <p>© CollEco Travel – The Odyssey of Adventure</p>
+        <div className="mt-2 flex flex-wrap gap-3 text-xs">
+          <NavLink to="/legal/privacy" className="hover:text-brand-brown">Privacy Policy</NavLink>
+          <NavLink to="/legal/terms" className="hover:text-brand-brown">Terms</NavLink>
+        </div>
+      </footer>
     </div>
   );
 }
 
 function StatCard({ icon: Icon, label, value, change, positive }) {
   return (
-    <div className="rounded-xl border border-cream-border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-orange/10">
           <Icon className="h-6 w-6 text-brand-orange" />
         </div>
         {change && (
-          <span
-            className={`text-sm font-medium ${
-              positive ? 'text-green-600' : 'text-red-600'
-            }`}
-          >
+          <span className="text-sm font-medium text-brand-brown/60">
             {change}
           </span>
         )}
@@ -158,17 +211,17 @@ function StatCard({ icon: Icon, label, value, change, positive }) {
   );
 }
 
-function ActionButton({ icon: Icon, label, onClick }) {
+function ActionButton({ icon: Icon, label, to }) {
   return (
-    <button
-      onClick={onClick}
+    <NavLink
+      to={to}
       className="flex items-center gap-3 rounded-lg border border-cream-border bg-white p-4 text-left transition-all hover:border-brand-orange hover:bg-brand-orange/5"
     >
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-orange/10">
         <Icon className="h-5 w-5 text-brand-orange" />
       </div>
       <span className="font-medium text-brand-brown">{label}</span>
-    </button>
+    </NavLink>
   );
 }
 
@@ -192,8 +245,8 @@ function StatusItem({ label, status }) {
       <span
         className={`rounded-full px-2 py-1 text-xs font-medium ${
           isOperational
-            ? 'bg-green-100 text-green-700'
-            : 'bg-red-100 text-red-700'
+            ? 'bg-cream-sand text-brand-brown'
+            : 'bg-brand-orange/10 text-brand-orange'
         }`}
       >
         {isOperational ? 'Operational' : 'Down'}

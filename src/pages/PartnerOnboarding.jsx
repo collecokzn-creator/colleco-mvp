@@ -141,12 +141,17 @@ export default function PartnerOnboarding() {
 
       const result = await response.json();
       
-      // Store application ID for tracking
+      // Store application ID and category for tracking
       localStorage.setItem('colleco.partner.applicationId', result.applicationId);
+      localStorage.setItem('colleco.partner.category', formData.category);
       
       // Navigate to verification page
       navigate('/partner/verification', { 
-        state: { applicationId: result.applicationId, step: 'documents' }
+        state: { 
+          applicationId: result.applicationId, 
+          partnerCategory: formData.category,
+          step: 'documents' 
+        }
       });
     } catch (error) {
       console.error('Submission error:', error);

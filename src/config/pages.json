@@ -570,16 +570,6 @@
               }
             },
             {
-              "path": "/partner/verification",
-              "name": "Partner Verification",
-              "component": "PartnerVerification",
-              "meta": {
-                "title": "Document Verification",
-                "requiresAuth": false,
-                "layout": "marketing"
-              }
-            },
-            {
               "path": "/partner/application-status",
               "name": "Application Status",
               "component": "PartnerApplicationStatus",
@@ -782,17 +772,6 @@
               }
             },
             {
-              "path": "/client/bookings",
-              "name": "My Bookings",
-              "component": "WorkspacePage",
-              "meta": {
-                "title": "Track Your Bookings",
-                "role": "client",
-                "requiresAuth": true,
-                "layout": "workspace"
-              }
-            },
-            {
               "path": "/client/itineraries",
               "name": "My Itineraries",
               "component": "WorkspacePage",
@@ -941,17 +920,6 @@
               "component": "WorkspacePage",
               "meta": {
                 "title": "Book Tours",
-                "role": "client",
-                "requiresAuth": true,
-                "layout": "workspace"
-              }
-            },
-            {
-              "path": "/client/quotes",
-              "name": "Quote Builder",
-              "component": "QuoteBuilder",
-              "meta": {
-                "title": "Request Quotes",
                 "role": "client",
                 "requiresAuth": true,
                 "layout": "workspace"
@@ -1621,6 +1589,28 @@
               "component": "WorkspacePage",
               "meta": {
                 "title": "Approve or Review Partners",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/partner-approval",
+              "name": "Partner Verification List",
+              "component": "AdminPartnerVerification",
+              "meta": {
+                "title": "Partner Approval & Documents",
+                "role": "admin",
+                "requiresAuth": true,
+                "layout": "workspace"
+              }
+            },
+            {
+              "path": "/admin/partner-approval/:applicationId",
+              "name": "Review Partner Application",
+              "component": "AdminPartnerVerification",
+              "meta": {
+                "title": "Review Partner Application",
                 "role": "admin",
                 "requiresAuth": true,
                 "layout": "workspace"

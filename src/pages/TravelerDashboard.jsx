@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { 
   Calendar, MapPin, Plane, Hotel, Car, DollarSign, 
   Clock, CheckCircle2, XCircle, AlertCircle as _AlertCircle, TrendingUp,
@@ -31,32 +31,85 @@ export default function TravelerDashboard() {
       const userData = JSON.parse(localStorage.getItem('colleco.user') || '{}');
       setUser(userData);
 
-      // Fetch upcoming trips
-      const tripsResponse = await fetch('/api/bookings/upcoming');
-      if (tripsResponse.ok) {
-        const tripsData = await tripsResponse.json();
-        setUpcomingTrips(tripsData.bookings || []);
+      // Try API first, fallback to localStorage
+      try {
+        const tripsResponse = await fetch('/api/bookings/upcoming');
+        if (tripsResponse.ok) {
+          const tripsData = await tripsResponse.json();
+          setUpcomingTrips(tripsData.bookings || []);
+        } else {
+          throw new Error('API not available');
+        }
+      } catch {
+        // Fallback to localStorage bookings
+        const bookings = JSON.parse(localStorage.getItem('colleco.bookings') || '[]');
+        const now = new Date();
+        const upcoming = bookings.filter(b => {
+          if (!b.date) return false;
+          const bookingDate = new Date(b.date);
+          return bookingDate > now && b.status !== 'cancelled';
+        }).slice(0, 5);
+        setUpcomingTrips(upcoming);
       }
 
-      // Fetch saved itineraries
-      const itinerariesResponse = await fetch('/api/itineraries/saved');
-      if (itinerariesResponse.ok) {
-        const itinerariesData = await itinerariesResponse.json();
-        setSavedItineraries(itinerariesData.itineraries || []);
+      // Fetch saved itineraries (fallback to localStorage)
+      try {
+        const itinerariesResponse = await fetch('/api/itineraries/saved');
+        if (itinerariesResponse.ok) {
+          const itinerariesData = await itinerariesResponse.json();
+          setSavedItineraries(itinerariesData.itineraries || []);
+        } else {
+          throw new Error('API not available');
+        }
+      } catch {
+        const savedItineraries = JSON.parse(localStorage.getItem('colleco.itineraries') || '[]');
+        setSavedItineraries(savedItineraries.slice(0, 3));
       }
 
-      // Fetch recent activity
-      const activityResponse = await fetch('/api/activity/recent');
-      if (activityResponse.ok) {
-        const activityData = await activityResponse.json();
-        setRecentActivity(activityData.activities || []);
+      // Fetch recent activity (fallback to demo)
+      try {
+        const activityResponse = await fetch('/api/activity/recent');
+        if (activityResponse.ok) {
+          const activityData = await activityResponse.json();
+          setRecentActivity(activityData.activities || []);
+        } else {
+          throw new Error('API not available');
+        }
+      } catch {
+        setRecentActivity([
+          { id: 1, type: 'booking', message: 'Booking confirmed for Cape Town', date: new Date().toISOString() },
+          { id: 2, type: 'quote', message: 'New quote received', date: new Date(Date.now() - 86400000).toISOString() }
+        ]);
       }
 
-      // Fetch stats
-      const statsResponse = await fetch('/api/travelers/stats');
-      if (statsResponse.ok) {
-        const statsData = await statsResponse.json();
-        setStats(statsData);
+      // Fetch stats (calculate from localStorage)
+      try {
+        const statsResponse = await fetch('/api/travelers/stats');
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json();
+          setStats(statsData);
+        } else {
+          throw new Error('API not available');
+        }
+      } catch {
+        const bookings = JSON.parse(localStorage.getItem('colleco.bookings') || '[]');
+        const travelHistory = JSON.parse(localStorage.getItem('colleco.travel.history') || '[]');
+        
+        const uniqueCountries = new Set(
+          [...bookings, ...travelHistory]
+            .map(x => x.country || x.destination)
+            .filter(Boolean)
+        );
+        
+        const totalSpent = [...bookings, ...travelHistory]
+          .reduce((sum, x) => sum + (x.amount || 0), 0);
+        
+        setStats({
+          totalTrips: travelHistory.length,
+          countriesVisited: uniqueCountries.size,
+          totalSpent,
+          rewardsPoints: Math.floor(totalSpent / 100) // 1 point per R100 spent
+        });
       }
 
       setLoading(false);
@@ -69,15 +122,15 @@ export default function TravelerDashboard() {
   const renderStatCard = (icon, label, value, color = "brand-orange") => {
     const Icon = icon;
     return (
-      <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+      <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm transition-shadow hover:shadow-md">
         <div className="flex items-center justify-between mb-3">
-          <div className={`p-3 rounded-full bg-${color} bg-opacity-10`}>
+          <div className={`p-3 rounded-full bg-${color}/10`}>
             <Icon className={`w-6 h-6 text-${color}`} />
           </div>
           <TrendingUp className="w-4 h-4 text-green-500" />
         </div>
-        <p className="text-3xl font-bold text-brand-brown mb-1">{value}</p>
-        <p className="text-sm text-gray-600">{label}</p>
+        <p className="text-2xl font-bold text-brand-brown">{value}</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-brand-brown/60">{label}</p>
       </div>
     );
   };
@@ -95,7 +148,7 @@ export default function TravelerDashboard() {
     return (
       <div 
         key={trip.id} 
-        className="bg-white p-6 rounded-lg border-2 border-gray-200 hover:border-brand-orange transition-all cursor-pointer group"
+        className="bg-white/80 p-6 rounded-xl border border-cream-border hover:border-brand-orange transition-all cursor-pointer group shadow-sm"
         onClick={() => navigate(`/bookings/${trip.id}`)}
       >
         <div className="flex items-start justify-between mb-4">
@@ -202,18 +255,24 @@ export default function TravelerDashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-brand-brown mb-2">
+    <div className="space-y-10 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      {/* Header */}
+      <header className="space-y-3">
+        <span className="inline-flex items-center rounded-full border border-brand-orange/30 bg-brand-orange/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-orange/90">
+          Client workspace
+        </span>
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold leading-snug text-brand-brown sm:text-3xl">
             Welcome back, {user?.name || 'Traveler'}! ✈️
           </h1>
-          <p className="text-gray-600">Here&apos;s what&apos;s happening with your trips</p>
+          <p className="max-w-3xl text-base text-brand-brown/75">
+            Here's what's happening with your trips
+          </p>
         </div>
+      </header>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      {/* Stats Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {renderStatCard(Plane, "Total Trips", stats.totalTrips)}
           {renderStatCard(MapPin, "Countries Visited", stats.countriesVisited)}
           {renderStatCard(DollarSign, "Total Spent", `R ${stats.totalSpent?.toLocaleString()}`)}
@@ -222,13 +281,13 @@ export default function TravelerDashboard() {
             className="cursor-pointer"
           >
             {renderStatCard(Star, "Rewards Points", stats.rewardsPoints)}
-          </div>
         </div>
+      </div>
 
-        {/* Quick Actions */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-brand-brown mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+      {/* Quick Actions */}
+      <section>
+        <h2 className="text-lg font-semibold text-brand-brown mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {renderQuickAction(Plus, "Plan New Trip", () => navigate('/plan-trip'))}
             {renderQuickAction(Calendar, "My Bookings", () => navigate('/my-trips'))}
             {renderQuickAction(Star, "Rewards", () => navigate('/loyalty'))}
@@ -236,7 +295,7 @@ export default function TravelerDashboard() {
             {renderQuickAction(MessageCircle, "Trip Assistant", () => navigate('/trip-assist'))}
             {renderQuickAction(FileText, "Documents", () => navigate('/travel-documents'))}
           </div>
-        </div>
+        </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Column */}
@@ -374,7 +433,15 @@ export default function TravelerDashboard() {
             </div>
           </div>
         </div>
-      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-cream-border pt-6 text-sm text-brand-brown/70">
+        <p>© CollEco Travel – The Odyssey of Adventure</p>
+        <div className="mt-2 flex flex-wrap gap-3 text-xs">
+          <NavLink to="/legal/privacy" className="hover:text-brand-brown">Privacy Policy</NavLink>
+          <NavLink to="/legal/terms" className="hover:text-brand-brown">Terms</NavLink>
+        </div>
+      </footer>
     </div>
   );
 }
