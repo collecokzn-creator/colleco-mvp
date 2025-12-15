@@ -669,7 +669,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
         )}
 
         {/* Floating Reaction Animation Styles */}
-        <style jsx>{`
+        <style>{`
         @keyframes float-up {
           0% {
             opacity: 1;
