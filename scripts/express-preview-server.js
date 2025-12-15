@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 const express = require('express');
 const path = require('path');
+const compression = require('compression');
 
 const argv = require('minimist')(process.argv.slice(2));
 const port = parseInt(argv.port || argv.p || process.env.PORT || '5173', 10);
@@ -9,6 +10,9 @@ const host = argv.host || '::'; // prefer IPv6/dual-stack where available; fall 
 const dir = argv.dir || argv.d || path.join(process.cwd(), 'dist');
 
 const app = express();
+
+// Enable gzip/deflate compression
+app.use(compression({ threshold: 1024 }));
 
 // Simple proxy for API routes to local backend (useful for previewing SPA with backend)
 app.use('/api', async (req, res, next) => {
@@ -54,8 +58,24 @@ app.use('/api', async (req, res, next) => {
 // Health endpoint for orchestration checks
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
 
-// Serve static build
-app.use(express.static(dir, { extensions: ['html'] }));
+// Serve static build with sensible cache headers
+app.use(express.static(dir, {
+  extensions: ['html'],
+  setHeaders(res, filePath) {
+    const p = String(filePath);
+    if (p.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache');
+      return;
+    }
+    // Long cache for hashed assets (e.g., app.a1b2c3.js)
+    if (/\.[a-f0-9]{8,}\.[a-z0-9]+$/i.test(p)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      // Short cache for others
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+    }
+  }
+}));
 
 // Fallback to index.html for SPA routing
 app.get('*', (req, res) => {

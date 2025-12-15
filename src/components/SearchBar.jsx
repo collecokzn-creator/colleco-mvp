@@ -155,7 +155,7 @@ export default function SearchBar({ className = '' }){
     const ctrl = new AbortController();
     const t = setTimeout(async () => {
       try {
-        const { events: ev = [] } = await fetchEvents({ q: term });
+        const { events: ev = [] } = await fetchEvents({ q: term, signal: ctrl.signal });
         if(!ctrl.signal.aborted){ setEvents(ev.slice(0, 8)); }
       } catch { if(!ctrl.signal.aborted){ setEvents([]); } }
     }, 350);
@@ -286,7 +286,7 @@ export default function SearchBar({ className = '' }){
               {filtered.map((s, idx)=> (
                 <li key={s.group + s.label} ref={idx === activeIdx ? activeItemRef : null}>
                   <button
-                    onMouseEnter={()=>setActiveIdx(idx)}
+                    onMouseEnter={()=>{ setActiveIdx(idx); try { if (s.path && s.path.startsWith('/')) { import('../utils/routePrefetch').then(m=>m.prefetchRouteByPath && m.prefetchRouteByPath(s.path)).catch(()=>{}); } } catch {} }}
                     onClick={()=>go(s)}
                     className={`w-full text-left px-4 py-2.5 flex items-center justify-between transition-colors ${idx===activeIdx? 'bg-brand-orange/5' : 'hover:bg-cream'}`}
                   >

@@ -7,6 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const expressRateLimit = require('express-rate-limit');
+const compression = require('compression');
 const fs = require('fs');
 const path = require('path');
 const { parsePrompt, parseFlightRequest, parseIntent } = require('./aiParser');
@@ -193,6 +194,9 @@ app.disable('x-powered-by');
 
 // Apply security headers
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+
+// Enable gzip/deflate compression for API responses
+app.use(compression({ threshold: 1024 }));
 
 // Restrictive CORS via env ALLOWED_ORIGINS (comma separated); allow all if unset
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map(s=>s.trim()).filter(Boolean);

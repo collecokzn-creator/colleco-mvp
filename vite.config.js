@@ -59,6 +59,8 @@ export default defineConfig(({ mode }) => {
     build: {
       // Raise the warning threshold slightly; keep guardrails
       chunkSizeWarningLimit: 600,
+      cssCodeSplit: true,
+      modulePreload: { polyfill: false },
       rollupOptions: {
         output: {
           // Basic chunking to keep vendor libs separate and shrink app chunks

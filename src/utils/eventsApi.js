@@ -8,7 +8,7 @@ const ISO2 = {
   'South Africa': 'ZA', 'France': 'FR', 'Italy': 'IT', 'Spain': 'ES', 'Canada': 'CA', 'Brazil': 'BR', 'Australia': 'AU', 'Japan': 'JP', 'Thailand': 'TH', 'United Arab Emirates': 'AE', 'Egypt': 'EG', 'Kenya': 'KE'
 };
 
-export async function searchEvents({ q = '', city = '', country = '', page = 1, limit = 8, includePast = false } = {}){
+export async function searchEvents({ q = '', city = '', country = '', page = 1, limit = 8, includePast = false, signal } = {}){
   const params = new URLSearchParams();
   if(q) params.set('q', q);
   if(city) params.set('city', city);
@@ -18,7 +18,7 @@ export async function searchEvents({ q = '', city = '', country = '', page = 1, 
   if(includePast) params.set('includePast','1');
   // Optional client-side demo flag to force demo results (also supported server-side)
   try { if (localStorage.getItem('demoEvents') === '1') params.set('demo','1'); } catch {}
-  const res = await fetch(`/api/events/search?${params.toString()}`);
+  const res = await fetch(`/api/events/search?${params.toString()}` , { signal });
   if(!res.ok){ throw new Error(`Events search failed: ${res.status}`); }
   const j = await res.json();
   if (j && j.ok) {

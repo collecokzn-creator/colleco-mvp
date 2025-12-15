@@ -1,5 +1,5 @@
 import React from "react";
-import globePng from "./assets/Globeicon.png";
+// Use WebP variant if available via picture element for smaller payload
 
 export default function Home() {
   return (
@@ -13,17 +13,21 @@ export default function Home() {
           collect payments, and collaborate with partners, all in one.
         </p>
       </div>
-      <img
-        src={globePng}
-        alt="CollEco Bird Logo"
-        className="absolute right-8 top-1/2 -translate-y-1/2 h-40 w-auto opacity-90 transition-transform duration-500 hover:scale-110"
-        style={{
-          filter: 'drop-shadow(4px 4px 8px rgba(179, 84, 30, 0.4)) drop-shadow(-2px -2px 4px rgba(255, 255, 255, 0.8))',
-          transform: 'perspective(200px) rotateY(-8deg) translateY(-50%)',
-        }}
-        width={160}
-        height={160}
-      />
+      <picture>
+        <source srcSet="/assets/Globeicon-160.webp" type="image/webp" />
+        <img
+          src="/assets/Globeicon.png"
+          alt="CollEco Bird Logo"
+          className="absolute right-8 top-1/2 -translate-y-1/2 h-40 w-auto opacity-90 transition-transform duration-500 hover:scale-110"
+          style={{
+            filter: 'drop-shadow(4px 4px 8px rgba(179, 84, 30, 0.4)) drop-shadow(-2px -2px 4px rgba(255, 255, 255, 0.8))',
+            transform: 'perspective(200px) rotateY(-8deg) translateY(-50%)',
+          }}
+          width={160}
+          height={160}
+          loading="lazy" decoding="async"
+        />
+      </picture>
     </section>
   );
 }

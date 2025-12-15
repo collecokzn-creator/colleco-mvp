@@ -41,6 +41,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { prefetchRouteByPath, observeAndPrefetchLinks } from "../utils/routePrefetch";
 import { useUser } from "../context/UserContext.jsx";
 import collecoLogo from "../assets/colleco-logo.png";
 import { useLocalStorageState } from "../useLocalStorageState";
@@ -411,6 +412,7 @@ export default function Sidebar() {
   const hoverTimeoutRef = useRef(null);
   const pointerInsideRef = useRef(false);
   const lastPointerYRef = useRef(null);
+  const linkRefs = useRef(new Map());
 
   // Prefer mocked user role during tests (tests mock useUser before importing Sidebar)
   const roleFromCtx = userCtx && userCtx.user && userCtx.user.role ? userCtx.user.role : null;
@@ -456,6 +458,18 @@ export default function Sidebar() {
     }
     setExpandedSections(new Set([firstExpandableSection]));
   }, [firstExpandableSection]);
+
+  // Prefetch visible links when they enter the viewport
+  useEffect(() => {
+    const nodes = [];
+    try {
+      for (const el of linkRefs.current.values()) if (el) nodes.push(el);
+      const cleanup = observeAndPrefetchLinks(nodes);
+      return () => { try { cleanup && cleanup(); } catch {} };
+    } catch {
+      return undefined;
+    }
+  }, [renderSections, role, open, expandedSections]);
 
   useEffect(() => () => {
     if (hoverTimeoutRef.current && typeof window !== "undefined") {
@@ -974,6 +988,11 @@ export default function Sidebar() {
                             <NavLink
                               to={linkTo}
                               className={linkClass}
+                              ref={(el) => {
+                                try { linkRefs.current.set(linkTo, el); } catch {}
+                              }}
+                              onMouseEnter={() => { try { prefetchRouteByPath(linkTo); } catch {} }}
+                              onFocus={() => { try { prefetchRouteByPath(linkTo); } catch {} }}
                               onClick={() => {
                                 if (isMobile || !isPinned) {
                                   pointerInsideRef.current = false;

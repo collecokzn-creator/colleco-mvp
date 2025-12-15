@@ -5,6 +5,7 @@ import { useUser } from "../context/UserContext.jsx";
 import logoPng from "../assets/colleco-logo.png";
 import SearchBar from "./SearchBar.jsx";
 import { Gift, Crown } from "lucide-react";
+import { prefetchRouteByPath } from "../utils/routePrefetch";
 import { getLoyaltySummary } from "../utils/bookingIntegration";
 
 export default function Navbar() {
@@ -96,13 +97,15 @@ export default function Navbar() {
 
 					{/* Action Buttons */}
 					<div className="hidden lg:flex items-center gap-4 ml-4">
-						{primaryLinks.map(l => {
+												{primaryLinks.map(l => {
 							const active = location.pathname.startsWith(l.to);
 							return (
 								<Link
 									key={l.to}
 									to={l.to}
 									className={`text-sm font-medium px-3 py-2 rounded-md transition-colors ${active ? 'bg-brand-orange text-white shadow-sm' : 'text-brand-brown hover:bg-cream-hover'}`}
+															onMouseEnter={() => { try { prefetchRouteByPath(l.to); } catch {} }}
+															onFocus={() => { try { prefetchRouteByPath(l.to); } catch {} }}
 								>
 									{l.label}
 								</Link>

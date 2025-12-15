@@ -332,11 +332,15 @@ function Login() {
         <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-8 border border-cream-border">
           <div className="text-center mb-6">
             <div className="w-24 h-24 mx-auto mb-4">
-              <img 
-                src="/assets/Globeicon.png" 
-                alt="CollEco Travel Globe" 
-                className="w-full h-full object-contain"
-              />
+              <picture>
+                <source srcSet="/assets/Globeicon-128.webp" type="image/webp" />
+                <img 
+                  src="/assets/Globeicon.png" 
+                  alt="CollEco Travel Globe" 
+                  className="w-full h-full object-contain"
+                  width="96" height="96" loading="lazy" decoding="async"
+                />
+              </picture>
             </div>
             <h2 className="text-2xl font-bold text-brand-brown mb-2">Welcome to your world of travel</h2>
             <p className="text-xl text-brand-russty">{effectiveUser.name}</p>
@@ -358,11 +362,15 @@ function Login() {
           <div className="bg-white rounded-2xl px-6 pt-10 pb-6 text-center">
             {/* Globe icon */}
             <div className="inline-block mb-4">
-              <img
-                src="/assets/Globeicon.png"
-                alt="CollEco Travel"
-                className="w-24 h-24 object-contain"
-              />
+              <picture>
+                <source srcSet="/assets/Globeicon-128.webp" type="image/webp" />
+                <img
+                  src="/assets/Globeicon.png"
+                  alt="CollEco Travel"
+                  className="w-24 h-24 object-contain"
+                  width="96" height="96" loading="lazy" decoding="async"
+                />
+              </picture>
             </div>
             <h1 className="text-3xl font-bold text-brand-brown mb-2">CollEco Travel</h1>
             <p className="text-brand-russty">Start your journey with us</p>
