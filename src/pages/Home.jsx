@@ -67,7 +67,7 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover opacity-20"
             poster="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&q=90"
           >
-            <source src="https://player.vimeo.com/progressive_redirect/playback/798441363/rendition/1080p/file.mp4?loc=external&signature=4b05c0a35a7e14f0a9bf81b5e1f47264c96f2fbb37e9c6f5f7f8e18e63bc4c27" type="video/mp4" />
+            <source src="https://assets.mixkit.co/active_storage/videos/47066/47066-720.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/95"></div>
         </div>
