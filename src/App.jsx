@@ -152,13 +152,6 @@ const NotFoundElement = (
 export default function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeRole] = useLocalStorageState("colleco.sidebar.role", null);
-  const [showProductOwnerChat, setShowProductOwnerChat] = useState(false);
-  // Listen for openProductOwnerChat event
-  useEffect(() => {
-    const handler = () => setShowProductOwnerChat(true);
-    window.addEventListener('openProductOwnerChat', handler);
-    return () => window.removeEventListener('openProductOwnerChat', handler);
-  }, []);
 
   useEffect(() => {
     const idle = (cb) =>
@@ -240,14 +233,7 @@ export default function App() {
   return (
     <>
       {showOnboarding && <OnboardingPermissions onComplete={handleOnboardingComplete} />}
-      {showProductOwnerChat && (
-        <ProductOwnerChatModal
-          bookingId={"demo-booking-1"}
-          clientName={activeRole || "Client"}
-          productOwnerName={"Product Owner"}
-          onClose={() => setShowProductOwnerChat(false)}
-        />
-      )}
+      <ProductOwnerChatModal />
       <RouterComponent basename={basename}>
         <RouteMetadataSync />
         <Suspense fallback={<div className="p-6 text-brand-brown">Loading…</div>}>

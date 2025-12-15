@@ -403,8 +403,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
           </div>
         </div>
 
-      {/* Call Modal */}
-      {showCallModal && (
+        {/* Call Modal */}
+        {showCallModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-brand-brown/95 to-brand-orange/95">
           <div className="w-full max-w-4xl p-8 text-white relative">
             {/* Security Banner */}
@@ -666,10 +666,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
             </div>
           )}
         </div>
-      )}
+        )}
 
-      {/* Floating Reaction Animation Styles */}
-      <style jsx>{`
+        {/* Floating Reaction Animation Styles */}
+        <style jsx>{`
         @keyframes float-up {
           0% {
             opacity: 1;
@@ -681,7 +681,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
           }
         }
       `}</style>
-      </>
+        </>
       ) : (
         <div className="flex flex-col items-center gap-1">
           <button

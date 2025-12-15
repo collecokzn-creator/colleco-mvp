@@ -6,7 +6,6 @@ import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import AutoFocus from "../components/AutoFocus.jsx";
 import { Outlet } from "react-router-dom";
 import AIAgent from "../components/AIAgent.jsx";
-import { MessageSquare } from "lucide-react";
 import globeIcon from "../assets/Globeicon.png";
 
 export default function RootLayout() {
@@ -116,20 +115,6 @@ export default function RootLayout() {
       </div>
     </footer>
     <AIAgent />
-
-      {/* Floating Chat Button */}
-      <button
-        type="button"
-        onClick={() => window.dispatchEvent(new CustomEvent('openProductOwnerChat'))}
-        className="fixed bottom-[calc(var(--footer-h)+4rem)] sm:bottom-[calc(var(--footer-h)+0.5rem)] right-4 z-50 flex items-center justify-center h-14 w-14 rounded-full bg-brand-orange text-white shadow-xl hover:bg-orange-600 transition-all hover:scale-110 focus:outline-none focus:ring-4 focus:ring-brand-orange/50"
-        aria-label="Open chat for collaborations"
-        title="Chat with product owners & clients"
-      >
-        <MessageSquare className="h-6 w-6" />
-        <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white animate-pulse">
-          3
-        </span>
-      </button>
 
       {/* Mobile Bottom Navigation - White footer with Home, Packages, Bookings, Alerts, Account */}
       <MobileNav />
