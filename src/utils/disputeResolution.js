@@ -127,6 +127,8 @@ export function submitEvidence(disputeId, evidenceData, submittedBy) {
 }
 
 // Request response from respondent
+import logger from './logger';
+
 export function requestResponse(disputeId) {
   const dispute = getDispute(disputeId);
   
@@ -470,17 +472,17 @@ function updateDispute(disputeId, dispute) {
 function processRefund(userId, amount) {
   // Would integrate with payment processor
   /* eslint-disable-next-line no-console */
-  console.log(`Processing refund of ${amount} to user ${userId}`);
+  logger.info('Processing refund', { amount, userId });
 }
 
 function addAccountCredit(userId, amount) {
   // Would add credit to user account
   /* eslint-disable-next-line no-console */
-  console.log(`Adding ${amount} credit to user ${userId}`);
+  logger.info('Adding credit to user', { amount, userId });
 }
 
 function scheduleRebook(userId, rebookDate) {
   // Would schedule rebook for user
   /* eslint-disable-next-line no-console */
-  console.log(`Scheduling rebook for user ${userId} on ${rebookDate}`);
+  logger.info('Scheduling rebook', { userId, rebookDate });
 }

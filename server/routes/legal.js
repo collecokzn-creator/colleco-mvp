@@ -15,6 +15,9 @@ const crypto = require('crypto');
 const router = express.Router();
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
+// Safe logging helper
+const { sanitizeLog } = require('../utils/safeLog');
+
 // Ensure data directory exists
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -32,7 +35,7 @@ function loadLegalVersions() {
       return JSON.parse(fs.readFileSync(LEGAL_VERSIONS_FILE, 'utf8'));
     }
   } catch (err) {
-    console.error('Error loading legal versions:', err);
+      try { const { sanitizeLog } = require('../utils/safeLog'); console.error('Error loading legal versions: %s', sanitizeLog(err && err.message)); } catch(e){ console.error('Error loading legal versions'); }
   }
   return {
     termsVersion: '1.0',
@@ -46,7 +49,7 @@ function saveLegalVersions(versions) {
   try {
     fs.writeFileSync(LEGAL_VERSIONS_FILE, JSON.stringify(versions, null, 2), 'utf8');
   } catch (err) {
-    console.error('Error saving legal versions:', err);
+     try { const { sanitizeLog } = require('../utils/safeLog'); console.error('Error saving legal versions: %s', sanitizeLog(err && err.message)); } catch(e){ console.error('Error saving legal versions'); }
   }
 }
 
@@ -74,8 +77,8 @@ function logConsent(userId, consentData, ipAddress, userAgent) {
   try {
     fs.appendFileSync(LEGAL_CONSENTS_FILE, JSON.stringify(record) + '\n', 'utf8');
   } catch (err) {
-    console.error('Error logging consent:', err);
-    throw new Error('Failed to store consent');
+     try { const { sanitizeLog } = require('../utils/safeLog'); console.error('Error logging consent: %s', sanitizeLog(err && err.message)); } catch(e){ console.error('Error logging consent'); }
+     throw new Error('Failed to store consent');
   }
 
   return record;
@@ -99,7 +102,7 @@ function logAuditEvent(action, userId, details, ipAddress) {
   try {
     fs.appendFileSync(AUDIT_LOGS_FILE, JSON.stringify(record) + '\n', 'utf8');
   } catch (err) {
-    console.error('Error logging audit event:', err);
+     try { const { sanitizeLog } = require('../utils/safeLog'); console.error('Error logging audit event: %s', sanitizeLog(err && err.message)); } catch(e){ console.error('Error logging audit event'); }
   }
 
   return record;
@@ -119,11 +122,11 @@ function readJsonLines(filePath) {
       .filter((line) => line.trim())
       .map((line) => JSON.parse(line))
       .catch((err) => {
-        console.error(`Error parsing JSONL: ${err}`);
+          console.error('Error parsing JSONL: %s', sanitizeLog(err && err.message));
         return [];
       });
   } catch (err) {
-    console.error(`Error reading JSONL file: ${err}`);
+      console.error('Error reading JSONL file: %s', sanitizeLog(err && err.message));
     return [];
   }
 }

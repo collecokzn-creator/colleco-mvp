@@ -182,25 +182,21 @@ router.post('/payfast', express.urlencoded({ extended: false }), async (req, res
  * https://yoco.com/en/documentation/
  */
 router.post('/yoco', express.json(), async (req, res) => {
+  const payload = JSON.stringify(req.body);
   const signature = req.headers['x-yoco-signature'] || '';
   const ip = req.ip || 'unknown';
+
   const data = req.body || {};
 
   console.log('[webhook] Yoco webhook received:', {
     eventType: data.type,
     checkoutId: data.data?.id,
     ip,
-    hasSignature: !!signature,
   });
 
-  // Verify signature using stringified body (Yoco signs the JSON payload)
-  const payload = JSON.stringify(req.body);
-  
+  // Verify signature
   if (!verifyYocoSignature(payload, signature)) {
-    console.warn('[webhook] Yoco signature verification failed', {
-      signatureLength: signature.length,
-      payloadLength: payload.length,
-    });
+    console.warn('[webhook] Yoco signature verification failed');
     logPaymentEvent({
       ts: Date.now(),
       processor: 'yoco',

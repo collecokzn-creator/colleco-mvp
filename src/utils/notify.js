@@ -1,4 +1,6 @@
 // Simple notification stub for push/email/SMS
+import logger from './logger';
+
 export function notify(role, title, body) {
   try {
     if ("Notification" in window) {
@@ -9,6 +11,6 @@ export function notify(role, title, body) {
       }
     }
   } catch {}
-  // Fallback: console & toast placeholder (warn allowed by ESLint policy)
-  console.warn(`[Notify:${role}] ${title} - ${body}`);
+  // Fallback: use central logger to avoid template interpolation
+  logger.warn(`Notify:${role}`, { title, body });
 }

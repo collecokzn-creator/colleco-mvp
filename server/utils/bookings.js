@@ -76,10 +76,6 @@ function createBooking(data) {
     throw new Error('Missing required booking fields (supplierId, userId, checkInDate, checkOutDate, lineItems)');
   }
 
-  // Normalize dates to timestamps to avoid "Invalid time value"
-  const checkInTs = typeof checkInDate === 'string' ? new Date(checkInDate).getTime() : checkInDate;
-  const checkOutTs = typeof checkOutDate === 'string' ? new Date(checkOutDate).getTime() : checkOutDate;
-
   const supplier = getSupplier(supplierId);
   if (!supplier) {
     throw new Error(`Supplier ${supplierId} not found`);
@@ -132,7 +128,9 @@ function createBooking(data) {
   // Calculate due dates
   const depositDue = new Date(now + paymentTerms.dueDays * 24 * 60 * 60 * 1000);
   let balanceDue = null;
-  if (paymentTerms.balanceDueDays) {
+  // normalize checkInDate to timestamp to support ISO string or numeric input
+  const checkInTs = (typeof checkInDate === 'string') ? Date.parse(checkInDate) : Number(checkInDate);
+  if (paymentTerms.balanceDueDays && !isNaN(checkInTs)) {
     balanceDue = new Date(checkInTs - paymentTerms.balanceDueDays * 24 * 60 * 60 * 1000);
   }
 
@@ -148,8 +146,8 @@ function createBooking(data) {
     supplierId,
     userId,
     bookingType,
-    checkInDate: new Date(checkInTs).toISOString(),
-    checkOutDate: new Date(checkOutTs).toISOString(),
+    checkInDate: new Date(checkInTs || checkInDate).toISOString(),
+    checkOutDate: new Date(checkOutDate).toISOString(),
     lineItems: processedItems,
     pricing: {
       baseTotal: parseFloat(totalBasePrice.toFixed(2)),
@@ -185,7 +183,12 @@ function createBooking(data) {
   bookings[bookingId] = booking;
   saveBookings(bookings);
 
-  console.log(`[bookings] Created booking ${bookingId} for supplier ${supplierId} with ${lineItems.length} line items`);
+  try {
+    const { sanitizeLog } = require('./safeLog');
+    console.log('[bookings] Created booking %s for supplier %s with %d line items', sanitizeLog(bookingId), sanitizeLog(supplierId), Number(lineItems.length));
+  } catch (e) {
+    console.log('[bookings] Created booking', bookingId);
+  }
   return booking;
 }
 

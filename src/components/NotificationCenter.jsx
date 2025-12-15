@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { /* UserContext */ } from '../context/UserContext';
+import { API_BASE_URL } from '../config';
 
 /**
  * NotificationContext
@@ -466,7 +467,7 @@ export class PushNotificationService {
       
       if (!subscription) {
         // Subscribe with VAPID public key from environment
-        const vapidPublicKey = import.meta.env.VITE_VAPID_PUBLIC_KEY || 
+        const vapidPublicKey = (typeof window !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_VAPID_PUBLIC_KEY) ||
           'BEl62iUYgUivxIkv69yViEuiBIa-Ib37gp2ENSg1CYQ2vUJ6_4L7pj_b9O8z6rKrC2xkx-z7xXOsqJQSk4JC_2Y';
         
         subscription = await registration.pushManager.subscribe({
@@ -476,8 +477,7 @@ export class PushNotificationService {
       }
 
       // Send subscription to backend
-      const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
-      await fetch(`${apiBase}/api/notifications/subscribe`, {
+      await fetch(`${API_BASE_URL}/api/notifications/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -505,8 +505,7 @@ export class PushNotificationService {
         await subscription.unsubscribe();
         
         // Notify backend
-        const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
-        await fetch(`${apiBase}/api/notifications/unsubscribe`, {
+        await fetch(`${API_BASE_URL}/api/notifications/unsubscribe`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

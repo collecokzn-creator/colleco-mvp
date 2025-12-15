@@ -132,97 +132,97 @@ export default function MyTrips() {
     return (
       <div 
         key={trip.id}
-        className="bg-white rounded-xl border border-cream-border hover:border-brand-orange shadow-md hover:shadow-lg transition-all cursor-pointer"
+        className={`bg-white rounded-lg border-2 ${statusConfig.borderColor} hover:shadow-lg transition-all cursor-pointer`}
         onClick={() => navigate(`/bookings/${trip.id}`)}
       >
         <div className="p-6">
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1 flex-wrap">
+              <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-xl font-bold text-brand-brown hover:text-brand-orange transition-colors">
                   {trip.destination}
                 </h3>
-                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.color} border ${statusConfig.borderColor}`}>
+                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.color}`}>
                   <StatusIcon className="w-3 h-3" />
                   {statusConfig.label}
                 </div>
               </div>
-              <p className="text-sm text-brand-russty">Ref: {trip.bookingRef}</p>
+              <p className="text-sm text-gray-500">Ref: {trip.bookingRef}</p>
             </div>
           </div>
 
           {/* Date & Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div className="flex items-center gap-2 text-sm text-brand-russty">
+            <div className="flex items-center gap-2 text-sm text-gray-700">
               <Calendar className="w-4 h-4 text-brand-orange" />
               <span>
                 {new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-brand-russty">
+            <div className="flex items-center gap-2 text-sm text-gray-700">
               <MapPin className="w-4 h-4 text-brand-orange" />
               <span>{trip.travelers} traveler(s) • {trip.duration} days</span>
             </div>
           </div>
 
           {/* Services Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 p-4 bg-cream-sand rounded-lg">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 p-4 bg-cream-light rounded-lg">
             {trip.flight && (
               <div className="flex items-center gap-2">
                 <Plane className="w-4 h-4 text-brand-orange" />
-                <span className="text-xs text-brand-brown font-medium">Flight</span>
+                <span className="text-xs text-gray-700">Flight</span>
               </div>
             )}
             {trip.accommodation && (
               <div className="flex items-center gap-2">
                 <Hotel className="w-4 h-4 text-brand-orange" />
-                <span className="text-xs text-brand-brown font-medium">{trip.accommodation}</span>
+                <span className="text-xs text-gray-700">{trip.accommodation}</span>
               </div>
             )}
             {trip.transport && (
               <div className="flex items-center gap-2">
                 <Car className="w-4 h-4 text-brand-orange" />
-                <span className="text-xs text-brand-brown font-medium">Transport</span>
+                <span className="text-xs text-gray-700">Transport</span>
               </div>
             )}
             <div className="flex items-center gap-2">
               <DollarSign className="w-4 h-4 text-brand-orange" />
-              <span className="text-xs font-semibold text-brand-brown">
+              <span className="text-xs font-semibold text-gray-700">
                 {trip.currency} {trip.totalAmount?.toLocaleString()}
               </span>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex flex-wrap gap-2 pt-4 border-t border-cream-border">
+          <div className="flex flex-wrap gap-2 pt-4 border-t">
             <button
               onClick={(e) => { e.stopPropagation(); navigate(`/bookings/${trip.id}`); }}
-              className="flex items-center gap-1 px-4 py-2 bg-brand-orange text-white text-sm font-semibold rounded-lg hover:bg-brand-orange/90 shadow-md hover:shadow-lg transition-all"
+              className="flex items-center gap-1 px-4 py-2 bg-brand-orange text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition-colors"
             >
               <FileText className="w-4 h-4" />
               View Details
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); /* Download action */ }}
-              className="flex items-center gap-1 px-4 py-2 border-2 border-cream-border bg-white text-brand-brown text-sm font-semibold rounded-lg hover:border-brand-orange hover:bg-cream-sand transition-all"
+              className="flex items-center gap-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <Download className="w-4 h-4 text-brand-orange" />
+              <Download className="w-4 h-4" />
               Download
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); /* Share action */ }}
-              className="flex items-center gap-1 px-4 py-2 border-2 border-cream-border bg-white text-brand-brown text-sm font-semibold rounded-lg hover:border-brand-orange hover:bg-cream-sand transition-all"
+              className="flex items-center gap-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <Share2 className="w-4 h-4 text-brand-orange" />
+              <Share2 className="w-4 h-4" />
               Share
             </button>
             {trip.hasMessages && (
               <button
                 onClick={(e) => { e.stopPropagation(); navigate(`/messages/${trip.id}`); }}
-                className="flex items-center gap-1 px-4 py-2 border-2 border-cream-border bg-white text-brand-brown text-sm font-semibold rounded-lg hover:border-brand-orange hover:bg-cream-sand transition-all"
+                className="flex items-center gap-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <MessageCircle className="w-4 h-4 text-brand-orange" />
+                <MessageCircle className="w-4 h-4" />
                 Messages {trip.unreadMessages > 0 && (
                   <span className="ml-1 px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">
                     {trip.unreadMessages}
@@ -238,22 +238,22 @@ export default function MyTrips() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-cream via-white to-cream-sand flex items-center justify-center">
+      <div className="min-h-screen bg-cream flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 animate-spin rounded-full border-4 border-cream-border border-t-brand-orange mx-auto mb-4"></div>
-          <p className="text-brand-russty font-medium">Loading your trips...</p>
+          <Clock className="w-12 h-12 animate-spin text-brand-orange mx-auto mb-4" />
+          <p className="text-gray-600">Loading your trips...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-white to-cream-sand overflow-x-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <div className="min-h-screen bg-cream py-8 px-4">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-brand-brown mb-2">My Trips</h1>
-          <p className="text-brand-russty text-sm sm:text-base">Manage all your bookings and travel plans</p>
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-brand-brown mb-2">My Trips</h1>
+          <p className="text-gray-600">Manage all your bookings and travel plans</p>
         </div>
 
         {/* Filters & Search */}
@@ -266,8 +266,8 @@ export default function MyTrips() {
                 onClick={() => setActiveFilter(filter.value)}
                 className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
                   activeFilter === filter.value
-                    ? 'bg-brand-orange text-white shadow-md'
-                    : 'bg-cream border-2 border-cream-border text-brand-brown hover:border-brand-orange hover:bg-cream-sand'
+                    ? 'bg-brand-orange text-white'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:border-brand-orange'
                 }`}
               >
                 {filter.label}
@@ -279,24 +279,22 @@ export default function MyTrips() {
           <div className="flex flex-col sm:flex-row gap-3">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-brand-russty" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by destination, reference, or hotel..."
-                className="w-full pl-11 pr-4 py-2.5 text-sm border-2 border-cream-border rounded-lg bg-cream focus:border-brand-orange focus:outline-none transition-colors"
-                aria-label="Search trips"
+                className="w-full pl-11 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
               />
             </div>
 
             {/* Sort */}
-            <div className="relative min-w-0 sm:min-w-[180px]">
+            <div className="relative">
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="appearance-none w-full px-4 py-2.5 pr-10 text-sm border-2 border-cream-border rounded-lg bg-cream focus:border-brand-orange focus:outline-none transition-colors cursor-pointer font-medium"
-                aria-label="Sort trips"
+                className="appearance-none px-4 py-3 pr-10 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-brand-orange focus:border-transparent cursor-pointer"
               >
                 {SORT_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -304,29 +302,29 @@ export default function MyTrips() {
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-brand-russty pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
             </div>
 
             {/* Filter Toggle */}
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg border-2 border-cream-border bg-cream hover:border-brand-orange hover:bg-cream-sand transition-all"
+              className="flex items-center gap-2 px-4 py-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition-colors"
             >
-              <Filter className="w-5 h-5 text-brand-orange" />
-              <span className="font-semibold text-sm text-brand-brown">Filters</span>
+              <Filter className="w-5 h-5" />
+              <span className="font-semibold text-sm">Filters</span>
             </button>
           </div>
         </div>
 
         {/* Results Count */}
         <div className="mb-6 flex items-center justify-between">
-          <p className="text-sm text-brand-russty">
-            Showing <span className="font-bold text-brand-brown">{filteredTrips.length}</span> of <span className="font-bold text-brand-brown">{trips.length}</span> trips
+          <p className="text-sm text-gray-600">
+            Showing <strong>{filteredTrips.length}</strong> of <strong>{trips.length}</strong> trips
           </p>
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="text-brand-orange text-sm font-semibold hover:text-brand-brown transition-colors"
+              className="text-brand-orange text-sm font-semibold hover:underline"
             >
               Clear Search
             </button>
@@ -335,27 +333,19 @@ export default function MyTrips() {
 
         {/* Trips Grid */}
         {filteredTrips.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-md border border-cream-border p-12 text-center">
-            <div className="text-6xl mb-4">✈️</div>
-            <h3 className="text-xl font-bold text-brand-brown mb-2">No trips found</h3>
-            <p className="text-brand-russty mb-6">
+          <div className="bg-white rounded-lg p-12 text-center">
+            <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="font-semibold text-brand-brown mb-2">No trips found</h3>
+            <p className="text-gray-600 mb-4">
               {searchQuery ? "Try adjusting your search or filters" : "You haven't booked any trips yet"}
             </p>
             {!searchQuery && (
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button
-                  onClick={() => navigate('/plan-trip')}
-                  className="px-6 py-3 bg-brand-orange text-white rounded-lg font-semibold hover:bg-brand-orange/90 shadow-md hover:shadow-lg transition-all"
-                >
-                  🗺️ Plan a Trip
-                </button>
-                <button
-                  onClick={() => navigate('/packages')}
-                  className="px-6 py-3 bg-white text-brand-orange border-2 border-brand-orange rounded-lg font-semibold hover:bg-brand-orange hover:text-white transition-all"
-                >
-                  📦 Browse Packages
-                </button>
-              </div>
+              <button
+                onClick={() => navigate('/plan-trip')}
+                className="px-6 py-3 bg-brand-orange text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+              >
+                Plan Your First Trip
+              </button>
             )}
           </div>
         ) : (
@@ -366,13 +356,11 @@ export default function MyTrips() {
 
         {/* Newsletter CTA */}
         {filteredTrips.length > 0 && (
-          <div className="mt-8 bg-gradient-to-r from-brand-orange to-amber-500 text-white rounded-xl shadow-lg p-8 text-center">
-            <div className="w-12 h-12 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
-              <Mail className="w-6 h-6" />
-            </div>
+          <div className="mt-8 bg-gradient-to-r from-brand-orange to-orange-600 text-white rounded-lg p-8 text-center">
+            <Mail className="w-12 h-12 mx-auto mb-4 opacity-90" />
             <h3 className="text-2xl font-bold mb-2">Get Travel Inspiration</h3>
-            <p className="mb-6 text-white/90">Subscribe to our newsletter for exclusive deals and travel tips</p>
-            <button className="px-6 py-3 bg-white text-brand-orange rounded-lg font-semibold hover:bg-cream shadow-md hover:shadow-lg transition-all">
+            <p className="mb-4 opacity-90">Subscribe to our newsletter for exclusive deals and travel tips</p>
+            <button className="px-6 py-3 bg-white text-brand-orange rounded-lg font-semibold hover:bg-opacity-90 transition-colors">
               Subscribe Now
             </button>
           </div>

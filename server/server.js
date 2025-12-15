@@ -101,6 +101,15 @@ function snapshotMetrics(){
   try { fs.appendFileSync(AI_METRICS_HISTORY_FILE, JSON.stringify(snap)+"\n", 'utf8'); } catch{}
 }
 setInterval(snapshotMetrics, 10_000).unref();
+// Helper to sanitize values before logging to avoid log injection and noisy newlines
+function sanitizeLog(value, max = 1000){
+  if (value === undefined || value === null) return '';
+  let s = String(value);
+  // Collapse newlines which can be abused in logs
+  s = s.replace(/\r?\n+/g, ' ');
+  if (s.length > max) s = s.slice(0, max) + '...';
+  return s;
+}
 // Session objects now optionally include tokenHash for rudimentary scoping
 const aiSessions = {}; // id -> { id, prompt, tokenHash?, history: [{type:'parse'|'refine', data, instructions?, at}] }
 
@@ -416,7 +425,7 @@ app.post('/api/notifications/subscribe', (req, res) => {
 
     saveSubscriptions();
 
-    console.log(`[push] User ${userId} subscribed (${deviceType}, PWA: ${isPWA})`);
+    console.log('[push] User %s subscribed (device=%s, PWA=%s)', sanitizeLog(userId), sanitizeLog(deviceType), sanitizeLog(isPWA));
     
     return res.json({ 
       ok: true, 
@@ -425,7 +434,7 @@ app.post('/api/notifications/subscribe', (req, res) => {
       isPWA 
     });
   } catch (e) {
-    console.error('[push] Subscribe error:', e.message);
+    console.error('[push] Subscribe error: %s', sanitizeLog(e && e.message));
     return res.status(500).json({ error: 'subscribe_failed', message: e.message });
   }
 });
@@ -456,7 +465,7 @@ app.post('/api/notifications/unsubscribe', (req, res) => {
     saveSubscriptions();
 
     const removed = beforeCount - (pushSubscriptions[userId]?.length || 0);
-    console.log(`[push] User ${userId} unsubscribed (${removed} removed)`);
+    console.log('[push] User %s unsubscribed (%d removed)', sanitizeLog(userId), Number(removed));
 
     return res.json({ 
       ok: true, 
@@ -464,7 +473,7 @@ app.post('/api/notifications/unsubscribe', (req, res) => {
       remainingCount: pushSubscriptions[userId]?.length || 0
     });
   } catch (e) {
-    console.error('[push] Unsubscribe error:', e.message);
+    console.error('[push] Unsubscribe error: %s', sanitizeLog(e && e.message));
     return res.status(500).json({ error: 'unsubscribe_failed', message: e.message });
   }
 });
@@ -527,7 +536,7 @@ app.post('/api/notifications/send', authCheck, async (req, res) => {
           
           // Remove subscription if it's no longer valid (410 Gone or 404 Not Found)
           if (err.statusCode === 410 || err.statusCode === 404) {
-            console.log(`[push] Removing invalid subscription for user ${targetUserId}`);
+            console.log('[push] Removing invalid subscription for user %s', sanitizeLog(targetUserId));
             pushSubscriptions[targetUserId] = pushSubscriptions[targetUserId].filter(
               sub => sub.endpoint !== subscription.endpoint
             );
@@ -548,7 +557,7 @@ app.post('/api/notifications/send', authCheck, async (req, res) => {
 
     saveSubscriptions();
 
-    console.log(`[push] Sent notification to ${results.sent} devices (${results.failed} failed)`);
+    console.log('[push] Sent notification to %d devices (%d failed)', Number(results.sent), Number(results.failed));
 
     return res.json({
       ok: true,
@@ -557,7 +566,7 @@ app.post('/api/notifications/send', authCheck, async (req, res) => {
       errors: results.errors.length > 0 ? results.errors : undefined
     });
   } catch (e) {
-    console.error('[push] Send error:', e.message);
+    console.error('[push] Send error: %s', sanitizeLog(e && e.message));
     return res.status(500).json({ error: 'send_failed', message: e.message });
   }
 });
