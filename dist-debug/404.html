@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <noscript>
+      <h1>Page not found</h1>
+      <p>This is a single-page app. Please go to <a href="/">the homepage</a>.</p>
+    </noscript>
+    <script>
+      // SPA GitHub Pages redirect: preserve the original URL and send the user to '/'
+      // Then index.html will recover and push the intended route.
+      try {
+        sessionStorage.setItem('gh:redirect', window.location.pathname + window.location.search + window.location.hash);
+      } catch (_) {}
+      window.location.replace('/');
+    </script>
+  </body>
+  </html>

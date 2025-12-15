@@ -13,6 +13,7 @@ import pagesConfig from "./config/pages.json";
 import { useLocalStorageState } from "./useLocalStorageState";
 import { resolveTemplateForRoute } from "./data/pageTemplates";
 import OnboardingPermissions from "./components/OnboardingPermissions.jsx";
+import { prefetchRouteByPath } from "./utils/routePrefetch";
 
 const fallbackComponentKey = "WorkspacePage";
 const pageModules = import.meta.glob("./pages/*.jsx");
@@ -161,6 +162,11 @@ export default function App() {
         : setTimeout(cb, 800);
 
     idle(() => {
+      // Warm common routes by path (safe: no-op if route not found)
+      try {
+        ["/plan-trip", "/itinerary", "/ai", "/bookings"].forEach((p) => prefetchRouteByPath(p));
+      } catch {}
+      // Keep a couple of direct module warmups as before (fallback)
       import("./pages/Bookings.jsx");
       import("./pages/Itinerary.jsx");
     });

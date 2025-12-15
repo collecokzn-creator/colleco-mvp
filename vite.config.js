@@ -61,6 +61,10 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 600,
       cssCodeSplit: true,
       modulePreload: { polyfill: false },
+      esbuild: {
+        // Strip noisy consoles and debuggers in production bundles
+        drop: ['console', 'debugger']
+      },
       rollupOptions: {
         output: {
           // Basic chunking to keep vendor libs separate and shrink app chunks
