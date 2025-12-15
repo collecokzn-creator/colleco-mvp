@@ -12,6 +12,7 @@ export default function Navbar() {
 	const location = useLocation();
 	const { user, isPartner, isAdmin } = useUser();
 	const [showMobileSearch, setShowMobileSearch] = useState(false);
+	const [isLarge, setIsLarge] = useState(false);
 	const [loyaltyInfo, setLoyaltyInfo] = useState(null);
 	const mobileSearchRef = useRef(null);
 
@@ -38,6 +39,16 @@ export default function Navbar() {
 	useEffect(() => { 
 		setShowMobileSearch(false);
 	}, [location.pathname]);
+
+	// Track viewport >= lg (min-width: 1024px) to conditionally render desktop-only links
+	useEffect(() => {
+		if (typeof window === 'undefined' || !window.matchMedia) return;
+		const mq = window.matchMedia('(min-width: 1024px)');
+		const update = () => setIsLarge(mq.matches);
+		update();
+		mq.addEventListener('change', update);
+		return () => mq.removeEventListener('change', update);
+	}, []);
 
 	// Close on Esc
 	useEffect(() => {
@@ -95,9 +106,10 @@ export default function Navbar() {
 						<SearchBar integrated={true} />
 					</div>
 
-					{/* Action Buttons */}
-					<div className="hidden lg:flex items-center gap-4 ml-4">
-												{primaryLinks.map(l => {
+					{/* Action Buttons (render only on >= lg to avoid mobile DOM anchors) */}
+					{isLarge && (
+					<div className="flex items-center gap-4 ml-4">
+											{primaryLinks.map(l => {
 							const active = location.pathname.startsWith(l.to);
 							return (
 								<Link
@@ -112,6 +124,7 @@ export default function Navbar() {
 							);
 						})}
 					</div>
+					)}
 					<div className="flex items-center gap-3 ml-auto">
 						{/* Loyalty Widget */}
 						{loyaltyInfo && (

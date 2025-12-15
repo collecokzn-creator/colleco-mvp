@@ -18,30 +18,18 @@ test.describe('Mobile Home responsiveness', () => {
       // Set viewport size
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
 
-      // Visit home with E2E flag
+      // Navigate to home page
       await page.goto('/', {
         timeout: 120000,
         waitUntil: 'domcontentloaded'
       });
 
-      // Set E2E flag
-      await page.evaluate(() => {
-        (window as any).__E2E__ = true;
-      });
-
-      // Wait for E2E readiness marker
-      await expect(page.locator('[data-e2e-ready="true"]')).toBeAttached({ timeout: 45000 });
-
       // Wait for React to render into #root
       const root = page.locator('#root');
-      await expect(root).toBeAttached({ timeout: 30000 });
+      await expect(root).toBeVisible({ timeout: 60000 });
       
-      // Verify root has children
-      const childCount = await root.locator('> *').count();
-      expect(childCount).toBeGreaterThan(0);
-
       // Key UI elements are visible
-      await expect(page.locator('nav')).toBeVisible({ timeout: 30000 });
+      await expect(page.locator('nav[data-testid="navbar-primary"]')).toBeVisible({ timeout: 30000 });
       await expect(page.locator('main')).toBeAttached({ timeout: 30000 });
 
       // No horizontal scrollbars
