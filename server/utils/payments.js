@@ -195,14 +195,24 @@ function verifyYocoSignature(payload, signature) {
   const config = getPaymentConfig();
   const yoco = config.yoco;
 
-  if (!yoco.webhookSecret) return false;
+  if (!yoco.webhookSecret || !signature) return false;
 
   const expectedSignature = crypto
     .createHmac('sha256', yoco.webhookSecret)
     .update(payload)
     .digest('hex');
 
-  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature));
+  // Ensure both buffers are same length before timing-safe comparison
+  if (signature.length !== expectedSignature.length) {
+    return false;
+  }
+
+  try {
+    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature));
+  } catch (err) {
+    console.error('[payments] timingSafeEqual error:', err.message);
+    return false;
+  }
 }
 
 module.exports = {
