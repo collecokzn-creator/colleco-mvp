@@ -1,5 +1,8 @@
 // --- Sample Quote PDF Generator ---
-export function generateTestPDF() {
+export async function generateTestPDF() {
+  const { default: jsPDF } = await import("jspdf");
+  const { default: autoTable } = await import("jspdf-autotable");
+  
   const doc = new jsPDF();
 
   doc.setFontSize(18);
@@ -24,8 +27,6 @@ export function generateTestPDF() {
   doc.save("quote.pdf");
 }
 // (keep minimal and exported functions used by pages) // src/utils/pdfGenerators.js
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import { formatCurrency } from './currency';
 
 // Public path to the logo in the `public/assets` folder  
@@ -92,19 +93,26 @@ async function fetchImageDataUrl(url) {
 }
 
 export function generateMarketingFlyer(pkg = {}) {
-  const doc = new jsPDF();
-  doc.setFontSize(18);
-  doc.text(pkg.title || "CollEco Package", 20, 30);
-  doc.setFontSize(12);
-  doc.text(`Price: R${pkg.price || 0}`, 20, 45);
-  doc.text(`Ref: ${pkg.id || ""}`, 20, 55);
-  doc.save(`${(pkg.title || "package").replace(/\s+/g, "_")}_flyer.pdf`);
+  return import("jspdf").then(({ default: jsPDF }) => {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text(pkg.title || "CollEco Package", 20, 30);
+    doc.setFontSize(12);
+    doc.text(`Price: R${pkg.price || 0}`, 20, 45);
+    doc.text(`Ref: ${pkg.id || ""}`, 20, 55);
+    doc.save(`${(pkg.title || "package").replace(/\s+/g, "_")}_flyer.pdf`);
+  });
 }
 
 // Enhanced Quote PDF generator matching CollEco invoice template
 // Supports both legacy and structured formats
 // All fields are editable through the quote object
 export const generateQuotePdf = async (a, b, c, d) => {
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable")
+  ]);
+  
   const doc = new jsPDF();
 
   // Detect structured object form
@@ -487,6 +495,10 @@ export const generateQuotePdf = async (a, b, c, d) => {
 // a string like 'data:application/pdf;base64,...' or null on failure.
 export async function exportQuotePdfData(a) {
   try {
+    const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+      import("jspdf"),
+      import("jspdf-autotable")
+    ]);
     const doc = new jsPDF();
     const structured = typeof a === 'object' && a && Array.isArray(a.items);
 
@@ -574,6 +586,10 @@ export async function exportQuotePdfData(a) {
 }
 
 export const generateItineraryPdf = async (name, items, ref) => {
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable")
+  ]);
   const doc = new jsPDF();
   const safeName = name?.trim() || "Itinerary";
   
@@ -716,7 +732,11 @@ export const generateItineraryPdf = async (name, items, ref) => {
 
 // Invoice PDF generator
 // Accepts either structured invoice object or (name, items, ref)
-export const generateInvoicePdf = (a, b, c) => {
+export const generateInvoicePdf = async (a, b, c) => {
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable")
+  ]);
   const doc = new jsPDF();
   const structured = typeof a === 'object' && a && Array.isArray(a.items);
 

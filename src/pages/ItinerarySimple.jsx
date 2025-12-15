@@ -3,7 +3,6 @@ import ItineraryDay from "../components/ui/ItineraryDay";
 import ExperienceCard from "../components/ui/ExperienceCard";
 import MemoryNote from "../components/ui/MemoryNote";
 import LiveTripProgress from "../components/ui/LiveTripProgress";
-import jsPDF from "jspdf";
 import { useTripState, setMemory, computeProgress } from "../utils/useTripState";
 import { useBasketState } from "../utils/useBasketState";
 import { useLocalStorageState } from "../useLocalStorageState";
@@ -103,7 +102,8 @@ export default function Itinerary() {
   }
 
   // Export to PDF
-  function handleExport() {
+  async function handleExport() {
+    const { default: jsPDF } = await import("jspdf");
     const doc = new jsPDF();
     doc.setFontSize(18);
     doc.text("Your CollEco Itinerary", 14, 20);

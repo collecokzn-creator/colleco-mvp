@@ -25,5 +25,23 @@
       "itinerary": []
     },
     "createdAt": 1765712318294
+  },
+  "jyhq88lwwjpmj6u40ze": {
+    "id": "jyhq88lwwjpmj6u40ze",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765783847931
+  },
+  "xiorz1yihymj6u69f6": {
+    "id": "xiorz1yihymj6u69f6",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1765783952178
   }
 }

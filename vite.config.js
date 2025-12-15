@@ -55,6 +55,23 @@ export default defineConfig(({ mode }) => {
           ws: true,
         }
       }
+    },
+    build: {
+      // Raise the warning threshold slightly; keep guardrails
+      chunkSizeWarningLimit: 600,
+      rollupOptions: {
+        output: {
+          // Basic chunking to keep vendor libs separate and shrink app chunks
+          manualChunks: {
+            react: ['react', 'react-dom'],
+            motion: ['framer-motion'],
+            icons: ['lucide-react'],
+            pdf: ['jspdf'],
+            canvas: ['html2canvas'],
+            dompurify: ['dompurify'],
+          },
+        },
+      },
     }
   }
 })

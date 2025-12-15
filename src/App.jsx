@@ -151,7 +151,8 @@ const NotFoundElement = (
 
 export default function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [activeRole] = useLocalStorageState("colleco.sidebar.role", null);
+  // Align default role with Sidebar to avoid initial guard redirect races
+  const [activeRole] = useLocalStorageState("colleco.sidebar.role", "admin");
 
   useEffect(() => {
     const idle = (cb) =>
