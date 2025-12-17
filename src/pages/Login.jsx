@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Button from "../components/ui/Button.jsx";
 import { useNavigate } from "react-router-dom";
@@ -276,40 +275,46 @@ function Login() {
   }
 
   function handleLegalConsentAccept(consentRecord) {
-    if (!pendingUserData) return;
-
     const { user, identifier } = pendingUserData;
-    
     // Add consent record to user data
     user.legalConsent = consentRecord;
-    
     localStorage.setItem("user:" + identifier, JSON.stringify(user));
-    
     // remember chosen persistence and biometrics for subsequent login
     try { localStorage.setItem('user:persistence', keepLoggedIn ? 'local' : 'session'); } catch (e) {}
     try { localStorage.setItem('user:biometrics', useBiometrics ? '1' : '0'); } catch (e) {}
-    
     setShowLegalConsent(false);
     setPendingUserData(null);
-    setSuccess("Registration successful! Redirecting to home...");
-    
-    // Auto-login after registration
-    setUser(user);
-    
-    // E2E support
-    try {
-      if (typeof window !== 'undefined' && window.__E2E__) {
-        window.__E2E_USER__ = user;
-        window.__E2E_PROFILE_LOADED__ = true;
-        if (keepLoggedIn) {
-          localStorage.setItem('user', JSON.stringify(user));
-        } else {
-          sessionStorage.setItem('user', JSON.stringify(user));
+    if (user.role === "partner") {
+      setSuccess("Registration successful! Redirecting to onboarding...");
+      setUser(user);
+      try {
+        if (typeof window !== 'undefined' && window.__E2E__) {
+          window.__E2E_USER__ = user;
+          window.__E2E_PROFILE_LOADED__ = true;
+          if (keepLoggedIn) {
+            localStorage.setItem('user', JSON.stringify(user));
+          } else {
+            sessionStorage.setItem('user', JSON.stringify(user));
+          }
         }
-      }
-    } catch (e) {}
-    
-    setTimeout(() => navigate("/"), 800);
+      } catch (e) {}
+      setTimeout(() => navigate("/partner/onboarding"), 800);
+    } else {
+      setSuccess("Registration successful! Redirecting to home...");
+      setUser(user);
+      try {
+        if (typeof window !== 'undefined' && window.__E2E__) {
+          window.__E2E_USER__ = user;
+          window.__E2E_PROFILE_LOADED__ = true;
+          if (keepLoggedIn) {
+            localStorage.setItem('user', JSON.stringify(user));
+          } else {
+            sessionStorage.setItem('user', JSON.stringify(user));
+          }
+        }
+      } catch (e) {}
+      setTimeout(() => navigate("/"), 800);
+    }
   }
 
   function handleLegalConsentDecline() {
