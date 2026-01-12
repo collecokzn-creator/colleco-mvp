@@ -195,6 +195,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
     
     // Hide Zola during calls (persist for cross-tab) and notify other components
     localStorage.setItem('colleco.activeCall', 'true');
+    try { localStorage.setItem('colleco.activeCallStartedAt', String(Date.now())); } catch {}
     try {
       window.dispatchEvent(new CustomEvent('colleco:call-start', { detail: { callId: newCallId } }));
     } catch (e) {
@@ -247,7 +248,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
     
     // Show Zola again after call ends (persist change + notify listeners)
     const _currentCallId = callId;
-    localStorage.removeItem('colleco.activeCall');
+    try { localStorage.removeItem('colleco.activeCall'); } catch {}
+    try { localStorage.removeItem('colleco.activeCallStartedAt'); } catch {}
     try {
       window.dispatchEvent(new CustomEvent('colleco:call-end', { detail: { callId: _currentCallId } }));
     } catch (e) {

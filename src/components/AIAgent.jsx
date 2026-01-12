@@ -67,8 +67,29 @@ export default function AIAgent() {
   
   useEffect(() => {
     const checkCallStatus = () => {
-      const activeCall = localStorage.getItem('colleco.activeCall');
-      setIsCallActive(activeCall === 'true');
+      try {
+        const activeCall = localStorage.getItem('colleco.activeCall');
+        if (activeCall === 'true') {
+          // If there's a start timestamp, check staleness to avoid permanent hiding from crashes
+          const startedAt = Number(localStorage.getItem('colleco.activeCallStartedAt')) || 0;
+          const ageMs = Date.now() - startedAt;
+          const STALE_MS = 1000 * 60 * 10; // 10 minutes
+          if (!startedAt || ageMs > STALE_MS) {
+            // stale or missing timestamp — clear and treat as not active
+            try { localStorage.removeItem('colleco.activeCall'); } catch {}
+            try { localStorage.removeItem('colleco.activeCallStartedAt'); } catch {}
+            setIsCallActive(false);
+            return;
+          }
+          setIsCallActive(true);
+        } else {
+          setIsCallActive(false);
+        }
+      } catch (err) {
+        // on any error, fallback to visible
+        try { console.debug('AIAgent: error reading activeCall', err); } catch {}
+        setIsCallActive(false);
+      }
     };
     
     // Check initially
