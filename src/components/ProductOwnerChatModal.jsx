@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';import { motion } from 'framer-motion';import {
   MessageSquare, Phone, Video, Search, BellOff, Bell,
   Shield, Lock, UserPlus, UserMinus, UserCheck, AlertCircle,
-  Mic, MicOff, VideoIcon, VideoOff,
-  Heart, ThumbsUp, Laugh, PartyPopper, Sparkles, Flame
+  Mic, MicOff, VideoIcon, VideoOff, Heart
 } from 'lucide-react';
 import { ensureThread, ROLES, CHANNELS, loadThreads, saveThreads } from '../utils/collabStore.js';
 
@@ -15,7 +14,7 @@ const MOCK_CONTACTS = [
   { id: 'contact-5', name: 'Lisa Martinez', role: ROLES.productOwner, company: 'Luxury Tours', avatar: 'LM', status: 'offline', lastSeen: '1 day ago' }
 ];
 
-export default function ProductOwnerChatModal({ bookingId, clientName, productOwnerName, onClose }) {
+export default function ProductOwnerChatModal({ bookingId, clientName, _productOwnerName, _onClose }) {
   // Open/Close State
   const [open, setOpen] = useState(false);
   
@@ -160,7 +159,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
     setShowInviteModal(false);
   }
 
-  function handleJoinRequest(contactId, approve) {
+  function _handleJoinRequest(contactId, approve) {
     if (!isCallHost) return;
     
     const request = joinRequests.find(r => r.id === contactId);

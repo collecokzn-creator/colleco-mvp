@@ -102,7 +102,7 @@ export default function WeatherWidget({ city, country }){
       {data && !showExtended && (
         <div className="p-4 sm:p-5 bg-white/50 backdrop-blur-sm">
           <div className="flex overflow-x-auto gap-2 sm:gap-3 pb-2 scrollbar-hide">
-            {data.forecast.slice(0, 5).map((f, idx) => {
+            {data.forecast.slice(0, 5).map((f, _idx) => {
               const date = new Date(f.date);
               const isToday = date.toDateString() === new Date().toDateString();
               const dayName = isToday ? 'Today' : date.toLocaleDateString(undefined, { weekday: 'short' });
@@ -153,7 +153,7 @@ export default function WeatherWidget({ city, country }){
             7-Day Detailed Forecast
           </h4>
           <div className="space-y-3">
-            {data.forecast.map((f, idx) => {
+            {data.forecast.map((f, _idx) => {
               const date = new Date(f.date);
               const dayName = date.toLocaleDateString(undefined, { weekday: 'long' });
               const dateStr = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
