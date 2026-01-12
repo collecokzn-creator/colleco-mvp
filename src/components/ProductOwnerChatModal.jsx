@@ -584,27 +584,41 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                   </button>
                   
                   {showReactions && (
-                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-full px-3 py-2 flex gap-2 shadow-lg">
-                      {[
-                        { emoji: '❤️', label: 'Heart', icon: Heart },
-                        { emoji: '👍', label: 'Thumbs up', icon: ThumbsUp },
-                        { emoji: '😂', label: 'Laugh', icon: Laugh },
-                        { emoji: '🎉', label: 'Party', icon: PartyPopper },
-                        { emoji: '✨', label: 'Sparkles', icon: Sparkles },
-                        { emoji: '🔥', label: 'Fire', icon: Flame }
-                      ].map(({ emoji, label }) => (
-                        <button
-                          key={emoji}
-                          className="text-2xl hover:scale-125 transition-transform"
-                          onClick={() => {
-                            sendReaction(emoji, label);
-                            setShowReactions(false);
-                          }}
-                          title={label}
-                        >
-                          {emoji}
-                        </button>
-                      ))}
+                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-4 py-3 shadow-2xl border border-gray-200">
+                      <div className="grid grid-cols-6 gap-2">
+                        {[
+                          { emoji: '👍', label: 'Thumbs up' },
+                          { emoji: '❤️', label: 'Love' },
+                          { emoji: '👏', label: 'Applause' },
+                          { emoji: '✅', label: 'Agree' },
+                          { emoji: '🎉', label: 'Celebrate' },
+                          { emoji: '💯', label: 'Perfect' },
+                          { emoji: '✈️', label: 'Flight' },
+                          { emoji: '🌍', label: 'Travel' },
+                          { emoji: '🏨', label: 'Hotel' },
+                          { emoji: '🚗', label: 'Car' },
+                          { emoji: '⭐', label: 'Star' },
+                          { emoji: '😊', label: 'Happy' },
+                          { emoji: '🤔', label: 'Thinking' },
+                          { emoji: '👋', label: 'Wave' },
+                          { emoji: '💪', label: 'Strong' },
+                          { emoji: '🔥', label: 'Fire' },
+                          { emoji: '😂', label: 'Laugh' },
+                          { emoji: '✨', label: 'Sparkles' }
+                        ].map(({ emoji, label }) => (
+                          <button
+                            key={emoji}
+                            className="text-2xl hover:scale-125 transition-transform p-1 rounded hover:bg-gray-100"
+                            onClick={() => {
+                              sendReaction(emoji, label);
+                              setShowReactions(false);
+                            }}
+                            title={label}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
