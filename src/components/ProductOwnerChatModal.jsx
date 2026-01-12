@@ -459,7 +459,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
         {/* Call Modal */}
         {showCallModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-cream-beige via-cream-sand to-brand-orange/30 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-cream-beige via-cream-sand to-brand-orange">
           <div className="w-full max-w-4xl p-8 text-brand-brown relative">
             {/* Security Banner */}
             {callStatus === 'connected' && (
