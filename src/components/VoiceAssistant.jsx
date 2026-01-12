@@ -103,7 +103,7 @@ export default function VoiceAssistant() {
 
       {/* Conversation panel */}
       {isOpen && (
-        <div className="fixed bottom-[6.5rem] sm:bottom-24 right-4 sm:right-6 z-50 w-96 max-h-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
+        <div className="fixed bottom-[6.5rem] sm:bottom-24 right-4 sm:right-6 z-50 w-[min(24rem,92vw)] max-h-[min(600px,70vh)] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-brand-orange to-orange-600">
             <div className="flex items-center gap-2">

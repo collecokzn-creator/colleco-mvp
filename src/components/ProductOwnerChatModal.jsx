@@ -51,6 +51,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   // Reactions State
   const [showReactions, setShowReactions] = useState(false);
   const [floatingReactions, setFloatingReactions] = useState([]);
+  const [showContactList, setShowContactList] = useState(false);
   
   const [_thread, setThread] = useState(null);
   const [receipts, setReceipts] = useState({});
@@ -214,13 +215,13 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   };
 
   return (
-    <div className="fixed bottom-0 right-0 z-toast pointer-events-none">
-      <div className="fixed right-4 sm:right-6 bottom-20 sm:bottom-6 pointer-events-auto">
+    <div className="fixed inset-0 z-toast pointer-events-none">
+      <div className="fixed inset-x-0 sm:inset-x-auto sm:right-4 md:right-6 bottom-0 sm:bottom-20 md:bottom-6 pointer-events-auto">
       {open ? (
         <>
-        <div className="bg-white rounded-2xl shadow-2xl border border-cream-border/80 w-[95vw] sm:w-[600px] lg:w-[800px] h-[80vh] sm:h-[600px] flex relative">
-          {/* Contact List Sidebar */}
-          <div className="w-80 border-r border-cream-border flex flex-col bg-cream-sand">
+        <div className="bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex relative">
+          {/* Contact List Sidebar - Hidden on mobile, toggleable */}
+          <div className={`${showContactList ? 'absolute inset-0 z-10' : 'hidden'} sm:block sm:relative sm:w-64 md:w-80 border-r border-cream-border flex flex-col bg-cream-sand`}>
             {/* Header */}
             <div className="p-4 border-b border-cream-border">
               <div className="flex items-center justify-between mb-3">
@@ -228,7 +229,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                   <MessageSquare className="w-5 h-5" />
                   Contacts
                 </h3>
-                <button className="text-brand-brown hover:text-brand-orange" onClick={() => setOpen(false)}>✕</button>
+                <div className="flex items-center gap-2">
+                  <button className="sm:hidden text-brand-brown hover:text-brand-orange text-sm" onClick={() => setShowContactList(false)}>Back</button>
+                  <button className="text-brand-brown hover:text-brand-orange" onClick={() => setOpen(false)}>✕</button>
+                </div>
               </div>
               
               {/* Search */}
@@ -291,13 +295,20 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
               <>
                 {/* Chat Header */}
                 <div className="p-4 border-b border-cream-border bg-white flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-brand-orange text-white flex items-center justify-center font-semibold">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <button 
+                      className="sm:hidden flex-shrink-0 p-2 hover:bg-cream-hover rounded-lg transition-colors"
+                      onClick={() => setShowContactList(true)}
+                      aria-label="Show contacts"
+                    >
+                      <MessageSquare className="w-5 h-5 text-brand-orange" />
+                    </button>
+                    <div className="w-10 h-10 rounded-full bg-brand-orange text-white flex items-center justify-center font-semibold flex-shrink-0">
                       {selectedContact.avatar}
                     </div>
-                    <div>
-                      <div className="font-semibold text-brand-brown">{selectedContact.name}</div>
-                      <div className="text-xs text-brand-brown/60">{selectedContact.company}</div>
+                    <div className="min-w-0">
+                      <div className="font-semibold text-brand-brown truncate">{selectedContact.name}</div>
+                      <div className="text-xs text-brand-brown/60 truncate">{selectedContact.company}</div>
                     </div>
                   </div>
                   

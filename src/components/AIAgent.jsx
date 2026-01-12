@@ -218,7 +218,7 @@ export default function AIAgent() {
         onDragEnd={handleDragEnd}
       >
       {open ? (
-        <motion.div className="w-80 bg-surface rounded-2xl shadow-2xl border border-cream-border/80 overflow-hidden" initial={{ scale: 0.98 }} animate={{ scale: 1 }}>
+        <motion.div className="w-[min(20rem,92vw)] bg-surface rounded-2xl shadow-2xl border border-cream-border/80 overflow-hidden" initial={{ scale: 0.98 }} animate={{ scale: 1 }}>
           <div className="flex items-center gap-3 bg-white px-4 py-2.5 font-bold border-b border-cream-border">
             <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange/10">
               <img src={logoPng} alt="CollEco" className="h-6 w-6" />
