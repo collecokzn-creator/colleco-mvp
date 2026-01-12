@@ -69,22 +69,23 @@ export default function AIAgent() {
     const checkCallStatus = () => {
       try {
         const activeCall = localStorage.getItem('colleco.activeCall');
-        if (activeCall === 'true') {
-          // If there's a start timestamp, check staleness to avoid permanent hiding from crashes
-          const startedAt = Number(localStorage.getItem('colleco.activeCallStartedAt')) || 0;
-          const ageMs = Date.now() - startedAt;
-          const STALE_MS = 1000 * 60 * 10; // 10 minutes
-          if (!startedAt || ageMs > STALE_MS) {
-            // stale or missing timestamp — clear and treat as not active
-            try { localStorage.removeItem('colleco.activeCall'); } catch {}
-            try { localStorage.removeItem('colleco.activeCallStartedAt'); } catch {}
-            setIsCallActive(false);
-            return;
-          }
-          setIsCallActive(true);
-        } else {
-          setIsCallActive(false);
+        const startedAt = Number(localStorage.getItem('colleco.activeCallStartedAt')) || 0;
+        const ageMs = Date.now() - startedAt;
+        
+        // Only hide Zola if activeCall is true AND timestamp is recent (within 30 seconds)
+        // This prevents stale flags from hiding Zola permanently
+        const RECENT_MS = 1000 * 30; // 30 seconds
+        const isRecentCall = activeCall === 'true' && startedAt > 0 && ageMs < RECENT_MS;
+        
+        try { console.debug('AIAgent: checkCallStatus activeCall=%s age=%dms isRecent=%s', activeCall, ageMs, isRecentCall); } catch {}
+        
+        if (!isRecentCall && activeCall === 'true') {
+          // stale flag — clean up and show Zola
+          try { localStorage.removeItem('colleco.activeCall'); } catch {}
+          try { localStorage.removeItem('colleco.activeCallStartedAt'); } catch {}
         }
+        
+        setIsCallActive(isRecentCall);
       } catch (err) {
         // on any error, fallback to visible
         try { console.debug('AIAgent: error reading activeCall', err); } catch {}
