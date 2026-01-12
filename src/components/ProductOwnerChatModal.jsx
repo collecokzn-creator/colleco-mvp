@@ -534,38 +534,38 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
 
             {/* Call Controls */}
             {callStatus === 'connected' && (
-              <div className="flex justify-center gap-4">
+              <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap px-4">
                 {/* Audio Toggle */}
                 <button
-                  className={`p-4 rounded-full transition-colors ${
+                  className={`p-3 sm:p-4 rounded-full transition-colors ${
                     isAudioEnabled ? 'bg-white/20 hover:bg-white/30' : 'bg-red-500 hover:bg-red-600'
                   }`}
                   onClick={() => setIsAudioEnabled(!isAudioEnabled)}
                   title={isAudioEnabled ? 'Mute' : 'Unmute'}
                 >
-                  {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+                  {isAudioEnabled ? <Mic className="w-5 h-5 sm:w-6 sm:h-6" /> : <MicOff className="w-5 h-5 sm:w-6 sm:h-6" />}
                 </button>
 
                 {/* Video Toggle (for video calls) */}
                 {showCallModal === 'video' && (
                   <button
-                    className={`p-4 rounded-full transition-colors ${
+                    className={`p-3 sm:p-4 rounded-full transition-colors ${
                       isVideoEnabled ? 'bg-white/20 hover:bg-white/30' : 'bg-red-500 hover:bg-red-600'
                     }`}
                     onClick={() => setIsVideoEnabled(!isVideoEnabled)}
                     title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
                   >
-                    {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+                    {isVideoEnabled ? <VideoIcon className="w-5 h-5 sm:w-6 sm:h-6" /> : <VideoOff className="w-5 h-5 sm:w-6 sm:h-6" />}
                   </button>
                 )}
 
                 {/* In-Call Chat Toggle */}
                 <button
-                  className="p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors relative"
+                  className="p-3 sm:p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors relative"
                   onClick={() => setShowInCallChat(!showInCallChat)}
                   title="Chat during call"
                 >
-                  <MessageSquare className="w-6 h-6" />
+                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />
                   {messages.length > 0 && (
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">
                       {messages.length}
@@ -576,11 +576,11 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                 {/* Reactions */}
                 <div className="relative">
                   <button
-                    className="p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                    className="p-3 sm:p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
                     onClick={() => setShowReactions(!showReactions)}
                     title="Send reaction"
                   >
-                    <Heart className="w-6 h-6" />
+                    <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                   
                   {showReactions && (
@@ -612,21 +612,21 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                 {/* Invite (host only) */}
                 {isCallHost && (
                   <button
-                    className="p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                    className="p-3 sm:p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
                     onClick={() => setShowInviteModal(true)}
                     title="Invite to call"
                   >
-                    <UserPlus className="w-6 h-6" />
+                    <UserPlus className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                 )}
 
                 {/* End Call */}
                 <button
-                  className="p-4 rounded-full bg-red-500 hover:bg-red-600 transition-colors"
+                  className="p-3 sm:p-4 rounded-full bg-red-500 hover:bg-red-600 transition-colors"
                   onClick={endCall}
                   title="End call"
                 >
-                  <Phone className="w-6 h-6 transform rotate-135" />
+                  <Phone className="w-5 h-5 sm:w-6 sm:h-6 transform rotate-135" />
                 </button>
               </div>
             )}
