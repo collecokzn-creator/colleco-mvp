@@ -545,100 +545,105 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
         {/* Fullscreen Call Overlay */}
         {showCallModal && isFullscreen && callStatus === 'connected' && (
           <div className="fixed inset-0 z-[120] bg-black flex flex-col items-center justify-center">
-            {showCallModal === 'video' && isVideoEnabled ? (
-              <div className="w-full h-full bg-black flex items-center justify-center relative">
+            <div className="w-full h-full bg-black flex flex-col items-center justify-center relative">
+              {showCallModal === 'video' && isVideoEnabled ? (
                 <div className="text-center text-white/60">
                   <Video className="w-24 h-24 mx-auto mb-4 opacity-50" />
                   <div className="text-lg opacity-50">Video feed placeholder</div>
                 </div>
-                
-                {/* Video Controls Toolbar - Top */}
-                <div className="absolute top-3 left-3 flex gap-2">
-                  <button
-                    className={`p-2 rounded-lg transition-colors shadow-md ${
-                      backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                    }`}
-                    onClick={() => setBackgroundBlur(!backgroundBlur)}
-                    title="Blur background"
-                  >
-                    <ImageIcon className="w-4 h-4" />
-                  </button>
-                  <button
-                    className={`p-2 rounded-lg transition-colors shadow-md ${
-                      showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                    }`}
-                    onClick={() => setShowTranscription(!showTranscription)}
-                    title="Toggle captions"
-                  >
-                    <Subtitles className="w-4 h-4" />
-                  </button>
-                  <button
-                    className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
-                    onClick={() => setIsPiPMode(!isPiPMode)}
-                    title="Picture-in-Picture"
-                  >
-                    <PictureInPicture className="w-4 h-4" />
-                  </button>
-                  <button
-                    className={`p-2 rounded-lg transition-colors shadow-md ${
-                      showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                    }`}
-                    onClick={() => setShowLocationShare(!showLocationShare)}
-                    title="Share location"
-                  >
-                    <MapPin className="w-4 h-4" />
-                  </button>
+              ) : (
+                <div className="text-center text-white flex flex-col items-center">
+                  <div className="text-9xl mb-6 opacity-80">{selectedContact?.avatar}</div>
+                  <h3 className="text-2xl font-bold mb-2">{selectedContact?.name}</h3>
+                  <p className="text-white/60">Video disabled · Call active</p>
+                  <p className="text-white/40 text-sm mt-4">{formatCallDuration(callDuration)}</p>
                 </div>
-
-                {/* Recording Indicator */}
-                {isRecording && (
-                  <div className="absolute top-3 right-3 px-3 py-1.5 bg-red-500 text-white rounded-full flex items-center gap-2 animate-pulse">
-                    <Disc className="w-3 h-3 fill-white" />
-                    <span className="text-xs font-semibold">REC {Math.floor(recordingDuration / 60)}:{String(recordingDuration % 60).padStart(2, '0')}</span>
-                  </div>
-                )}
-
-                {/* Exit Fullscreen Button */}
+              )}
+              
+              {/* Video Controls Toolbar - Top */}
+              <div className="absolute top-3 left-3 flex gap-2">
                 <button
-                  className="absolute top-3 right-3 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
-                  onClick={() => setIsFullscreen(false)}
-                  title="Exit fullscreen"
+                  className={`p-2 rounded-lg transition-colors shadow-md ${
+                    backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                  }`}
+                  onClick={() => setBackgroundBlur(!backgroundBlur)}
+                  title="Blur background"
                 >
-                  <Minimize className="w-5 h-5" />
+                  <ImageIcon className="w-4 h-4" />
                 </button>
-
-                {/* Call Controls - Bottom */}
-                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex justify-center gap-3 md:gap-4">
-                  <button
-                    className={`p-4 rounded-full transition-colors shadow-lg ${
-                      isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
-                    }`}
-                    onClick={() => setIsAudioEnabled(!isAudioEnabled)}
-                    title={isAudioEnabled ? 'Mute' : 'Unmute'}
-                  >
-                    {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
-                  </button>
-                  <button
-                    className={`p-4 rounded-full transition-colors shadow-lg ${
-                      isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
-                    }`}
-                    onClick={() => setIsVideoEnabled(!isVideoEnabled)}
-                    title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
-                  >
-                    {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
-                  </button>
-                  <button
-                    className="p-4 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg"
-                    onClick={endCall}
-                    title="End call"
-                  >
-                    <PhoneOff className="w-6 h-6" />
-                  </button>
-                </div>
+                <button
+                  className={`p-2 rounded-lg transition-colors shadow-md ${
+                    showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                  }`}
+                  onClick={() => setShowTranscription(!showTranscription)}
+                  title="Toggle captions"
+                >
+                  <Subtitles className="w-4 h-4" />
+                </button>
+                <button
+                  className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
+                  onClick={() => setIsPiPMode(!isPiPMode)}
+                  title="Picture-in-Picture"
+                >
+                  <PictureInPicture className="w-4 h-4" />
+                </button>
+                <button
+                  className={`p-2 rounded-lg transition-colors shadow-md ${
+                    showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                  }`}
+                  onClick={() => setShowLocationShare(!showLocationShare)}
+                  title="Share location"
+                >
+                  <MapPin className="w-4 h-4" />
+                </button>
               </div>
-            ) : (
-              <div className="text-7xl text-white/30">{selectedContact?.avatar}</div>
-            )}
+
+              {/* Recording Indicator */}
+              {isRecording && (
+                <div className="absolute top-3 right-3 px-3 py-1.5 bg-red-500 text-white rounded-full flex items-center gap-2 animate-pulse">
+                  <Disc className="w-3 h-3 fill-white" />
+                  <span className="text-xs font-semibold">REC {Math.floor(recordingDuration / 60)}:{String(recordingDuration % 60).padStart(2, '0')}</span>
+                </div>
+              )}
+
+              {/* Exit Fullscreen Button */}
+              <button
+                className="absolute top-3 right-3 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
+                onClick={() => setIsFullscreen(false)}
+                title="Exit fullscreen"
+              >
+                <Minimize className="w-5 h-5" />
+              </button>
+
+              {/* Call Controls - Bottom */}
+              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex justify-center gap-3 md:gap-4">
+                <button
+                  className={`p-4 rounded-full transition-colors shadow-lg border-2 ${
+                    isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown border-white' : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
+                  }`}
+                  onClick={() => setIsAudioEnabled(!isAudioEnabled)}
+                  title={isAudioEnabled ? 'Mute' : 'Unmute'}
+                >
+                  {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+                </button>
+                <button
+                  className={`p-4 rounded-full transition-colors shadow-lg border-2 ${
+                    isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown border-white' : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
+                  }`}
+                  onClick={() => setIsVideoEnabled(!isVideoEnabled)}
+                  title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
+                >
+                  {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+                </button>
+                <button
+                  className="p-4 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg border-2 border-red-600"
+                  onClick={endCall}
+                  title="End call"
+                >
+                  <PhoneOff className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -771,7 +776,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                       </button>
                     </div>
                   ) : (
-                    <div className="text-7xl mb-4">{selectedContact?.avatar}</div>
+                    <div className="text-center mb-4">
+                      <div className="text-7xl mb-4 text-brand-brown/70">{selectedContact?.avatar}</div>
+                      <p className="text-sm text-brand-brown/60">Video disabled</p>
+                    </div>
                   )}
                   
                   {!isFullscreen && (
