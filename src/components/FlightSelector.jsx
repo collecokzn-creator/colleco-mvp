@@ -326,32 +326,32 @@ export default function FlightSelector({
   const airlines = [...new Set(flights.map(f => f.airline.name))];
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-modal flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 bg-black/50 z-modal flex items-center justify-center p-0 sm:p-4">
+      <div className="bg-white sm:rounded-xl shadow-2xl max-w-6xl w-full h-full sm:h-auto sm:max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="p-3 sm:p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
-          <h2 className="text-2xl font-bold text-white mb-2">Pick My Flight</h2>
-          <p className="text-white/90 text-sm">
+        <div className="p-4 sm:p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">Pick My Flight</h2>
+          <p className="text-white/90 text-xs sm:text-sm">
             {from} → {to} • {passengers} passenger{passengers !== 1 ? 's' : ''} • {departDate}
             {returnDate && ` - ${returnDate}`}
           </p>
         </div>
 
         {/* Filters & Controls */}
-        <div className="p-4 border-b bg-gray-50 space-y-4">
+        <div className="p-3 sm:p-4 border-b bg-gray-50 space-y-3 overflow-x-hidden">
           {/* Smart Actions */}
           <div className="flex flex-wrap gap-2">
             <button
               onClick={autoPickBestFlight}
-              className="px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2 text-sm font-medium"
+              className="px-3 sm:px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2 text-xs sm:text-sm font-medium"
             >
-              <Award className="h-4 w-4" />
+              <Award className="h-3 sm:h-4 w-3 sm:w-4" />
               Auto Smart Pick
             </button>
           </div>
 
-          {/* Preference Filters */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          {/* Preference Filters - Hide on mobile by default, show via toggle */}
+          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">
                 Airline
@@ -359,7 +359,7 @@ export default function FlightSelector({
               <select
                 value={preferredAirline}
                 onChange={(e) => setPreferredAirline(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
+                className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
               >
                 <option value="">Any Airline</option>
                 {airlines.map(airline => (
@@ -375,7 +375,7 @@ export default function FlightSelector({
               <select
                 value={preferredCabin}
                 onChange={(e) => setPreferredCabin(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
+                className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
               >
                 <option value="">Any Class</option>
                 <option value="economy">Economy</option>
@@ -392,7 +392,7 @@ export default function FlightSelector({
               <select
                 value={maxStops}
                 onChange={(e) => setMaxStops(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
+                className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
               >
                 <option value="3">Any</option>
                 <option value="0">Direct Only</option>
@@ -403,13 +403,13 @@ export default function FlightSelector({
 
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">
-                Required Amenities
+                Amenities
               </label>
               <select
                 multiple
                 value={requiredAmenities}
                 onChange={(e) => setRequiredAmenities(Array.from(e.target.selectedOptions, option => option.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
+                className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
                 size={3}
               >
                 <option value="WiFi">WiFi</option>
@@ -421,13 +421,13 @@ export default function FlightSelector({
           </div>
 
           {/* Filter & Sort */}
-          <div className="flex flex-wrap gap-3 items-center">
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-gray-500" />
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center">
+            <div className="flex items-center gap-2 flex-1">
+              <Filter className="h-4 w-4 text-gray-500 flex-shrink-0" />
               <select
                 value={filterBy}
                 onChange={(e) => setFilterBy(e.target.value)}
-                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
+                className="flex-1 sm:flex-initial px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:border-brand-orange focus:outline-none"
               >
                 <option value="all">All Flights</option>
                 <option value="favorites">Favorites</option>
@@ -438,12 +438,12 @@ export default function FlightSelector({
               </select>
             </div>
 
-            <div className="flex items-center gap-2">
-              <ArrowUpDown className="h-4 w-4 text-gray-500" />
+            <div className="flex items-center gap-2 flex-1">
+              <ArrowUpDown className="h-4 w-4 text-gray-500 flex-shrink-0" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:border-brand-orange focus:outline-none"
+                className="flex-1 sm:flex-initial px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:border-brand-orange focus:outline-none"
               >
                 <option value="recommended">Recommended</option>
                 <option value="price_low">Price: Low to High</option>
@@ -453,33 +453,33 @@ export default function FlightSelector({
               </select>
             </div>
 
-            <span className="text-sm text-gray-600 ml-auto">
+            <span className="text-xs sm:text-sm text-gray-600 sm:ml-auto text-center">
               {filteredFlights.length} flight{filteredFlights.length !== 1 ? 's' : ''} available
             </span>
           </div>
         </div>
 
         {/* Flights List */}
-        <div className="flex-1 overflow-y-auto p-4 relative" ref={scrollContainerRef}>
-          {/* Scroll Up Button */}
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 relative" ref={scrollContainerRef}>
+          {/* Scroll Up Button - Hidden on small mobile */}
           {canScrollLeft && (
             <button
               onClick={scrollUp}
-              className="fixed top-1/2 left-4 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors border-2 border-gray-200"
+              className="hidden sm:block absolute top-4 right-4 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors border-2 border-gray-200"
               aria-label="Scroll up"
             >
-              <ChevronLeft className="h-6 w-6 text-brand-orange rotate-90" />
+              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 text-brand-orange rotate-90" />
             </button>
           )}
 
-          {/* Scroll Down Button */}
+          {/* Scroll Down Button - Hidden on small mobile */}
           {canScrollRight && (
             <button
               onClick={scrollDown}
-              className="fixed bottom-32 left-4 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors border-2 border-gray-200"
+              className="hidden sm:block absolute bottom-4 right-4 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors border-2 border-gray-200"
               aria-label="Scroll down"
             >
-              <ChevronRight className="h-6 w-6 text-brand-orange rotate-90" />
+              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 text-brand-orange rotate-90" />
             </button>
           )}
 
@@ -509,9 +509,9 @@ export default function FlightSelector({
               <div
                 key={flight.id}
                 onClick={() => setSelectedFlight(flight)}
-                className={`mb-4 border-2 rounded-lg p-4 cursor-pointer transition-all hover:shadow-lg ${
+                className={`mb-3 sm:mb-4 border-2 rounded-lg p-3 sm:p-4 cursor-pointer transition-all hover:shadow-lg active:scale-[0.99] ${
                   selectedFlight?.id === flight.id
-                    ? 'border-brand-orange bg-orange-50'
+                    ? 'border-brand-orange bg-orange-50 shadow-md'
                     : 'border-gray-200 hover:border-brand-orange/50'
                 }`}
               >
@@ -641,11 +641,11 @@ export default function FlightSelector({
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 border-t bg-gray-50 flex flex-wrap justify-between items-center gap-3">
-          <div className="flex gap-2">
+        <div className="p-3 sm:p-4 border-t bg-gray-50 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2 sm:gap-3">
+          <div className="flex gap-2 order-2 sm:order-1">
             <button
               onClick={onCancel}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors text-sm"
+              className="flex-1 sm:flex-initial px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors text-sm font-medium"
             >
               Cancel
             </button>
@@ -653,7 +653,7 @@ export default function FlightSelector({
             {onSkip && (
               <button
                 onClick={() => onSkip(flights)}
-                className="px-4 py-2 border border-brand-orange text-brand-orange rounded-lg hover:bg-orange-50 transition-colors text-sm"
+                className="flex-1 sm:flex-initial px-4 py-2.5 border border-brand-orange text-brand-orange rounded-lg hover:bg-orange-50 active:bg-orange-100 transition-colors text-sm font-medium"
               >
                 Skip for now
               </button>
@@ -663,10 +663,10 @@ export default function FlightSelector({
           <button
             onClick={() => selectedFlight && onSelectFlight(selectedFlight)}
             disabled={!selectedFlight}
-            className="px-3 sm:px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 text-sm sm:text-base"
+            className="order-1 sm:order-2 w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-2.5 bg-brand-orange text-white rounded-lg hover:bg-orange-600 active:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-sm sm:text-base font-semibold shadow-sm"
           >
-            <CheckCircle2 className="h-4 w-4" />
-            Confirm Flight {selectedFlight && `- ${formatCurrency(selectedFlight.price)}`}
+            <CheckCircle2 className="h-4 sm:h-5 w-4 sm:w-5" />
+            <span className="truncate">Confirm {selectedFlight && `- ${formatCurrency(selectedFlight.price)}`}</span>
           </button>
         </div>
       </div>
