@@ -20,26 +20,36 @@ function ensureLink(rel, attrs) {
 
 function InstallBanner() {
   const [deferred, setDeferred] = useState(null);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(() => {
+    // Show banner by default on first load, unless user has dismissed it
+    try {
+      return localStorage.getItem('colleco.installBannerDismissed') !== 'true';
+    } catch {
+      return true;
+    }
+  });
   useEffect(() => {
     const onPrompt = (e) => {
       // Prevent default to show our custom banner UI (gives better UX control)
       e.preventDefault();
-      try { console.debug('beforeinstallprompt received - showing custom install banner'); } catch {}
+      try { console.debug('beforeinstallprompt received - storing deferred prompt'); } catch {}
       setDeferred(e);
-      // Show custom banner UI
       setShow(true);
     };
     window.addEventListener('beforeinstallprompt', onPrompt);
     return () => window.removeEventListener('beforeinstallprompt', onPrompt);
   }, []);
+  const handleDismiss = () => {
+    try { localStorage.setItem('colleco.installBannerDismissed', 'true'); } catch {}
+    setShow(false);
+  };
   if (!show) return null;
   return (
     <div style={{position:'fixed',left:12,right:12,bottom:12,background:'#fff7ee',border:'1px solid #eadfd2',borderRadius:10,padding:12,display:'flex',gap:8,alignItems:'center',boxShadow:'0 1px 6px rgba(0,0,0,.06)',zIndex:50}}>
       <span style={{color:'#4a3a2a'}}>Install CollEco for a faster app experience.</span>
       <div style={{marginLeft:'auto',display:'flex',gap:8}}>
-        <button onClick={() => setShow(false)} style={{padding:'6px 10px',borderRadius:8,border:'1px solid #eadfd2',background:'#fff',color:'#4a3a2a'}}>Not now</button>
-  <button onClick={async () => { if (!deferred) return; deferred.prompt(); const { outcome: _outcome } = await deferred.userChoice; setDeferred(null); setShow(false); }} style={{padding:'6px 10px',borderRadius:8,border:'none',background:'#ff7a00',color:'#fff'}}>Install</button>
+        <button onClick={handleDismiss} style={{padding:'6px 10px',borderRadius:8,border:'1px solid #eadfd2',background:'#fff',color:'#4a3a2a'}}>Not now</button>
+  <button onClick={async () => { if (!deferred) return; deferred.prompt(); const { outcome: _outcome } = await deferred.userChoice; setDeferred(null); handleDismiss(); }} style={{padding:'6px 10px',borderRadius:8,border:'none',background:'#ff7a00',color:'#fff'}}>Install</button>
       </div>
     </div>
   );
