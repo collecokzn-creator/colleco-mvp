@@ -639,7 +639,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
             {/* Call Controls - only show when not in fullscreen */}
             {callStatus === 'connected' && !isFullscreen && (
-              <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap px-4">
+              <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-5 flex-wrap px-4">
                 {/* Audio Toggle - PRIMARY */}
                 <button
                   className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
@@ -667,6 +667,9 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
                   </button>
                 )}
+
+                {/* Visual Separator */}
+                <div className="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-brand-brown/20 to-transparent"></div>
 
                 {/* In-Call Chat Toggle - SECONDARY */}
                 <button
