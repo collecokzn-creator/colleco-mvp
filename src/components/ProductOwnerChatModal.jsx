@@ -215,7 +215,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
 
   return (
     <div className="fixed bottom-0 right-0 z-toast pointer-events-none">
-      <div className="fixed right-6 bottom-6 sm:right-8 sm:bottom-8 pointer-events-auto">
+      <div className="fixed right-4 sm:right-6 bottom-20 sm:bottom-6 pointer-events-auto">
       {open ? (
         <>
         <div className="bg-white rounded-2xl shadow-2xl border border-cream-border/80 w-[95vw] sm:w-[600px] lg:w-[800px] h-[80vh] sm:h-[600px] flex relative">

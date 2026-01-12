@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function FloatingBookNow({ onClick }) {
   return (
-    <div className="fixed bottom-20 right-4 z-50 pointer-events-auto">
+    <div className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 pointer-events-auto">
       <button
         type="button"
         onClick={onClick}

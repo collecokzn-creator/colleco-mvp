@@ -87,7 +87,7 @@ export default function VoiceAssistant() {
       {/* Floating voice button */}
       <button
         onClick={toggleListening}
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg transition-all duration-300 ${
+        className={`fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 p-4 rounded-full shadow-lg transition-all duration-300 ${
           isListening 
             ? 'bg-red-500 hover:bg-red-600 animate-pulse' 
             : 'bg-brand-orange hover:bg-orange-600'
@@ -103,7 +103,7 @@ export default function VoiceAssistant() {
 
       {/* Conversation panel */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-96 max-h-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
+        <div className="fixed bottom-[6.5rem] sm:bottom-24 right-4 sm:right-6 z-50 w-96 max-h-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-brand-orange to-orange-600">
             <div className="flex items-center gap-2">
@@ -212,7 +212,7 @@ export default function VoiceAssistant() {
       {!isOpen && transcript.length > 0 && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-24 z-50 p-3 bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all"
+          className="fixed bottom-20 sm:bottom-6 right-20 sm:right-24 z-50 p-3 bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all"
           title="Show conversation"
         >
           <MessageSquare className="h-5 w-5 text-brand-orange" />
