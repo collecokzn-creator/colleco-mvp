@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';import { motion } from 'framer-motion';import {
   MessageSquare, Phone, Video, Search, BellOff, Bell,
   Shield, Lock, UserPlus, UserMinus, UserCheck, AlertCircle,
-  Mic, MicOff, VideoIcon, VideoOff, Heart
+  Mic, MicOff, VideoIcon, VideoOff, Heart, Maximize, Minimize
 } from 'lucide-react';
 import { ensureThread, ROLES, CHANNELS, loadThreads, saveThreads } from '../utils/collabStore.js';
 
@@ -37,6 +37,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
   const [callDuration, setCallDuration] = useState(0);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   // Security & Multi-Person Calling State
   const [callId, setCallId] = useState(null);
@@ -503,13 +504,26 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
               {callStatus === 'connected' && (
                 <>
                   {/* Video View or Avatar */}
-                  <div className="mb-4">
+                  <div className={`mb-4 ${isFullscreen ? 'fixed inset-0 z-[110] bg-black flex items-center justify-center' : ''}`}>
                     {showCallModal === 'video' && isVideoEnabled ? (
-                      <div className="w-full aspect-video bg-brand-brown/10 border-2 border-brand-brown/20 rounded-lg flex items-center justify-center mb-2">
+                      <div className={`${
+                        isFullscreen 
+                          ? 'w-full h-full' 
+                          : 'w-full aspect-video'
+                      } bg-brand-brown/10 border-2 border-brand-brown/20 rounded-lg flex items-center justify-center mb-2 relative`}>
                         <div className="text-center text-brand-brown/60">
                           <Video className="w-12 h-12 mx-auto mb-2" />
                           <div className="text-sm">Video feed placeholder</div>
                         </div>
+                        
+                        {/* Fullscreen Toggle */}
+                        <button
+                          className="absolute top-2 right-2 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+                          onClick={() => setIsFullscreen(!isFullscreen)}
+                          title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+                        >
+                          {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+                        </button>
                       </div>
                     ) : (
                       <div className="text-7xl mb-4">{selectedContact?.avatar}</div>
