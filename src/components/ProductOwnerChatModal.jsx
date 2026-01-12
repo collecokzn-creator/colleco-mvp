@@ -409,8 +409,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                 </div>
 
                 {/* Input Area */}
-                <div className="p-4 border-t border-cream-border bg-white flex-shrink-0">
-                  <div className="flex gap-2 mb-2 flex-wrap">
+                <div className="p-4 border-t-2 border-cream-border bg-cream/30 flex-shrink-0">
+                  <div className="flex gap-2 mb-3 flex-wrap">
                     <button
                       className="px-3 py-1.5 bg-cream border border-cream-border rounded text-xs text-brand-brown hover:bg-brand-orange hover:text-white transition-colors"
                       onClick={() => setInput('Booking confirmed!')}
@@ -427,7 +427,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                   
                   <div className="flex gap-2">
                     <input
-                      className="flex-1 border border-cream-border rounded px-3 py-2 text-sm text-brand-brown bg-white focus:outline-none focus:border-brand-orange placeholder:text-brand-brown/40"
+                      className="flex-1 border-2 border-brand-orange/30 rounded-lg px-4 py-3 text-base font-medium text-brand-brown bg-white focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 placeholder:text-brand-brown/50 shadow-sm"
                       type="text"
                       inputMode="text"
                       autoComplete="off"
@@ -436,11 +436,11 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                       ref={inputRef}
                       value={input}
                       onChange={e => setInput(e.target.value)}
-                      placeholder="Type your message..."
+                      placeholder="Type your message here..."
                       onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
                     />
                     <button
-                      className="px-4 py-2 bg-brand-orange text-white rounded hover:bg-brand-orange/90 transition-colors flex-shrink-0"
+                      className="px-5 py-3 bg-brand-orange text-white font-semibold rounded-lg hover:bg-brand-orange/90 transition-colors flex-shrink-0 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={sendMessage}
                       disabled={!input.trim()}
                     >
