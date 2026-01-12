@@ -2117,5 +2117,6 @@ module.exports = {
       recommendation: monthlyCost > 2000 ? 'Switch to hybrid strategy' : 'Cost-effective'
     };
   }
-};
+}
 
+module.exports = DocumentVerificationService;
