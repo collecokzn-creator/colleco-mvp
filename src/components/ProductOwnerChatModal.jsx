@@ -2,7 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';import { motion } fro
   MessageSquare, Phone, Video, Search, BellOff, Bell,
   Shield, Lock, UserPlus, UserMinus, UserCheck, AlertCircle,
   Mic, MicOff, VideoIcon, VideoOff, Heart, Maximize, Minimize,
-  Calendar, MonitorUp, X
+  Calendar, MonitorUp, X, FileText, Upload, Image as ImageIcon,
+  Paintbrush, CircleDot, Disc, StickyNote, BarChart3, MapPin,
+  PictureInPicture, Subtitles, FileUp, Download, Check, ExternalLink
 } from 'lucide-react';
 import { ensureThread, ROLES, CHANNELS, loadThreads, saveThreads } from '../utils/collabStore.js';
 
@@ -60,6 +62,24 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
   const [showReactions, setShowReactions] = useState(false);
   const [showAllReactions, setShowAllReactions] = useState(false);
   const [floatingReactions, setFloatingReactions] = useState([]);
+  
+  // New Collaboration Features State
+  const [showFileShare, setShowFileShare] = useState(false);
+  const [sharedFiles, setSharedFiles] = useState([]);
+  const [showWhiteboard, setShowWhiteboard] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingDuration, setRecordingDuration] = useState(0);
+  const [showNotes, setShowNotes] = useState(false);
+  const [callNotes, setCallNotes] = useState('');
+  const [showPoll, setShowPoll] = useState(false);
+  const [activePoll, setActivePoll] = useState(null);
+  const [showTravelShare, setShowTravelShare] = useState(false);
+  const [backgroundBlur, setBackgroundBlur] = useState(false);
+  const [isPiPMode, setIsPiPMode] = useState(false);
+  const [showLocationShare, setShowLocationShare] = useState(false);
+  const [showTranscription, setShowTranscription] = useState(false);
+  const [transcriptLines, setTranscriptLines] = useState([]);
+  
   // On mobile, show contact list by default; hide it when a contact is selected
   const [showContactList, setShowContactList] = useState(true);
   
@@ -108,6 +128,33 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
       setTimeout(() => { try { inputRef.current?.focus(); } catch {} }, 0);
     }
   }, [open, selectedContact]);
+
+  // Recording timer effect
+  useEffect(() => {
+    let interval;
+    if (isRecording) {
+      interval = setInterval(() => {
+        setRecordingDuration(prev => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRecording]);
+
+  // Simulated transcription effect
+  useEffect(() => {
+    if (showTranscription && callStatus === 'connected') {
+      const sampleTranscripts = [
+        { speaker: 'You', text: 'What are the best travel options for next month?' },
+        { speaker: 'Agent', text: 'Let me share some wonderful safari packages and hotel options...' },
+        { speaker: 'You', text: 'How much would the total cost be?' },
+        { speaker: 'Agent', text: 'For the full package, including flights and accommodation...' }
+      ];
+      const timer = setTimeout(() => {
+        setTranscriptLines(sampleTranscripts);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showTranscription, callStatus]);
 
   // Call duration timer
   useEffect(() => {
@@ -547,6 +594,70 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                           )}
                         </div>
                         
+                        {/* Video Controls Toolbar */}
+                        <div className="absolute top-3 left-3 flex gap-2">
+                          {/* Background Blur */}
+                          <button
+                            className={`p-2 rounded-lg transition-colors shadow-md ${
+                              backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                            }`}
+                            onClick={() => setBackgroundBlur(!backgroundBlur)}
+                            title={backgroundBlur ? 'Disable blur' : 'Blur background'}
+                          >
+                            <ImageIcon className="w-4 h-4" />
+                          </button>
+
+                          {/* Transcription/Captions */}
+                          <button
+                            className={`p-2 rounded-lg transition-colors shadow-md ${
+                              showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                            }`}
+                            onClick={() => setShowTranscription(!showTranscription)}
+                            title="Toggle captions"
+                          >
+                            <Subtitles className="w-4 h-4" />
+                          </button>
+
+                          {/* Picture-in-Picture */}
+                          <button
+                            className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
+                            onClick={() => setIsPiPMode(!isPiPMode)}
+                            title="Picture-in-Picture"
+                          >
+                            <PictureInPicture className="w-4 h-4" />
+                          </button>
+
+                          {/* Location Share */}
+                          <button
+                            className={`p-2 rounded-lg transition-colors shadow-md ${
+                              showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                            }`}
+                            onClick={() => setShowLocationShare(!showLocationShare)}
+                            title="Share location"
+                          >
+                            <MapPin className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        {/* Recording Indicator */}
+                        {isRecording && (
+                          <div className="absolute top-3 right-3 px-3 py-1.5 bg-red-500 text-white rounded-full flex items-center gap-2 animate-pulse">
+                            <Disc className="w-3 h-3 fill-white" />
+                            <span className="text-xs font-semibold">REC {Math.floor(recordingDuration / 60)}:{String(recordingDuration % 60).padStart(2, '0')}</span>
+                          </div>
+                        )}
+
+                        {/* Live Transcription Overlay */}
+                        {showTranscription && transcriptLines.length > 0 && (
+                          <div className="absolute bottom-3 left-3 right-3 bg-black/80 text-white px-4 py-2 rounded-lg text-sm max-h-24 overflow-y-auto">
+                            {transcriptLines.slice(-3).map((line, idx) => (
+                              <div key={idx} className="mb-1">
+                                <span className="text-gray-400">{line.speaker}:</span> {line.text}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        
                         {/* Fullscreen Toggle */}
                         <button
                           className="absolute top-2 right-2 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
@@ -796,6 +907,59 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     <UserPlus className="w-5 h-5" />
                   </button>
                 )}
+
+                {/* File Share - SECONDARY */}
+                <button
+                  className={`p-3 rounded-full transition-colors shadow-md ${
+                    showFileShare ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                  }`}
+                  onClick={() => setShowFileShare(!showFileShare)}
+                  title="Share files"
+                >
+                  <Upload className="w-5 h-5" />
+                </button>
+
+                {/* Notes - SECONDARY */}
+                <button
+                  className={`p-3 rounded-full transition-colors shadow-md ${
+                    showNotes ? 'bg-yellow-500 text-white hover:bg-yellow-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                  }`}
+                  onClick={() => setShowNotes(!showNotes)}
+                  title="Take notes"
+                >
+                  <StickyNote className="w-5 h-5" />
+                </button>
+
+                {/* Whiteboard - SECONDARY */}
+                <button
+                  className={`p-3 rounded-full transition-colors shadow-md ${
+                    showWhiteboard ? 'bg-purple-500 text-white hover:bg-purple-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                  }`}
+                  onClick={() => setShowWhiteboard(!showWhiteboard)}
+                  title="Open whiteboard"
+                >
+                  <Paintbrush className="w-5 h-5" />
+                </button>
+
+                {/* Poll/Vote - SECONDARY */}
+                <button
+                  className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
+                  onClick={() => setShowPoll(true)}
+                  title="Create poll"
+                >
+                  <BarChart3 className="w-5 h-5" />
+                </button>
+
+                {/* Call Recording - SECONDARY */}
+                <button
+                  className={`p-3 rounded-full transition-colors shadow-md ${
+                    isRecording ? 'bg-red-500 text-white hover:bg-red-600 animate-pulse' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                  }`}
+                  onClick={() => setIsRecording(!isRecording)}
+                  title={isRecording ? 'Stop recording' : 'Start recording'}
+                >
+                  <Disc className="w-5 h-5" />
+                </button>
 
                 {/* End Call - CRITICAL ACTION */}
                 <button
@@ -1187,6 +1351,191 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             </div>
           )}
         </motion.div>
+      </div>
+    )}
+
+    {/* File Share Panel */}
+    {showFileShare && callStatus === 'connected' && (
+      <div className="fixed right-4 bottom-32 w-96 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border border-gray-200 z-[100]">
+        <div className="p-3 bg-blue-500 text-white flex items-center justify-between rounded-t-lg">
+          <div className="flex items-center gap-2">
+            <Upload className="w-4 h-4" />
+            <span className="font-semibold text-sm">Share Files</span>
+          </div>
+          <button onClick={() => setShowFileShare(false)} className="p-1 hover:bg-white/20 rounded">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="p-4 max-h-80 overflow-y-auto">
+          <label className="block border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+            <FileUp className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+            <span className="text-sm text-gray-600">Drop files here or click to browse</span>
+            <input type="file" className="hidden" multiple onChange={(e) => {
+              const files = Array.from(e.target.files || []);
+              setSharedFiles(prev => [...prev, ...files.map(f => ({ name: f.name, size: f.size, type: f.type, uploadedAt: Date.now() }))]);
+            }} />
+          </label>
+          {sharedFiles.length > 0 && (
+            <div className="mt-4 space-y-2">
+              <h4 className="text-xs font-semibold text-gray-500 uppercase">Shared Files ({sharedFiles.length})</h4>
+              {sharedFiles.map((file, idx) => (
+                <div key={idx} className="flex items-center gap-3 p-2 bg-gray-50 rounded hover:bg-gray-100">
+                  <FileText className="w-4 h-4 text-blue-500" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium text-gray-900 truncate">{file.name}</div>
+                    <div className="text-xs text-gray-500">{(file.size / 1024).toFixed(1)} KB</div>
+                  </div>
+                  <button className="p-1 hover:bg-gray-200 rounded">
+                    <Download className="w-4 h-4 text-gray-600" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    )}
+
+    {/* Live Notes Panel */}
+    {showNotes && callStatus === 'connected' && (
+      <div className="fixed left-4 bottom-32 w-96 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border border-gray-200 z-[100]">
+        <div className="p-3 bg-yellow-500 text-white flex items-center justify-between rounded-t-lg">
+          <div className="flex items-center gap-2">
+            <StickyNote className="w-4 h-4" />
+            <span className="font-semibold text-sm">Call Notes</span>
+          </div>
+          <button onClick={() => setShowNotes(false)} className="p-1 hover:bg-white/20 rounded">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="p-4">
+          <textarea
+            className="w-full h-64 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none text-sm"
+            placeholder="Take notes during the call...&#10;&#10;• Key decisions&#10;• Travel preferences&#10;• Budget discussions&#10;• Action items"
+            value={callNotes}
+            onChange={(e) => setCallNotes(e.target.value)}
+          />
+          <div className="mt-3 flex gap-2">
+            <button className="flex-1 px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 text-sm font-semibold">
+              Save Notes
+            </button>
+            <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+              Export PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Whiteboard Panel */}
+    {showWhiteboard && callStatus === 'connected' && (
+      <div className="fixed inset-4 bg-white rounded-lg shadow-2xl border border-gray-200 z-[100] flex flex-col">
+        <div className="p-3 bg-purple-500 text-white flex items-center justify-between rounded-t-lg flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <Paintbrush className="w-4 h-4" />
+            <span className="font-semibold text-sm">Collaborative Whiteboard</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded text-xs">Clear</button>
+            <button onClick={() => setShowWhiteboard(false)} className="p-1 hover:bg-white/20 rounded">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        <div className="flex-1 bg-gray-50 rounded-b-lg relative">
+          <canvas className="absolute inset-0 w-full h-full cursor-crosshair" />
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white rounded-full px-3 py-2 shadow-lg">
+            <button className="w-8 h-8 rounded-full bg-black border-2 border-gray-300" title="Black"></button>
+            <button className="w-8 h-8 rounded-full bg-red-500 border-2 border-gray-300" title="Red"></button>
+            <button className="w-8 h-8 rounded-full bg-blue-500 border-2 border-gray-300" title="Blue"></button>
+            <button className="w-8 h-8 rounded-full bg-green-500 border-2 border-gray-300" title="Green"></button>
+            <button className="w-8 h-8 rounded-full bg-yellow-400 border-2 border-gray-300" title="Yellow"></button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Poll Creation Modal */}
+    {showPoll && (
+      <div className="fixed inset-0 z-[120] bg-black/50 flex items-center justify-center p-4" onClick={() => setShowPoll(false)}>
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-brand-brown flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-brand-orange" />
+              Create Quick Poll
+            </h3>
+            <button onClick={() => setShowPoll(false)} className="p-1 hover:bg-gray-100 rounded-full">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-brand-brown mb-1">Question</label>
+              <input
+                type="text"
+                placeholder="e.g., Which hotel do you prefer?"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-brand-brown mb-1">Options</label>
+              <input type="text" placeholder="Option 1" className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2" />
+              <input type="text" placeholder="Option 2" className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2" />
+              <input type="text" placeholder="Option 3 (optional)" className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+            </div>
+            <button className="w-full px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 font-semibold">
+              Launch Poll
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    )}
+
+    {/* Travel Content Share Panel */}
+    {showTravelShare && callStatus === 'connected' && (
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-full max-w-2xl bg-white rounded-lg shadow-2xl border border-gray-200 z-[100] p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="font-semibold text-brand-brown flex items-center gap-2">
+            <ExternalLink className="w-4 h-4" />
+            Share Travel Options
+          </h4>
+          <button onClick={() => setShowTravelShare(false)} className="p-1 hover:bg-gray-100 rounded">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="border border-gray-200 rounded-lg p-3 hover:border-brand-orange hover:bg-orange-50 cursor-pointer">
+            <div className="text-xs text-gray-500 mb-1">Hotel</div>
+            <div className="font-semibold text-sm">Luxury Resort</div>
+            <div className="text-brand-orange font-bold text-sm">$299/night</div>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-3 hover:border-brand-orange hover:bg-orange-50 cursor-pointer">
+            <div className="text-xs text-gray-500 mb-1">Flight</div>
+            <div className="font-semibold text-sm">Direct to JNB</div>
+            <div className="text-brand-orange font-bold text-sm">$650</div>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-3 hover:border-brand-orange hover:bg-orange-50 cursor-pointer">
+            <div className="text-xs text-gray-500 mb-1">Activity</div>
+            <div className="font-semibold text-sm">Safari Tour</div>
+            <div className="text-brand-orange font-bold text-sm">$180</div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Location Share Indicator */}
+    {showLocationShare && callStatus === 'connected' && (
+      <div className="fixed top-20 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 z-[100]">
+        <MapPin className="w-4 h-4 animate-pulse" />
+        <span className="text-sm font-semibold">Sharing live location</span>
+        <button onClick={() => setShowLocationShare(false)} className="ml-2 p-0.5 hover:bg-white/20 rounded">
+          <X className="w-3 h-3" />
+        </button>
       </div>
     )}
     
