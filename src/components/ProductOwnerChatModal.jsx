@@ -714,7 +714,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
           <span className="text-xs font-semibold text-brand-brown bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Messages</span>
         </div>
       )}
-      </motion.div>
-    </div>
+    </motion.div>
+  </div>
  );
 }
