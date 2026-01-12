@@ -91,6 +91,13 @@
 			"type": "shell",
 			"command": "npm run smoke:all",
 			"group": "test"
+		},
+		{
+			"label": "Production Build",
+			"type": "shell",
+			"command": "npm run build",
+			"isBackground": false,
+			"group": "build"
 		}
 	]
 }
