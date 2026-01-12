@@ -76,8 +76,34 @@ export default function AIAgent() {
     
     // Poll for changes (localStorage doesn't fire events in same tab)
     const interval = setInterval(checkCallStatus, 500);
-    
-    return () => clearInterval(interval);
+
+    // Also listen for explicit call events so we update immediately in the same tab
+    const handleCallStart = (e) => {
+      try { console.debug('AIAgent: received call-start', e?.detail); } catch {}
+      setIsCallActive(true);
+    };
+    const handleCallEnd = (e) => {
+      try { console.debug('AIAgent: received call-end', e?.detail); } catch {}
+      setIsCallActive(false);
+    };
+    window.addEventListener('colleco:call-start', handleCallStart);
+    window.addEventListener('colleco:call-end', handleCallEnd);
+
+    // Listen for storage events (cross-tab updates)
+    const handleStorage = (ev) => {
+      if (ev.key === 'colleco.activeCall') {
+        try { console.debug('AIAgent: storage event', ev.newValue); } catch {}
+        setIsCallActive(ev.newValue === 'true');
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('colleco:call-start', handleCallStart);
+      window.removeEventListener('colleco:call-end', handleCallEnd);
+      window.removeEventListener('storage', handleStorage);
+    };
   }, []);
 
   // Listen for custom event to open AIAgent from booking confirmations

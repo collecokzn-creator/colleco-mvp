@@ -193,8 +193,13 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
     setIsVideoEnabled(type === 'video');
     setIsAudioEnabled(true);
     
-    // Hide Zola during calls
+    // Hide Zola during calls (persist for cross-tab) and notify other components
     localStorage.setItem('colleco.activeCall', 'true');
+    try {
+      window.dispatchEvent(new CustomEvent('colleco:call-start', { detail: { callId: newCallId } }));
+    } catch (e) {
+      // If dispatch fails for any reason, ignore (non-critical)
+    }
     
     // Simulate call connection
     setTimeout(() => {
@@ -240,8 +245,14 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
   function endCall() {
     setCallStatus('ended');
     
-    // Show Zola again after call ends
+    // Show Zola again after call ends (persist change + notify listeners)
+    const _currentCallId = callId;
     localStorage.removeItem('colleco.activeCall');
+    try {
+      window.dispatchEvent(new CustomEvent('colleco:call-end', { detail: { callId: _currentCallId } }));
+    } catch (e) {
+      // ignore
+    }
     
     setTimeout(() => {
       setShowCallModal(null);
