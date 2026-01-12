@@ -622,31 +622,144 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             </button>
 
             {/* Call Controls - Bottom (always visible in fullscreen) */}
-            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex justify-center gap-3 md:gap-4">
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-2 md:gap-3 px-4 flex-wrap max-w-4xl">
+              {/* Primary Controls */}
               <button
-                className={`p-4 rounded-full transition-colors shadow-lg ${
+                className={`p-3 rounded-full transition-colors shadow-lg ${
                   isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
                 }`}
                 onClick={() => setIsAudioEnabled(!isAudioEnabled)}
                 title={isAudioEnabled ? 'Mute' : 'Unmute'}
               >
-                {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+                {isAudioEnabled ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
               </button>
               <button
-                className={`p-4 rounded-full transition-colors shadow-lg ${
+                className={`p-3 rounded-full transition-colors shadow-lg ${
                   isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
                 }`}
                 onClick={() => setIsVideoEnabled(!isVideoEnabled)}
                 title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
               >
-                {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+                {isVideoEnabled ? <VideoIcon className="w-5 h-5" /> : <VideoOff className="w-5 h-5" />}
               </button>
+
+              {/* Screen Share */}
               <button
-                className="p-4 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg"
+                className={`p-3 rounded-full transition-colors shadow-lg ${
+                  isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                }`}
+                onClick={() => setIsScreenSharing(!isScreenSharing)}
+                title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
+              >
+                <MonitorUp className="w-5 h-5" />
+              </button>
+
+              {/* Reactions */}
+              <div className="relative">
+                <button
+                  className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-lg"
+                  onClick={() => setShowReactions(!showReactions)}
+                  title="Send reaction"
+                >
+                  <Heart className="w-5 h-5" />
+                </button>
+                
+                {showReactions && (
+                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap">
+                    <div className="flex items-center gap-1">
+                      {[
+                        { emoji: '👍', label: 'Thumbs up' },
+                        { emoji: '❤️', label: 'Love' },
+                        { emoji: '😂', label: 'Laugh' },
+                        { emoji: '🎉', label: 'Celebrate' },
+                        { emoji: '✨', label: 'Sparkles' },
+                        { emoji: '🔥', label: 'Fire' }
+                      ].map(({ emoji, label }) => (
+                        <button
+                          key={emoji}
+                          className="text-lg hover:scale-110 transition-transform p-0.5 rounded hover:bg-gray-100"
+                          onClick={() => {
+                            sendReaction(emoji, label);
+                            setShowReactions(false);
+                            setShowAllReactions(false);
+                          }}
+                          title={label}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                      <button
+                        className="text-sm font-bold hover:scale-110 transition-transform rounded-full hover:bg-gray-100 w-6 h-6 flex items-center justify-center text-brand-brown"
+                        onClick={() => setShowAllReactions(!showAllReactions)}
+                        title="More reactions"
+                      >
+                        +
+                      </button>
+                    </div>
+                    {showAllReactions && (
+                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-64">
+                        <div className="grid grid-cols-6 gap-1.5">
+                          {[
+                            { emoji: '👍', label: 'Thumbs up' },
+                            { emoji: '❤️', label: 'Love' },
+                            { emoji: '👏', label: 'Applause' },
+                            { emoji: '✅', label: 'Agree' },
+                            { emoji: '🎉', label: 'Celebrate' },
+                            { emoji: '💯', label: 'Perfect' },
+                            { emoji: '✈️', label: 'Flight' },
+                            { emoji: '🌍', label: 'Travel' },
+                            { emoji: '🏨', label: 'Hotel' },
+                            { emoji: '🚗', label: 'Car' },
+                            { emoji: '⭐', label: 'Star' },
+                            { emoji: '😊', label: 'Happy' },
+                            { emoji: '🤔', label: 'Thinking' },
+                            { emoji: '👋', label: 'Wave' },
+                            { emoji: '💪', label: 'Strong' },
+                            { emoji: '🔥', label: 'Fire' },
+                            { emoji: '😂', label: 'Laugh' },
+                            { emoji: '✨', label: 'Sparkles' }
+                          ].map(({ emoji, label }) => (
+                            <button
+                              key={emoji}
+                              className="text-lg hover:scale-110 transition-transform p-0.5 rounded hover:bg-gray-100"
+                              onClick={() => {
+                                sendReaction(emoji, label);
+                                setShowReactions(false);
+                                setShowAllReactions(false);
+                              }}
+                              title={label}
+                            >
+                              {emoji}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Chat Toggle */}
+              <button
+                className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-lg relative"
+                onClick={() => setShowInCallChat(!showInCallChat)}
+                title="Chat during call"
+              >
+                <MessageSquare className="w-5 h-5" />
+                {messages.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-orange text-white text-[10px] rounded-full flex items-center justify-center font-semibold">
+                    {messages.length}
+                  </span>
+                )}
+              </button>
+
+              {/* End Call - Critical Action */}
+              <button
+                className="p-3 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg scale-110 hover:scale-125"
                 onClick={endCall}
                 title="End call"
               >
-                <PhoneOff className="w-6 h-6" />
+                <PhoneOff className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -810,225 +923,231 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
             {/* Call Controls - only show when not in fullscreen */}
             {callStatus === 'connected' && !isFullscreen && (
-              <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-5 flex-wrap px-4">
-                {/* Audio Toggle - PRIMARY */}
-                <button
-                  className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
-                    isAudioEnabled 
-                      ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
-                      : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
-                  }`}
-                  onClick={() => setIsAudioEnabled(!isAudioEnabled)}
-                  title={isAudioEnabled ? 'Mute' : 'Unmute'}
-                >
-                  {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
-                </button>
-
-                {/* Video Toggle (for video calls) - PRIMARY */}
-                {showCallModal === 'video' && (
+              <div className="flex flex-col gap-4 px-4">
+                {/* Primary Controls Row */}
+                <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-5 flex-wrap">
+                  {/* Audio Toggle - PRIMARY */}
                   <button
                     className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
-                      isVideoEnabled 
+                      isAudioEnabled 
                         ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
                         : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
                     }`}
-                    onClick={() => setIsVideoEnabled(!isVideoEnabled)}
-                    title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
+                    onClick={() => setIsAudioEnabled(!isAudioEnabled)}
+                    title={isAudioEnabled ? 'Mute' : 'Unmute'}
                   >
-                    {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+                    {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
                   </button>
-                )}
 
-                {/* Visual Separator */}
-                <div className="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-brand-brown/20 to-transparent"></div>
-
-                {/* In-Call Chat Toggle - SECONDARY */}
-                <button
-                  className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md relative"
-                  onClick={() => setShowInCallChat(!showInCallChat)}
-                  title="Chat during call"
-                >
-                  <MessageSquare className="w-5 h-5" />
-                  {messages.length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-orange text-white text-[10px] rounded-full flex items-center justify-center font-semibold">
-                      {messages.length}
-                    </span>
+                  {/* Video Toggle (for video calls) - PRIMARY */}
+                  {showCallModal === 'video' && (
+                    <button
+                      className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
+                        isVideoEnabled 
+                          ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
+                          : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
+                      }`}
+                      onClick={() => setIsVideoEnabled(!isVideoEnabled)}
+                      title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
+                    >
+                      {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+                    </button>
                   )}
-                </button>
 
-                {/* Screen Share - SECONDARY */}
-                <button
-                  className={`p-3 rounded-full transition-colors shadow-md ${
-                    isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
-                  }`}
-                  onClick={() => setIsScreenSharing(!isScreenSharing)}
-                  title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
-                >
-                  <MonitorUp className="w-5 h-5" />
-                </button>
+                  {/* Visual Separator */}
+                  <div className="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-brand-brown/20 to-transparent"></div>
 
-                {/* Reactions - SECONDARY */}
-                <div className="relative">
+                  {/* Screen Share - PROMINENT SECONDARY */}
                   <button
-                    className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
-                    onClick={() => setShowReactions(!showReactions)}
-                    title="Send reaction"
+                    className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
+                      isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600 border-green-600' : 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40'
+                    }`}
+                    onClick={() => setIsScreenSharing(!isScreenSharing)}
+                    title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
                   >
-                    <Heart className="w-5 h-5" />
+                    <MonitorUp className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
-                  
-                  {showReactions && (
-                    <div className="absolute bottom-full mb-2 right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200">
-                      <div className="flex items-center gap-1">
-                        {/* Default 6 Reactions */}
-                        {[
-                          { emoji: '👍', label: 'Thumbs up' },
-                          { emoji: '❤️', label: 'Love' },
-                          { emoji: '😂', label: 'Laugh' },
-                          { emoji: '🎉', label: 'Celebrate' },
-                          { emoji: '✨', label: 'Sparkles' },
-                          { emoji: '🔥', label: 'Fire' }
-                        ].map(({ emoji, label }) => (
-                          <button
-                            key={emoji}
-                            className="text-lg hover:scale-110 transition-transform p-0.5 rounded hover:bg-gray-100"
-                            onClick={() => {
-                              sendReaction(emoji, label);
-                              setShowReactions(false);
-                              setShowAllReactions(false);
-                            }}
-                            title={label}
-                          >
-                            {emoji}
-                          </button>
-                        ))}
-                        
-                        {/* Plus Button for More Reactions */}
-                        <button
-                          className="text-sm font-bold hover:scale-110 transition-transform rounded-full hover:bg-gray-100 w-6 h-6 flex items-center justify-center text-brand-brown"
-                          onClick={() => setShowAllReactions(!showAllReactions)}
-                          title="More reactions"
-                        >
-                          +
-                        </button>
-                      </div>
-                      
-                      {/* Expanded Reactions Menu */}
-                      {showAllReactions && (
-                        <div className="absolute bottom-full mb-2 right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-64">
-                          <div className="grid grid-cols-6 gap-1.5">
-                            {[
-                              { emoji: '👍', label: 'Thumbs up' },
-                              { emoji: '❤️', label: 'Love' },
-                              { emoji: '👏', label: 'Applause' },
-                              { emoji: '✅', label: 'Agree' },
-                              { emoji: '🎉', label: 'Celebrate' },
-                              { emoji: '💯', label: 'Perfect' },
-                              { emoji: '✈️', label: 'Flight' },
-                              { emoji: '🌍', label: 'Travel' },
-                              { emoji: '🏨', label: 'Hotel' },
-                              { emoji: '🚗', label: 'Car' },
-                              { emoji: '⭐', label: 'Star' },
-                              { emoji: '😊', label: 'Happy' },
-                              { emoji: '🤔', label: 'Thinking' },
-                              { emoji: '👋', label: 'Wave' },
-                              { emoji: '💪', label: 'Strong' },
-                              { emoji: '🔥', label: 'Fire' },
-                              { emoji: '😂', label: 'Laugh' },
-                              { emoji: '✨', label: 'Sparkles' }
-                            ].map(({ emoji, label }) => (
-                              <button
-                                key={emoji}
-                                className="text-lg hover:scale-110 transition-transform p-0.5 rounded hover:bg-gray-100"
-                                onClick={() => {
-                                  sendReaction(emoji, label);
-                                  setShowReactions(false);
-                                  setShowAllReactions(false);
-                                }}
-                                title={label}
-                              >
-                                {emoji}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+
+                  {/* End Call - CRITICAL ACTION */}
+                  <button
+                    className="p-4 sm:p-5 rounded-full bg-red-500 hover:bg-red-600 transition-all shadow-xl border-2 border-red-600 scale-105 hover:scale-110"
+                    onClick={endCall}
+                    title="End call"
+                  >
+                    <Phone className="w-6 h-6 transform rotate-135" />
+                  </button>
                 </div>
 
-                {/* Invite (host only) - SECONDARY */}
-                {isCallHost && (
+                {/* Secondary Controls Row */}
+                <div className="flex justify-center items-center gap-2 sm:gap-3 md:gap-4 flex-wrap">
+                  {/* In-Call Chat Toggle - SECONDARY */}
+                  <button
+                    className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md relative"
+                    onClick={() => setShowInCallChat(!showInCallChat)}
+                    title="Chat during call"
+                  >
+                    <MessageSquare className="w-5 h-5" />
+                    {messages.length > 0 && (
+                      <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-orange text-white text-[10px] rounded-full flex items-center justify-center font-semibold">
+                        {messages.length}
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Reactions - SECONDARY */}
+                  <div className="relative">
+                    <button
+                      className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
+                      onClick={() => setShowReactions(!showReactions)}
+                      title="Send reaction"
+                    >
+                      <Heart className="w-5 h-5" />
+                    </button>
+                    
+                    {showReactions && (
+                      <div className="absolute bottom-full mb-2 right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 z-50">
+                        <div className="flex items-center gap-1">
+                          {/* Default 6 Reactions */}
+                          {[
+                            { emoji: '👍', label: 'Thumbs up' },
+                            { emoji: '❤️', label: 'Love' },
+                            { emoji: '😂', label: 'Laugh' },
+                            { emoji: '🎉', label: 'Celebrate' },
+                            { emoji: '✨', label: 'Sparkles' },
+                            { emoji: '🔥', label: 'Fire' }
+                          ].map(({ emoji, label }) => (
+                            <button
+                              key={emoji}
+                              className="text-lg hover:scale-110 transition-transform p-0.5 rounded hover:bg-gray-100"
+                              onClick={() => {
+                                sendReaction(emoji, label);
+                                setShowReactions(false);
+                                setShowAllReactions(false);
+                              }}
+                              title={label}
+                            >
+                              {emoji}
+                            </button>
+                          ))}
+                          
+                          {/* Plus Button for More Reactions */}
+                          <button
+                            className="text-sm font-bold hover:scale-110 transition-transform rounded-full hover:bg-gray-100 w-6 h-6 flex items-center justify-center text-brand-brown"
+                            onClick={() => setShowAllReactions(!showAllReactions)}
+                            title="More reactions"
+                          >
+                            +
+                          </button>
+                        </div>
+                        
+                        {/* Expanded Reactions Menu */}
+                        {showAllReactions && (
+                          <div className="absolute bottom-full mb-2 right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-64 z-50">
+                            <div className="grid grid-cols-6 gap-1.5">
+                              {[
+                                { emoji: '👍', label: 'Thumbs up' },
+                                { emoji: '❤️', label: 'Love' },
+                                { emoji: '👏', label: 'Applause' },
+                                { emoji: '✅', label: 'Agree' },
+                                { emoji: '🎉', label: 'Celebrate' },
+                                { emoji: '💯', label: 'Perfect' },
+                                { emoji: '✈️', label: 'Flight' },
+                                { emoji: '🌍', label: 'Travel' },
+                                { emoji: '🏨', label: 'Hotel' },
+                                { emoji: '🚗', label: 'Car' },
+                                { emoji: '⭐', label: 'Star' },
+                                { emoji: '😊', label: 'Happy' },
+                                { emoji: '🤔', label: 'Thinking' },
+                                { emoji: '👋', label: 'Wave' },
+                                { emoji: '💪', label: 'Strong' },
+                                { emoji: '🔥', label: 'Fire' },
+                                { emoji: '😂', label: 'Laugh' },
+                                { emoji: '✨', label: 'Sparkles' }
+                              ].map(({ emoji, label }) => (
+                                <button
+                                  key={emoji}
+                                  className="text-lg hover:scale-110 transition-transform p-0.5 rounded hover:bg-gray-100"
+                                  onClick={() => {
+                                    sendReaction(emoji, label);
+                                    setShowReactions(false);
+                                    setShowAllReactions(false);
+                                  }}
+                                  title={label}
+                                >
+                                  {emoji}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Invite (host only) - SECONDARY */}
+                  {isCallHost && (
+                    <button
+                      className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
+                      onClick={() => setShowInviteModal(true)}
+                      title="Invite to call"
+                    >
+                      <UserPlus className="w-5 h-5" />
+                    </button>
+                  )}
+
+                  {/* File Share - SECONDARY */}
+                  <button
+                    className={`p-3 rounded-full transition-colors shadow-md ${
+                      showFileShare ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                    }`}
+                    onClick={() => setShowFileShare(!showFileShare)}
+                    title="Share files"
+                  >
+                    <Upload className="w-5 h-5" />
+                  </button>
+
+                  {/* Notes - SECONDARY */}
+                  <button
+                    className={`p-3 rounded-full transition-colors shadow-md ${
+                      showNotes ? 'bg-yellow-500 text-white hover:bg-yellow-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                    }`}
+                    onClick={() => setShowNotes(!showNotes)}
+                    title="Take notes"
+                  >
+                    <StickyNote className="w-5 h-5" />
+                  </button>
+
+                  {/* Whiteboard - SECONDARY */}
+                  <button
+                    className={`p-3 rounded-full transition-colors shadow-md ${
+                      showWhiteboard ? 'bg-purple-500 text-white hover:bg-purple-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                    }`}
+                    onClick={() => setShowWhiteboard(!showWhiteboard)}
+                    title="Open whiteboard"
+                  >
+                    <Paintbrush className="w-5 h-5" />
+                  </button>
+
+                  {/* Poll/Vote - SECONDARY */}
                   <button
                     className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
-                    onClick={() => setShowInviteModal(true)}
-                    title="Invite to call"
+                    onClick={() => setShowPoll(true)}
+                    title="Create poll"
                   >
-                    <UserPlus className="w-5 h-5" />
+                    <BarChart3 className="w-5 h-5" />
                   </button>
-                )}
 
-                {/* File Share - SECONDARY */}
-                <button
-                  className={`p-3 rounded-full transition-colors shadow-md ${
-                    showFileShare ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
-                  }`}
-                  onClick={() => setShowFileShare(!showFileShare)}
-                  title="Share files"
-                >
-                  <Upload className="w-5 h-5" />
-                </button>
-
-                {/* Notes - SECONDARY */}
-                <button
-                  className={`p-3 rounded-full transition-colors shadow-md ${
-                    showNotes ? 'bg-yellow-500 text-white hover:bg-yellow-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
-                  }`}
-                  onClick={() => setShowNotes(!showNotes)}
-                  title="Take notes"
-                >
-                  <StickyNote className="w-5 h-5" />
-                </button>
-
-                {/* Whiteboard - SECONDARY */}
-                <button
-                  className={`p-3 rounded-full transition-colors shadow-md ${
-                    showWhiteboard ? 'bg-purple-500 text-white hover:bg-purple-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
-                  }`}
-                  onClick={() => setShowWhiteboard(!showWhiteboard)}
-                  title="Open whiteboard"
-                >
-                  <Paintbrush className="w-5 h-5" />
-                </button>
-
-                {/* Poll/Vote - SECONDARY */}
-                <button
-                  className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
-                  onClick={() => setShowPoll(true)}
-                  title="Create poll"
-                >
-                  <BarChart3 className="w-5 h-5" />
-                </button>
-
-                {/* Call Recording - SECONDARY */}
-                <button
-                  className={`p-3 rounded-full transition-colors shadow-md ${
-                    isRecording ? 'bg-red-500 text-white hover:bg-red-600 animate-pulse' : 'bg-white hover:bg-cream-sand text-brand-brown'
-                  }`}
-                  onClick={() => setIsRecording(!isRecording)}
-                  title={isRecording ? 'Stop recording' : 'Start recording'}
-                >
-                  <Disc className="w-5 h-5" />
-                </button>
-
-                {/* End Call - CRITICAL ACTION */}
-                <button
-                  className="p-4 sm:p-5 rounded-full bg-red-500 hover:bg-red-600 transition-all shadow-xl border-2 border-red-600 scale-105 hover:scale-110"
-                  onClick={endCall}
-                  title="End call"
-                >
-                  <Phone className="w-6 h-6 transform rotate-135" />
-                </button>
+                  {/* Call Recording - SECONDARY */}
+                  <button
+                    className={`p-3 rounded-full transition-colors shadow-md ${
+                      isRecording ? 'bg-red-500 text-white hover:bg-red-600 animate-pulse' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                    }`}
+                    onClick={() => setIsRecording(!isRecording)}
+                    title={isRecording ? 'Stop recording' : 'Start recording'}
+                  >
+                    <Disc className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             )}
 
