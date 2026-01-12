@@ -793,7 +793,7 @@ function AccommodationBookingInner(){
                     <h4 className="font-semibold text-green-900">During Your Stay - Contact Property Directly</h4>
                   </div>
                   <p className="text-sm text-green-800 mb-3">For check-in, room requests, amenities, or on-site assistance:</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-3">
                     {selectedProperty.phone && (
                       <div>
                         <p className="text-green-700 font-medium">Property Phone</p>
@@ -807,6 +807,24 @@ function AccommodationBookingInner(){
                       </div>
                     )}
                   </div>
+                  <button 
+                    onClick={() => {
+                      const messagesButton = document.querySelector('[aria-label="Open Messenger"]');
+                      if (messagesButton) {
+                        messagesButton.click();
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                      }
+                    }}
+                    className="w-full bg-green-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                    Message Property Owner
+                  </button>
+                  <p className="text-xs text-green-700 mt-2 text-center">
+                    Direct communication • Escalations handled in-app
+                  </p>
                 </div>
 
                 {/* Zola - Primary Support */}
@@ -837,37 +855,6 @@ function AccommodationBookingInner(){
                   </button>
                   <p className="text-xs text-gray-600 mt-2 text-center">
                     Available 24/7 • Instant responses • Handles booking changes, queries & recommendations
-                  </p>
-                </div>
-
-                {/* Messages - Connect with Product Owners */}
-                <div className="bg-blue-50 border-2 border-blue-400 rounded-lg p-4 mb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <svg className="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                    </svg>
-                    <h4 className="font-semibold text-blue-900 text-lg">Message Product Owners & Providers</h4>
-                  </div>
-                  <p className="text-sm text-blue-900 mb-3">
-                    Need to escalate or speak directly with a specialist? Connect with accommodation product owners and service providers for complex issues, special requests, or personalized assistance.
-                  </p>
-                  <button 
-                    onClick={() => {
-                      const messagesButton = document.querySelector('[aria-label="Open Messenger"]');
-                      if (messagesButton) {
-                        messagesButton.click();
-                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                      }
-                    }}
-                    className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                    </svg>
-                    Open Messages
-                  </button>
-                  <p className="text-xs text-blue-700 mt-2 text-center">
-                    Direct communication • Escalations handled in-app • No external contacts needed
                   </p>
                 </div>
 
