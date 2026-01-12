@@ -245,3 +245,44 @@ input[type="checkbox"][class*="accent-brand-orange"]:focus {
 	outline: 2px solid #F47C20;
 	outline-offset: 2px;
 }
+
+/* React Day Picker custom styling for SingleDatePicker */
+.rdp-custom {
+	--rdp-accent-color: #F47C20;
+	--rdp-background-color: #FFF5E6;
+	font-family: inherit;
+}
+
+.rdp-custom .rdp-day_selected {
+	background-color: #F47C20;
+	color: white;
+	font-weight: 600;
+}
+
+.rdp-custom .rdp-day_selected:hover {
+	background-color: #3A2C1A;
+}
+
+.rdp-custom .rdp-day:hover:not(.rdp-day_selected) {
+	background-color: #E7DAC6;
+}
+
+.rdp-custom .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+	background-color: #E7DAC6;
+}
+
+.rdp-custom .rdp-day_today {
+	font-weight: bold;
+	color: #F47C20;
+}
+
+.rdp-custom .rdp-head_cell {
+	color: #3A2C1A;
+	font-weight: 600;
+	font-size: 0.875rem;
+}
+
+.rdp-custom .rdp-caption {
+	color: #3A2C1A;
+	font-weight: 600;
+}
