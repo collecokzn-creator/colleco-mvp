@@ -61,6 +61,24 @@ export default function AIAgent() {
   const [isListening, setIsListening] = useState(false);
   const dragScopeRef = useRef(null);
   const messagesRef = useRef(null);
+  
+  // Hide Zola during active calls
+  const [isCallActive, setIsCallActive] = useState(false);
+  
+  useEffect(() => {
+    const checkCallStatus = () => {
+      const activeCall = localStorage.getItem('colleco.activeCall');
+      setIsCallActive(activeCall === 'true');
+    };
+    
+    // Check initially
+    checkCallStatus();
+    
+    // Poll for changes (localStorage doesn't fire events in same tab)
+    const interval = setInterval(checkCallStatus, 500);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   // Listen for custom event to open AIAgent from booking confirmations
   useEffect(() => {
@@ -203,6 +221,11 @@ export default function AIAgent() {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Hide Zola during active calls
+  if (isCallActive) {
+    return null;
+  }
 
   return (
     <div ref={dragScopeRef} className="fixed inset-0 z-toast pointer-events-none">

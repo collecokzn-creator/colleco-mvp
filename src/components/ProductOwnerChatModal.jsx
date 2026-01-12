@@ -137,6 +137,9 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
     setIsVideoEnabled(type === 'video');
     setIsAudioEnabled(true);
     
+    // Hide Zola during calls
+    localStorage.setItem('colleco.activeCall', 'true');
+    
     // Simulate call connection
     setTimeout(() => {
       setCallStatus('connected');
@@ -180,6 +183,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
   function endCall() {
     setCallStatus('ended');
+    
+    // Show Zola again after call ends
+    localStorage.removeItem('colleco.activeCall');
+    
     setTimeout(() => {
       setShowCallModal(null);
       setCallStatus('idle');
