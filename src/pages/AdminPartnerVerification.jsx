@@ -20,12 +20,6 @@ export default function AdminPartnerVerification() {
   const navigate = useNavigate();
   const { applicationId } = useParams();
   
-  // If no applicationId, redirect to Partners list
-  if (!applicationId) {
-    navigate('/admin/partners');
-    return null;
-  }
-
   const [application, setApplication] = useState(null);
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +28,13 @@ export default function AdminPartnerVerification() {
   const [autoVerificationEnabled] = useState(true);
 
   useEffect(() => {
+    // If no applicationId, redirect to Partners list
+    if (!applicationId) {
+      navigate('/admin/partners');
+      return;
+    }
     fetchApplicationDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationId]);
 
   // Automated verification logic
