@@ -187,20 +187,11 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
       { id: selectedContact.id, name: selectedContact.name, role: selectedContact.role, isHost: false, joinedAt: null }
     ]);
     
-    setShowCallModal(type);
-    setCallStatus('calling');
+      setShowCallModal(type);
+      setCallStatus('calling');
     setCallDuration(0);
     setIsVideoEnabled(type === 'video');
     setIsAudioEnabled(true);
-    
-    // Hide Zola during calls (persist for cross-tab) and notify other components
-    localStorage.setItem('colleco.activeCall', 'true');
-    try { localStorage.setItem('colleco.activeCallStartedAt', String(Date.now())); } catch {}
-    try {
-      window.dispatchEvent(new CustomEvent('colleco:call-start', { detail: { callId: newCallId } }));
-    } catch (e) {
-      // If dispatch fails for any reason, ignore (non-critical)
-    }
     
     // Simulate call connection
     setTimeout(() => {
@@ -209,6 +200,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
       setCallParticipants(prev => prev.map(p => 
         p.id === selectedContact.id ? { ...p, joinedAt: Date.now() } : p
       ));
+      // Now hide Zola (persist for cross-tab) and notify other components
+      try { localStorage.setItem('colleco.activeCall', 'true'); } catch {}
+      try { localStorage.setItem('colleco.activeCallStartedAt', String(Date.now())); } catch {}
+      try { window.dispatchEvent(new CustomEvent('colleco:call-start', { detail: { callId: newCallId } })); } catch {}
     }, 2000);
   }
 
