@@ -640,63 +640,67 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             {/* Call Controls - only show when not in fullscreen */}
             {callStatus === 'connected' && !isFullscreen && (
               <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap px-4">
-                {/* Audio Toggle */}
+                {/* Audio Toggle - PRIMARY */}
                 <button
-                  className={`p-3 sm:p-4 rounded-full transition-colors shadow-md ${
-                    isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
+                  className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
+                    isAudioEnabled 
+                      ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
+                      : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
                   }`}
                   onClick={() => setIsAudioEnabled(!isAudioEnabled)}
                   title={isAudioEnabled ? 'Mute' : 'Unmute'}
                 >
-                  {isAudioEnabled ? <Mic className="w-5 h-5 sm:w-6 sm:h-6" /> : <MicOff className="w-5 h-5 sm:w-6 sm:h-6" />}
+                  {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
                 </button>
 
-                {/* Video Toggle (for video calls) */}
+                {/* Video Toggle (for video calls) - PRIMARY */}
                 {showCallModal === 'video' && (
                   <button
-                    className={`p-3 sm:p-4 rounded-full transition-colors shadow-md ${
-                      isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
+                    className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
+                      isVideoEnabled 
+                        ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
+                        : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
                     }`}
                     onClick={() => setIsVideoEnabled(!isVideoEnabled)}
                     title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
                   >
-                    {isVideoEnabled ? <VideoIcon className="w-5 h-5 sm:w-6 sm:h-6" /> : <VideoOff className="w-5 h-5 sm:w-6 sm:h-6" />}
+                    {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
                   </button>
                 )}
 
-                {/* In-Call Chat Toggle */}
+                {/* In-Call Chat Toggle - SECONDARY */}
                 <button
-                  className="p-3 sm:p-4 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md relative"
+                  className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md relative"
                   onClick={() => setShowInCallChat(!showInCallChat)}
                   title="Chat during call"
                 >
-                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <MessageSquare className="w-5 h-5" />
                   {messages.length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-orange text-white text-[10px] rounded-full flex items-center justify-center font-semibold">
                       {messages.length}
                     </span>
                   )}
                 </button>
 
-                {/* Screen Share */}
+                {/* Screen Share - SECONDARY */}
                 <button
-                  className={`p-3 sm:p-4 rounded-full transition-colors shadow-md ${
+                  className={`p-3 rounded-full transition-colors shadow-md ${
                     isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
                   }`}
                   onClick={() => setIsScreenSharing(!isScreenSharing)}
                   title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
                 >
-                  <MonitorUp className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <MonitorUp className="w-5 h-5" />
                 </button>
 
-                {/* Reactions */}
+                {/* Reactions - SECONDARY */}
                 <div className="relative">
                   <button
-                    className="p-3 sm:p-4 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
+                    className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
                     onClick={() => setShowReactions(!showReactions)}
                     title="Send reaction"
                   >
-                    <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
+                    <Heart className="w-5 h-5" />
                   </button>
                   
                   {showReactions && (
@@ -779,24 +783,24 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                   )}
                 </div>
 
-                {/* Invite (host only) */}
+                {/* Invite (host only) - SECONDARY */}
                 {isCallHost && (
                   <button
-                    className="p-3 sm:p-4 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
+                    className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
                     onClick={() => setShowInviteModal(true)}
                     title="Invite to call"
                   >
-                    <UserPlus className="w-5 h-5 sm:w-6 sm:h-6" />
+                    <UserPlus className="w-5 h-5" />
                   </button>
                 )}
 
-                {/* End Call */}
+                {/* End Call - CRITICAL ACTION */}
                 <button
-                  className="p-3 sm:p-4 rounded-full bg-red-500 hover:bg-red-600 transition-colors"
+                  className="p-4 sm:p-5 rounded-full bg-red-500 hover:bg-red-600 transition-all shadow-xl border-2 border-red-600 scale-105 hover:scale-110"
                   onClick={endCall}
                   title="End call"
                 >
-                  <Phone className="w-5 h-5 sm:w-6 sm:h-6 transform rotate-135" />
+                  <Phone className="w-6 h-6 transform rotate-135" />
                 </button>
               </div>
             )}
