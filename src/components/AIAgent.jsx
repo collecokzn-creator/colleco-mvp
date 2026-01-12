@@ -116,8 +116,13 @@ export default function AIAgent() {
     }
   };
 
-  // Snap above footer on mobile when dragged near bottom
+  // Auto-open when dragged and snap above footer on mobile
   const handleDragEnd = (event, info) => {
+    // Auto-open Zola when dragged
+    if (!open && (Math.abs(info.offset.x) > 10 || Math.abs(info.offset.y) > 10)) {
+      setOpen(true);
+    }
+    
     if (typeof window === 'undefined') return;
     const isMobile = window.innerWidth < 640; // sm breakpoint
     if (!isMobile) return;

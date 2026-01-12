@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import {
+import React, { useEffect, useState, useRef } from 'react';import { motion } from 'framer-motion';import {
   MessageSquare, Phone, Video, Search, BellOff, Bell,
   Shield, Lock, UserPlus, UserMinus, UserCheck, AlertCircle,
   Mic, MicOff, VideoIcon, VideoOff,
@@ -55,6 +54,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   
   const [_thread, setThread] = useState(null);
   const [receipts, setReceipts] = useState({});
+  const dragScopeRef = useRef(null);
 
   // Load messages for selected contact
   useEffect(() => {
@@ -215,11 +215,17 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   };
 
   return (
-    <div className="fixed inset-0 z-toast pointer-events-none">
-      <div className="fixed inset-x-0 sm:inset-x-auto sm:right-4 md:right-6 bottom-0 sm:bottom-20 md:bottom-6 pointer-events-auto">
+    <div ref={dragScopeRef} className="fixed inset-0 z-toast pointer-events-none">
+      <motion.div 
+        className="fixed right-4 sm:right-6 bottom-20 sm:bottom-6 pointer-events-auto"
+        drag
+        dragElastic={0.2}
+        dragMomentum={false}
+        dragConstraints={dragScopeRef}
+      >
       {open ? (
         <>
-        <div className="bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex relative">
+        <div className="fixed inset-0 sm:inset-auto sm:right-0 sm:bottom-0 bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex">
           {/* Contact List Sidebar - Hidden on mobile, toggleable */}
           <div className={`${showContactList ? 'absolute inset-0 z-10' : 'hidden'} sm:block sm:relative sm:w-64 md:w-80 border-r border-cream-border flex flex-col bg-cream-sand`}>
             {/* Header */}
@@ -708,7 +714,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
           <span className="text-xs font-semibold text-brand-brown bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Messages</span>
         </div>
       )}
+      </motion.div>
     </div>
-  </div>
  );
 }
