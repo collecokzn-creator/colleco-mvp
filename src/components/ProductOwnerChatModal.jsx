@@ -584,8 +584,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                   </button>
                   
                   {showReactions && (
-                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-full px-3 py-2 shadow-2xl border border-gray-200">
-                      <div className="flex items-center gap-2">
+                    <div className="absolute bottom-full mb-2 right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200">
+                      <div className="flex items-center gap-1">
                         {/* Default 6 Reactions */}
                         {[
                           { emoji: '👍', label: 'Thumbs up' },
@@ -597,7 +597,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                         ].map(({ emoji, label }) => (
                           <button
                             key={emoji}
-                            className="text-2xl hover:scale-125 transition-transform p-1 rounded hover:bg-gray-100"
+                            className="text-lg hover:scale-110 transition-transform p-0.5 rounded hover:bg-gray-100"
                             onClick={() => {
                               sendReaction(emoji, label);
                               setShowReactions(false);
@@ -611,7 +611,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                         
                         {/* Plus Button for More Reactions */}
                         <button
-                          className="text-lg font-bold hover:scale-110 transition-transform p-1 rounded-full hover:bg-gray-100 w-8 h-8 flex items-center justify-center text-brand-brown"
+                          className="text-sm font-bold hover:scale-110 transition-transform rounded-full hover:bg-gray-100 w-6 h-6 flex items-center justify-center text-brand-brown"
                           onClick={() => setShowAllReactions(!showAllReactions)}
                           title="More reactions"
                         >
@@ -621,8 +621,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                       
                       {/* Expanded Reactions Menu */}
                       {showAllReactions && (
-                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-4 py-3 shadow-2xl border border-gray-200 w-80">
-                          <div className="grid grid-cols-6 gap-2">
+                        <div className="absolute bottom-full mb-2 right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-64">
+                          <div className="grid grid-cols-6 gap-1.5">
                             {[
                               { emoji: '👍', label: 'Thumbs up' },
                               { emoji: '❤️', label: 'Love' },
@@ -645,7 +645,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                             ].map(({ emoji, label }) => (
                               <button
                                 key={emoji}
-                                className="text-2xl hover:scale-125 transition-transform p-1 rounded hover:bg-gray-100"
+                                className="text-lg hover:scale-110 transition-transform p-0.5 rounded hover:bg-gray-100"
                                 onClick={() => {
                                   sendReaction(emoji, label);
                                   setShowReactions(false);
