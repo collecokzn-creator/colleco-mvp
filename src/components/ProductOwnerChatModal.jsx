@@ -50,7 +50,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   // Reactions State
   const [showReactions, setShowReactions] = useState(false);
   const [floatingReactions, setFloatingReactions] = useState([]);
-  const [showContactList, setShowContactList] = useState(false);
+  // On mobile, show contact list by default; hide it when a contact is selected
+  const [showContactList, setShowContactList] = useState(true);
   
   const [_thread, setThread] = useState(null);
   const [receipts, setReceipts] = useState({});
@@ -59,6 +60,12 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   // Load messages for selected contact
   useEffect(() => {
     if (!selectedContact) return;
+    
+    // On mobile, hide contact list when a contact is selected
+    if (window.innerWidth < 640) {
+      setShowContactList(false);
+    }
+    
     const contactBookingId = `${bookingId}-${selectedContact.id}`;
     const threads = loadThreads();
     let t = threads[contactBookingId];
@@ -218,9 +225,9 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
     <>
     {open && (
       <>
-      <div className="fixed inset-0 sm:inset-auto sm:right-4 sm:bottom-20 md:right-6 md:bottom-6 z-toast bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex">
-          {/* Contact List Sidebar - Hidden on mobile, toggleable */}
-          <div className={`${showContactList ? 'absolute inset-0 z-10' : 'hidden'} sm:block sm:relative sm:w-64 md:w-80 border-r border-cream-border flex flex-col bg-cream-sand`}>
+      <div className="fixed inset-0 sm:inset-auto sm:right-4 sm:bottom-20 md:right-6 md:bottom-6 z-toast bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex overflow-hidden">
+          {/* Contact List Sidebar - Full screen on mobile when shown, side panel on desktop */}
+          <div className={`${showContactList ? 'absolute inset-0 z-10 sm:relative' : 'hidden'} sm:block sm:w-64 md:w-80 border-r border-cream-border flex flex-col bg-cream-sand`}>
             {/* Header */}
             <div className="p-4 border-b border-cream-border">
               <div className="flex items-center justify-between mb-3">
@@ -255,7 +262,13 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                   className={`w-full p-3 flex items-center gap-3 border-b border-cream-border hover:bg-white transition-colors ${
                     selectedContact?.id === contact.id ? 'bg-white' : ''
                   }`}
-                  onClick={() => setSelectedContact(contact)}
+                  onClick={() => {
+                    setSelectedContact(contact);
+                    // On mobile, hide contact list when selecting a contact
+                    if (window.innerWidth < 640) {
+                      setShowContactList(false);
+                    }
+                  }}
                 >
                   {/* Avatar */}
                   <div className="w-10 h-10 rounded-full bg-brand-orange text-white flex items-center justify-center font-semibold text-sm flex-shrink-0">
@@ -281,13 +294,19 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
             </div>
           </div>
 
-          {/* Chat Area */}
-          <div className="flex-1 flex flex-col">
+          {/* Chat Area - Hidden on mobile when contact list is shown */}
+          <div className={`flex-1 flex flex-col ${showContactList && !selectedContact ? 'hidden sm:flex' : 'flex'}`}>
             {!selectedContact ? (
-              <div className="flex-1 flex items-center justify-center text-brand-brown/50">
-                <div className="text-center">
+              <div className="flex-1 flex items-center justify-center text-brand-brown/50 bg-cream-sand">
+                <div className="text-center px-4">
                   <MessageSquare className="w-12 h-12 mx-auto mb-2 opacity-50" />
                   <div className="text-sm">Select a contact to start messaging</div>
+                  <button 
+                    className="sm:hidden mt-4 px-4 py-2 bg-brand-orange text-white rounded-lg text-sm font-semibold"
+                    onClick={() => setShowContactList(true)}
+                  >
+                    View Contacts
+                  </button>
                 </div>
               </div>
             ) : (
