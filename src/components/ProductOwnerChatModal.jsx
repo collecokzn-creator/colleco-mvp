@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';import { motion } from 'framer-motion';import {
-  MessageSquare, Phone, Video, Search, BellOff, Bell,
+  MessageSquare, Phone, PhoneOff, Video, Search, BellOff, Bell,
   Shield, Lock, UserPlus, UserMinus, UserCheck, AlertCircle,
   Mic, MicOff, VideoIcon, VideoOff, Heart, Maximize, Minimize,
   Calendar, MonitorUp, X, FileText, Upload, Image as ImageIcon,
