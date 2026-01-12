@@ -53,6 +53,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   // On mobile, show contact list by default; hide it when a contact is selected
   const [showContactList, setShowContactList] = useState(true);
   
+  // In-Call Chat State
+  const [showInCallChat, setShowInCallChat] = useState(false);
+  const [inCallMessage, setInCallMessage] = useState('');
+  
   const [_thread, setThread] = useState(null);
   const [receipts, setReceipts] = useState({});
   const dragScopeRef = useRef(null);
@@ -555,6 +559,20 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                   </button>
                 )}
 
+                {/* In-Call Chat Toggle */}
+                <button
+                  className="p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors relative"
+                  onClick={() => setShowInCallChat(!showInCallChat)}
+                  title="Chat during call"
+                >
+                  <MessageSquare className="w-6 h-6" />
+                  {messages.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                      {messages.length}
+                    </span>
+                  )}
+                </button>
+
                 {/* Reactions */}
                 <div className="relative">
                   <button
@@ -627,6 +645,104 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                 {reaction.emoji}
               </div>
             ))}
+            
+            {/* In-Call Chat Overlay */}
+            {showInCallChat && callStatus === 'connected' && (
+              <div className="absolute right-4 bottom-24 w-80 max-h-96 bg-white/95 backdrop-blur-md rounded-lg shadow-2xl border border-cream-border overflow-hidden flex flex-col">
+                {/* Chat Header */}
+                <div className="p-3 bg-brand-orange text-white flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4" />
+                    <span className="font-semibold text-sm">Chat with {selectedContact?.name}</span>
+                  </div>
+                  <button
+                    className="p-1 hover:bg-white/20 rounded transition-colors"
+                    onClick={() => setShowInCallChat(false)}
+                  >
+                    ✕
+                  </button>
+                </div>
+                
+                {/* Messages */}
+                <div className="flex-1 overflow-y-auto p-3 space-y-2 max-h-60 bg-cream-sand">
+                  {messages.length === 0 ? (
+                    <div className="text-xs text-brand-brown/50 text-center py-4">
+                      No messages yet. Send a message during the call!
+                    </div>
+                  ) : (
+                    messages.slice(-5).map((m, i) => (
+                      <div key={i} className={`flex ${m.role === ROLES.client ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-[75%] px-2 py-1.5 rounded text-xs ${
+                          m.role === ROLES.client
+                            ? 'bg-brand-orange text-white rounded-br-none'
+                            : 'bg-white border border-cream-border text-brand-brown rounded-bl-none'
+                        }`}>
+                          <div className="font-semibold opacity-90 text-[10px] mb-0.5">{m.sender}</div>
+                          <div>{m.text}</div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+                
+                {/* Input */}
+                <div className="p-2 border-t border-cream-border bg-white">
+                  <div className="flex gap-2">
+                    <input
+                      className="flex-1 border border-cream-border rounded px-2 py-1.5 text-xs text-brand-brown bg-white focus:outline-none focus:border-brand-orange placeholder:text-brand-brown/40"
+                      type="text"
+                      value={inCallMessage}
+                      onChange={e => setInCallMessage(e.target.value)}
+                      placeholder="Type message..."
+                      onKeyDown={e => {
+                        if (e.key === 'Enter' && !e.shiftKey && inCallMessage.trim()) {
+                          e.preventDefault();
+                          const ts = Date.now();
+                          const msg = {
+                            sender: clientName,
+                            role: ROLES.client,
+                            channel: CHANNELS.inapp,
+                            text: inCallMessage.trim(),
+                            ts
+                          };
+                          const contactBookingId = `${bookingId}-${selectedContact.id}`;
+                          const threads = loadThreads();
+                          threads[contactBookingId].messages.push(msg);
+                          saveThreads(threads);
+                          setMessages([...threads[contactBookingId].messages]);
+                          setInCallMessage('');
+                          setReceipts(r => ({ ...r, [ts]: 'sent' }));
+                        }
+                      }}
+                    />
+                    <button
+                      className="px-3 py-1.5 bg-brand-orange text-white text-xs font-semibold rounded hover:bg-brand-orange/90 transition-colors disabled:opacity-50"
+                      onClick={() => {
+                        if (!inCallMessage.trim()) return;
+                        const ts = Date.now();
+                        const msg = {
+                          sender: clientName,
+                          role: ROLES.client,
+                          channel: CHANNELS.inapp,
+                          text: inCallMessage.trim(),
+                          ts
+                        };
+                        const contactBookingId = `${bookingId}-${selectedContact.id}`;
+                        const threads = loadThreads();
+                        threads[contactBookingId].messages.push(msg);
+                        saveThreads(threads);
+                        setMessages([...threads[contactBookingId].messages]);
+                        setInCallMessage('');
+                        setReceipts(r => ({ ...r, [ts]: 'sent' }));
+                      }}
+                      disabled={!inCallMessage.trim()}
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Participants Panel */}
