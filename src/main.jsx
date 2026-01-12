@@ -20,27 +20,20 @@ function ensureLink(rel, attrs) {
 
 function InstallBanner() {
   const [deferred, setDeferred] = useState(null);
-  const [show, setShow] = useState(() => {
-    // Show banner by default on first load, unless user has dismissed it
-    try {
-      return localStorage.getItem('colleco.installBannerDismissed') !== 'true';
-    } catch {
-      return true;
-    }
-  });
+  const [show, setShow] = useState(true); // Always show by default
   useEffect(() => {
     const onPrompt = (e) => {
       // Prevent default to show our custom banner UI (gives better UX control)
       e.preventDefault();
-      try { console.debug('beforeinstallprompt received - storing deferred prompt'); } catch {}
+      try { console.debug('beforeinstallprompt received'); } catch {}
       setDeferred(e);
-      setShow(true);
+      setShow(true); // Ensure banner is visible when prompt is available
     };
     window.addEventListener('beforeinstallprompt', onPrompt);
     return () => window.removeEventListener('beforeinstallprompt', onPrompt);
   }, []);
+  // "Not now" just hides for current session; doesn't persist to localStorage
   const handleDismiss = () => {
-    try { localStorage.setItem('colleco.installBannerDismissed', 'true'); } catch {}
     setShow(false);
   };
   if (!show) return null;
@@ -49,7 +42,7 @@ function InstallBanner() {
       <span style={{color:'#4a3a2a'}}>Install CollEco for a faster app experience.</span>
       <div style={{marginLeft:'auto',display:'flex',gap:8}}>
         <button onClick={handleDismiss} style={{padding:'6px 10px',borderRadius:8,border:'1px solid #eadfd2',background:'#fff',color:'#4a3a2a'}}>Not now</button>
-  <button onClick={async () => { if (!deferred) return; deferred.prompt(); const { outcome: _outcome } = await deferred.userChoice; setDeferred(null); handleDismiss(); }} style={{padding:'6px 10px',borderRadius:8,border:'none',background:'#ff7a00',color:'#fff'}}>Install</button>
+  <button onClick={async () => { if (!deferred) return; deferred.prompt(); const { outcome } = await deferred.userChoice; if (outcome === 'accepted') handleDismiss(); }} style={{padding:'6px 10px',borderRadius:8,border:'none',background:'#ff7a00',color:'#fff'}}>Install</button>
       </div>
     </div>
   );
