@@ -217,6 +217,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   return (
     <>
     {open && (
+      <>
       <div className="fixed inset-0 sm:inset-auto sm:right-4 sm:bottom-20 md:right-6 md:bottom-6 z-toast bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex">
           {/* Contact List Sidebar - Hidden on mobile, toggleable */}
           <div className={`${showContactList ? 'absolute inset-0 z-10' : 'hidden'} sm:block sm:relative sm:w-64 md:w-80 border-r border-cream-border flex flex-col bg-cream-sand`}>
@@ -690,7 +691,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
           }
         }
       `}</style>
-      </div>
+      </>
     )}
     
     {!open && (
