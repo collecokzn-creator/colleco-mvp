@@ -504,7 +504,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
               {callStatus === 'connected' && (
                 <>
                   {/* Video View or Avatar */}
-                  <div className={`mb-4 ${isFullscreen ? 'fixed inset-0 z-[110] bg-black flex items-center justify-center' : ''}`}>
+                  <div className={`mb-4 ${isFullscreen ? 'fixed inset-0 z-[110] bg-black flex flex-col items-center justify-center' : ''}`}>
                     {showCallModal === 'video' && isVideoEnabled ? (
                       <div className={`${
                         isFullscreen 
@@ -528,16 +528,72 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     ) : (
                       <div className="text-7xl mb-4">{selectedContact?.avatar}</div>
                     )}
+                    
+                    {/* Call Controls - visible in both normal and fullscreen */}
+                    {isFullscreen && (
+                      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex justify-center gap-3 md:gap-4">
+                        {/* Audio Toggle */}
+                        <button
+                          className={`p-4 rounded-full transition-colors shadow-lg ${
+                            isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
+                          }`}
+                          onClick={() => setIsAudioEnabled(!isAudioEnabled)}
+                          title={isAudioEnabled ? 'Mute' : 'Unmute'}
+                        >
+                          {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+                        </button>
+
+                        {/* Video Toggle */}
+                        {showCallModal === 'video' && (
+                          <button
+                            className={`p-4 rounded-full transition-colors shadow-lg ${
+                              isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
+                            }`}
+                            onClick={() => setIsVideoEnabled(!isVideoEnabled)}
+                            title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
+                          >
+                            {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+                          </button>
+                        )}
+
+                        {/* In-Call Chat Toggle */}
+                        <button
+                          className="p-4 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-lg relative"
+                          onClick={() => setShowInCallChat(!showInCallChat)}
+                          title="Chat during call"
+                        >
+                          <MessageSquare className="w-6 h-6" />
+                          {messages.length > 0 && (
+                            <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                              {messages.length}
+                            </span>
+                          )}
+                        </button>
+
+                        {/* Hang Up */}
+                        <button
+                          className="p-4 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg"
+                          onClick={endCall}
+                          title="End call"
+                        >
+                          <PhoneOff className="w-6 h-6" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                   
-                  <h3 className="text-2xl font-bold mb-2 text-brand-brown">{selectedContact?.name}</h3>
-                  <p className="text-brand-brown/70 font-medium">{formatCallDuration(callDuration)}</p>
-                  
-                  {/* Video/Audio Status */}
-                  <div className="mt-2 text-sm text-brand-brown/50">
-                    {showCallModal === 'video' && !isVideoEnabled && 'Video disabled'}
-                    {!isAudioEnabled && ' · Audio muted'}
-                  </div>
+                  {!isFullscreen && (
+                    <>
+                      <h3 className="text-2xl font-bold mb-2 text-brand-brown">{selectedContact?.name}</h3>
+                      <p className="text-brand-brown/70 font-medium">{formatCallDuration(callDuration)}</p>
+                      
+                      {/* Video/Audio Status */}
+                      <div className="mt-2 text-sm text-brand-brown/50">
+                        {showCallModal === 'video' && !isVideoEnabled && 'Video disabled'}
+                        {!isAudioEnabled && ' · Audio muted'}
+                      </div>
+                    </>
+                  )}
                 </>
               )}
               
@@ -550,8 +606,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
               )}
             </div>
 
-            {/* Call Controls */}
-            {callStatus === 'connected' && (
+            {/* Call Controls - only show when not in fullscreen */}
+            {callStatus === 'connected' && !isFullscreen && (
               <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap px-4">
                 {/* Audio Toggle */}
                 <button
