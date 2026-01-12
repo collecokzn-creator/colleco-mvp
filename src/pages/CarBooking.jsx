@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import BookingNav from '../components/BookingNav';
 import CarHireSelector from '../components/CarHireSelector';
-import SingleDatePicker from '../components/SingleDatePicker';import SingleTimePicker from '../components/SingleTimePicker';import Button from '../components/ui/Button.jsx';
+import Button from '../components/ui/Button.jsx';
 import { Car, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
@@ -167,37 +167,53 @@ export default function CarBooking(){
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <SingleDatePicker
-                label="Pickup Date"
-                value={pickupDate}
-                onChange={setPickupDate}
-                min={today}
-                required
-                error={formErrors.pickupDate}
-              />
+              <div>
+                <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Date *</label>
+                <input
+                  type="date"
+                  value={pickupDate}
+                  onChange={e => setPickupDate(e.target.value)}
+                  min={today}
+                  required
+                  className="w-full border-2 border-cream-border rounded-xl px-4 py-2.5 text-sm font-medium text-brand-brown bg-white focus:outline-none focus:border-brand-orange focus:shadow-md transition-all duration-200 hover:border-brand-orange/50 hover:shadow-sm"
+                />
+                {formErrors.pickupDate && <p className="text-red-500 text-xs mt-1">{formErrors.pickupDate}</p>}
+              </div>
 
-              <SingleTimePicker
-                label="Pickup Time"
-                value={pickupTime}
-                onChange={setPickupTime}
-              />
+              <div>
+                <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Time</label>
+                <input
+                  type="time"
+                  value={pickupTime}
+                  onChange={e => setPickupTime(e.target.value)}
+                  className="w-full border-2 border-cream-border rounded-xl px-4 py-2.5 text-sm font-medium text-brand-brown bg-white focus:outline-none focus:border-brand-orange focus:shadow-md transition-all duration-200 hover:border-brand-orange/50 hover:shadow-sm"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <SingleDatePicker
-                label="Dropoff Date"
-                value={dropoffDate}
-                onChange={setDropoffDate}
-                min={minDropoff}
-                required
-                error={formErrors.dropoffDate}
-              />
+              <div>
+                <label className="block mb-2 text-sm font-semibold text-brand-brown">Dropoff Date *</label>
+                <input
+                  type="date"
+                  value={dropoffDate}
+                  onChange={e => setDropoffDate(e.target.value)}
+                  min={minDropoff}
+                  required
+                  className="w-full border-2 border-cream-border rounded-xl px-4 py-2.5 text-sm font-medium text-brand-brown bg-white focus:outline-none focus:border-brand-orange focus:shadow-md transition-all duration-200 hover:border-brand-orange/50 hover:shadow-sm"
+                />
+                {formErrors.dropoffDate && <p className="text-red-500 text-xs mt-1">{formErrors.dropoffDate}</p>}
+              </div>
 
-              <SingleTimePicker
-                label="Dropoff Time"
-                value={dropoffTime}
-                onChange={setDropoffTime}
-              />
+              <div>
+                <label className="block mb-2 text-sm font-semibold text-brand-brown">Dropoff Time</label>
+                <input
+                  type="time"
+                  value={dropoffTime}
+                  onChange={e => setDropoffTime(e.target.value)}
+                  className="w-full border-2 border-cream-border rounded-xl px-4 py-2.5 text-sm font-medium text-brand-brown bg-white focus:outline-none focus:border-brand-orange focus:shadow-md transition-all duration-200 hover:border-brand-orange/50 hover:shadow-sm"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
