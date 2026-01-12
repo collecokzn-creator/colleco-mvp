@@ -467,7 +467,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
           <div className="w-full max-w-4xl p-8 text-brand-brown relative">
             {/* Security Banner */}
             {callStatus === 'connected' && (
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-green-50 border border-green-400 rounded-full px-4 py-2 flex items-center gap-2 shadow-sm">
+              <div className="absolute top-2 left-2 bg-green-50 border border-green-400 rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-sm">
                 <Shield className="w-4 h-4 text-green-600" />
                 <Lock className="w-3 h-3 text-green-600" />
                 <span className="text-xs text-green-700 font-medium">Secure Call · {callId?.slice(0, 15)}...</span>
@@ -477,7 +477,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             {/* Participants Count */}
             {callStatus === 'connected' && isCallHost && (
               <button
-                className="absolute top-4 right-4 bg-white border border-brand-brown/20 rounded-full px-4 py-2 flex items-center gap-2 hover:bg-cream-sand transition-colors shadow-sm text-brand-brown"
+                className="absolute top-2 right-2 bg-white border border-brand-brown/20 rounded-full px-3 py-1.5 flex items-center gap-2 hover:bg-cream-sand transition-colors shadow-sm text-brand-brown"
                 onClick={() => setShowParticipants(!showParticipants)}
               >
                 <UserCheck className="w-4 h-4" />
@@ -486,7 +486,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             )}
 
             {/* Call Status */}
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 mt-12">
               {callStatus === 'calling' && (
                 <>
                   <div className="text-6xl mb-4">{selectedContact?.avatar}</div>
