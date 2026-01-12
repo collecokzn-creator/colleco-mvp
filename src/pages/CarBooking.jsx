@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BookingNav from '../components/BookingNav';
 import CarHireSelector from '../components/CarHireSelector';
+import SingleDatePicker from '../components/SingleDatePicker';
 import Button from '../components/ui/Button.jsx';
 import { Car, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
@@ -167,18 +168,14 @@ export default function CarBooking(){
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Date *</label>
-                <input
-                  type="date"
-                  value={pickupDate}
-                  onChange={e => setPickupDate(e.target.value)}
-                  min={today}
-                  required
-                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-                />
-                {formErrors.pickupDate && <p className="text-red-500 text-xs mt-1">{formErrors.pickupDate}</p>}
-              </div>
+              <SingleDatePicker
+                label="Pickup Date"
+                value={pickupDate}
+                onChange={setPickupDate}
+                min={today}
+                required
+                error={formErrors.pickupDate}
+              />
 
               <div>
                 <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Time</label>
@@ -192,18 +189,14 @@ export default function CarBooking(){
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 text-sm font-semibold text-brand-brown">Dropoff Date *</label>
-                <input
-                  type="date"
-                  value={dropoffDate}
-                  onChange={e => setDropoffDate(e.target.value)}
-                  min={minDropoff}
-                  required
-                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-                />
-                {formErrors.dropoffDate && <p className="text-red-500 text-xs mt-1">{formErrors.dropoffDate}</p>}
-              </div>
+              <SingleDatePicker
+                label="Dropoff Date"
+                value={dropoffDate}
+                onChange={setDropoffDate}
+                min={minDropoff}
+                required
+                error={formErrors.dropoffDate}
+              />
 
               <div>
                 <label className="block mb-2 text-sm font-semibold text-brand-brown">Dropoff Time</label>

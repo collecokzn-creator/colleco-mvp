@@ -4,6 +4,7 @@ import LiveMap from '../components/LiveMap';
 import TransferChat from '../components/TransferChat';
 import DriverRating from '../components/DriverRating';
 import RideSelector from '../components/RideSelector';
+import SingleDatePicker from '../components/SingleDatePicker';
 import { requestNotificationPermission, notifyTransferStatus } from '../utils/notifications';
 import Button from '../components/ui/Button.jsx';
 import { Clock, Car, DollarSign } from 'lucide-react';
@@ -561,16 +562,12 @@ export default function Transfers() {
             {bookingType === 'prearranged' && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                  <div>
-                    <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Date</label>
-                    <input 
-                      type="date" 
-                      value={date} 
-                      onChange={e => setDate(e.target.value)} 
-                      required 
-                      className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
-                    />
-                  </div>
+                  <SingleDatePicker
+                    label="Pickup Date"
+                    value={date}
+                    onChange={setDate}
+                    required
+                  />
                   <div>
                     <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Time</label>
                     <input 
@@ -591,17 +588,13 @@ export default function Transfers() {
               <div className="space-y-4 pt-4 border-t border-cream-border">
                 <h3 className="text-sm font-bold text-brand-brown">Return Journey</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Date</label>
-                    <input 
-                      type="date" 
-                      value={returnDate} 
-                      onChange={e => setReturnDate(e.target.value)} 
-                      required={bookingType === 'prearranged'}
-                      min={date}
-                      className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
-                    />
-                  </div>
+                  <SingleDatePicker
+                    label="Return Date"
+                    value={returnDate}
+                    onChange={setReturnDate}
+                    required={bookingType === 'prearranged'}
+                    min={date}
+                  />
                   <div>
                     <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Time</label>
                     <input 

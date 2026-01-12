@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BookingNav from '../components/BookingNav';
 import FlightSelector from '../components/FlightSelector';
+import SingleDatePicker from '../components/SingleDatePicker';
 import Button from '../components/ui/Button.jsx';
 import { Plane, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
@@ -180,32 +181,24 @@ export default function FlightBooking(){
 
             {/* Dates */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 text-sm font-semibold text-brand-brown">Departure Date *</label>
-                <input
-                  type="date"
-                  value={departDate}
-                  onChange={e => setDepartDate(e.target.value)}
-                  min={today}
-                  required
-                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-                />
-                {formErrors.departDate && <p className="text-red-500 text-xs mt-1">{formErrors.departDate}</p>}
-              </div>
+              <SingleDatePicker
+                label="Departure Date"
+                value={departDate}
+                onChange={setDepartDate}
+                min={today}
+                required
+                error={formErrors.departDate}
+              />
 
               {isRoundTrip && (
-                <div>
-                  <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Date *</label>
-                  <input
-                    type="date"
-                    value={returnDate}
-                    onChange={e => setReturnDate(e.target.value)}
-                    min={minReturn}
-                    required={isRoundTrip}
-                    className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-                  />
-                  {formErrors.returnDate && <p className="text-red-500 text-xs mt-1">{formErrors.returnDate}</p>}
-                </div>
+                <SingleDatePicker
+                  label="Return Date"
+                  value={returnDate}
+                  onChange={setReturnDate}
+                  min={minReturn}
+                  required={isRoundTrip}
+                  error={formErrors.returnDate}
+                />
               )}
             </div>
 

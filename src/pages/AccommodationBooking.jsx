@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
 import MealSelector from '../components/MealSelector';
+import SingleDatePicker from '../components/SingleDatePicker';
 import Button from '../components/ui/Button.jsx';
 import { Home, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
@@ -330,39 +331,23 @@ function AccommodationBookingInner(){
 
             {/* Dates */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2 text-sm font-semibold text-brand-brown">
-                  Check-in Date *
-                </label>
-                <input
-                  type="date"
-                  value={checkIn}
-                  onChange={e => setCheckIn(e.target.value)}
-                  min={today}
-                  required
-                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-                />
-                {formErrors.checkIn && (
-                  <p className="text-red-500 text-xs mt-1">{formErrors.checkIn}</p>
-                )}
-              </div>
+              <SingleDatePicker
+                label="Check-in Date"
+                value={checkIn}
+                onChange={setCheckIn}
+                min={today}
+                required
+                error={formErrors.checkIn}
+              />
 
-              <div>
-                <label className="block mb-2 text-sm font-semibold text-brand-brown">
-                  Check-out Date *
-                </label>
-                <input
-                  type="date"
-                  value={checkOut}
-                  onChange={e => setCheckOut(e.target.value)}
-                  min={minCheckOut}
-                  required
-                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-                />
-                {formErrors.checkOut && (
-                  <p className="text-red-500 text-xs mt-1">{formErrors.checkOut}</p>
-                )}
-              </div>
+              <SingleDatePicker
+                label="Check-out Date"
+                value={checkOut}
+                onChange={setCheckOut}
+                min={minCheckOut}
+                required
+                error={formErrors.checkOut}
+              />
             </div>
 
             {/* Guests & Room Type */}
