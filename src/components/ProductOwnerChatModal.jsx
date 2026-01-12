@@ -545,6 +545,46 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
         {/* Fullscreen Call Overlay */}
         {showCallModal && isFullscreen && callStatus === 'connected' && (
           <div className="fixed inset-0 z-[120] bg-black flex flex-col items-center justify-center">
+            {/* Fullscreen Top-Left Toolbar (always visible in fullscreen) */}
+            <div className="absolute top-3 left-3 flex gap-2 z-50">
+              <button
+                className={`p-2 rounded-lg transition-colors shadow-md ${
+                  backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                }`}
+                onClick={() => setBackgroundBlur(!backgroundBlur)}
+                title="Blur background"
+              >
+                <ImageIcon className="w-4 h-4" />
+              </button>
+
+              <button
+                className={`p-2 rounded-lg transition-colors shadow-md ${
+                  showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                }`}
+                onClick={() => setShowTranscription(!showTranscription)}
+                title="Toggle captions"
+              >
+                <Subtitles className="w-4 h-4" />
+              </button>
+
+              <button
+                className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
+                onClick={() => setIsPiPMode(!isPiPMode)}
+                title="Picture-in-Picture"
+              >
+                <PictureInPicture className="w-4 h-4" />
+              </button>
+
+              <button
+                className={`p-2 rounded-lg transition-colors shadow-md ${
+                  showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                }`}
+                onClick={() => setShowLocationShare(!showLocationShare)}
+                title="Share location"
+              >
+                <MapPin className="w-4 h-4" />
+              </button>
+            </div>
             {showCallModal === 'video' && isVideoEnabled ? (
               <div className="w-full h-full bg-black flex items-center justify-center relative">
                 <div className="text-center text-white/60">
@@ -552,43 +592,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                   <div className="text-lg opacity-50">Video feed placeholder</div>
                 </div>
                 
-                {/* Video Controls Toolbar - Top */}
-                <div className="absolute top-3 left-3 flex gap-2">
-                  <button
-                    className={`p-2 rounded-lg transition-colors shadow-md ${
-                      backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                    }`}
-                    onClick={() => setBackgroundBlur(!backgroundBlur)}
-                    title="Blur background"
-                  >
-                    <ImageIcon className="w-4 h-4" />
-                  </button>
-                  <button
-                    className={`p-2 rounded-lg transition-colors shadow-md ${
-                      showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                    }`}
-                    onClick={() => setShowTranscription(!showTranscription)}
-                    title="Toggle captions"
-                  >
-                    <Subtitles className="w-4 h-4" />
-                  </button>
-                  <button
-                    className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
-                    onClick={() => setIsPiPMode(!isPiPMode)}
-                    title="Picture-in-Picture"
-                  >
-                    <PictureInPicture className="w-4 h-4" />
-                  </button>
-                  <button
-                    className={`p-2 rounded-lg transition-colors shadow-md ${
-                      showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                    }`}
-                    onClick={() => setShowLocationShare(!showLocationShare)}
-                    title="Share location"
-                  >
-                    <MapPin className="w-4 h-4" />
-                  </button>
-                </div>
+                {/* Video Controls Toolbar moved to top-level so it's always visible in fullscreen */}
 
                 {/* Recording Indicator */}
                 {isRecording && (
