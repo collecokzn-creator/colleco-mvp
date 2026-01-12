@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import BookingNav from '../components/BookingNav';
 import CarHireSelector from '../components/CarHireSelector';
-import SingleDatePicker from '../components/SingleDatePicker';
-import Button from '../components/ui/Button.jsx';
+import SingleDatePicker from '../components/SingleDatePicker';import SingleTimePicker from '../components/SingleTimePicker';import Button from '../components/ui/Button.jsx';
 import { Car, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
@@ -177,15 +176,11 @@ export default function CarBooking(){
                 error={formErrors.pickupDate}
               />
 
-              <div>
-                <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Time</label>
-                <input
-                  type="time"
-                  value={pickupTime}
-                  onChange={e => setPickupTime(e.target.value)}
-                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-                />
-              </div>
+              <SingleTimePicker
+                label="Pickup Time"
+                value={pickupTime}
+                onChange={setPickupTime}
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -198,15 +193,11 @@ export default function CarBooking(){
                 error={formErrors.dropoffDate}
               />
 
-              <div>
-                <label className="block mb-2 text-sm font-semibold text-brand-brown">Dropoff Time</label>
-                <input
-                  type="time"
-                  value={dropoffTime}
-                  onChange={e => setDropoffTime(e.target.value)}
-                  className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
-                />
-              </div>
+              <SingleTimePicker
+                label="Dropoff Time"
+                value={dropoffTime}
+                onChange={setDropoffTime}
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

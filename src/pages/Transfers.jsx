@@ -5,6 +5,7 @@ import TransferChat from '../components/TransferChat';
 import DriverRating from '../components/DriverRating';
 import RideSelector from '../components/RideSelector';
 import SingleDatePicker from '../components/SingleDatePicker';
+import SingleTimePicker from '../components/SingleTimePicker';
 import { requestNotificationPermission, notifyTransferStatus } from '../utils/notifications';
 import Button from '../components/ui/Button.jsx';
 import { Clock, Car, DollarSign } from 'lucide-react';
@@ -568,16 +569,12 @@ export default function Transfers() {
                     onChange={setDate}
                     required
                   />
-                  <div>
-                    <label className="block mb-2 text-sm font-semibold text-brand-brown">Pickup Time</label>
-                    <input 
-                      type="time" 
-                      value={time} 
-                      onChange={e => setTime(e.target.value)} 
-                      required 
-                      className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
-                    />
-                  </div>
+                  <SingleTimePicker
+                    label="Pickup Time"
+                    value={time}
+                    onChange={setTime}
+                    required
+                  />
                 </div>
 
               </>
@@ -595,16 +592,12 @@ export default function Transfers() {
                     required={bookingType === 'prearranged'}
                     min={date}
                   />
-                  <div>
-                    <label className="block mb-2 text-sm font-semibold text-brand-brown">Return Time</label>
-                    <input 
-                      type="time" 
-                      value={returnTime} 
-                      onChange={e => setReturnTime(e.target.value)} 
-                      required={bookingType === 'prearranged'}
-                      className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
-                    />
-                  </div>
+                  <SingleTimePicker
+                    label="Return Time"
+                    value={returnTime}
+                    onChange={setReturnTime}
+                    required={bookingType === 'prearranged'}
+                  />
                 </div>
                 <div className="p-3 bg-green-50 border-2 border-green-200 rounded-lg">
                   <p className="text-sm text-green-800">
