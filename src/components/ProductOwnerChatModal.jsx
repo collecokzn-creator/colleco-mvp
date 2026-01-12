@@ -427,7 +427,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                   
                   <div className="flex gap-2">
                     <input
-                      className="flex-1 border border-cream-border rounded px-3 py-2 text-sm focus:outline-none focus:border-brand-orange"
+                      className="flex-1 border border-cream-border rounded px-3 py-2 text-sm text-brand-brown bg-white focus:outline-none focus:border-brand-orange placeholder:text-brand-brown/40"
                       type="text"
                       inputMode="text"
                       autoComplete="off"
