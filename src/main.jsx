@@ -23,12 +23,12 @@ function InstallBanner() {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const onPrompt = (e) => {
-      // Do NOT call e.preventDefault() so the browser can show the native
-      // install prompt. We still keep a small hook for telemetry/analytics.
-      try { console.debug('beforeinstallprompt received - allowing native prompt'); } catch {}
+      // Prevent default to show our custom banner UI (gives better UX control)
+      e.preventDefault();
+      try { console.debug('beforeinstallprompt received - showing custom install banner'); } catch {}
       setDeferred(e);
-      // Show the native prompt by not preventing default; hide custom banner UI
-      setShow(false);
+      // Show custom banner UI
+      setShow(true);
     };
     window.addEventListener('beforeinstallprompt', onPrompt);
     return () => window.removeEventListener('beforeinstallprompt', onPrompt);
