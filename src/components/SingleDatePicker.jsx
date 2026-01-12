@@ -97,16 +97,23 @@ export default function SingleDatePicker({ value, onChange, min, label, required
         <p className="text-red-500 text-xs mt-1">{error}</p>
       )}
 
-      {/* Dropdown calendar picker */}
+      {/* Calendar modal popup */}
       {showPicker && (
-        <div 
-          ref={pickerRef}
-          className="absolute z-50 mt-2 bg-white border-2 border-brand-orange/20 rounded-xl shadow-2xl p-4 animate-fadeIn"
-          style={{ 
-            minWidth: '320px',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-          }}
-        >
+        <>
+          {/* Modal backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/30 z-40 animate-fadeIn"
+            onClick={() => setShowPicker(false)}
+          />
+          
+          {/* Calendar popup */}
+          <div 
+            ref={pickerRef}
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white border-2 border-brand-orange/20 rounded-xl shadow-2xl p-4 animate-fadeIn w-[90vw] max-w-[400px]"
+            style={{ 
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+            }}
+          >
           {DayPickerComp ? (
             React.createElement(DayPickerComp, {
               mode: 'single',
@@ -151,6 +158,7 @@ export default function SingleDatePicker({ value, onChange, min, label, required
             </button>
           </div>
         </div>
+        </>
       )}
     </div>
   );
