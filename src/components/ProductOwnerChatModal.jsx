@@ -383,6 +383,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                 </div>
 
                 {/* Messages */}
+                {!showCallModal && (
                 <div ref={messagesRef} className="flex-1 overflow-y-auto p-4 bg-cream-sand min-h-0" onClick={() => { try { inputRef.current?.focus(); } catch {} }}>
                   {messages.length === 0 ? (
                     <div className="text-xs text-brand-brown/50 text-center mt-8">No messages yet. Start the conversation!</div>
@@ -411,8 +412,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     ))
                   )}
                 </div>
+                )}
 
                 {/* Input Area */}
+                {!showCallModal && (
                 <div className="p-4 border-t-2 border-cream-border bg-cream/30 flex-shrink-0">
                   <div className="flex gap-2 mb-3 flex-wrap">
                     <button
@@ -452,6 +455,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     </button>
                   </div>
                 </div>
+                )}
               </>
             )}
           </div>
