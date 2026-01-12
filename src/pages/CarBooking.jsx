@@ -419,6 +419,37 @@ export default function CarBooking(){
                   </p>
                 </div>
 
+                {/* Messages - Connect with Product Owners */}
+                <div className="bg-blue-50 border-2 border-blue-400 rounded-lg p-4 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                    <h4 className="font-semibold text-blue-900 text-lg">Message Product Owners & Providers</h4>
+                  </div>
+                  <p className="text-sm text-blue-900 mb-3">
+                    Need to escalate or speak directly with a specialist? Connect with car rental product owners and service providers for complex issues, special requests, or personalized assistance.
+                  </p>
+                  <button 
+                    onClick={() => {
+                      const messagesButton = document.querySelector('[aria-label="Open Messenger"]');
+                      if (messagesButton) {
+                        messagesButton.click();
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                      }
+                    }}
+                    className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                    Open Messages
+                  </button>
+                  <p className="text-xs text-blue-700 mt-2 text-center">
+                    Direct communication • Escalations handled in-app • No external contacts needed
+                  </p>
+                </div>
+
                 {/* Human Support - Backup */}
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
