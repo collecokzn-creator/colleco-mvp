@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';import { motion } from 'framer-motion';import {
   MessageSquare, Phone, Video, Search, BellOff, Bell,
   Shield, Lock, UserPlus, UserMinus, UserCheck, AlertCircle,
-  Mic, MicOff, VideoIcon, VideoOff, Heart, Maximize, Minimize
+  Mic, MicOff, VideoIcon, VideoOff, Heart, Maximize, Minimize,
+  Calendar, MonitorUp, X
 } from 'lucide-react';
 import { ensureThread, ROLES, CHANNELS, loadThreads, saveThreads } from '../utils/collabStore.js';
 
@@ -38,6 +39,14 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  
+  // Schedule & Screen Share State
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [isScreenSharing, setIsScreenSharing] = useState(false);
+  const [scheduledMeetings, setScheduledMeetings] = useState(() => {
+    const saved = localStorage.getItem('colleco.scheduledMeetings');
+    return saved ? JSON.parse(saved) : [];
+  });
   
   // Security & Multi-Person Calling State
   const [callId, setCallId] = useState(null);
@@ -387,6 +396,15 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     >
                       <Video className="w-5 h-5" />
                     </button>
+                    
+                    {/* Schedule Meeting */}
+                    <button
+                      className="p-2 hover:bg-purple-50 hover:text-purple-600 rounded-full transition-colors"
+                      onClick={() => setShowScheduleModal(true)}
+                      title="Schedule Meeting"
+                    >
+                      <Calendar className="w-5 h-5" />
+                    </button>
                   </div>
                 </div>
 
@@ -521,6 +539,12 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                         <div className="text-center text-brand-brown/60">
                           <Video className="w-12 h-12 mx-auto mb-2" />
                           <div className="text-sm">Video feed placeholder</div>
+                          {isScreenSharing && (
+                            <div className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg inline-flex items-center gap-2 font-semibold">
+                              <MonitorUp className="w-4 h-4" />
+                              Sharing screen...
+                            </div>
+                          )}
                         </div>
                         
                         {/* Fullscreen Toggle */}
@@ -652,6 +676,17 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                       {messages.length}
                     </span>
                   )}
+                </button>
+
+                {/* Screen Share */}
+                <button
+                  className={`p-3 sm:p-4 rounded-full transition-colors shadow-md ${
+                    isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                  }`}
+                  onClick={() => setIsScreenSharing(!isScreenSharing)}
+                  title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
+                >
+                  <MonitorUp className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
 
                 {/* Reactions */}
@@ -983,6 +1018,169 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
         }
       `}</style>
       </>
+    )}
+    
+    {/* Schedule Meeting Modal */}
+    {showScheduleModal && (
+      <div className="fixed inset-0 z-[120] bg-black/50 flex items-center justify-center p-4" onClick={() => setShowScheduleModal(false)}>
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-brand-brown flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-brand-orange" />
+              Schedule Meeting
+            </h3>
+            <button
+              onClick={() => setShowScheduleModal(false)}
+              className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const meeting = {
+              id: Date.now(),
+              contactId: selectedContact?.id,
+              contactName: selectedContact?.name,
+              title: formData.get('title'),
+              date: formData.get('date'),
+              time: formData.get('time'),
+              type: formData.get('type'),
+              notes: formData.get('notes'),
+              createdAt: new Date().toISOString()
+            };
+            const updated = [...scheduledMeetings, meeting];
+            setScheduledMeetings(updated);
+            localStorage.setItem('colleco.scheduledMeetings', JSON.stringify(updated));
+            setShowScheduleModal(false);
+            
+            // Send notification message
+            const msg = {
+              sender: clientName,
+              role: ROLES.client,
+              channel: CHANNELS.inapp,
+              text: `📅 Scheduled ${meeting.type} meeting: "${meeting.title}" on ${new Date(meeting.date).toLocaleDateString()} at ${meeting.time}`,
+              ts: Date.now()
+            };
+            const contactBookingId = `${bookingId}-${selectedContact.id}`;
+            const threads = loadThreads();
+            threads[contactBookingId].messages.push(msg);
+            saveThreads(threads);
+            setMessages([...threads[contactBookingId].messages]);
+          }} className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-brand-brown mb-1">Meeting With</label>
+              <input
+                type="text"
+                value={selectedContact?.name || ''}
+                disabled
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-semibold text-brand-brown mb-1">Meeting Title</label>
+              <input
+                type="text"
+                name="title"
+                required
+                placeholder="e.g., Project Review"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-semibold text-brand-brown mb-1">Date</label>
+                <input
+                  type="date"
+                  name="date"
+                  required
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-semibold text-brand-brown mb-1">Time</label>
+                <input
+                  type="time"
+                  name="time"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-semibold text-brand-brown mb-1">Meeting Type</label>
+              <select
+                name="type"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+              >
+                <option value="video">Video Call</option>
+                <option value="voice">Voice Call</option>
+                <option value="in-person">In-Person</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-semibold text-brand-brown mb-1">Notes (Optional)</label>
+              <textarea
+                name="notes"
+                rows="3"
+                placeholder="Add agenda or notes..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
+              ></textarea>
+            </div>
+            
+            <div className="flex gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowScheduleModal(false)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-brand-brown hover:bg-gray-50 font-semibold transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex-1 px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 font-semibold transition-colors"
+              >
+                Schedule Meeting
+              </button>
+            </div>
+          </form>
+          
+          {/* Scheduled Meetings List */}
+          {scheduledMeetings.filter(m => m.contactId === selectedContact?.id).length > 0 && (
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <h4 className="text-sm font-bold text-brand-brown mb-3">Upcoming Meetings</h4>
+              <div className="space-y-2">
+                {scheduledMeetings
+                  .filter(m => m.contactId === selectedContact?.id)
+                  .sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time))
+                  .slice(0, 3)
+                  .map(meeting => (
+                    <div key={meeting.id} className="p-3 bg-cream-sand rounded-lg text-sm">
+                      <div className="font-semibold text-brand-brown">{meeting.title}</div>
+                      <div className="text-xs text-brand-brown/70 mt-1">
+                        {new Date(meeting.date).toLocaleDateString()} at {meeting.time} · {meeting.type}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+        </motion.div>
+      </div>
     )}
     
     {!open && (
