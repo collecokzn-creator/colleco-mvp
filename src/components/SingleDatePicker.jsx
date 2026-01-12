@@ -75,12 +75,22 @@ export default function SingleDatePicker({ value, onChange, min, label, required
       {/* Display input with calendar icon */}
       <div 
         onClick={() => setShowPicker(!showPicker)}
-        className={`w-full border-2 ${error ? 'border-red-500' : 'border-cream-border'} rounded-lg px-3 py-2 cursor-pointer flex items-center justify-between focus-within:border-brand-orange transition-colors bg-white hover:bg-cream/30`}
+        className={`w-full border-2 ${
+          showPicker 
+            ? 'border-brand-orange shadow-md' 
+            : error 
+              ? 'border-red-500' 
+              : 'border-cream-border'
+        } rounded-xl px-4 py-2.5 cursor-pointer flex items-center justify-between transition-all duration-200 bg-white hover:border-brand-orange/50 hover:shadow-sm`}
       >
-        <span className={selectedDate ? 'text-brand-brown' : 'text-gray-400'}>
+        <span className={`text-sm font-medium ${
+          selectedDate ? 'text-brand-brown' : 'text-gray-400'
+        }`}>
           {formattedDate || 'Select date'}
         </span>
-        <Calendar className="w-5 h-5 text-brand-brown/60" />
+        <Calendar className={`w-5 h-5 transition-colors ${
+          showPicker ? 'text-brand-orange' : 'text-brand-brown/60'
+        }`} />
       </div>
 
       {error && (
@@ -91,8 +101,11 @@ export default function SingleDatePicker({ value, onChange, min, label, required
       {showPicker && (
         <div 
           ref={pickerRef}
-          className="absolute z-50 mt-2 bg-white border-2 border-cream-border rounded-lg shadow-lg p-3"
-          style={{ minWidth: '280px' }}
+          className="absolute z-50 mt-2 bg-white border-2 border-brand-orange/20 rounded-xl shadow-2xl p-4 animate-fadeIn"
+          style={{ 
+            minWidth: '320px',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+          }}
         >
           {DayPickerComp ? (
             React.createElement(DayPickerComp, {
@@ -117,7 +130,7 @@ export default function SingleDatePicker({ value, onChange, min, label, required
             />
           )}
           
-          <div className="flex gap-2 mt-2 border-t pt-2">
+          <div className="flex gap-2 mt-3 pt-3 border-t border-cream-border">
             <button
               type="button"
               onClick={() => {
@@ -125,14 +138,14 @@ export default function SingleDatePicker({ value, onChange, min, label, required
                 onChange('');
                 setShowPicker(false);
               }}
-              className="flex-1 px-3 py-1.5 text-xs rounded border border-gray-300 hover:bg-gray-50"
+              className="flex-1 px-4 py-2 text-sm font-medium rounded-lg border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95"
             >
               Clear
             </button>
             <button
               type="button"
               onClick={() => setShowPicker(false)}
-              className="flex-1 px-3 py-1.5 text-xs rounded bg-brand-orange text-white hover:bg-brand-highlight"
+              className="flex-1 px-4 py-2 text-sm font-semibold rounded-lg bg-brand-orange text-white hover:bg-brand-highlight shadow-sm hover:shadow-md transition-all active:scale-95"
             >
               Done
             </button>

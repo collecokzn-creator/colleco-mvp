@@ -286,3 +286,48 @@ input[type="checkbox"][class*="accent-brand-orange"]:focus {
 	color: #3A2C1A;
 	font-weight: 600;
 }
+
+/* Calendar dropdown animation */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fadeIn {
+	animation: fadeIn 0.2s ease-out;
+}
+
+/* Enhanced calendar styling */
+.rdp-custom .rdp-months {
+	padding: 0.5rem;
+}
+
+.rdp-custom .rdp-month {
+	margin: 0;
+}
+
+.rdp-custom .rdp-button {
+	border-radius: 0.5rem;
+	font-weight: 500;
+}
+
+.rdp-custom .rdp-day {
+	transition: all 0.15s ease;
+}
+
+.rdp-custom .rdp-nav_button {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 0.5rem;
+	transition: all 0.15s ease;
+}
+
+.rdp-custom .rdp-nav_button:hover {
+	background-color: #FFF5E6;
+}
