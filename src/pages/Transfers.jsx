@@ -985,10 +985,28 @@ export default function Transfers() {
                 <h4 className="font-semibold text-green-900">During Transfer - Contact Driver Directly</h4>
               </div>
               <p className="text-sm text-green-800 mb-3">For pickup coordination, delays, or route questions:</p>
-              <div className="text-sm">
+              <div className="text-sm mb-3">
                 <p className="text-green-700 font-medium">Driver: {selectedRide.driver.name}</p>
                 <p className="text-green-600">Contact via in-app chat or phone once matched</p>
               </div>
+              <button 
+                onClick={() => {
+                  const messagesButton = document.querySelector('[aria-label="Open Messenger"]');
+                  if (messagesButton) {
+                    messagesButton.click();
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                  }
+                }}
+                className="w-full bg-green-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+                Message Driver
+              </button>
+              <p className="text-xs text-green-700 mt-2 text-center">
+                Direct communication • Escalations handled in-app
+              </p>
             </div>
 
             {/* Zola - Primary Support */}
