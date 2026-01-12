@@ -13,6 +13,12 @@ html, body { color-scheme: light; }
 	--banner-h: 0px;         /* set dynamically when the top status bar is visible */
 	--footer-h: 4.5rem;      /* approximate fixed footer height */
 	--sticky-offset: calc(var(--header-h) + var(--banner-h));
+	
+	/* Mobile viewport support for safe areas (notches, home indicators) */
+	--sat: env(safe-area-inset-top, 0px);
+	--sar: env(safe-area-inset-right, 0px);
+	--sab: env(safe-area-inset-bottom, 0px);
+	--sal: env(safe-area-inset-left, 0px);
 }
 @media (min-width: 640px) {
 	:root { --header-h: 4.5rem; }  /* matches Navbar h-[4.5rem] on tablet+ */
@@ -330,4 +336,19 @@ input[type="checkbox"][class*="accent-brand-orange"]:focus {
 
 .rdp-custom .rdp-nav_button:hover {
 	background-color: #FFF5E6;
+}
+
+/* Mobile safe area utilities for notched devices */
+.safe-area-inset {
+	padding-top: var(--sat);
+	padding-right: var(--sar);
+	padding-bottom: var(--sab);
+	padding-left: var(--sal);
+}
+
+/* Support for dynamic viewport height (accounts for mobile browser UI) */
+@supports (height: 100dvh) {
+	.h-screen-mobile {
+		height: 100dvh;
+	}
 }

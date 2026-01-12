@@ -239,7 +239,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
     <>
     {open && (
       <>
-      <div className="fixed inset-0 sm:inset-auto sm:right-4 sm:bottom-20 md:right-6 md:bottom-6 z-toast bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex overflow-hidden">
+      <div className="fixed inset-0 sm:inset-auto sm:right-4 sm:bottom-4 md:right-6 md:bottom-6 z-toast bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100dvh] sm:h-[85vh] md:h-[600px] max-h-[100dvh] sm:max-h-[85vh] flex overflow-hidden safe-area-inset">
           {/* Contact List Sidebar - Full screen on mobile when shown, side panel on desktop */}
           <div className={`${showContactList ? 'absolute inset-0 z-10 sm:relative' : 'hidden'} sm:block sm:w-64 md:w-80 border-r border-cream-border flex flex-col bg-cream-sand`}>
             {/* Header */}
