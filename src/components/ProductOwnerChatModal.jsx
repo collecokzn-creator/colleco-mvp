@@ -215,17 +215,9 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
   };
 
   return (
-    <div ref={dragScopeRef} className="fixed inset-0 z-toast pointer-events-none">
-      <motion.div 
-        className="fixed right-4 sm:right-6 bottom-20 sm:bottom-6 pointer-events-auto"
-        drag
-        dragElastic={0.2}
-        dragMomentum={false}
-        dragConstraints={dragScopeRef}
-      >
-      {open ? (
-        <>
-        <div className="fixed inset-0 sm:inset-auto sm:right-0 sm:bottom-0 bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex">
+    <>
+    {open && (
+      <div className="fixed inset-0 sm:inset-auto sm:right-4 sm:bottom-20 md:right-6 md:bottom-6 z-toast bg-white sm:rounded-2xl shadow-2xl border-t sm:border border-cream-border/80 w-full sm:w-[90vw] md:w-[600px] lg:w-[800px] h-[100vh] sm:h-[85vh] md:h-[600px] max-h-[100vh] flex">
           {/* Contact List Sidebar - Hidden on mobile, toggleable */}
           <div className={`${showContactList ? 'absolute inset-0 z-10' : 'hidden'} sm:block sm:relative sm:w-64 md:w-80 border-r border-cream-border flex flex-col bg-cream-sand`}>
             {/* Header */}
@@ -698,23 +690,34 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
           }
         }
       `}</style>
-        </>
-      ) : (
-        <div className="flex flex-col items-center gap-1">
-          <button
-            onClick={() => setOpen(true)}
-            className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-white/90 shadow-2xl shadow-brand-brown/25 backdrop-blur hover:scale-105 transition-transform"
-            aria-label="Open Messenger"
-            title="Open Messenger"
-          >
-            <span className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-orange/40 via-transparent to-brand-brown/40 blur-xl" aria-hidden></span>
-            <MessageSquare className="relative w-8 h-8 text-brand-orange" />
-          </button>
+      </div>
+    )}
+    
+    {!open && (
+      <div ref={dragScopeRef} className="fixed inset-0 z-toast pointer-events-none">
+        <motion.div 
+          className="fixed right-4 sm:right-6 bottom-20 sm:bottom-6 pointer-events-auto"
+          drag
+          dragElastic={0.2}
+          dragMomentum={false}
+          dragConstraints={dragScopeRef}
+        >
+          <div className="flex flex-col items-center gap-1">
+            <button
+              onClick={() => setOpen(true)}
+              className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-white/90 shadow-2xl shadow-brand-brown/25 backdrop-blur hover:scale-105 transition-transform"
+              aria-label="Open Messenger"
+              title="Open Messenger"
+            >
+              <span className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-orange/40 via-transparent to-brand-brown/40 blur-xl" aria-hidden></span>
+              <MessageSquare className="relative w-8 h-8 text-brand-orange" />
+            </button>
 
-          <span className="text-xs font-semibold text-brand-brown bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Messages</span>
-        </div>
-      )}
-    </motion.div>
-  </div>
+            <span className="text-xs font-semibold text-brand-brown bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Messages</span>
+          </div>
+        </motion.div>
+      </div>
+    )}
+    </>
  );
 }
