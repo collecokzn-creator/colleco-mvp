@@ -665,7 +665,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                 </button>
                 
                 {showReactions && (
-                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap">
+                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap z-50 max-w-xs overflow-x-auto">
                     <div className="flex items-center gap-1">
                       {[
                         { emoji: '👍', label: 'Thumbs up' },
@@ -697,7 +697,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                       </button>
                     </div>
                     {showAllReactions && (
-                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-64">
+                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto">
                         <div className="grid grid-cols-6 gap-1.5">
                           {[
                             { emoji: '👍', label: 'Thumbs up' },
@@ -1005,7 +1005,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     </button>
                     
                     {showReactions && (
-                      <div className="absolute bottom-full mb-2 right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 z-50">
+                      <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 z-50 max-w-xs overflow-x-auto">
                         <div className="flex items-center gap-1">
                           {/* Default 6 Reactions */}
                           {[
@@ -1042,7 +1042,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                         
                         {/* Expanded Reactions Menu */}
                         {showAllReactions && (
-                          <div className="absolute bottom-full mb-2 right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-64 z-50">
+                          <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto">
                             <div className="grid grid-cols-6 gap-1.5">
                               {[
                                 { emoji: '👍', label: 'Thumbs up' },
