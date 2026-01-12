@@ -48,6 +48,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
   
   // Reactions State
   const [showReactions, setShowReactions] = useState(false);
+  const [showAllReactions, setShowAllReactions] = useState(false);
   const [floatingReactions, setFloatingReactions] = useState([]);
   // On mobile, show contact list by default; hide it when a contact is selected
   const [showContactList, setShowContactList] = useState(true);
@@ -458,7 +459,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
         {/* Call Modal */}
         {showCallModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-cream-beige via-cream-sand to-brand-orange/20">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-cream-beige via-cream-sand to-brand-orange/30 backdrop-blur-sm">
           <div className="w-full max-w-4xl p-8 text-brand-brown relative">
             {/* Security Banner */}
             {callStatus === 'connected' && (
@@ -583,27 +584,16 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                   </button>
                   
                   {showReactions && (
-                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-4 py-3 shadow-2xl border border-gray-200">
-                      <div className="grid grid-cols-6 gap-2">
+                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-full px-3 py-2 shadow-2xl border border-gray-200">
+                      <div className="flex items-center gap-2">
+                        {/* Default 6 Reactions */}
                         {[
                           { emoji: '👍', label: 'Thumbs up' },
                           { emoji: '❤️', label: 'Love' },
-                          { emoji: '👏', label: 'Applause' },
-                          { emoji: '✅', label: 'Agree' },
-                          { emoji: '🎉', label: 'Celebrate' },
-                          { emoji: '💯', label: 'Perfect' },
-                          { emoji: '✈️', label: 'Flight' },
-                          { emoji: '🌍', label: 'Travel' },
-                          { emoji: '🏨', label: 'Hotel' },
-                          { emoji: '🚗', label: 'Car' },
-                          { emoji: '⭐', label: 'Star' },
-                          { emoji: '😊', label: 'Happy' },
-                          { emoji: '🤔', label: 'Thinking' },
-                          { emoji: '👋', label: 'Wave' },
-                          { emoji: '💪', label: 'Strong' },
-                          { emoji: '🔥', label: 'Fire' },
                           { emoji: '😂', label: 'Laugh' },
-                          { emoji: '✨', label: 'Sparkles' }
+                          { emoji: '🎉', label: 'Celebrate' },
+                          { emoji: '✨', label: 'Sparkles' },
+                          { emoji: '🔥', label: 'Fire' }
                         ].map(({ emoji, label }) => (
                           <button
                             key={emoji}
@@ -611,13 +601,64 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                             onClick={() => {
                               sendReaction(emoji, label);
                               setShowReactions(false);
+                              setShowAllReactions(false);
                             }}
                             title={label}
                           >
                             {emoji}
                           </button>
                         ))}
+                        
+                        {/* Plus Button for More Reactions */}
+                        <button
+                          className="text-lg font-bold hover:scale-110 transition-transform p-1 rounded-full hover:bg-gray-100 w-8 h-8 flex items-center justify-center text-brand-brown"
+                          onClick={() => setShowAllReactions(!showAllReactions)}
+                          title="More reactions"
+                        >
+                          +
+                        </button>
                       </div>
+                      
+                      {/* Expanded Reactions Menu */}
+                      {showAllReactions && (
+                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-2xl px-4 py-3 shadow-2xl border border-gray-200 w-80">
+                          <div className="grid grid-cols-6 gap-2">
+                            {[
+                              { emoji: '👍', label: 'Thumbs up' },
+                              { emoji: '❤️', label: 'Love' },
+                              { emoji: '👏', label: 'Applause' },
+                              { emoji: '✅', label: 'Agree' },
+                              { emoji: '🎉', label: 'Celebrate' },
+                              { emoji: '💯', label: 'Perfect' },
+                              { emoji: '✈️', label: 'Flight' },
+                              { emoji: '🌍', label: 'Travel' },
+                              { emoji: '🏨', label: 'Hotel' },
+                              { emoji: '🚗', label: 'Car' },
+                              { emoji: '⭐', label: 'Star' },
+                              { emoji: '😊', label: 'Happy' },
+                              { emoji: '🤔', label: 'Thinking' },
+                              { emoji: '👋', label: 'Wave' },
+                              { emoji: '💪', label: 'Strong' },
+                              { emoji: '🔥', label: 'Fire' },
+                              { emoji: '😂', label: 'Laugh' },
+                              { emoji: '✨', label: 'Sparkles' }
+                            ].map(({ emoji, label }) => (
+                              <button
+                                key={emoji}
+                                className="text-2xl hover:scale-125 transition-transform p-1 rounded hover:bg-gray-100"
+                                onClick={() => {
+                                  sendReaction(emoji, label);
+                                  setShowReactions(false);
+                                  setShowAllReactions(false);
+                                }}
+                                title={label}
+                              >
+                                {emoji}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
