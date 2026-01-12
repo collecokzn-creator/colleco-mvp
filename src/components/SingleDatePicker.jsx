@@ -101,9 +101,9 @@ export default function SingleDatePicker({ value, onChange, min, label, required
       {showPicker && (
         <div 
           ref={pickerRef}
-          className="absolute z-50 mt-2 bg-white border-2 border-brand-orange/20 rounded-xl shadow-2xl p-4 animate-fadeIn"
+          className="fixed sm:absolute left-0 right-0 sm:left-auto sm:right-auto bottom-0 sm:bottom-auto top-auto sm:top-auto z-50 sm:mt-2 bg-white border-2 border-brand-orange/20 rounded-t-xl sm:rounded-xl shadow-2xl p-4 animate-fadeIn max-h-[80vh] sm:max-h-none overflow-y-auto"
           style={{ 
-            minWidth: '320px',
+            minWidth: window.innerWidth >= 640 ? '320px' : 'auto',
             boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
           }}
         >
