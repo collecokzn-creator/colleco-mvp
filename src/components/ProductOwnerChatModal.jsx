@@ -459,21 +459,21 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
 
         {/* Call Modal */}
         {showCallModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-brand-brown/95 to-brand-orange/95">
-          <div className="w-full max-w-4xl p-8 text-white relative">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-cream-beige via-cream-sand to-brand-orange/20">
+          <div className="w-full max-w-4xl p-8 text-brand-brown relative">
             {/* Security Banner */}
             {callStatus === 'connected' && (
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-green-500/20 border border-green-400/30 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-green-400" />
-                <Lock className="w-3 h-3 text-green-400" />
-                <span className="text-xs text-green-100">Secure Call · {callId?.slice(0, 15)}...</span>
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-green-50 border border-green-400 rounded-full px-4 py-2 flex items-center gap-2 shadow-sm">
+                <Shield className="w-4 h-4 text-green-600" />
+                <Lock className="w-3 h-3 text-green-600" />
+                <span className="text-xs text-green-700 font-medium">Secure Call · {callId?.slice(0, 15)}...</span>
               </div>
             )}
 
             {/* Participants Count */}
             {callStatus === 'connected' && isCallHost && (
               <button
-                className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2 hover:bg-white/20 transition-colors"
+                className="absolute top-4 right-4 bg-white border border-brand-brown/20 rounded-full px-4 py-2 flex items-center gap-2 hover:bg-cream-sand transition-colors shadow-sm text-brand-brown"
                 onClick={() => setShowParticipants(!showParticipants)}
               >
                 <UserCheck className="w-4 h-4" />
@@ -486,10 +486,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
               {callStatus === 'calling' && (
                 <>
                   <div className="text-6xl mb-4">{selectedContact?.avatar}</div>
-                  <h3 className="text-2xl font-bold mb-2">{selectedContact?.name}</h3>
-                  <p className="text-white/80">Calling...</p>
+                  <h3 className="text-2xl font-bold mb-2 text-brand-brown">{selectedContact?.name}</h3>
+                  <p className="text-brand-brown/70">Calling...</p>
                   <div className="mt-4 flex justify-center">
-                    <div className="animate-pulse">
+                    <div className="animate-pulse text-brand-orange">
                       <Phone className="w-8 h-8" />
                     </div>
                   </div>
@@ -501,10 +501,10 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                   {/* Video View or Avatar */}
                   <div className="mb-4">
                     {showCallModal === 'video' && isVideoEnabled ? (
-                      <div className="w-full aspect-video bg-black/30 rounded-lg flex items-center justify-center mb-2">
-                        <div className="text-center">
-                          <Video className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                          <div className="text-sm opacity-70">Video feed placeholder</div>
+                      <div className="w-full aspect-video bg-brand-brown/10 border-2 border-brand-brown/20 rounded-lg flex items-center justify-center mb-2">
+                        <div className="text-center text-brand-brown/60">
+                          <Video className="w-12 h-12 mx-auto mb-2" />
+                          <div className="text-sm">Video feed placeholder</div>
                         </div>
                       </div>
                     ) : (
@@ -512,11 +512,11 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                     )}
                   </div>
                   
-                  <h3 className="text-2xl font-bold mb-2">{selectedContact?.name}</h3>
-                  <p className="text-white/80">{formatCallDuration(callDuration)}</p>
+                  <h3 className="text-2xl font-bold mb-2 text-brand-brown">{selectedContact?.name}</h3>
+                  <p className="text-brand-brown/70 font-medium">{formatCallDuration(callDuration)}</p>
                   
                   {/* Video/Audio Status */}
-                  <div className="mt-2 text-sm text-white/60">
+                  <div className="mt-2 text-sm text-brand-brown/50">
                     {showCallModal === 'video' && !isVideoEnabled && 'Video disabled'}
                     {!isAudioEnabled && ' · Audio muted'}
                   </div>
@@ -525,9 +525,9 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
               
               {callStatus === 'ended' && (
                 <>
-                  <div className="text-6xl mb-4">✓</div>
-                  <h3 className="text-2xl font-bold mb-2">Call Ended</h3>
-                  <p className="text-white/80">Duration: {formatCallDuration(callDuration)}</p>
+                  <div className="text-6xl mb-4 text-green-600">✓</div>
+                  <h3 className="text-2xl font-bold mb-2 text-brand-brown">Call Ended</h3>
+                  <p className="text-brand-brown/70">Duration: {formatCallDuration(callDuration)}</p>
                 </>
               )}
             </div>
@@ -537,8 +537,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
               <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap px-4">
                 {/* Audio Toggle */}
                 <button
-                  className={`p-3 sm:p-4 rounded-full transition-colors ${
-                    isAudioEnabled ? 'bg-white/20 hover:bg-white/30' : 'bg-red-500 hover:bg-red-600'
+                  className={`p-3 sm:p-4 rounded-full transition-colors shadow-md ${
+                    isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
                   }`}
                   onClick={() => setIsAudioEnabled(!isAudioEnabled)}
                   title={isAudioEnabled ? 'Mute' : 'Unmute'}
@@ -549,8 +549,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                 {/* Video Toggle (for video calls) */}
                 {showCallModal === 'video' && (
                   <button
-                    className={`p-3 sm:p-4 rounded-full transition-colors ${
-                      isVideoEnabled ? 'bg-white/20 hover:bg-white/30' : 'bg-red-500 hover:bg-red-600'
+                    className={`p-3 sm:p-4 rounded-full transition-colors shadow-md ${
+                      isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
                     }`}
                     onClick={() => setIsVideoEnabled(!isVideoEnabled)}
                     title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
@@ -561,7 +561,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
 
                 {/* In-Call Chat Toggle */}
                 <button
-                  className="p-3 sm:p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors relative"
+                  className="p-3 sm:p-4 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md relative"
                   onClick={() => setShowInCallChat(!showInCallChat)}
                   title="Chat during call"
                 >
@@ -576,7 +576,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                 {/* Reactions */}
                 <div className="relative">
                   <button
-                    className="p-3 sm:p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                    className="p-3 sm:p-4 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
                     onClick={() => setShowReactions(!showReactions)}
                     title="Send reaction"
                   >
@@ -626,7 +626,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, productOw
                 {/* Invite (host only) */}
                 {isCallHost && (
                   <button
-                    className="p-3 sm:p-4 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                    className="p-3 sm:p-4 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md"
                     onClick={() => setShowInviteModal(true)}
                     title="Invite to call"
                   >
