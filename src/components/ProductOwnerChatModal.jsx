@@ -542,8 +542,108 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
           </div>
         </div>
 
+        {/* Fullscreen Call Overlay */}
+        {showCallModal && isFullscreen && callStatus === 'connected' && (
+          <div className="fixed inset-0 z-[120] bg-black flex flex-col items-center justify-center">
+            {showCallModal === 'video' && isVideoEnabled ? (
+              <div className="w-full h-full bg-black flex items-center justify-center relative">
+                <div className="text-center text-white/60">
+                  <Video className="w-24 h-24 mx-auto mb-4 opacity-50" />
+                  <div className="text-lg opacity-50">Video feed placeholder</div>
+                </div>
+                
+                {/* Video Controls Toolbar - Top */}
+                <div className="absolute top-3 left-3 flex gap-2">
+                  <button
+                    className={`p-2 rounded-lg transition-colors shadow-md ${
+                      backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                    }`}
+                    onClick={() => setBackgroundBlur(!backgroundBlur)}
+                    title="Blur background"
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                  </button>
+                  <button
+                    className={`p-2 rounded-lg transition-colors shadow-md ${
+                      showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                    }`}
+                    onClick={() => setShowTranscription(!showTranscription)}
+                    title="Toggle captions"
+                  >
+                    <Subtitles className="w-4 h-4" />
+                  </button>
+                  <button
+                    className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
+                    onClick={() => setIsPiPMode(!isPiPMode)}
+                    title="Picture-in-Picture"
+                  >
+                    <PictureInPicture className="w-4 h-4" />
+                  </button>
+                  <button
+                    className={`p-2 rounded-lg transition-colors shadow-md ${
+                      showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                    }`}
+                    onClick={() => setShowLocationShare(!showLocationShare)}
+                    title="Share location"
+                  >
+                    <MapPin className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Recording Indicator */}
+                {isRecording && (
+                  <div className="absolute top-3 right-3 px-3 py-1.5 bg-red-500 text-white rounded-full flex items-center gap-2 animate-pulse">
+                    <Disc className="w-3 h-3 fill-white" />
+                    <span className="text-xs font-semibold">REC {Math.floor(recordingDuration / 60)}:{String(recordingDuration % 60).padStart(2, '0')}</span>
+                  </div>
+                )}
+
+                {/* Exit Fullscreen Button */}
+                <button
+                  className="absolute top-3 right-3 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
+                  onClick={() => setIsFullscreen(false)}
+                  title="Exit fullscreen"
+                >
+                  <Minimize className="w-5 h-5" />
+                </button>
+
+                {/* Call Controls - Bottom */}
+                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex justify-center gap-3 md:gap-4">
+                  <button
+                    className={`p-4 rounded-full transition-colors shadow-lg ${
+                      isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
+                    }`}
+                    onClick={() => setIsAudioEnabled(!isAudioEnabled)}
+                    title={isAudioEnabled ? 'Mute' : 'Unmute'}
+                  >
+                    {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+                  </button>
+                  <button
+                    className={`p-4 rounded-full transition-colors shadow-lg ${
+                      isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
+                    }`}
+                    onClick={() => setIsVideoEnabled(!isVideoEnabled)}
+                    title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
+                  >
+                    {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+                  </button>
+                  <button
+                    className="p-4 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg"
+                    onClick={endCall}
+                    title="End call"
+                  >
+                    <PhoneOff className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-7xl text-white/30">{selectedContact?.avatar}</div>
+            )}
+          </div>
+        )}
+
         {/* Call Modal */}
-        {showCallModal && (
+        {showCallModal && !isFullscreen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-cream-beige via-cream-sand to-brand-orange">
           <div className="w-full max-w-4xl p-8 text-brand-brown relative">
             {/* Security Banner */}
@@ -584,153 +684,95 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
               {callStatus === 'connected' && (
                 <>
                   {/* Video View or Avatar */}
-                  <div className={`mb-4 ${isFullscreen ? 'fixed inset-0 z-[110] bg-black flex flex-col items-center justify-center' : ''}`}>
-                    {showCallModal === 'video' && isVideoEnabled ? (
-                      <div className={`${
-                        isFullscreen 
-                          ? 'w-full h-full' 
-                          : 'w-full aspect-video'
-                      } bg-brand-brown/10 border-2 border-brand-brown/20 rounded-lg flex items-center justify-center mb-2 relative`}>
-                        <div className="text-center text-brand-brown/60">
-                          <Video className="w-12 h-12 mx-auto mb-2" />
-                          <div className="text-sm">Video feed placeholder</div>
-                          {isScreenSharing && (
-                            <div className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg inline-flex items-center gap-2 font-semibold">
-                              <MonitorUp className="w-4 h-4" />
-                              Sharing screen...
-                            </div>
-                          )}
-                        </div>
-                        
-                        {/* Video Controls Toolbar */}
-                        <div className="absolute top-3 left-3 flex gap-2">
-                          {/* Background Blur */}
-                          <button
-                            className={`p-2 rounded-lg transition-colors shadow-md ${
-                              backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                            }`}
-                            onClick={() => setBackgroundBlur(!backgroundBlur)}
-                            title={backgroundBlur ? 'Disable blur' : 'Blur background'}
-                          >
-                            <ImageIcon className="w-4 h-4" />
-                          </button>
-
-                          {/* Transcription/Captions */}
-                          <button
-                            className={`p-2 rounded-lg transition-colors shadow-md ${
-                              showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                            }`}
-                            onClick={() => setShowTranscription(!showTranscription)}
-                            title="Toggle captions"
-                          >
-                            <Subtitles className="w-4 h-4" />
-                          </button>
-
-                          {/* Picture-in-Picture */}
-                          <button
-                            className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
-                            onClick={() => setIsPiPMode(!isPiPMode)}
-                            title="Picture-in-Picture"
-                          >
-                            <PictureInPicture className="w-4 h-4" />
-                          </button>
-
-                          {/* Location Share */}
-                          <button
-                            className={`p-2 rounded-lg transition-colors shadow-md ${
-                              showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
-                            }`}
-                            onClick={() => setShowLocationShare(!showLocationShare)}
-                            title="Share location"
-                          >
-                            <MapPin className="w-4 h-4" />
-                          </button>
-                        </div>
-
-                        {/* Recording Indicator */}
-                        {isRecording && (
-                          <div className="absolute top-3 right-3 px-3 py-1.5 bg-red-500 text-white rounded-full flex items-center gap-2 animate-pulse">
-                            <Disc className="w-3 h-3 fill-white" />
-                            <span className="text-xs font-semibold">REC {Math.floor(recordingDuration / 60)}:{String(recordingDuration % 60).padStart(2, '0')}</span>
+                  {showCallModal === 'video' && isVideoEnabled ? (
+                    <div className={`w-full aspect-video bg-brand-brown/10 border-2 border-brand-brown/20 rounded-lg flex items-center justify-center mb-4 relative`}>
+                      <div className="text-center text-brand-brown/60">
+                        <Video className="w-12 h-12 mx-auto mb-2" />
+                        <div className="text-sm">Video feed placeholder</div>
+                        {isScreenSharing && (
+                          <div className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg inline-flex items-center gap-2 font-semibold">
+                            <MonitorUp className="w-4 h-4" />
+                            Sharing screen...
                           </div>
                         )}
-
-                        {/* Live Transcription Overlay */}
-                        {showTranscription && transcriptLines.length > 0 && (
-                          <div className="absolute bottom-3 left-3 right-3 bg-black/80 text-white px-4 py-2 rounded-lg text-sm max-h-24 overflow-y-auto">
-                            {transcriptLines.slice(-3).map((line, idx) => (
-                              <div key={idx} className="mb-1">
-                                <span className="text-gray-400">{line.speaker}:</span> {line.text}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                        
-                        {/* Fullscreen Toggle */}
-                        <button
-                          className="absolute top-2 right-2 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
-                          onClick={() => setIsFullscreen(!isFullscreen)}
-                          title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
-                        >
-                          {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
-                        </button>
                       </div>
-                    ) : (
-                      <div className="text-7xl mb-4">{selectedContact?.avatar}</div>
-                    )}
-                    
-                    {/* Call Controls - visible in both normal and fullscreen */}
-                    {isFullscreen && (
-                      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex justify-center gap-3 md:gap-4">
-                        {/* Audio Toggle */}
+                      
+                      {/* Video Controls Toolbar */}
+                      <div className="absolute top-3 left-3 flex gap-2">
+                        {/* Background Blur */}
                         <button
-                          className={`p-4 rounded-full transition-colors shadow-lg ${
-                            isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
+                          className={`p-2 rounded-lg transition-colors shadow-md ${
+                            backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
                           }`}
-                          onClick={() => setIsAudioEnabled(!isAudioEnabled)}
-                          title={isAudioEnabled ? 'Mute' : 'Unmute'}
+                          onClick={() => setBackgroundBlur(!backgroundBlur)}
+                          title={backgroundBlur ? 'Disable blur' : 'Blur background'}
                         >
-                          {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+                          <ImageIcon className="w-4 h-4" />
                         </button>
 
-                        {/* Video Toggle */}
-                        {showCallModal === 'video' && (
-                          <button
-                            className={`p-4 rounded-full transition-colors shadow-lg ${
-                              isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
-                            }`}
-                            onClick={() => setIsVideoEnabled(!isVideoEnabled)}
-                            title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
-                          >
-                            {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
-                          </button>
-                        )}
-
-                        {/* In-Call Chat Toggle */}
+                        {/* Transcription/Captions */}
                         <button
-                          className="p-4 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-lg relative"
-                          onClick={() => setShowInCallChat(!showInCallChat)}
-                          title="Chat during call"
+                          className={`p-2 rounded-lg transition-colors shadow-md ${
+                            showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                          }`}
+                          onClick={() => setShowTranscription(!showTranscription)}
+                          title="Toggle captions"
                         >
-                          <MessageSquare className="w-6 h-6" />
-                          {messages.length > 0 && (
-                            <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">
-                              {messages.length}
-                            </span>
-                          )}
+                          <Subtitles className="w-4 h-4" />
                         </button>
 
-                        {/* Hang Up */}
+                        {/* Picture-in-Picture */}
                         <button
-                          className="p-4 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg"
-                          onClick={endCall}
-                          title="End call"
+                          className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
+                          onClick={() => setIsPiPMode(!isPiPMode)}
+                          title="Picture-in-Picture"
                         >
-                          <PhoneOff className="w-6 h-6" />
+                          <PictureInPicture className="w-4 h-4" />
+                        </button>
+
+                        {/* Location Share */}
+                        <button
+                          className={`p-2 rounded-lg transition-colors shadow-md ${
+                            showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
+                          }`}
+                          onClick={() => setShowLocationShare(!showLocationShare)}
+                          title="Share location"
+                        >
+                          <MapPin className="w-4 h-4" />
                         </button>
                       </div>
-                    )}
-                  </div>
+
+                      {/* Recording Indicator */}
+                      {isRecording && (
+                        <div className="absolute top-3 right-3 px-3 py-1.5 bg-red-500 text-white rounded-full flex items-center gap-2 animate-pulse">
+                          <Disc className="w-3 h-3 fill-white" />
+                          <span className="text-xs font-semibold">REC {Math.floor(recordingDuration / 60)}:{String(recordingDuration % 60).padStart(2, '0')}</span>
+                        </div>
+                      )}
+
+                      {/* Live Transcription Overlay */}
+                      {showTranscription && transcriptLines.length > 0 && (
+                        <div className="absolute bottom-3 left-3 right-3 bg-black/80 text-white px-4 py-2 rounded-lg text-sm max-h-24 overflow-y-auto">
+                          {transcriptLines.slice(-3).map((line, idx) => (
+                            <div key={idx} className="mb-1">
+                              <span className="text-gray-400">{line.speaker}:</span> {line.text}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Fullscreen Toggle */}
+                      <button
+                        className="absolute top-2 right-2 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+                        onClick={() => setIsFullscreen(!isFullscreen)}
+                        title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+                      >
+                        {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="text-7xl mb-4">{selectedContact?.avatar}</div>
+                  )}
                   
                   {!isFullscreen && (
                     <>
