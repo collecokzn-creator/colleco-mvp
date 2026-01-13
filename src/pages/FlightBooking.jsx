@@ -361,37 +361,74 @@ export default function FlightBooking(){
               <div className="border-t pt-6">
                 <h3 className="text-lg font-bold text-brand-brown mb-3">Need Assistance?</h3>
                 
-                {/* Airline Contact - For Flight-Specific Issues */}
-                <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-4">
+                {/* Manage in CollEco - What you can do through the app */}
+                <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    <svg className="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <h4 className="font-semibold text-green-900">Flight Changes & Check-in - Contact Airline Directly</h4>
+                    <h4 className="font-semibold text-blue-900">Manage Through CollEco</h4>
                   </div>
-                  <p className="text-sm text-green-800 mb-3">For seat selection, baggage, check-in, or flight status updates:</p>
-                  <div className="text-sm mb-3">
-                    <p className="text-green-700 font-medium">Airline: {selectedFlight.airline.name}</p>
-                    <p className="text-green-600">Visit airline website or call their customer service</p>
-                  </div>
-                  <button 
-                    onClick={() => {
-                      const messagesButton = document.querySelector('[aria-label="Open Messenger"]');
-                      if (messagesButton) {
-                        messagesButton.click();
-                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                      }
-                    }}
-                    className="w-full bg-green-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  <p className="text-sm text-blue-800 mb-3">You can handle these directly in our app:</p>
+                  <ul className="text-sm text-blue-800 space-y-1.5 mb-3">
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold mt-0.5">•</span>
+                      <span><strong>Seat Selection & Changes</strong> - Select or change seats before check-in</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold mt-0.5">•</span>
+                      <span><strong>Online Check-in</strong> - Check in and get your boarding pass</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold mt-0.5">•</span>
+                      <span><strong>Flight Status Updates</strong> - Real-time alerts on delays, gate changes, or cancellations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold mt-0.5">•</span>
+                      <span><strong>Baggage Management</strong> - View baggage allowance and track checked luggage</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold mt-0.5">•</span>
+                      <span><strong>Booking Modifications</strong> - Change dates, passengers, or cancel through Zola</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Contact Airline Directly - Issues requiring airline interaction */}
+                <div className="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="h-5 w-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 00.948-.684l1.498-4.493a1 1 0 011.502-.684l1.498 4.493a1 1 0 00.948.684H19a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM3 15a2 2 0 012-2h3.28a1 1 0 00.948-.684l1.498-4.493a1 1 0 011.502-.684l1.498 4.493a1 1 0 00.948.684H19a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2z" />
                     </svg>
-                    Message Airline Provider
-                  </button>
-                  <p className="text-xs text-green-700 mt-2 text-center">
-                    Direct communication • Escalations handled in-app
-                  </p>
+                    <h4 className="font-semibold text-amber-900">Contact {selectedFlight.airline.name} Directly</h4>
+                  </div>
+                  <p className="text-sm text-amber-800 mb-3">These issues need direct airline contact:</p>
+                  <ul className="text-sm text-amber-800 space-y-1.5 mb-3">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-600 font-bold mt-0.5">•</span>
+                      <span><strong>Lost or Damaged Luggage</strong> - File claims and request compensation</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-600 font-bold mt-0.5">•</span>
+                      <span><strong>Special Services</strong> - Unaccompanied minors, wheelchairs, medical equipment</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-600 font-bold mt-0.5">•</span>
+                      <span><strong>Medical or Health Requirements</strong> - Dietary needs, oxygen, mobility assistance</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-600 font-bold mt-0.5">•</span>
+                      <span><strong>Excess Baggage Charges</strong> - Pay for additional luggage or overweight bags</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-600 font-bold mt-0.5">•</span>
+                      <span><strong>Schedule Changes or Mechanical Issues</strong> - Discuss rerouting or compensation for delays</span>
+                    </li>
+                  </ul>
+                  <div className="text-sm mb-3 bg-white rounded p-2 border border-amber-100">
+                    <p className="text-amber-700 font-medium">Airline: {selectedFlight.airline.name}</p>
+                    <p className="text-amber-600 text-xs mt-1">Visit their website or contact customer service</p>
+                  </div>
                 </div>
 
                 {/* Zola - Primary Support */}
