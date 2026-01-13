@@ -148,7 +148,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [showWhiteboard, whiteboardColor, isDrawing]);
+  }, [showWhiteboard, whiteboardColor]);
 
   // Load messages for selected contact
   useEffect(() => {
@@ -620,7 +620,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             {/* Fullscreen Top-Left Toolbar (always visible in fullscreen) */}
             <div className="absolute top-3 left-3 flex gap-2 z-[130] pointer-events-auto">
               <button
-                className={`p-2 rounded-lg transition-colors shadow-md ${
+                type="button"
+                className={`p-2 rounded-lg transition-colors shadow-md pointer-events-auto ${
                   backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
                 }`}
                 onClick={() => setBackgroundBlur(!backgroundBlur)}
@@ -630,7 +631,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
               </button>
 
               <button
-                className={`p-2 rounded-lg transition-colors shadow-md ${
+                type="button"
+                className={`p-2 rounded-lg transition-colors shadow-md pointer-events-auto ${
                   showTranscription ? 'bg-purple-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
                 }`}
                 onClick={() => setShowTranscription(!showTranscription)}
@@ -640,7 +642,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
               </button>
 
               <button
-                className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md"
+                type="button"
+                className="p-2 rounded-lg bg-white/90 hover:bg-white text-brand-brown transition-colors shadow-md pointer-events-auto"
                 onClick={() => setIsPiPMode(!isPiPMode)}
                 title="Picture-in-Picture"
               >
@@ -648,7 +651,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
               </button>
 
               <button
-                className={`p-2 rounded-lg transition-colors shadow-md ${
+                type="button"
+                className={`p-2 rounded-lg transition-colors shadow-md pointer-events-auto ${
                   showLocationShare ? 'bg-green-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
                 }`}
                 onClick={() => setShowLocationShare(!showLocationShare)}
@@ -697,7 +701,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-2 md:gap-3 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10 shadow-2xl z-[130] pointer-events-auto">
               {/* Primary Controls */}
               <button
-                className={`p-3 rounded-full transition-colors shadow-lg ${
+                type="button"
+                className={`p-3 rounded-full transition-colors shadow-lg pointer-events-auto ${
                   isAudioEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
                 }`}
                 onClick={() => setIsAudioEnabled(!isAudioEnabled)}
@@ -706,7 +711,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                 {isAudioEnabled ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
               </button>
               <button
-                className={`p-3 rounded-full transition-colors shadow-lg ${
+                type="button"
+                className={`p-3 rounded-full transition-colors shadow-lg pointer-events-auto ${
                   isVideoEnabled ? 'bg-white hover:bg-cream-sand text-brand-brown' : 'bg-red-500 hover:bg-red-600 text-white'
                 }`}
                 onClick={() => setIsVideoEnabled(!isVideoEnabled)}
@@ -829,7 +835,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
               {/* Chat Toggle */}
               <button
-                className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-lg relative"
+                type="button"
+                className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-lg relative pointer-events-auto"
                 onClick={() => setShowInCallChat(!showInCallChat)}
                 title="Chat during call"
               >
@@ -843,7 +850,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
               {/* End Call - Critical Action */}
               <button
-                className="p-3 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg scale-110 hover:scale-125"
+                type="button"
+                className="p-3 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors shadow-lg scale-110 hover:scale-125 pointer-events-auto"
                 onClick={endCall}
                 title="End call"
               >
