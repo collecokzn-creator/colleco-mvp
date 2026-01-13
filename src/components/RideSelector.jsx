@@ -334,9 +334,9 @@ export default function RideSelector({
     <div className="fixed inset-0 bg-black/50 z-modal flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-white rounded-lg max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col my-8">
         {/* Header */}
-        <div className="p-3 sm:p-6 border-b bg-gradient-to-r from-brand-orange to-orange-600">
-          <h2 className="text-2xl font-bold text-white mb-2">Pick Your Ride</h2>
-          <p className="text-white/90 text-sm">
+        <div className="px-4 py-5 sm:px-6 sm:py-6 border-b bg-gradient-to-r from-brand-orange to-orange-600 flex-shrink-0">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Pick Your Ride</h2>
+          <p className="text-white/90 text-sm truncate">
             {pickup} → {dropoff}
           </p>
         </div>
@@ -404,15 +404,15 @@ export default function RideSelector({
               <div
                 key={ride.id}
                 onClick={() => setSelectedRide(ride)}
-                className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                className={`border rounded-lg p-3 sm:p-4 cursor-pointer transition-all overflow-hidden ${
                   selectedRide?.id === ride.id
-                    ? 'border-brand-orange bg-orange-50 shadow-lg'
-                    : 'border-gray-200 hover:border-brand-orange hover:shadow-md'
+                    ? 'border-2 border-brand-orange bg-orange-50 shadow-lg'
+                    : 'border border-gray-200 hover:border-brand-orange hover:shadow-md'
                 }`}
               >
-                <div className="flex gap-2 sm:gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   {/* Driver Photo */}
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 self-start">
                     <div className="w-16 sm:w-20 h-16 sm:h-20 bg-gray-200 rounded-full overflow-hidden relative">
                       {ride.driver.photo ? (
                         <img 
@@ -480,42 +480,42 @@ export default function RideSelector({
                     </div>
 
                     {/* Stats Row */}
-                    <div className="flex items-center gap-4 mb-3 text-sm">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-3 text-xs sm:text-sm">
                       <div className="flex items-center gap-1">
-                        <Star className={`h-4 w-4 fill-current ${getRatingColor(ride.rating)}`} />
+                        <Star className={`h-3 sm:h-4 w-3 sm:w-4 fill-current ${getRatingColor(ride.rating)}`} />
                         <span className={`font-semibold ${getRatingColor(ride.rating)}`}>
                           {ride.rating.toFixed(1)}
                         </span>
-                        <span className="text-gray-500">
-                          ({ride.totalReviews} reviews)
+                        <span className="text-gray-500 whitespace-nowrap">
+                          ({ride.totalReviews})
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-1 text-gray-600">
-                        <TrendingUp className="h-4 w-4" />
+                      <div className="flex items-center gap-1 text-gray-600 whitespace-nowrap">
+                        <TrendingUp className="h-3 sm:h-4 w-3 sm:w-4" />
                         <span>{ride.completedTrips.toLocaleString()} trips</span>
                       </div>
 
-                      <div className="flex items-center gap-1 text-gray-600">
-                        <Clock className="h-4 w-4" />
+                      <div className="flex items-center gap-1 text-gray-600 whitespace-nowrap">
+                        <Clock className="h-3 sm:h-4 w-3 sm:w-4" />
                         <span>ETA: {ride.estimatedArrival} min</span>
                       </div>
                     </div>
 
                     {/* Vehicle Info */}
-                    <div className="flex items-center gap-4 mb-3 text-sm">
-                      <span className="text-gray-700">
+                    <div className="mb-3 text-sm">
+                      <div className="text-gray-700 mb-1">
                         <strong>{ride.vehicle.model}</strong> • {ride.vehicle.color} • {ride.vehicle.plate}
-                      </span>
+                      </div>
                       {ride.vehicle.features.length > 0 && (
-                        <span className="text-gray-500">
+                        <div className="text-gray-500 text-xs">
                           {ride.vehicle.features.join(' • ')}
-                        </span>
+                        </div>
                       )}
                     </div>
 
                     {/* Badges */}
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {ride.driver.languages.map((lang) => (
                         <span
                           key={lang}

@@ -224,6 +224,11 @@ export default function Transfers() {
     setShowRideSelector(false);
     setRidePending(false);
     setLoading(true);
+    setStatus(null); // Clear any previous error status
+    
+    // Small delay to show loading state clearly
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
     setStatus('searching');
     
     try {
@@ -250,8 +255,8 @@ export default function Transfers() {
           rideId: ride.id,
           driverId: ride.driver.id,
           driverName: ride.driver.name,
-          brandId: ride.brand.id,
-          brandName: ride.brand.name,
+          brandId: ride.brand?.id,
+          brandName: ride.brand?.name,
           vehicleModel: ride.vehicle.model,
           vehiclePlate: ride.vehicle.plate,
           agreedPrice: ride.price
@@ -273,11 +278,19 @@ export default function Transfers() {
         // Poll for status updates
         pollStatus(data.request.id);
       } else {
+        // Only show error for actual API failures
+        console.error('[transfers] Request failed:', data.error || 'Unknown error');
         setStatus('error');
+        setTimeout(() => {
+          alert(`Transfer request failed: ${data.error || 'Please try again or contact support.'}`);
+        }, 100);
       }
     } catch (e) {
       console.error('[transfers] request failed', e);
       setStatus('error');
+      setTimeout(() => {
+        alert('Transfer request failed. Please check your connection and try again.');
+      }, 100);
     } finally {
       setLoading(false);
     }
