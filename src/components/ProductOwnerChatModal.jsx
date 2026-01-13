@@ -471,13 +471,13 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     <div className="text-xs text-brand-brown/50 text-center mt-8">No messages yet. Start the conversation!</div>
                   ) : (
                     messages.map((m, i) => (
-                      <div key={i} className={`mb-3 flex ${m.role === ROLES.client ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[70%] px-3 py-2 rounded-lg text-sm ${
+                      <div key={i} className={`mb-3 flex ${m.role === ROLES.client ? 'justify-end' : 'justify-start'} group`}>
+                        <div className={`max-w-[70%] px-3 py-2 rounded-lg text-sm relative ${
                           m.role === ROLES.client
                             ? 'bg-brand-orange text-white rounded-br-none'
                             : 'bg-white border border-cream-border text-brand-brown rounded-bl-none'
                         }`}>
-                          <div className="font-semibold text-xs mb-1 opacity-90">{m.sender}</div>
+                          <div className="font-semibold text-xs mb-1 opacity-90 pr-6">{m.sender}</div>
                           <div>{m.text}</div>
                           <div className="text-xs opacity-70 mt-1">
                             {new Date(m.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -489,6 +489,21 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                               </span>
                             )}
                           </div>
+                          {m.role === ROLES.client && (
+                            <button
+                              className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded text-white/60 hover:text-white hover:bg-white/10"
+                              onClick={() => {
+                                const contactBookingId = `${bookingId}-${selectedContact.id}`;
+                                const threads = loadThreads();
+                                threads[contactBookingId].messages = threads[contactBookingId].messages.filter(msg => msg.ts !== m.ts);
+                                saveThreads(threads);
+                                setMessages([...threads[contactBookingId].messages]);
+                              }}
+                              title="Delete message"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
                       </div>
                     ))
@@ -623,7 +638,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             </button>
 
             {/* Call Controls - Bottom (always visible in fullscreen) */}
-            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-2 md:gap-3 bg-black/40 backdrop-blur-sm rounded-full px-6 py-3 border border-white/10 shadow-2xl z-50">
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-2 md:gap-3 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10 shadow-2xl z-[70] pointer-events-auto">
               {/* Primary Controls */}
               <button
                 className={`p-3 rounded-full transition-colors shadow-lg ${
@@ -1322,8 +1337,8 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
           {/* Invite Modal */}
           {showInviteModal && (
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center">
-              <div className="bg-white rounded-lg p-6 w-96 max-h-[500px] overflow-y-auto">
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60]">
+              <div className="bg-white rounded-lg p-6 w-96 max-h-[500px] overflow-y-auto shadow-2xl">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-lg font-bold text-brand-brown">Invite to Call</h4>
                   <button
