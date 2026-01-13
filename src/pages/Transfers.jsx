@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import BookingNav from '../components/BookingNav';
 import LiveMap from '../components/LiveMap';
 import TransferChat from '../components/TransferChat';
@@ -11,6 +12,7 @@ import Button from '../components/ui/Button.jsx';
 import { Clock, Car, DollarSign } from 'lucide-react';
 
 export default function Transfers() {
+  const navigate = useNavigate();
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
   const [date, setDate] = useState("");
@@ -278,10 +280,10 @@ export default function Transfers() {
       
       if (data.ok) {
         setRequest(data.request);
-        setStatus('matched');
+        setLoading(false);
         
-        // Poll for status updates
-        pollStatus(data.request.id);
+        // Navigate to checkout for payment
+        navigate(`/checkout?bookingId=${data.request.id}&service=transfer&amount=${ride.price}`);
       } else {
         // Only show error for actual API failures
         console.error('[transfers] Request failed:', data.error || 'Unknown error');
@@ -971,8 +973,8 @@ export default function Transfers() {
         </div>
       )}
 
-      {/* AI-First Support Section */}
-      {selectedRide && request && request.id && (status === 'matched' || status === 'accepted') && (
+      {/* Transfer Tracking Section - Only shown when viewing an active transfer (via URL parameter) */}
+      {false && selectedRide && request && request.id && status && status !== 'searching' && (
         <div className="bg-white rounded-xl shadow-sm border border-cream-border mt-6" id="booking-confirmation">
           {/* Confirmation Header */}
           <div className="p-6 border-b bg-gradient-to-r from-green-50 to-emerald-50">
