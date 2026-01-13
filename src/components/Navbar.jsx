@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useUser } from "../context/UserContext.jsx";
 import logoPng from "../assets/colleco-logo.png";
 import SearchBar from "./SearchBar.jsx";
+import BasketIndicator from "./BasketIndicator.jsx";
 import { Gift, Crown } from "lucide-react";
 import { prefetchRouteByPath } from "../utils/routePrefetch";
 import { getLoyaltySummary } from "../utils/bookingIntegration";
@@ -126,6 +127,9 @@ export default function Navbar() {
 					</div>
 					)}
 					<div className="flex items-center gap-3 ml-auto">
+						{/* Trip Basket Indicator */}
+						<BasketIndicator />
+						
 						{/* Loyalty Widget */}
 						{loyaltyInfo && (
 							<Link

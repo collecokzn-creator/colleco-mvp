@@ -58,10 +58,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Completed",
+        "status": "Cancelled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765804159967
+        "updatedAt": 1768297523372
       }
     ],
     "customer": {
@@ -70,7 +70,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765712124801,
-    "updatedAt": 1765804159967,
+    "updatedAt": 1768297523372,
     "pricing": {
       "items": [
         {
@@ -478,10 +478,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Boarding",
+        "status": "Departed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765804029904
+        "updatedAt": 1768297533394
       }
     ],
     "customer": {
@@ -490,7 +490,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765712225036,
-    "updatedAt": 1765804029904,
+    "updatedAt": 1768297533394,
     "pricing": {
       "items": [
         {
@@ -678,10 +678,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Scheduled",
+        "status": "In-Flight",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765804129959
+        "updatedAt": 1768297533399
       }
     ],
     "customer": {
@@ -690,7 +690,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765712313761,
-    "updatedAt": 1765804129959,
+    "updatedAt": 1768297533399,
     "pricing": {
       "items": [
         {
@@ -878,10 +878,10 @@
         "to": "CPT",
         "date": "2025-11-01",
         "flightNumber": null,
-        "status": "Delayed",
+        "status": "Scheduled",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765804169971
+        "updatedAt": 1768307643159
       }
     ],
     "customer": {
@@ -890,7 +890,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765783385640,
-    "updatedAt": 1765804169971,
+    "updatedAt": 1768307643159,
     "pricing": {
       "items": [
         {
@@ -1081,7 +1081,7 @@
         "status": "Completed",
         "amount": 2500,
         "netRate": 2500,
-        "updatedAt": 1765804200260
+        "updatedAt": 1768307602621
       }
     ],
     "customer": {
@@ -1090,7 +1090,7 @@
     "metadata": {},
     "status": "PendingPayment",
     "createdAt": 1765783974383,
-    "updatedAt": 1765804200260,
+    "updatedAt": 1768307602621,
     "pricing": {
       "items": [
         {

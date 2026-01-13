@@ -453,6 +453,17 @@
               }
             },
             {
+              "path": "/trip-basket",
+              "name": "Trip Basket",
+              "component": "TripBasket",
+              "meta": {
+                "title": "Review Your Trip",
+                "description": "Review and manage your trip items before checkout",
+                "requiresAuth": false,
+                "layout": "marketing"
+              }
+            },
+            {
               "path": "/checkout",
               "name": "Checkout",
               "component": "Checkout",

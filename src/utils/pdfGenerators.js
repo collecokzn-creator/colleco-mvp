@@ -30,7 +30,7 @@ export async function generateTestPDF() {
 import { formatCurrency } from './currency';
 
 // Public path to the logo in the `public/assets` folder  
-const LOGO_PATH = '/src/assets/colleco-logo.png';
+const LOGO_PATH = '/assets/colleco-logo.png';
 
 // CollEco Travel Company Details - FULLY EDITABLE
 const COMPANY_INFO = {
@@ -187,20 +187,21 @@ export const generateQuotePdf = async (a, b, c, d) => {
   // Load logo (for optional use)
   const _logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
   
-  // Use custom logo if provided
+  // Use custom logo if provided, otherwise use default CollEco logo
   const customLogoData = a.customLogo || null;
+  const logoToUse = customLogoData || _logoDataUrl;
   
   // Helper function to add CollEco header
   const addHeader = () => {
-    // Add custom logo if available (top right corner)
-    if (customLogoData) {
+    // Add logo if available (top right corner)
+    if (logoToUse) {
       try {
         const logoW = 45;
         const logoH = 20;
         const logoX = pageWidth - marginRight - logoW;
-        doc.addImage(customLogoData, 'PNG', logoX, 8, logoW, logoH);
+        doc.addImage(logoToUse, 'PNG', logoX, 8, logoW, logoH);
       } catch (e) {
-        console.warn('Custom logo add failed:', e);
+        console.warn('Logo add failed:', e);
       }
     }
     
@@ -369,7 +370,7 @@ export const generateQuotePdf = async (a, b, c, d) => {
     doc.text(`VAT: ${clientVAT}`, 14, yPos);
   }
   
-  // Items table
+  // Items table - Professional accounting grid layout
   const tableStartY = Math.max(yPos + 10, 110);
   
   const rows = filtered.map((item, idx) => {
@@ -385,65 +386,132 @@ export const generateQuotePdf = async (a, b, c, d) => {
 
   autoTable(doc, {
     startY: tableStartY,
-    head: [['ITEM NUMBER', 'DESCRIPTION', 'QTY', 'UNIT PRICE', 'TOTAL PRICE']],
+    head: [['#', 'DESCRIPTION', 'QTY', 'UNIT PRICE', 'AMOUNT']],
     body: rows,
     theme: 'grid',
-    margin: { left: 14, right: 14 }, // Consistent margins
+    margin: { left: 14, right: 14 },
     headStyles: {
-      fillColor: [255, 255, 255],
-      textColor: [0, 0, 0],
+      fillColor: [244, 124, 32], // CollEco orange
+      textColor: [255, 255, 255],
       fontSize: 9,
       fontStyle: 'bold',
+      halign: 'center',
+      valign: 'middle',
       lineWidth: 0.5,
-      lineColor: [0, 0, 0]
+      lineColor: [244, 124, 32],
+      cellPadding: 3
     },
     bodyStyles: {
       fontSize: 9,
-      lineWidth: 0.5,
-      lineColor: [0, 0, 0]
+      lineWidth: 0.3,
+      lineColor: [200, 200, 200], // Light gray borders
+      cellPadding: 3,
+      valign: 'middle'
     },
     columnStyles: {
-      0: { cellWidth: 25, halign: 'center' },
-      1: { cellWidth: 'auto' },
-      2: { cellWidth: 20, halign: 'center' },
-      3: { cellWidth: 30, halign: 'right' },
-      4: { cellWidth: 30, halign: 'right' }
+      0: { 
+        cellWidth: 15, 
+        halign: 'center',
+        fontStyle: 'bold',
+        fillColor: [255, 248, 241] // Light cream
+      },
+      1: { 
+        cellWidth: 'auto',
+        halign: 'left',
+        cellPadding: { left: 4, right: 4, top: 3, bottom: 3 }
+      },
+      2: { 
+        cellWidth: 20, 
+        halign: 'center',
+        fontStyle: 'bold'
+      },
+      3: { 
+        cellWidth: 35, 
+        halign: 'right',
+        cellPadding: { right: 5 }
+      },
+      4: { 
+        cellWidth: 35, 
+        halign: 'right',
+        fontStyle: 'bold',
+        fillColor: [255, 248, 241], // Light cream for totals column
+        cellPadding: { right: 5 }
+      }
+    },
+    alternateRowStyles: {
+      fillColor: [250, 250, 250] // Very light gray for alternating rows
     },
     didDrawPage: (data) => {
       // Add header on each new page
       if (data.pageNumber > 1) {
         addHeader();
       }
+    },
+    didParseCell: function(data) {
+      // Add extra padding to description cells with multiline content
+      if (data.column.index === 1 && data.cell.text.length > 1) {
+        data.cell.styles.cellPadding = { top: 4, bottom: 4, left: 4, right: 4 };
+      }
     }
   });
   
-  // Totals section (right-aligned)
-  let totalY = doc.lastAutoTable.finalY + 10;
-  const totalsX = pageWidth - 70;
+  // Professional accounting totals section (right-aligned grid)
+  let totalY = doc.lastAutoTable.finalY + 8;
+  const totalsStartX = pageWidth - 90; // Start position for totals section
+  const labelWidth = 45;
+  const amountWidth = 45;
   
   const subtotal = filtered.reduce((s, i) => s + (i.unit * i.qty), 0);
   const vatAmount = (subtotal * taxRate) / 100;
   const grandTotal = subtotal + vatAmount;
   
-  doc.setFontSize(10);
-  doc.setFont(undefined, 'bold');
+  // Subtotal row
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'normal');
+  doc.setDrawColor(200, 200, 200); // Light gray border
+  doc.setLineWidth(0.3);
   
-  // Cost price row
-  doc.text('COST PRICE', totalsX - 40, totalY);
-  doc.rect(totalsX, totalY - 4, 60, 7);
-  doc.text(formatCurrency(subtotal, currency), totalsX + 55, totalY, { align: 'right' });
+  // Label cell
+  doc.rect(totalsStartX, totalY - 5, labelWidth, 8);
+  doc.text('Subtotal:', totalsStartX + 2, totalY);
+  
+  // Amount cell
+  doc.rect(totalsStartX + labelWidth, totalY - 5, amountWidth, 8);
+  doc.setFont(undefined, 'bold');
+  doc.text(formatCurrency(subtotal, currency), totalsStartX + labelWidth + amountWidth - 3, totalY, { align: 'right' });
   
   // VAT row
-  totalY += 7;
-  doc.text(`VAT (${taxRate}%)`, totalsX - 40, totalY);
-  doc.rect(totalsX, totalY - 4, 60, 7);
-  doc.text(formatCurrency(vatAmount, currency), totalsX + 55, totalY, { align: 'right' });
+  totalY += 8;
+  doc.setFont(undefined, 'normal');
+  doc.rect(totalsStartX, totalY - 5, labelWidth, 8);
+  doc.text(`VAT (${taxRate}%):`, totalsStartX + 2, totalY);
   
-  // Total row
-  totalY += 7;
-  doc.text('TOTAL COST', totalsX - 40, totalY);
-  doc.rect(totalsX, totalY - 4, 60, 7);
-  doc.text(formatCurrency(grandTotal, currency), totalsX + 55, totalY, { align: 'right' });
+  doc.rect(totalsStartX + labelWidth, totalY - 5, amountWidth, 8);
+  doc.setFont(undefined, 'bold');
+  doc.text(formatCurrency(vatAmount, currency), totalsStartX + labelWidth + amountWidth - 3, totalY, { align: 'right' });
+  
+  // Total row (highlighted)
+  totalY += 8;
+  doc.setFillColor(244, 124, 32); // Orange background
+  doc.setDrawColor(244, 124, 32); // Orange border
+  doc.setLineWidth(0.5);
+  
+  // Label cell with orange background
+  doc.rect(totalsStartX, totalY - 5, labelWidth, 10, 'FD');
+  doc.setTextColor(255, 255, 255); // White text
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.text('TOTAL:', totalsStartX + 2, totalY);
+  
+  // Amount cell with orange background
+  doc.rect(totalsStartX + labelWidth, totalY - 5, amountWidth, 10, 'FD');
+  doc.text(formatCurrency(grandTotal, currency), totalsStartX + labelWidth + amountWidth - 3, totalY, { align: 'right' });
+  
+  // Reset colors
+  doc.setTextColor(0, 0, 0);
+  doc.setDrawColor(0, 0, 0);
+  
+  totalY += 10;
   
   // Banking details section
   totalY += 15;
@@ -627,104 +695,223 @@ export const generateItineraryPdf = async (name, items, ref) => {
     }
   }
   
-  // Itinerary title
-  doc.setFontSize(18);
-  doc.setTextColor(244, 124, 32);
-  doc.text('TRAVEL ITINERARY', pageWidth - marginRight, 18, { align: 'right' });
+  // Exciting title banner with gradient effect
+  doc.setFillColor(244, 124, 32); // Orange
+  doc.rect(0, 35, pageWidth, 16, 'F');
+  
+  doc.setFontSize(20);
+  doc.setTextColor(255, 255, 255); // White text
+  doc.setFont(undefined, 'bold');
+  doc.text('🌴 YOUR ADVENTURE AWAITS! 🌴', pageWidth / 2, 44, { align: 'center' });
+  doc.setFont(undefined, 'normal');
   doc.setTextColor(0, 0, 0);
   
-  // Client info box
-  const clientBoxY = 45;
-  doc.setDrawColor(244, 124, 32);
+  // Client info box with excitement
+  const clientBoxY = 58;
+  doc.setFillColor(255, 248, 241); // Cream background
+  doc.rect(10, clientBoxY, 95, 28, 'F');
+  doc.setDrawColor(244, 124, 32); // Orange border
+  doc.setLineWidth(0.8);
+  doc.rect(10, clientBoxY, 95, 28);
+  
+  doc.setFontSize(9);
+  doc.setTextColor(244, 124, 32);
+  doc.setFont(undefined, 'bold');
+  doc.text('✈️ PREPARED FOR:', 12, clientBoxY + 6);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(12);
+  doc.setFont(undefined, 'bold');
+  doc.text(safeName, 12, clientBoxY + 12);
+  doc.setFont(undefined, 'normal');
+  
+  doc.setFontSize(9);
+  if (ref) {
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Booking Ref: ${ref}`, 12, clientBoxY + 18);
+  }
+  doc.setTextColor(244, 124, 32);
+  doc.text(`🗓️ Created: ${new Date().toLocaleDateString()}`, 12, clientBoxY + 24);
+  doc.setTextColor(0, 0, 0);
+  
+  // Trip highlights box (right side)
+  const highlightBoxX = 110;
+  doc.setFillColor(230, 180, 34); // Gold
+  doc.rect(highlightBoxX, clientBoxY, pageWidth - highlightBoxX - marginRight, 28, 'F');
+  doc.setDrawColor(230, 180, 34);
+  doc.setLineWidth(0.8);
+  doc.rect(highlightBoxX, clientBoxY, pageWidth - highlightBoxX - marginRight, 28);
+  
+  doc.setFontSize(10);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont(undefined, 'bold');
+  doc.text('🎉 YOUR TRIP HIGHLIGHTS', highlightBoxX + 2, clientBoxY + 6);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(9);
+  doc.text(`📍 ${items.length} Amazing Experience${items.length !== 1 ? 's' : ''}`, highlightBoxX + 2, clientBoxY + 12);
+  
+  // Calculate trip duration
+  const days = items.reduce((max, item) => {
+    const day = item.day || 0;
+    return day > max ? day : max;
+  }, 0);
+  if (days > 0) {
+    doc.text(`🌞 ${days} Day${days !== 1 ? 's' : ''} of Adventure`, highlightBoxX + 2, clientBoxY + 18);
+  }
+  doc.text(`🏆 Unforgettable Memories`, highlightBoxX + 2, clientBoxY + 24);
+  doc.setTextColor(0, 0, 0);
+  
+  // Group items by day for better organization
+  const itemsByDay = {};
+  items.forEach(item => {
+    const day = item.day || 0;
+    if (!itemsByDay[day]) itemsByDay[day] = [];
+    itemsByDay[day].push(item);
+  });
+  
+  let currentY = clientBoxY + 35;
+  const sortedDays = Object.keys(itemsByDay).sort((a, b) => Number(a) - Number(b));
+  
+  // Generate day-by-day itinerary with exciting headings
+  sortedDays.forEach((dayNum, dayIndex) => {
+    const dayItems = itemsByDay[dayNum];
+    const isFirstDay = dayIndex === 0;
+    
+    // Check if we need a new page
+    if (currentY > 240) {
+      doc.addPage();
+      currentY = 20;
+    }
+    
+    // Day heading banner
+    if (!isFirstDay || Number(dayNum) > 0) {
+      doc.setFillColor(58, 44, 26); // Brand brown
+      doc.rect(10, currentY, pageWidth - 24, 10, 'F');
+      
+      doc.setFontSize(12);
+      doc.setTextColor(255, 255, 255);
+      doc.setFont(undefined, 'bold');
+      const dayLabel = Number(dayNum) > 0 ? `DAY ${dayNum}` : 'ADDITIONAL ACTIVITIES';
+      doc.text(`🌟 ${dayLabel} 🌟`, pageWidth / 2, currentY + 7, { align: 'center' });
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(0, 0, 0);
+      
+      currentY += 12;
+    }
+    
+    // Activities for this day
+    dayItems.forEach((item, itemIndex) => {
+      // Check page break for each activity
+      if (currentY > 250) {
+        doc.addPage();
+        currentY = 20;
+      }
+      
+      // Activity card with border
+      const cardHeight = 20 + (item.description ? 8 : 0);
+      doc.setDrawColor(200, 200, 200);
+      doc.setLineWidth(0.3);
+      doc.rect(12, currentY, pageWidth - 28, cardHeight);
+      
+      // Time badge (if available)
+      const timeInfo = item.startTime || item.time || '';
+      if (timeInfo) {
+        doc.setFillColor(230, 180, 34); // Gold
+        doc.rect(14, currentY + 2, 28, 6, 'F');
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'bold');
+        doc.setTextColor(255, 255, 255);
+        doc.text(`⏰ ${timeInfo}`, 15, currentY + 5.5);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont(undefined, 'normal');
+      }
+      
+      // Activity name
+      doc.setFontSize(11);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(244, 124, 32); // Orange
+      const activityName = item.name || item.title || 'Activity';
+      doc.text(activityName, 16, currentY + (timeInfo ? 12 : 6));
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(0, 0, 0);
+      
+      // Location
+      const location = item.location || item.destination || '';
+      if (location) {
+        doc.setFontSize(9);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`📍 ${location}`, 16, currentY + (timeInfo ? 17 : 11));
+        doc.setTextColor(0, 0, 0);
+      }
+      
+      // Description
+      if (item.description) {
+        doc.setFontSize(8);
+        doc.setTextColor(60, 60, 60);
+        const descLines = doc.splitTextToSize(item.description, pageWidth - 36);
+        doc.text(descLines, 16, currentY + (timeInfo ? 22 : 16));
+        doc.setTextColor(0, 0, 0);
+      }
+      
+      currentY += cardHeight + 3;
+    });
+    
+    currentY += 2; // Space after day section
+  });
+  
+  // Footer with excitement and contact info
+  let footerY = currentY + 8;
+  
+  // Check if footer fits on current page
+  if (footerY > 250) {
+    doc.addPage();
+    footerY = 20;
+  }
+  
+  // Decorative line
+  doc.setDrawColor(244, 124, 32); // Orange
+  doc.setLineWidth(1);
+  doc.line(10, footerY, pageWidth - marginRight, footerY);
+  
+  footerY += 8;
+  
+  // Important information section with icons
+  doc.setFillColor(255, 248, 241); // Cream
+  doc.rect(10, footerY, pageWidth - 24, 26, 'F');
+  doc.setDrawColor(230, 180, 34); // Gold
   doc.setLineWidth(0.5);
-  doc.rect(10, clientBoxY, 90, 20);
+  doc.rect(10, footerY, pageWidth - 24, 26);
   
   doc.setFontSize(10);
   doc.setFont(undefined, 'bold');
-  doc.text('TRAVELER:', 12, clientBoxY + 5);
+  doc.setTextColor(244, 124, 32);
+  doc.text('✨ IMPORTANT TRAVEL TIPS ✨', pageWidth / 2, footerY + 5, { align: 'center' });
   doc.setFont(undefined, 'normal');
-  doc.setFontSize(11);
-  doc.text(safeName, 12, clientBoxY + 10);
-  if (ref) doc.text(`Reference: ${ref}`, 12, clientBoxY + 15);
+  doc.setTextColor(0, 0, 0);
   
-  // Date and reference info (right side)
-  doc.setFontSize(10);
-  doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth - marginRight, clientBoxY + 5, { align: 'right' });
+  doc.setFontSize(8);
+  doc.text('⏰ Arrive 15 minutes early for all scheduled activities', 12, footerY + 10);
+  doc.text('📧 Keep your confirmation email handy', 12, footerY + 14);
+  doc.text('🆔 Bring valid ID and booking reference', 12, footerY + 18);
+  doc.text('📞 Contact us anytime for assistance or changes', 12, footerY + 22);
   
-  // Itinerary table
-  const rows = items.map((item, idx) => {
-    const dayInfo = item.day ? `Day ${item.day}` : '';
-    const timeInfo = item.startTime || item.time || '';
-    const location = item.location || item.destination || '';
-    
-    return [
-      idx + 1,
-      dayInfo,
-      timeInfo,
-      item.name || item.title || 'Activity',
-      location,
-      item.description || ''
-    ];
-  });
-
-  autoTable(doc, {
-    startY: clientBoxY + 25,
-    head: [["#", "Day", "Time", "Activity", "Location", "Details"]],
-    body: rows,
-    headStyles: {
-      fillColor: [244, 124, 32], // CollEco Orange
-      textColor: [255, 255, 255],
-      fontSize: 10,
-      fontStyle: 'bold'
-    },
-    bodyStyles: {
-      fontSize: 9
-    },
-    alternateRowStyles: {
-      fillColor: [255, 248, 241] // Cream
-    },
-    columnStyles: {
-      0: { cellWidth: 8 },
-      1: { cellWidth: 15 },
-      2: { cellWidth: 20 },
-      3: { cellWidth: 40 },
-      4: { cellWidth: 30 },
-      5: { cellWidth: 'auto', cellPadding: 2 }
-    },
-    didParseCell: function (data) {
-      if (data.column.index === 5) {
-        data.cell.styles.cellWidth = "wrap";
-      }
-    },
-  });
+  footerY += 30;
   
-  // Footer
-  let y = doc.lastAutoTable.finalY + 10;
-  doc.setDrawColor(230, 180, 34); // Gold
-  doc.setLineWidth(0.3);
-  doc.line(10, y, pageWidth - marginRight, y);
+  // Contact banner
+  doc.setFillColor(58, 44, 26); // Brown
+  doc.rect(10, footerY, pageWidth - 24, 14, 'F');
   
-  y += 6;
   doc.setFontSize(9);
   doc.setFont(undefined, 'bold');
-  doc.text('IMPORTANT INFORMATION:', 10, y);
+  doc.setTextColor(255, 255, 255);
+  doc.text('📞 24/7 SUPPORT:', 12, footerY + 5);
   doc.setFont(undefined, 'normal');
-  y += 4;
-  doc.text('• Please arrive 15 minutes before scheduled activities', 10, y); y += 4;
-  doc.text('• Bring confirmation email and valid ID', 10, y); y += 4;
-  doc.text('• Contact us for any changes or assistance', 10, y); y += 6;
+  doc.text(`${COMPANY_INFO.phone} | ${COMPANY_INFO.email}`, 12, footerY + 10);
   
-  doc.setFont(undefined, 'bold');
-  doc.text('CONTACT US:', 10, y);
-  doc.setFont(undefined, 'normal');
-  y += 4;
-  doc.text(`Email: ${COMPANY_INFO.email} | Phone: ${COMPANY_INFO.phone}`, 10, y);
-  
-  // Timestamp
-  y += 6;
+  // Timestamp and branding
   doc.setFontSize(7);
-  doc.setTextColor(128, 128, 128);
-  doc.text(`Generated: ${new Date().toLocaleString()}`, 10, y);
+  doc.setTextColor(200, 200, 200);
+  doc.text(`Generated with ❤️ by ${COMPANY_INFO.name} | ${new Date().toLocaleString()}`, pageWidth / 2, footerY + 20, { align: 'center' });
   doc.setTextColor(0, 0, 0);
 
   doc.save(`${safeName.replace(/\s+/g, "_")}_Itinerary.pdf`);
@@ -814,4 +1001,500 @@ export const generateInvoicePdf = async (a, b, c) => {
     } catch (e) {}
     doc.save(`${(invoiceNum || safeName).toString().replace(/\s+/g, '_')}_Invoice.pdf`);
   })();
+};
+
+// ============================================================================
+// BLOB-RETURNING VERSIONS FOR SHARING
+// These return Blob objects instead of auto-downloading
+// Used by pdfShare.js for Web Share API compatibility
+// ============================================================================
+
+/**
+ * Generate itinerary PDF and return as Blob (for sharing)
+ * @param {string} name - Traveler name
+ * @param {Array} items - Itinerary items
+ * @param {string} ref - Booking reference
+ * @returns {Promise<Blob>} PDF blob
+ */
+export const generateItineraryPdfBlob = async (name, items, ref) => {
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable")
+  ]);
+  const doc = new jsPDF();
+  const safeName = name?.trim() || "Itinerary";
+  
+  // Get page dimensions
+  const pageWidth = doc.internal.pageSize.width || 210;
+  const marginRight = 14;
+  
+  // Try to load logo
+  const _logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
+
+  // Header with CollEco branding
+  doc.setFontSize(20);
+  doc.setTextColor(244, 124, 32); // CollEco Orange
+  doc.text(COMPANY_INFO.name, 10, 18);
+  doc.setTextColor(0, 0, 0);
+  
+  doc.setFontSize(8);
+  doc.setFont(undefined, 'italic');
+  doc.text(COMPANY_INFO.tagline, 10, 23);
+  doc.setFont(undefined, 'normal');
+  
+  doc.setFontSize(9);
+  doc.text(`${COMPANY_INFO.email} | ${COMPANY_INFO.phone}`, 10, 28);
+  doc.text(COMPANY_INFO.website, 10, 32);
+  
+  // Add logo if available
+  if (_logoDataUrl) {
+    try {
+      const logoW = 40;
+      const logoH = 40;
+      const logoX = pageWidth - marginRight - logoW;
+      doc.addImage(_logoDataUrl, 'PNG', logoX, 6, logoW, logoH);
+    } catch (e) {
+      /* logo add failed */
+    }
+  }
+  
+  // Exciting title banner with gradient effect
+  doc.setFillColor(244, 124, 32); // Orange
+  doc.rect(0, 35, pageWidth, 16, 'F');
+  
+  doc.setFontSize(20);
+  doc.setTextColor(255, 255, 255); // White text
+  doc.setFont(undefined, 'bold');
+  doc.text('🌴 YOUR ADVENTURE AWAITS! 🌴', pageWidth / 2, 44, { align: 'center' });
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(0, 0, 0);
+  
+  // Client info box with excitement
+  const clientBoxY = 58;
+  doc.setFillColor(255, 248, 241); // Cream background
+  doc.rect(10, clientBoxY, 95, 28, 'F');
+  doc.setDrawColor(244, 124, 32); // Orange border
+  doc.setLineWidth(0.8);
+  doc.rect(10, clientBoxY, 95, 28);
+  
+  doc.setFontSize(9);
+  doc.setTextColor(244, 124, 32);
+  doc.setFont(undefined, 'bold');
+  doc.text('✈️ PREPARED FOR:', 12, clientBoxY + 6);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(12);
+  doc.setFont(undefined, 'bold');
+  doc.text(safeName, 12, clientBoxY + 12);
+  doc.setFont(undefined, 'normal');
+  
+  doc.setFontSize(9);
+  if (ref) {
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Booking Ref: ${ref}`, 12, clientBoxY + 18);
+  }
+  doc.setTextColor(244, 124, 32);
+  doc.text(`🗓️ Created: ${new Date().toLocaleDateString()}`, 12, clientBoxY + 24);
+  doc.setTextColor(0, 0, 0);
+  
+  // Trip highlights box (right side)
+  const highlightBoxX = 110;
+  doc.setFillColor(230, 180, 34); // Gold
+  doc.rect(highlightBoxX, clientBoxY, pageWidth - highlightBoxX - marginRight, 28, 'F');
+  doc.setDrawColor(230, 180, 34);
+  doc.setLineWidth(0.8);
+  doc.rect(highlightBoxX, clientBoxY, pageWidth - highlightBoxX - marginRight, 28);
+  
+  doc.setFontSize(10);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont(undefined, 'bold');
+  doc.text('🎉 YOUR TRIP HIGHLIGHTS', highlightBoxX + 2, clientBoxY + 6);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(9);
+  doc.text(`📍 ${items.length} Amazing Experience${items.length !== 1 ? 's' : ''}`, highlightBoxX + 2, clientBoxY + 12);
+  
+  // Calculate trip duration
+  const days = items.reduce((max, item) => {
+    const day = item.day || 0;
+    return day > max ? day : max;
+  }, 0);
+  if (days > 0) {
+    doc.text(`🌞 ${days} Day${days !== 1 ? 's' : ''} of Adventure`, highlightBoxX + 2, clientBoxY + 18);
+  }
+  doc.text(`🏆 Unforgettable Memories`, highlightBoxX + 2, clientBoxY + 24);
+  doc.setTextColor(0, 0, 0);
+  
+  // Group items by day for better organization
+  const itemsByDay = {};
+  items.forEach(item => {
+    const day = item.day || 0;
+    if (!itemsByDay[day]) itemsByDay[day] = [];
+    itemsByDay[day].push(item);
+  });
+  
+  let currentY = clientBoxY + 35;
+  const sortedDays = Object.keys(itemsByDay).sort((a, b) => Number(a) - Number(b));
+  
+  // Generate day-by-day itinerary with exciting headings
+  sortedDays.forEach((dayNum, dayIndex) => {
+    const dayItems = itemsByDay[dayNum];
+    const isFirstDay = dayIndex === 0;
+    
+    // Check if we need a new page
+    if (currentY > 240) {
+      doc.addPage();
+      currentY = 20;
+    }
+    
+    // Day heading banner
+    if (!isFirstDay || Number(dayNum) > 0) {
+      doc.setFillColor(58, 44, 26); // Brand brown
+      doc.rect(10, currentY, pageWidth - 24, 10, 'F');
+      
+      doc.setFontSize(12);
+      doc.setTextColor(255, 255, 255);
+      doc.setFont(undefined, 'bold');
+      const dayLabel = Number(dayNum) > 0 ? `DAY ${dayNum}` : 'ADDITIONAL ACTIVITIES';
+      doc.text(`🌟 ${dayLabel} 🌟`, pageWidth / 2, currentY + 7, { align: 'center' });
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(0, 0, 0);
+      
+      currentY += 12;
+    }
+    
+    // Activities for this day
+    dayItems.forEach((item, itemIndex) => {
+      // Check page break for each activity
+      if (currentY > 250) {
+        doc.addPage();
+        currentY = 20;
+      }
+      
+      // Activity card with border
+      const cardHeight = 20 + (item.description ? 8 : 0);
+      doc.setDrawColor(200, 200, 200);
+      doc.setLineWidth(0.3);
+      doc.rect(12, currentY, pageWidth - 28, cardHeight);
+      
+      // Time badge (if available)
+      const timeInfo = item.startTime || item.time || '';
+      if (timeInfo) {
+        doc.setFillColor(230, 180, 34); // Gold
+        doc.rect(14, currentY + 2, 28, 6, 'F');
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'bold');
+        doc.setTextColor(255, 255, 255);
+        doc.text(`⏰ ${timeInfo}`, 15, currentY + 5.5);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont(undefined, 'normal');
+      }
+      
+      // Activity name
+      doc.setFontSize(11);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(244, 124, 32); // Orange
+      const activityName = item.name || item.title || 'Activity';
+      doc.text(activityName, 16, currentY + (timeInfo ? 12 : 6));
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(0, 0, 0);
+      
+      // Location
+      const location = item.location || item.destination || '';
+      if (location) {
+        doc.setFontSize(9);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`📍 ${location}`, 16, currentY + (timeInfo ? 17 : 11));
+        doc.setTextColor(0, 0, 0);
+      }
+      
+      // Description
+      if (item.description) {
+        doc.setFontSize(8);
+        doc.setTextColor(60, 60, 60);
+        const descLines = doc.splitTextToSize(item.description, pageWidth - 36);
+        doc.text(descLines, 16, currentY + (timeInfo ? 22 : 16));
+        doc.setTextColor(0, 0, 0);
+      }
+      
+      currentY += cardHeight + 3;
+    });
+    
+    currentY += 2; // Space after day section
+  });
+  
+  // Footer with excitement and contact info
+  let footerY = currentY + 8;
+  
+  // Check if footer fits on current page
+  if (footerY > 250) {
+    doc.addPage();
+    footerY = 20;
+  }
+  
+  // Decorative line
+  doc.setDrawColor(244, 124, 32); // Orange
+  doc.setLineWidth(1);
+  doc.line(10, footerY, pageWidth - marginRight, footerY);
+  
+  footerY += 8;
+  
+  // Important information section with icons
+  doc.setFillColor(255, 248, 241); // Cream
+  doc.rect(10, footerY, pageWidth - 24, 26, 'F');
+  doc.setDrawColor(230, 180, 34); // Gold
+  doc.setLineWidth(0.5);
+  doc.rect(10, footerY, pageWidth - 24, 26);
+  
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  doc.setTextColor(244, 124, 32);
+  doc.text('✨ IMPORTANT TRAVEL TIPS ✨', pageWidth / 2, footerY + 5, { align: 'center' });
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(0, 0, 0);
+  
+  doc.setFontSize(8);
+  doc.text('⏰ Arrive 15 minutes early for all scheduled activities', 12, footerY + 10);
+  doc.text('📧 Keep your confirmation email handy', 12, footerY + 14);
+  doc.text('🆔 Bring valid ID and booking reference', 12, footerY + 18);
+  doc.text('📞 Contact us anytime for assistance or changes', 12, footerY + 22);
+  
+  footerY += 30;
+  
+  // Contact banner
+  doc.setFillColor(58, 44, 26); // Brown
+  doc.rect(10, footerY, pageWidth - 24, 14, 'F');
+  
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'bold');
+  doc.setTextColor(255, 255, 255);
+  doc.text('📞 24/7 SUPPORT:', 12, footerY + 5);
+  doc.setFont(undefined, 'normal');
+  doc.text(`${COMPANY_INFO.phone} | ${COMPANY_INFO.email}`, 12, footerY + 10);
+  
+  // Timestamp and branding
+  doc.setFontSize(7);
+  doc.setTextColor(200, 200, 200);
+  doc.text(`Generated with ❤️ by ${COMPANY_INFO.name} | ${new Date().toLocaleString()}`, pageWidth / 2, footerY + 20, { align: 'center' });
+  doc.setTextColor(0, 0, 0);
+
+  // Return as Blob instead of saving
+  return doc.output('blob');
+};
+
+/**
+ * Generate invoice PDF and return as Blob (for sharing)
+ */
+export const generateInvoicePdfBlob = async (a, b, c) => {
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable")
+  ]);
+  const doc = new jsPDF();
+  const structured = typeof a === 'object' && a && Array.isArray(a.items);
+
+  let invoiceNum = '';
+  let safeName = 'Invoice';
+  let items = [];
+  let ref = c || '';
+  let currency = 'R';
+  let taxRate = 0;
+  let notes = '';
+  let dueDate;
+
+  if (structured) {
+    invoiceNum = a.invoiceNumber || a.number || '';
+    safeName = (a.clientName || 'Client').trim();
+    items = a.items || [];
+    ref = a.id || a.reference || ref;
+    currency = a.currency || currency;
+    taxRate = typeof a.taxRate === 'number' ? a.taxRate : 0;
+    notes = a.notes || '';
+    dueDate = a.dueDate;
+  } else {
+    safeName = (a?.trim?.() || 'Client');
+    items = b || [];
+    ref = c || '';
+  }
+
+  const normalized = items.map(it => ({
+    name: it.title || it.name || 'Item',
+    desc: it.description || it.subtitle || '',
+    qty: Number(it.quantity ?? it.qty ?? 1) || 1,
+    unit: Number(it.unitPrice ?? it.price ?? it.amount ?? 0) || 0,
+  }));
+
+  doc.setFontSize(20);
+  doc.text('💳 CollEco Travel – Invoice', 10, 18);
+  doc.setFontSize(12);
+  doc.text(`Invoice To: ${safeName}`, 10, 28);
+  if (invoiceNum) doc.text(`Invoice #: ${invoiceNum}`, 10, 34);
+  if (ref) doc.text(`Ref: ${ref}`, 10, 40);
+  if (dueDate) doc.text(`Due: ${new Date(dueDate).toLocaleDateString()}`, 10, 46);
+
+  const rows = normalized.map((it, idx) => [idx + 1, it.name, it.qty, formatCurrency(it.unit, currency), formatCurrency(it.unit * it.qty, currency)]);
+
+  autoTable(doc, {
+    startY: 54,
+    head: [['#', 'Item', 'Qty', 'Unit', 'Total']],
+    body: rows,
+  });
+
+  const subtotal = normalized.reduce((s, i) => s + (i.unit * i.qty), 0);
+  const tax = taxRate ? (subtotal * (taxRate / 100)) : 0;
+  const grandTotal = subtotal + tax;
+
+  let y = doc.lastAutoTable.finalY + 8;
+  doc.setFontSize(11);
+  doc.text(`Subtotal: ${formatCurrency(subtotal, currency)}`, 10, y); y += 6;
+  if (taxRate) { doc.text(`Tax (${taxRate.toFixed(2)}%): ${formatCurrency(tax, currency)}`, 10, y); y += 6; }
+  doc.setFontSize(13);
+  doc.text(`Amount Due: ${formatCurrency(grandTotal, currency)}`, 10, y); y += 8;
+
+  if (notes) {
+    const split = doc.splitTextToSize(`Notes: ${notes}`, 190);
+    doc.setFontSize(10);
+    doc.text(split, 10, y);
+  }
+
+  // Add logo if available
+  try {
+    const dataUrl = await fetchImageDataUrl(LOGO_PATH);
+    if (dataUrl) {
+      try { doc.addImage(dataUrl, 'PNG', 150, 6, 36, 18); } catch (e) { /* ignore */ }
+    }
+  } catch (e) {}
+
+  // Return as Blob instead of saving
+  return doc.output('blob');
+};
+
+/**
+ * Generate booking confirmation PDF and return as Blob (for sharing)
+ */
+export const generateBookingConfirmationPdfBlob = async (bookingData) => {
+  const [{ default: jsPDF }] = await Promise.all([import("jspdf")]);
+  const doc = new jsPDF();
+  
+  const pageWidth = doc.internal.pageSize.width || 210;
+  const marginRight = 14;
+  
+  // Try to load logo
+  const _logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
+  
+  // Header with CollEco branding
+  doc.setFontSize(20);
+  doc.setTextColor(244, 124, 32);
+  doc.text(COMPANY_INFO.name, 10, 18);
+  doc.setTextColor(0, 0, 0);
+  
+  doc.setFontSize(8);
+  doc.setFont(undefined, 'italic');
+  doc.text(COMPANY_INFO.tagline, 10, 23);
+  doc.setFont(undefined, 'normal');
+  
+  doc.setFontSize(9);
+  doc.text(`${COMPANY_INFO.email} | ${COMPANY_INFO.phone}`, 10, 28);
+  
+  // Add logo
+  if (_logoDataUrl) {
+    try {
+      const logoW = 40;
+      const logoH = 40;
+      const logoX = pageWidth - marginRight - logoW;
+      doc.addImage(_logoDataUrl, 'PNG', logoX, 6, logoW, logoH);
+    } catch (e) {}
+  }
+  
+  // Confirmation banner
+  doc.setFillColor(46, 125, 50); // Green
+  doc.rect(0, 35, pageWidth, 16, 'F');
+  
+  doc.setFontSize(18);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont(undefined, 'bold');
+  doc.text('✅ BOOKING CONFIRMED', pageWidth / 2, 44, { align: 'center' });
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(0, 0, 0);
+  
+  // Confirmation details
+  let currentY = 60;
+  doc.setFontSize(11);
+  doc.setFont(undefined, 'bold');
+  doc.text('Confirmation Number:', 10, currentY);
+  doc.setFont(undefined, 'normal');
+  doc.text(bookingData.confirmationId || bookingData.id || 'N/A', 70, currentY);
+  
+  currentY += 7;
+  doc.setFont(undefined, 'bold');
+  doc.text('Booking ID:', 10, currentY);
+  doc.setFont(undefined, 'normal');
+  doc.text(bookingData.bookingId || bookingData.id || 'N/A', 70, currentY);
+  
+  currentY += 7;
+  doc.setFont(undefined, 'bold');
+  doc.text('Service Type:', 10, currentY);
+  doc.setFont(undefined, 'normal');
+  doc.text(bookingData.serviceType || 'Travel Service', 70, currentY);
+  
+  currentY += 7;
+  doc.setFont(undefined, 'bold');
+  doc.text('Booked On:', 10, currentY);
+  doc.setFont(undefined, 'normal');
+  doc.text(new Date().toLocaleString(), 70, currentY);
+  
+  // Booking details section
+  currentY += 15;
+  doc.setFontSize(13);
+  doc.setFont(undefined, 'bold');
+  doc.setTextColor(244, 124, 32);
+  doc.text('Booking Details', 10, currentY);
+  doc.setTextColor(0, 0, 0);
+  doc.setFont(undefined, 'normal');
+  
+  currentY += 8;
+  doc.setFontSize(10);
+  
+  // Add custom booking details if provided
+  if (bookingData.details) {
+    Object.entries(bookingData.details).forEach(([key, value]) => {
+      if (currentY > 270) {
+        doc.addPage();
+        currentY = 20;
+      }
+      doc.setFont(undefined, 'bold');
+      doc.text(`${key}:`, 12, currentY);
+      doc.setFont(undefined, 'normal');
+      doc.text(String(value), 70, currentY);
+      currentY += 6;
+    });
+  }
+  
+  // Footer
+  currentY += 10;
+  if (currentY > 260) {
+    doc.addPage();
+    currentY = 20;
+  }
+  
+  doc.setDrawColor(244, 124, 32);
+  doc.setLineWidth(0.5);
+  doc.line(10, currentY, pageWidth - marginRight, currentY);
+  
+  currentY += 8;
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'bold');
+  doc.text('Thank you for choosing CollEco Travel!', pageWidth / 2, currentY, { align: 'center' });
+  doc.setFont(undefined, 'normal');
+  
+  currentY += 6;
+  doc.setFontSize(8);
+  doc.text(`For assistance: ${COMPANY_INFO.email} | ${COMPANY_INFO.phone}`, pageWidth / 2, currentY, { align: 'center' });
+  
+  currentY += 5;
+  doc.setTextColor(128, 128, 128);
+  doc.setFontSize(7);
+  doc.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, currentY, { align: 'center' });
+  
+  // Return as Blob
+  return doc.output('blob');
 };
