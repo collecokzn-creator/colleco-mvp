@@ -4,7 +4,8 @@ import React, { useEffect, useState, useRef } from 'react';import { motion } fro
   Mic, MicOff, VideoIcon, VideoOff, Heart, Maximize, Minimize,
   Calendar, MonitorUp, X, FileText, Upload, Image as ImageIcon,
   Paintbrush, CircleDot, Disc, StickyNote, BarChart3, MapPin,
-  PictureInPicture, Subtitles, FileUp, Download, Check, ExternalLink
+  PictureInPicture, Subtitles, FileUp, Download, Check, ExternalLink,
+  Trash2
 } from 'lucide-react';
 import { ensureThread, ROLES, CHANNELS, loadThreads, saveThreads } from '../utils/collabStore.js';
 
@@ -1005,7 +1006,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     </button>
                     
                     {showReactions && (
-                      <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 z-50 max-w-xs overflow-x-auto">
+                      <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 z-50 max-w-xs overflow-x-auto" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
                           {/* Default 6 Reactions */}
                           {[
@@ -1042,7 +1043,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                         
                         {/* Expanded Reactions Menu */}
                         {showAllReactions && (
-                          <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto">
+                          <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                             <div className="grid grid-cols-6 gap-1.5">
                               {[
                                 { emoji: '👍', label: 'Thumbs up' },
@@ -1191,14 +1192,29 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     </div>
                   ) : (
                     messages.slice(-5).map((m, i) => (
-                      <div key={i} className={`flex ${m.role === ROLES.client ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[75%] px-2 py-1.5 rounded text-xs ${
+                      <div key={i} className={`flex ${m.role === ROLES.client ? 'justify-end' : 'justify-start'} group`}>
+                        <div className={`max-w-[75%] px-3 py-1.5 rounded text-xs relative ${
                           m.role === ROLES.client
                             ? 'bg-brand-orange text-white rounded-br-none'
                             : 'bg-white border border-cream-border text-brand-brown rounded-bl-none'
                         }`}>
-                          <div className="font-semibold opacity-90 text-[10px] mb-0.5">{m.sender}</div>
+                          <div className="font-semibold opacity-90 text-[10px] mb-0.5 pr-5">{m.sender}</div>
                           <div>{m.text}</div>
+                          {m.role === ROLES.client && (
+                            <button
+                              className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded text-white/60 hover:text-white hover:bg-white/10"
+                              onClick={() => {
+                                const contactBookingId = `${bookingId}-${selectedContact.id}`;
+                                const threads = loadThreads();
+                                threads[contactBookingId].messages = threads[contactBookingId].messages.filter(msg => msg.ts !== m.ts);
+                                saveThreads(threads);
+                                setMessages([...threads[contactBookingId].messages]);
+                              }}
+                              title="Delete message"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
                       </div>
                     ))
