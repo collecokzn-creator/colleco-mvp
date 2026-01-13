@@ -4,7 +4,8 @@ import LiveMap from '../components/LiveMap';
 import TransferChat from '../components/TransferChat';
 import DriverRating from '../components/DriverRating';
 import RideSelector from '../components/RideSelector';
-import ShareButton from '../components/ShareButton';
+import PdfShareButtons from '../components/PdfShareButtons';
+import { shareBookingConfirmationPdf } from '../utils/pdfShare';
 import { requestNotificationPermission, notifyTransferStatus } from '../utils/notifications';
 import Button from '../components/ui/Button.jsx';
 import { Clock, Car, DollarSign } from 'lucide-react';
@@ -220,11 +221,15 @@ export default function Transfers() {
   }
 
   async function confirmRideSelection(ride) {
+    // Clear ALL previous state before starting new request
+    setStatus(null);
+    setRequest(null);
+    setDriverLocation(null);
+    
     setSelectedRide(ride);
     setShowRideSelector(false);
     setRidePending(false);
     setLoading(true);
-    setStatus(null); // Clear any previous error status
     
     // Small delay to show loading state clearly
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -967,26 +972,94 @@ export default function Transfers() {
       )}
 
       {/* AI-First Support Section */}
-      {selectedRide && (
+      {selectedRide && request && request.id && (status === 'matched' || status === 'accepted') && (
         <div className="bg-white rounded-xl shadow-sm border border-cream-border mt-6" id="booking-confirmation">
           {/* Confirmation Header */}
           <div className="p-6 border-b bg-gradient-to-r from-green-50 to-emerald-50">
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-bold text-brand-brown mb-1">Transfer Confirmed</h2>
-                <p className="text-sm text-gray-600">Confirmation ID: TRF-{Date.now().toString().slice(-8)}</p>
+                <p className="text-sm text-gray-600">Confirmation ID: {request.id || 'TRF-' + Date.now().toString().slice(-8)}</p>
               </div>
-              <ShareButton 
-                bookingId={'TRF-' + Date.now().toString().slice(-8)}
-                serviceType="transfer"
-                confirmationId={'TRF-' + Date.now().toString().slice(-8)}
-                shareData={{
-                  driver: selectedRide.driver.name,
-                  vehicleType: vehicleType,
-                  pickup: pickup,
-                  dropoff: dropoff,
-                  passengers: pax
-                }}
+              <PdfShareButtons
+                onShare={() => shareBookingConfirmationPdf({
+                  type: 'transfer',
+                  confirmationId: request.id || 'TRF-' + Date.now().toString().slice(-8),
+                  customerName: 'Valued Customer',
+                  bookingDate: new Date().toISOString(),
+                  service: {
+                    name: 'Transfer Service',
+                    provider: selectedRide.brand?.name || 'CollEco Transfer',
+                    details: {
+                      pickup: pickup,
+                      dropoff: dropoff,
+                      date: bookingType === 'instant' ? new Date().toISOString() : date,
+                      time: bookingType === 'instant' ? new Date().toLocaleTimeString() : time,
+                      passengers: pax,
+                      vehicleType: vehicleType,
+                      driver: selectedRide.driver.name,
+                      vehicle: `${selectedRide.vehicle.model} (${selectedRide.vehicle.plate})`,
+                      estimatedArrival: `${selectedRide.estimatedArrival} minutes`
+                    }
+                  },
+                  price: {
+                    subtotal: selectedRide.price,
+                    tax: 0,
+                    total: selectedRide.price
+                  }
+                }, 'share')}
+                onDownload={() => shareBookingConfirmationPdf({
+                  type: 'transfer',
+                  confirmationId: request.id || 'TRF-' + Date.now().toString().slice(-8),
+                  customerName: 'Valued Customer',
+                  bookingDate: new Date().toISOString(),
+                  service: {
+                    name: 'Transfer Service',
+                    provider: selectedRide.brand?.name || 'CollEco Transfer',
+                    details: {
+                      pickup: pickup,
+                      dropoff: dropoff,
+                      date: bookingType === 'instant' ? new Date().toISOString() : date,
+                      time: bookingType === 'instant' ? new Date().toLocaleTimeString() : time,
+                      passengers: pax,
+                      vehicleType: vehicleType,
+                      driver: selectedRide.driver.name,
+                      vehicle: `${selectedRide.vehicle.model} (${selectedRide.vehicle.plate})`,
+                      estimatedArrival: `${selectedRide.estimatedArrival} minutes`
+                    }
+                  },
+                  price: {
+                    subtotal: selectedRide.price,
+                    tax: 0,
+                    total: selectedRide.price
+                  }
+                }, 'download')}
+                onPrint={() => shareBookingConfirmationPdf({
+                  type: 'transfer',
+                  confirmationId: request.id || 'TRF-' + Date.now().toString().slice(-8),
+                  customerName: 'Valued Customer',
+                  bookingDate: new Date().toISOString(),
+                  service: {
+                    name: 'Transfer Service',
+                    provider: selectedRide.brand?.name || 'CollEco Transfer',
+                    details: {
+                      pickup: pickup,
+                      dropoff: dropoff,
+                      date: bookingType === 'instant' ? new Date().toISOString() : date,
+                      time: bookingType === 'instant' ? new Date().toLocaleTimeString() : time,
+                      passengers: pax,
+                      vehicleType: vehicleType,
+                      driver: selectedRide.driver.name,
+                      vehicle: `${selectedRide.vehicle.model} (${selectedRide.vehicle.plate})`,
+                      estimatedArrival: `${selectedRide.estimatedArrival} minutes`
+                    }
+                  },
+                  price: {
+                    subtotal: selectedRide.price,
+                    tax: 0,
+                    total: selectedRide.price
+                  }
+                }, 'print')}
               />
             </div>
           </div>
