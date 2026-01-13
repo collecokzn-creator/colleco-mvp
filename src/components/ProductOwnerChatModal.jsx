@@ -68,6 +68,9 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
   const [showFileShare, setShowFileShare] = useState(false);
   const [sharedFiles, setSharedFiles] = useState([]);
   const [showWhiteboard, setShowWhiteboard] = useState(false);
+  const [whiteboardColor, setWhiteboardColor] = useState('#000000');
+  const whiteboardCanvasRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [showNotes, setShowNotes] = useState(false);
@@ -93,6 +96,59 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
   const dragScopeRef = useRef(null);
   const inputRef = useRef(null);
   const messagesRef = useRef(null);
+
+  // Whiteboard drawing initialization
+  useEffect(() => {
+    if (!showWhiteboard || !whiteboardCanvasRef.current) return;
+    
+    const canvas = whiteboardCanvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Set canvas size
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    let lastX = 0;
+    let lastY = 0;
+    
+    const handleMouseDown = (e) => {
+      setIsDrawing(true);
+      const rect = canvas.getBoundingClientRect();
+      lastX = e.clientX - rect.left;
+      lastY = e.clientY - rect.top;
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+    };
+    
+    const handleMouseMove = (e) => {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = whiteboardColor;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    };
+    
+    const handleMouseUp = () => setIsDrawing(false);
+    
+    canvas.addEventListener('mousedown', handleMouseDown);
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseup', handleMouseUp);
+    canvas.addEventListener('mouseleave', () => setIsDrawing(false));
+    
+    return () => {
+      canvas.removeEventListener('mousedown', handleMouseDown);
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [showWhiteboard, whiteboardColor, isDrawing]);
 
   // Load messages for selected contact
   useEffect(() => {
@@ -661,27 +717,35 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
               {/* Screen Share */}
               <button
-                className={`p-3 rounded-full transition-colors shadow-lg ${
-                  isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-white hover:bg-cream-sand text-brand-brown'
+                type="button"
+                className={`p-3 rounded-full transition-colors shadow-lg pointer-events-auto ${
+                  isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600 animate-pulse' : 'bg-white hover:bg-cream-sand text-brand-brown'
                 }`}
-                onClick={() => setIsScreenSharing(!isScreenSharing)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsScreenSharing(!isScreenSharing);
+                }}
                 title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
               >
                 <MonitorUp className="w-5 h-5" />
               </button>
 
               {/* Reactions */}
-              <div className="relative">
+              <div className="relative z-[140]">
                 <button
-                  className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-lg"
-                  onClick={() => setShowReactions(!showReactions)}
+                  type="button"
+                  className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-lg pointer-events-auto"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowReactions(!showReactions);
+                  }}
                   title="Send reaction"
                 >
                   <Heart className="w-5 h-5" />
                 </button>
                 
                 {showReactions && (
-                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap z-[140] max-w-xs overflow-x-auto" onClick={(e) => e.stopPropagation()}>
+                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap z-[150] max-w-xs overflow-x-auto pointer-events-auto" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                       {[
                         { emoji: '👍', label: 'Thumbs up' },
@@ -1639,27 +1703,59 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
     {/* Whiteboard Panel */}
     {showWhiteboard && callStatus === 'connected' && (
-      <div className="fixed inset-4 bg-white rounded-lg shadow-2xl border border-gray-200 z-[100] flex flex-col">
+      <div className="fixed inset-4 bg-white rounded-lg shadow-2xl border border-gray-200 z-[110] flex flex-col pointer-events-auto">
         <div className="p-3 bg-purple-500 text-white flex items-center justify-between rounded-t-lg flex-shrink-0">
           <div className="flex items-center gap-2">
             <Paintbrush className="w-4 h-4" />
             <span className="font-semibold text-sm">Collaborative Whiteboard</span>
           </div>
           <div className="flex items-center gap-2">
-            <button className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded text-xs">Clear</button>
-            <button onClick={() => setShowWhiteboard(false)} className="p-1 hover:bg-white/20 rounded">
+            <button 
+              type="button"
+              onClick={() => {
+                if (whiteboardCanvasRef.current) {
+                  const ctx = whiteboardCanvasRef.current.getContext('2d');
+                  ctx.fillStyle = '#ffffff';
+                  ctx.fillRect(0, 0, whiteboardCanvasRef.current.width, whiteboardCanvasRef.current.height);
+                }
+              }}
+              className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded text-xs transition-colors pointer-events-auto"
+            >
+              Clear
+            </button>
+            <button 
+              type="button"
+              onClick={() => setShowWhiteboard(false)} 
+              className="p-1 hover:bg-white/20 rounded transition-colors pointer-events-auto"
+            >
               <X className="w-4 h-4" />
             </button>
           </div>
         </div>
-        <div className="flex-1 bg-gray-50 rounded-b-lg relative">
-          <canvas className="absolute inset-0 w-full h-full cursor-crosshair" />
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white rounded-full px-3 py-2 shadow-lg">
-            <button className="w-8 h-8 rounded-full bg-black border-2 border-gray-300" title="Black"></button>
-            <button className="w-8 h-8 rounded-full bg-red-500 border-2 border-gray-300" title="Red"></button>
-            <button className="w-8 h-8 rounded-full bg-blue-500 border-2 border-gray-300" title="Blue"></button>
-            <button className="w-8 h-8 rounded-full bg-green-500 border-2 border-gray-300" title="Green"></button>
-            <button className="w-8 h-8 rounded-full bg-yellow-400 border-2 border-gray-300" title="Yellow"></button>
+        <div className="flex-1 bg-gray-50 rounded-b-lg relative overflow-hidden">
+          <canvas 
+            ref={whiteboardCanvasRef}
+            className="absolute inset-0 w-full h-full cursor-crosshair bg-white pointer-events-auto"
+            style={{ touchAction: 'none' }}
+          />
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white rounded-full px-3 py-2 shadow-lg pointer-events-auto z-[120]">
+            {[
+              { color: '#000000', label: 'Black' },
+              { color: '#ef4444', label: 'Red' },
+              { color: '#3b82f6', label: 'Blue' },
+              { color: '#22c55e', label: 'Green' },
+              { color: '#eab308', label: 'Yellow' },
+              { color: '#ec4899', label: 'Pink' }
+            ].map(({ color, label }) => (
+              <button
+                key={color}
+                type="button"
+                onClick={() => setWhiteboardColor(color)}
+                className={`w-8 h-8 rounded-full border-2 transition-all pointer-events-auto ${whiteboardColor === color ? 'border-black scale-110' : 'border-gray-300'}`}
+                style={{ backgroundColor: color }}
+                title={label}
+              />
+            ))}
           </div>
         </div>
       </div>
