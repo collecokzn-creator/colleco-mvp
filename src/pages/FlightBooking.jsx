@@ -24,6 +24,27 @@ export default function FlightBooking(){
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    
+    // Add print styles
+    const style = document.createElement('style');
+    style.textContent = `
+      @media print {
+        @page { margin: 1cm; }
+        body * { visibility: hidden; }
+        #booking-confirmation, #booking-confirmation * { visibility: visible; }
+        #booking-confirmation { 
+          position: absolute; 
+          left: 0; 
+          top: 0; 
+          width: 100%;
+          box-shadow: none !important;
+        }
+        #booking-confirmation button { display: none !important; }
+        .no-print { display: none !important; }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
   }, []);
 
   const today = new Date().toISOString().split('T')[0];
@@ -305,13 +326,34 @@ export default function FlightBooking(){
         {selectedFlight && !loading && (
           <div className="space-y-6">
             {/* Booking Confirmation Card */}
-            <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
-              <h2 className="text-lg font-bold text-brand-brown mb-4">Booking Confirmed</h2>
-              <div className="space-y-2">
-                <p><span className="font-semibold">Flight:</span> {selectedFlight.airline.name} {selectedFlight.flightNumber}</p>
-                <p><span className="font-semibold">Route:</span> {selectedFlight.from} → {selectedFlight.to}</p>
-                <p><span className="font-semibold">Cabin:</span> {selectedFlight.cabin.replace('_', ' ')}</p>
-                <p><span className="font-semibold">Total Price:</span> R{selectedFlight.price.toLocaleString()}</p>
+            <div className="bg-white rounded-xl shadow-sm border border-cream-border" id="booking-confirmation">
+              <div className="p-6 border-b bg-gradient-to-r from-green-50 to-emerald-50">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold text-brand-brown mb-1">Booking Confirmed</h2>
+                    <p className="text-sm text-gray-600">Confirmation ID: FLT-{Date.now().toString().slice(-8)}</p>
+                  </div>
+                  <ShareButton 
+                    bookingId={'FLT-' + Date.now().toString().slice(-8)}
+                    serviceType="flight"
+                    confirmationId={'FLT-' + Date.now().toString().slice(-8)}
+                    shareData={{
+                      airline: selectedFlight.airline.name,
+                      flightNumber: selectedFlight.flightNumber,
+                      route: `${selectedFlight.from} → ${selectedFlight.to}`,
+                      cabin: selectedFlight.cabin,
+                      totalPrice: selectedFlight.price
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="space-y-2">
+                  <p><span className="font-semibold">Flight:</span> {selectedFlight.airline.name} {selectedFlight.flightNumber}</p>
+                  <p><span className="font-semibold">Route:</span> {selectedFlight.from} → {selectedFlight.to}</p>
+                  <p><span className="font-semibold">Cabin:</span> {selectedFlight.cabin.replace('_', ' ')}</p>
+                  <p><span className="font-semibold">Total Price:</span> R{selectedFlight.price.toLocaleString()}</p>
+                </div>
               </div>
             </div>
 

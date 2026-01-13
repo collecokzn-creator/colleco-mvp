@@ -4,6 +4,7 @@ import LiveMap from '../components/LiveMap';
 import TransferChat from '../components/TransferChat';
 import DriverRating from '../components/DriverRating';
 import RideSelector from '../components/RideSelector';
+import ShareButton from '../components/ShareButton';
 import { requestNotificationPermission, notifyTransferStatus } from '../utils/notifications';
 import Button from '../components/ui/Button.jsx';
 import { Clock, Car, DollarSign } from 'lucide-react';
@@ -46,8 +47,31 @@ export default function Transfers() {
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    
+    // Add print styles
+    const style = document.createElement('style');
+    style.textContent = `
+      @media print {
+        @page { margin: 1cm; }
+        body * { visibility: hidden; }
+        #booking-confirmation, #booking-confirmation * { visibility: visible; }
+        #booking-confirmation { 
+          position: absolute; 
+          left: 0; 
+          top: 0; 
+          width: 100%;
+          box-shadow: none !important;
+        }
+        #booking-confirmation button { display: none !important; }
+        .no-print { display: none !important; }
+      }
+    `;
+    document.head.appendChild(style);
+    
     // Request notification permission on load
     requestNotificationPermission();
+    
+    return () => document.head.removeChild(style);
   }, []);
 
   // Auto-update serviceDays based on selected recurring days when multi-day service active
@@ -931,7 +955,62 @@ export default function Transfers() {
 
       {/* AI-First Support Section */}
       {selectedRide && (
-        <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6 mt-6">
+        <div className="bg-white rounded-xl shadow-sm border border-cream-border mt-6" id="booking-confirmation">
+          {/* Confirmation Header */}
+          <div className="p-6 border-b bg-gradient-to-r from-green-50 to-emerald-50">
+            <div className="flex items-start justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-brand-brown mb-1">Transfer Confirmed</h2>
+                <p className="text-sm text-gray-600">Confirmation ID: TRF-{Date.now().toString().slice(-8)}</p>
+              </div>
+              <ShareButton 
+                bookingId={'TRF-' + Date.now().toString().slice(-8)}
+                serviceType="transfer"
+                confirmationId={'TRF-' + Date.now().toString().slice(-8)}
+                shareData={{
+                  driver: selectedRide.driver.name,
+                  vehicleType: vehicleType,
+                  pickup: pickup,
+                  dropoff: dropoff,
+                  passengers: pax
+                }}
+              />
+            </div>
+          </div>
+          
+          {/* Booking Details */}
+          <div className="p-6 border-b">
+            <h3 className="text-lg font-bold text-brand-brown mb-3">Transfer Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-600">Driver</p>
+                <p className="font-semibold text-brand-brown">{selectedRide.driver.name}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Vehicle</p>
+                <p className="font-semibold text-brand-brown">{vehicleType}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Pickup Location</p>
+                <p className="font-semibold text-brand-brown">{pickup}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Dropoff Location</p>
+                <p className="font-semibold text-brand-brown">{dropoff}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Passengers</p>
+                <p className="font-semibold text-brand-brown">{pax} passenger{pax !== 1 ? 's' : ''}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Total Price</p>
+                <p className="font-semibold text-brand-brown">R{selectedRide.price.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Terms & Conditions */}
+          <div className="p-6">
           <h2 className="text-lg font-bold text-brand-brown mb-4">Transfer Terms & Conditions</h2>
           <div className="space-y-4 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1063,9 +1142,9 @@ export default function Transfers() {
               </div>
             </div>
           </div>
+          </div>
         </div>
       )}
-    </div>
 
     {/* Ride Selector Modal */}
     {showRideSelector && (
@@ -1079,6 +1158,7 @@ export default function Transfers() {
         onCancel={() => setShowRideSelector(false)}
       />
     )}
+    </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import BookingNav from '../components/BookingNav';
 import AccommodationSelector from '../components/AccommodationSelector';
 import MealSelector from '../components/MealSelector';
 import Button from '../components/ui/Button.jsx';
+import ShareButton from '../components/ShareButton';
 import { Home, Clock, DollarSign } from 'lucide-react';
 import { processBookingRewards } from '../utils/bookingIntegration';
 
@@ -517,31 +518,23 @@ function AccommodationBookingInner(){
                   <h2 className="text-2xl font-bold text-brand-brown mb-1">Booking Confirmed</h2>
                   <p className="text-sm text-gray-600">Confirmation ID: ACC-{Date.now().toString().slice(-8)}</p>
                 </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      const email = prompt('Enter your email address:');
-                      if (email) {
-                        alert(`Booking confirmation will be sent to ${email}\n\nNote: Email functionality requires backend integration.`);
-                      }
-                    }}
-                    className="px-3 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 transition-colors text-sm flex items-center gap-2"
-                  >
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    Email
-                  </button>
-                  <button
-                    onClick={() => window.print()}
-                    className="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm flex items-center gap-2"
-                  >
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                    </svg>
-                    Print
-                  </button>
-                </div>
+                <ShareButton 
+                  bookingId={selectedProperty.id || 'ACC-' + Date.now().toString().slice(-8)}
+                  serviceType="accommodation"
+                  confirmationId={'ACC-' + Date.now().toString().slice(-8)}
+                  shareData={{
+                    propertyName: selectedProperty.name,
+                    checkInDate: checkIn,
+                    checkOutDate: checkOut,
+                    nights: (() => {
+                      const checkInDate = new Date(checkIn);
+                      const checkOutDate = new Date(checkOut);
+                      const diffTime = Math.abs(checkOutDate - checkInDate);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      return Math.max(1, diffDays);
+                    })()
+                  }}
+                />
               </div>
             </div>
 

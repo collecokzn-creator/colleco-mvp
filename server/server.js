@@ -333,6 +333,10 @@ app.use('/api/invoices', invoicesRouter);
 const quotesRouter = require('./routes/quotes');
 app.use('/api/quotes', quotesRouter);
 
+// --- Register sharing API (for sharing booking confirmations via email/WhatsApp/etc) ---
+const sharingRouter = require('./routes/sharing');
+app.use('/api/sharing', sharingRouter);
+
 // Persistent store file (reuse DATA_DIR defined above for AI assets)
 const DATA_FILE = path.join(DATA_DIR, 'collab.json');
 const PROVIDERS_FILE = path.join(DATA_DIR, 'providers.json');

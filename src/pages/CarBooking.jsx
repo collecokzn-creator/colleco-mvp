@@ -26,6 +26,27 @@ export default function CarBooking(){
     if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    
+    // Add print styles
+    const style = document.createElement('style');
+    style.textContent = `
+      @media print {
+        @page { margin: 1cm; }
+        body * { visibility: hidden; }
+        #booking-confirmation, #booking-confirmation * { visibility: visible; }
+        #booking-confirmation { 
+          position: absolute; 
+          left: 0; 
+          top: 0; 
+          width: 100%;
+          box-shadow: none !important;
+        }
+        #booking-confirmation button { display: none !important; }
+        .no-print { display: none !important; }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
   }, []);
 
   const today = new Date().toISOString().split('T')[0];
@@ -317,13 +338,33 @@ export default function CarBooking(){
         {selectedCar && !loading && (
           <div className="space-y-6">
             {/* Booking Confirmation Card */}
-            <div className="bg-white rounded-xl shadow-sm border border-cream-border p-6">
-              <h2 className="text-lg font-bold text-brand-brown mb-4">Booking Confirmed</h2>
-              <div className="space-y-2">
-                <p><span className="font-semibold">Vehicle:</span> {selectedCar.make} {selectedCar.model}</p>
-                <p><span className="font-semibold">Category:</span> {selectedCar.category}</p>
-                <p><span className="font-semibold">Price per Day:</span> R{selectedCar.pricePerDay}</p>
-                <p><span className="font-semibold">Total:</span> R{selectedCar.totalPrice}</p>
+            <div className="bg-white rounded-xl shadow-sm border border-cream-border" id="booking-confirmation">
+              <div className="p-6 border-b bg-gradient-to-r from-green-50 to-emerald-50">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold text-brand-brown mb-1">Booking Confirmed</h2>
+                    <p className="text-sm text-gray-600">Confirmation ID: CAR-{Date.now().toString().slice(-8)}</p>
+                  </div>
+                  <ShareButton 
+                    bookingId={'CAR-' + Date.now().toString().slice(-8)}
+                    serviceType="car"
+                    confirmationId={'CAR-' + Date.now().toString().slice(-8)}
+                    shareData={{
+                      vehicle: `${selectedCar.make} ${selectedCar.model}`,
+                      category: selectedCar.category,
+                      pricePerDay: selectedCar.pricePerDay,
+                      totalPrice: selectedCar.totalPrice
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="space-y-2">
+                  <p><span className="font-semibold">Vehicle:</span> {selectedCar.make} {selectedCar.model}</p>
+                  <p><span className="font-semibold">Category:</span> {selectedCar.category}</p>
+                  <p><span className="font-semibold">Price per Day:</span> R{selectedCar.pricePerDay}</p>
+                  <p><span className="font-semibold">Total:</span> R{selectedCar.totalPrice}</p>
+                </div>
               </div>
             </div>
 
