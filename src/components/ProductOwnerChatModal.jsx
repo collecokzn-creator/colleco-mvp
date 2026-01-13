@@ -560,9 +560,9 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
         {/* Fullscreen Call Overlay */}
         {showCallModal && isFullscreen && callStatus === 'connected' && (
-          <div className="fixed inset-0 z-[120] bg-black flex flex-col items-center justify-center">
+          <div className="fixed inset-0 z-[120] bg-black flex flex-col items-center justify-center pointer-events-none">
             {/* Fullscreen Top-Left Toolbar (always visible in fullscreen) */}
-            <div className="absolute top-3 left-3 flex gap-2 z-50">
+            <div className="absolute top-3 left-3 flex gap-2 z-[130] pointer-events-auto">
               <button
                 className={`p-2 rounded-lg transition-colors shadow-md ${
                   backgroundBlur ? 'bg-blue-500 text-white' : 'bg-white/90 hover:bg-white text-brand-brown'
@@ -630,7 +630,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
             {/* Exit Fullscreen Button (always visible in fullscreen) */}
             <button
-              className="absolute top-3 right-3 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
+              className="absolute top-3 right-3 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors z-[130] pointer-events-auto"
               onClick={() => setIsFullscreen(false)}
               title="Exit fullscreen"
             >
@@ -638,7 +638,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
             </button>
 
             {/* Call Controls - Bottom (always visible in fullscreen) */}
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-2 md:gap-3 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10 shadow-2xl z-[70] pointer-events-auto">
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-2 md:gap-3 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10 shadow-2xl z-[130] pointer-events-auto">
               {/* Primary Controls */}
               <button
                 className={`p-3 rounded-full transition-colors shadow-lg ${
@@ -681,7 +681,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                 </button>
                 
                 {showReactions && (
-                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap z-50 max-w-xs overflow-x-auto" onClick={(e) => e.stopPropagation()}>
+                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap z-[140] max-w-xs overflow-x-auto" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                       {[
                         { emoji: '👍', label: 'Thumbs up' },
@@ -713,7 +713,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                       </button>
                     </div>
                     {showAllReactions && (
-                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-[150] max-h-96 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                         <div className="grid grid-cols-6 gap-1.5">
                           {[
                             { emoji: '👍', label: 'Thumbs up' },
