@@ -67,7 +67,8 @@ const COMPANY_INFO = {
     orange: '#F47C20',
     brown: '#3A2C1A',
     gold: '#E6B422',
-    cream: '#FFF8F1'
+    cream: '#FFF8F1',
+    white: '#FFFFFF'
   }
 };
 

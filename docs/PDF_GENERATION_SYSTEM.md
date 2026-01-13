@@ -119,7 +119,8 @@ colors: {
   orange: '#F47C20',  // Primary brand color
   brown: '#3A2C1A',   // Text headings
   gold: '#E6B422',    // Accents
-  cream: '#FFF8F1'    // Backgrounds
+  cream: '#FFF8F1',   // Backgrounds
+  white: '#FFFFFF'    // Clean backgrounds, text on dark
 }
 ```
 

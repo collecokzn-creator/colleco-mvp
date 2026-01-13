@@ -6,6 +6,8 @@ import React, { useState } from 'react';
  * Provides share, download, and print buttons for PDF documents
  * Works with quotations, itineraries, booking confirmations, and invoices
  * 
+ * Brand Colors: Orange (#F47C20), Brown (#3A2C1A), Gold (#E6B422), Cream (#FFF8F1), White (#FFFFFF)
+ * 
  * Props:
  * - onShare: async function() - Called when share button is clicked
  * - onDownload: async function() - Called when download button is clicked
