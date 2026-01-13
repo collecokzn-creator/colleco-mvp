@@ -68,7 +68,8 @@ const COMPANY_INFO = {
     brown: '#3A2C1A',
     gold: '#E6B422',
     cream: '#FFF8F1',
-    white: '#FFFFFF'
+    white: '#FFFFFF',
+    green: '#4A7C59'  // Natural green - use sparingly as accent/blend
   }
 };
 

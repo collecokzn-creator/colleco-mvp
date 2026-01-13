@@ -120,9 +120,14 @@ colors: {
   brown: '#3A2C1A',   // Text headings
   gold: '#E6B422',    // Accents
   cream: '#FFF8F1',   // Backgrounds
-  white: '#FFFFFF'    // Clean backgrounds, text on dark
+  white: '#FFFFFF',   // Clean backgrounds, text on dark
+  green: '#4A7C59'    // Natural green - optional accent (use sparingly)
 }
 ```
+
+**Color Usage Guidelines:**
+- **Orange, Brown, Gold, Cream, White**: Core palette - use consistently
+- **Green**: Optional natural accent - add sparingly where natural color blend is desired
 
 ### Supported Formats
 
