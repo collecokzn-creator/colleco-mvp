@@ -4,7 +4,8 @@ import React, { useEffect, useState, useRef } from 'react';import { motion } fro
   Mic, MicOff, VideoIcon, VideoOff, Heart, Maximize, Minimize,
   Calendar, MonitorUp, X, FileText, Upload, Image as ImageIcon,
   Paintbrush, CircleDot, Disc, StickyNote, BarChart3, MapPin,
-  PictureInPicture, Subtitles, FileUp, Download, Check, ExternalLink
+  PictureInPicture, Subtitles, FileUp, Download, Check, ExternalLink,
+  Trash2
 } from 'lucide-react';
 import { ensureThread, ROLES, CHANNELS, loadThreads, saveThreads } from '../utils/collabStore.js';
 
@@ -665,7 +666,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                 </button>
                 
                 {showReactions && (
-                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap z-50 max-w-xs overflow-x-auto">
+                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 whitespace-nowrap z-50 max-w-xs overflow-x-auto" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center gap-1">
                       {[
                         { emoji: '👍', label: 'Thumbs up' },
@@ -697,7 +698,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                       </button>
                     </div>
                     {showAllReactions && (
-                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto">
+                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                         <div className="grid grid-cols-6 gap-1.5">
                           {[
                             { emoji: '👍', label: 'Thumbs up' },
@@ -923,63 +924,9 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
 
             {/* Call Controls - only show when not in fullscreen */}
             {callStatus === 'connected' && !isFullscreen && (
-              <div className="flex flex-col gap-4 px-4">
-                {/* Primary Controls Row */}
-                <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-5 flex-wrap">
-                  {/* Audio Toggle - PRIMARY */}
-                  <button
-                    className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
-                      isAudioEnabled 
-                        ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
-                        : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
-                    }`}
-                    onClick={() => setIsAudioEnabled(!isAudioEnabled)}
-                    title={isAudioEnabled ? 'Mute' : 'Unmute'}
-                  >
-                    {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
-                  </button>
-
-                  {/* Video Toggle (for video calls) - PRIMARY */}
-                  {showCallModal === 'video' && (
-                    <button
-                      className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
-                        isVideoEnabled 
-                          ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
-                          : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
-                      }`}
-                      onClick={() => setIsVideoEnabled(!isVideoEnabled)}
-                      title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
-                    >
-                      {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
-                    </button>
-                  )}
-
-                  {/* Visual Separator */}
-                  <div className="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-brand-brown/20 to-transparent"></div>
-
-                  {/* Screen Share - PROMINENT SECONDARY */}
-                  <button
-                    className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
-                      isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600 border-green-600' : 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40'
-                    }`}
-                    onClick={() => setIsScreenSharing(!isScreenSharing)}
-                    title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
-                  >
-                    <MonitorUp className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </button>
-
-                  {/* End Call - CRITICAL ACTION */}
-                  <button
-                    className="p-4 sm:p-5 rounded-full bg-red-500 hover:bg-red-600 transition-all shadow-xl border-2 border-red-600 scale-105 hover:scale-110"
-                    onClick={endCall}
-                    title="End call"
-                  >
-                    <Phone className="w-6 h-6 transform rotate-135" />
-                  </button>
-                </div>
-
-                {/* Secondary Controls Row */}
-                <div className="flex justify-center items-center gap-2 sm:gap-3 md:gap-4 flex-wrap">
+              <div className="relative w-full h-full">
+                {/* Secondary Controls - Right Side Vertical Stack */}
+                <div className="absolute right-4 bottom-32 sm:bottom-24 flex flex-col gap-2 sm:gap-3 z-40">
                   {/* In-Call Chat Toggle - SECONDARY */}
                   <button
                     className="p-3 rounded-full bg-white hover:bg-cream-sand text-brand-brown transition-colors shadow-md relative"
@@ -1005,7 +952,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     </button>
                     
                     {showReactions && (
-                      <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 z-50 max-w-xs overflow-x-auto">
+                      <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-full px-2 py-1.5 shadow-2xl border border-gray-200 z-50 max-w-xs overflow-x-auto" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
                           {/* Default 6 Reactions */}
                           {[
@@ -1042,7 +989,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                         
                         {/* Expanded Reactions Menu */}
                         {showAllReactions && (
-                          <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto">
+                          <div className="absolute bottom-full mb-2 left-0 sm:left-auto sm:right-0 bg-white rounded-2xl px-3 py-2 shadow-2xl border border-gray-200 w-72 sm:w-64 z-50 max-h-96 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                             <div className="grid grid-cols-6 gap-1.5">
                               {[
                                 { emoji: '👍', label: 'Thumbs up' },
@@ -1148,6 +1095,60 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     <Disc className="w-5 h-5" />
                   </button>
                 </div>
+
+                {/* Primary Controls Row - Bottom Center */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-3 sm:gap-4 md:gap-5 flex-wrap">
+                  {/* Audio Toggle - PRIMARY */}
+                  <button
+                    className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
+                      isAudioEnabled 
+                        ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
+                        : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
+                    }`}
+                    onClick={() => setIsAudioEnabled(!isAudioEnabled)}
+                    title={isAudioEnabled ? 'Mute' : 'Unmute'}
+                  >
+                    {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+                  </button>
+
+                  {/* Video Toggle (for video calls) - PRIMARY */}
+                  {showCallModal === 'video' && (
+                    <button
+                      className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
+                        isVideoEnabled 
+                          ? 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40' 
+                          : 'bg-red-500 hover:bg-red-600 text-white border-red-600'
+                      }`}
+                      onClick={() => setIsVideoEnabled(!isVideoEnabled)}
+                      title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
+                    >
+                      {isVideoEnabled ? <VideoIcon className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+                    </button>
+                  )}
+
+                  {/* Visual Separator */}
+                  <div className="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-brand-brown/20 to-transparent"></div>
+
+                  {/* Screen Share - PROMINENT SECONDARY */}
+                  <button
+                    className={`p-4 sm:p-5 rounded-full transition-all shadow-xl border-2 ${
+                      isScreenSharing ? 'bg-green-500 text-white hover:bg-green-600 border-green-600' : 'bg-white hover:bg-cream-sand text-brand-brown border-brand-brown/20 hover:border-brand-brown/40'
+                    }`}
+                    onClick={() => setIsScreenSharing(!isScreenSharing)}
+                    title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
+                  >
+                    <MonitorUp className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </button>
+
+                  {/* End Call - CRITICAL ACTION */}
+                  <button
+                    className="p-4 sm:p-5 rounded-full bg-red-500 hover:bg-red-600 transition-all shadow-xl border-2 border-red-600 scale-105 hover:scale-110"
+                    onClick={endCall}
+                    title="End call"
+                  >
+                    <Phone className="w-6 h-6 transform rotate-135" />
+                  </button>
+                </div>
               </div>
             )}
 
@@ -1191,14 +1192,29 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
                     </div>
                   ) : (
                     messages.slice(-5).map((m, i) => (
-                      <div key={i} className={`flex ${m.role === ROLES.client ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[75%] px-2 py-1.5 rounded text-xs ${
+                      <div key={i} className={`flex ${m.role === ROLES.client ? 'justify-end' : 'justify-start'} group`}>
+                        <div className={`max-w-[75%] px-3 py-1.5 rounded text-xs relative ${
                           m.role === ROLES.client
                             ? 'bg-brand-orange text-white rounded-br-none'
                             : 'bg-white border border-cream-border text-brand-brown rounded-bl-none'
                         }`}>
-                          <div className="font-semibold opacity-90 text-[10px] mb-0.5">{m.sender}</div>
+                          <div className="font-semibold opacity-90 text-[10px] mb-0.5 pr-5">{m.sender}</div>
                           <div>{m.text}</div>
+                          {m.role === ROLES.client && (
+                            <button
+                              className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded text-white/60 hover:text-white hover:bg-white/10"
+                              onClick={() => {
+                                const contactBookingId = `${bookingId}-${selectedContact.id}`;
+                                const threads = loadThreads();
+                                threads[contactBookingId].messages = threads[contactBookingId].messages.filter(msg => msg.ts !== m.ts);
+                                saveThreads(threads);
+                                setMessages([...threads[contactBookingId].messages]);
+                              }}
+                              title="Delete message"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
                       </div>
                     ))
