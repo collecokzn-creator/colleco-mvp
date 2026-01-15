@@ -16,6 +16,7 @@ export default function PaymentSuccess() {
   const bookingId = params.get('bookingId') || 'PAY-' + Date.now().toString().slice(-8);
   const amount = parseFloat(params.get('amount')) || 0;
   const service = params.get('service') || 'transfer';
+  const serviceType = service.charAt(0).toUpperCase() + service.slice(1).replace('-', ' ');
   const paymentDate = new Date().toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
   const paymentTime = new Date().toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' });
   
@@ -102,7 +103,7 @@ export default function PaymentSuccess() {
           notes: `Payment Status: Confirmed & Paid\nPayment Date: ${paymentDate} ${paymentTime}\nVehicle: ${bookingDetails?.vehicleMake || ''} ${bookingDetails?.vehicleModel || ''}${bookingDetails?.vehicleCategory ? `\nCategory: ${bookingDetails.vehicleCategory}` : ''}${bookingDetails?.insurance ? `\nInsurance: ${bookingDetails.insurance}` : ''}${bookingDetails?.deposit ? `\nDeposit: R${bookingDetails.deposit}` : ''}`
         };
       
-      case 'package':
+      case 'package': {
         const itemCount = bookingDetails?.lineItems?.length || 0;
         const itemList = bookingDetails?.lineItems?.map(item => item.description).join(', ') || 'Multiple services';
         return {
@@ -110,6 +111,7 @@ export default function PaymentSuccess() {
           description: itemList.length > 80 ? itemList.substring(0, 77) + '...' : itemList,
           notes: `Payment Status: Confirmed & Paid\nPayment Date: ${paymentDate} ${paymentTime}\nPackage includes: ${itemCount} service(s)${bookingDetails?.metadata?.source ? `\nBooked via: ${bookingDetails.metadata.source}` : ''}`
         };
+      }
       
       default:
         return {
@@ -246,7 +248,7 @@ export default function PaymentSuccess() {
           'Total Amount': `R${amount.toFixed(2)}`
         };
 
-      case 'package':
+      case 'package': {
         const packageDetails = {
           ...basePdfDetails,
           'Package Type': 'Multi-Service Travel Package',
@@ -266,6 +268,7 @@ export default function PaymentSuccess() {
         packageDetails['Total Amount'] = `R${amount.toFixed(2)}`;
         
         return packageDetails;
+      }
 
       default:
         return {
@@ -335,28 +338,28 @@ export default function PaymentSuccess() {
             <PdfShareButtons
               onShare={async () => {
                 const pdfDetails = getBookingConfirmationDetails();
-                return await shareBookingConfirmationPdf({
+                  return await shareBookingConfirmationPdf({
                   confirmationId: bookingId,
                   bookingId: bookingId,
-                  serviceType: serviceType.charAt(0).toUpperCase() + serviceType.slice(1),
+                  serviceType: serviceType,
                   details: pdfDetails
                 }, 'share');
               }}
               onDownload={async () => {
                 const pdfDetails = getBookingConfirmationDetails();
-                return await shareBookingConfirmationPdf({
+                  return await shareBookingConfirmationPdf({
                   confirmationId: bookingId,
                   bookingId: bookingId,
-                  serviceType: serviceType.charAt(0).toUpperCase() + serviceType.slice(1),
+                  serviceType: serviceType,
                   details: pdfDetails
                 }, 'download');
               }}
               onPrint={async () => {
                 const pdfDetails = getBookingConfirmationDetails();
-                return await shareBookingConfirmationPdf({
+                  return await shareBookingConfirmationPdf({
                   confirmationId: bookingId,
                   bookingId: bookingId,
-                  serviceType: serviceType.charAt(0).toUpperCase() + serviceType.slice(1),
+                  serviceType: serviceType,
                   details: pdfDetails
                 }, 'print');
               }}
@@ -376,7 +379,7 @@ export default function PaymentSuccess() {
                 return await shareBookingConfirmationPdf({
                   confirmationId: bookingId,
                   bookingId: bookingId,
-                  serviceType: serviceType.charAt(0).toUpperCase() + serviceType.slice(1),
+                  serviceType: serviceType,
                   details: pdfDetails
                 }, 'share');
               }}
@@ -385,7 +388,7 @@ export default function PaymentSuccess() {
                 return await shareBookingConfirmationPdf({
                   confirmationId: bookingId,
                   bookingId: bookingId,
-                  serviceType: serviceType.charAt(0).toUpperCase() + serviceType.slice(1),
+                  serviceType: serviceType,
                   details: pdfDetails
                 }, 'download');
               }}
@@ -394,7 +397,7 @@ export default function PaymentSuccess() {
                 return await shareBookingConfirmationPdf({
                   confirmationId: bookingId,
                   bookingId: bookingId,
-                  serviceType: serviceType.charAt(0).toUpperCase() + serviceType.slice(1),
+                  serviceType: serviceType,
                   details: pdfDetails
                 }, 'print');
               }}
