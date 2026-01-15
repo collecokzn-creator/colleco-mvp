@@ -45,8 +45,8 @@ describe('PlanTrip component', () => {
       </MemoryRouter>
     );
     // Expect header and catalog count to be present
-    expect(screen.queryByText(/Trip Planner/i)).not.toBeNull();
-    const catalogHeading = screen.queryByText(/Product Catalog/i);
+    expect(screen.queryByText(/Plan Your Trip/i)).not.toBeNull();
+    const catalogHeading = screen.queryByText(/Travel Catalog/i);
     expect(catalogHeading).not.toBeNull();
     // Catalog should not show the empty state
     expect(screen.queryByText(/No results\./i)).toBeNull();
