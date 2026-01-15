@@ -7,6 +7,8 @@ export default function Checkout() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const bookingId = searchParams.get('bookingId');
+  const service = searchParams.get('service'); // 'transfer', 'accommodation', 'flight', etc.
+  const amount = searchParams.get('amount'); // fallback amount if booking API fails
   
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,6 +19,8 @@ export default function Checkout() {
   const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
+    console.log('[Checkout] URL params:', { bookingId, service, amount });
+    
     if (!bookingId) {
       setError('No booking ID provided');
       setLoading(false);
@@ -25,22 +29,131 @@ export default function Checkout() {
 
     async function loadBooking() {
       try {
-        const response = await fetch(`/api/bookings/${bookingId}`);
+        // First check if this is a temporary booking from basket (stored in localStorage)
+        if (bookingId.startsWith('temp_')) {
+          const pendingCheckout = localStorage.getItem('pendingCheckout');
+          if (pendingCheckout) {
+            const checkoutData = JSON.parse(pendingCheckout);
+            console.log('[Checkout] Loading from localStorage:', checkoutData);
+            
+            // Convert basket items to booking format
+            setBooking({
+              id: checkoutData.bookingId,
+              pricing: {
+                total: checkoutData.total,
+                subtotal: checkoutData.subtotal,
+                vat: checkoutData.tax,
+                serviceFee: checkoutData.serviceFee
+              },
+              metadata: {
+                source: 'trip_basket',
+                timestamp: checkoutData.timestamp
+              },
+              serviceType: 'PACKAGE',
+              lineItems: checkoutData.items.map(item => ({
+                description: item.title,
+                totalRetail: (item.price || 0) * (item.quantity || 1),
+                quantity: item.quantity || 1,
+                day: item.day,
+                time: item.time
+              }))
+            });
+            setLoading(false);
+            return;
+          } else {
+            throw new Error('Pending checkout data not found in localStorage');
+          }
+        }
+        
+        // Determine API endpoint based on service type
+        let endpoint = `/api/bookings/${bookingId}`;
+        if (service === 'transfer') {
+          endpoint = `/api/transfers/request/${bookingId}`;
+        }
+        
+        const response = await fetch(endpoint);
         if (!response.ok) {
+          // If specific endpoint fails, create a minimal booking object with provided amount
+          if (amount) {
+            const total = parseFloat(amount);
+            const subtotal = total / 1.15; // Remove VAT to get subtotal
+            const vat = total - subtotal;  // VAT is the difference
+            console.log('[Checkout] Creating fallback booking with amount:', amount, 'parsed:', total, 'subtotal:', subtotal, 'vat:', vat);
+            setBooking({
+              id: bookingId,
+              pricing: { 
+                total: total,
+                subtotal: subtotal,
+                vat: vat
+              },
+              metadata: {},
+              serviceType: service || 'transfer',
+              lineItems: [{
+                description: service === 'transfer' ? 'Transfer Service' : 'Service',
+                totalRetail: total
+              }]
+            });
+            setLoading(false);
+            return;
+          }
           throw new Error(`Failed to load booking: ${response.statusText}`);
         }
         const data = await response.json();
-        setBooking(data);
+        
+        // Handle transfer response format
+        if (service === 'transfer' && data.request) {
+          const total = data.request.price || parseFloat(amount);
+          const subtotal = total / 1.15; // Remove VAT to get subtotal
+          const vat = total - subtotal;  // VAT is the difference
+          setBooking({
+            id: data.request.id,
+            pricing: { 
+              total: total,
+              subtotal: subtotal,
+              vat: vat
+            },
+            metadata: data.request.metadata || {},
+            serviceType: 'transfer',
+            lineItems: [{
+              description: `Transfer Service: ${data.request.pickup || 'Pickup'} to ${data.request.dropoff || 'Dropoff'}`,
+              totalRetail: total
+            }]
+          });
+        } else {
+          setBooking(data);
+        }
         setLoading(false);
       } catch (err) {
         console.error('Failed to load booking:', err);
-        setError(err.message);
-        setLoading(false);
+        // If amount is provided, allow proceeding with minimal data
+        if (amount) {
+          const total = parseFloat(amount);
+          const subtotal = total / 1.15;
+          const vat = total - subtotal;
+          setBooking({
+            id: bookingId,
+            pricing: { 
+              total: total,
+              subtotal: subtotal,
+              vat: vat
+            },
+            metadata: {},
+            serviceType: service || 'transfer',
+            lineItems: [{
+              description: service === 'transfer' ? 'Transfer Service' : 'Service',
+              totalRetail: total
+            }]
+          });
+          setLoading(false);
+        } else {
+          setError(err.message);
+          setLoading(false);
+        }
       }
     }
 
     loadBooking();
-  }, [bookingId]);
+  }, [bookingId, service, amount]);
 
   async function handlePayment() {
     if (!booking) return;
@@ -87,7 +200,7 @@ export default function Checkout() {
           bookingId: booking.id,
           processor,
           amount: booking.pricing.total,
-          returnUrl: `${window.location.origin}/pay/success`,
+          returnUrl: `${window.location.origin}/pay/success?bookingId=${booking.id}&amount=${booking.pricing.total}&service=${booking.bookingType === 'PACKAGE' ? 'package' : (service || 'transfer')}&demo=1`,
           cancelUrl: `${window.location.origin}/pay/cancel`,
           notifyUrl: `${window.location.origin}/api/webhooks/${processor}`
         })
@@ -146,7 +259,9 @@ export default function Checkout() {
     );
   }
 
-  const nights = booking.lineItems.reduce((sum, item) => Math.max(sum, item.nights || 0), 0);
+  const nights = (booking.lineItems && booking.lineItems.length > 0) 
+    ? booking.lineItems.reduce((sum, item) => Math.max(sum, item.nights || 0), 0)
+    : 0;
   
   // Detect if this is a package booking (accommodation + multiple services bundled together)
   const isPackageBooking = () => {
@@ -174,6 +289,7 @@ export default function Checkout() {
   
   // Get list of included services for package display
   const _getIncludedServices = () => {
+    if (!booking.lineItems || booking.lineItems.length === 0) return 'Transfer service';
     return booking.lineItems
       .map(item => item.description)
       .join(', ');
@@ -205,24 +321,30 @@ export default function Checkout() {
                 <span className="font-semibold text-brand-brown">{booking.metadata.location}</span>
               </div>
             )}
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Type:</span>
-              <span className="font-semibold text-brand-brown">
-                {booking.bookingType === 'FIT' ? 'Individual Booking' : 'Group Booking'}
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Check-in:</span>
-              <span className="font-semibold text-brand-brown">{booking.checkInDate}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Check-out:</span>
-              <span className="font-semibold text-brand-brown">{booking.checkOutDate}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Nights:</span>
-              <span className="font-semibold text-brand-brown">{nights}</span>
-            </div>
+            {booking.serviceType !== 'transfer' && booking.bookingType && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Type:</span>
+                <span className="font-semibold text-brand-brown">
+                  {booking.bookingType === 'FIT' ? 'Individual Booking' : 'Group Booking'}
+                </span>
+              </div>
+            )}
+            {booking.serviceType !== 'transfer' && booking.checkInDate && (
+              <>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Check-in:</span>
+                  <span className="font-semibold text-brand-brown">{booking.checkInDate}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Check-out:</span>
+                  <span className="font-semibold text-brand-brown">{booking.checkOutDate}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Nights:</span>
+                  <span className="font-semibold text-brand-brown">{nights}</span>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Line Items - Show as Package or Itemized Breakdown */}
@@ -234,7 +356,7 @@ export default function Checkout() {
                 <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <p className="text-sm font-semibold text-brand-brown mb-2">This package includes:</p>
                   <ul className="text-xs text-gray-700 space-y-1">
-                    {booking.lineItems.map((item, index) => (
+                    {(booking.lineItems || []).map((item, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <span className="text-brand-orange mt-1">✓</span>
                         <span>{item.description}</span>
@@ -248,7 +370,7 @@ export default function Checkout() {
               <div>
                 <h3 className="text-sm font-semibold text-brand-brown mb-3">Price Breakdown</h3>
                 <div className="space-y-3">
-                  {booking.lineItems.map((item, index) => {
+                  {(booking.lineItems || []).map((item, index) => {
                     const unitPrice = item.retailPrice || item.basePrice || 0;
                     const itemTotal = item.totalRetail || item.finalPrice || 0;
                     
@@ -279,15 +401,15 @@ export default function Checkout() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Subtotal (excl. VAT):</span>
-                <span className="font-semibold text-brand-brown">ZAR {booking.pricing.subtotal.toFixed(2)}</span>
+                <span className="font-semibold text-brand-brown">ZAR {(booking.pricing?.subtotal || 0).toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">VAT (included):</span>
-                <span className="font-semibold text-brand-brown">ZAR {booking.pricing.vat.toFixed(2)}</span>
+                <span className="font-semibold text-brand-brown">ZAR {(booking.pricing?.vat || 0).toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-lg font-bold pt-2 border-t">
                 <span className="text-brand-brown">Total:</span>
-                <span className="text-brand-orange">ZAR {booking.pricing.total.toFixed(2)}</span>
+                <span className="text-brand-orange">ZAR {(booking.pricing?.total || 0).toFixed(2)}</span>
               </div>
               <p className="text-xs text-gray-500 mt-2">
                 Price shown is the full amount, inclusive of taxes and any service fees. No extra booking fees at checkout.
@@ -300,12 +422,12 @@ export default function Checkout() {
             <p className="text-xs font-semibold text-brand-brown mb-1">Payment Terms:</p>
             {booking.bookingType === 'FIT' ? (
               <p className="text-xs text-gray-600">
-                Full payment of ZAR {booking.pricing.total.toFixed(2)} due now
+                Full payment of ZAR {(booking.pricing?.total || 0).toFixed(2)} due now
               </p>
             ) : (
               <div className="text-xs text-gray-600">
-                <p>Deposit (25%): ZAR {booking.paymentTerms.depositAmount.toFixed(2)} due now</p>
-                <p>Balance: ZAR {booking.paymentTerms.balanceAmount.toFixed(2)} due by {booking.paymentTerms.balanceDueDate}</p>
+                <p>Deposit (25%): ZAR {(booking.paymentTerms?.depositAmount || 0).toFixed(2)} due now</p>
+                <p>Balance: ZAR {(booking.paymentTerms?.balanceAmount || 0).toFixed(2)} due by {booking.paymentTerms?.balanceDueDate || 'TBD'}</p>
               </div>
             )}
           </div>

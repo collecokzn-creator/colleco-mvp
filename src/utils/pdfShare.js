@@ -25,47 +25,87 @@ import { generateQuotePdf, generateItineraryPdf, generateInvoicePdf } from './pd
  */
 export async function sharePdfDocument(pdfBlob, filename, title = 'Share Document') {
   try {
-    // Check if Web Share API is available and supports files
-    if (navigator.canShare && navigator.canShare({ files: [new File([pdfBlob], filename)] })) {
-      const file = new File([pdfBlob], filename, { type: 'application/pdf' });
-      
-      await navigator.share({
-        title: title,
-        text: `Shared from CollEco Travel`,
-        files: [file]
-      });
-      
-      return { success: true, method: 'share-api' };
-    } else if (navigator.share) {
-      // Share API available but doesn't support files - share URL instead
-      // Create temporary blob URL
-      const blobUrl = URL.createObjectURL(pdfBlob);
-      
-      await navigator.share({
-        title: title,
-        text: `Shared from CollEco Travel - ${filename}`,
-        url: blobUrl
-      });
-      
-      // Clean up blob URL after a delay
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
-      
-      return { success: true, method: 'share-url' };
-    } else {
-      // Fallback to download
-      downloadPdfBlob(pdfBlob, filename);
-      return { success: true, method: 'download' };
-    }
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      // User cancelled the share
-      return { success: false, method: 'cancelled' };
+    // Try to create a File object for sharing
+    const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+    
+    console.log('[sharePdfDocument] Attempting to share:', { filename, title, size: pdfBlob.size });
+    console.log('[sharePdfDocument] navigator.share available:', !!navigator.share);
+    console.log('[sharePdfDocument] navigator.canShare available:', !!navigator.canShare);
+    
+    // Check if we can share files
+    const canShareFiles = navigator.canShare && navigator.canShare({ files: [file] });
+    console.log('[sharePdfDocument] Can share files:', canShareFiles);
+    
+    // First, try Web Share API with files (best for mobile - shows WhatsApp, Gmail, etc.)
+    if (navigator.share) {
+      try {
+        console.log('[sharePdfDocument] Calling navigator.share with file...');
+        await navigator.share({
+          title: title,
+          text: `${title} from CollEco Travel`,
+          files: [file]
+        });
+        
+        console.log('[sharePdfDocument] Share successful via Web Share API');
+        return { success: true, method: 'share-api' };
+      } catch (shareError) {
+        console.log('[sharePdfDocument] File share error:', shareError.name, shareError.message);
+        
+        // If user cancelled, return immediately
+        if (shareError.name === 'AbortError') {
+          return { success: false, method: 'cancelled' };
+        }
+        
+        // If files not supported, try sharing with text only (less useful but better than nothing)
+        if (shareError.name === 'NotAllowedError' || shareError.message.includes('files')) {
+          console.log('[sharePdfDocument] Files not supported, falling back to download...');
+          // Fall through to download
+        }
+      }
     }
     
-    console.error('[pdfShare] Share failed:', error);
+    // Final fallback: Download the PDF
+    // This works on all platforms (desktop and mobile)
+    console.log('[sharePdfDocument] Using download fallback');
+    downloadPdfBlob(pdfBlob, filename);
+    return { success: true, method: 'download-fallback' };
+    
+  } catch (error) {
+    console.error('[sharePdfDocument] Share failed:', error);
     // Fallback to download on error
     downloadPdfBlob(pdfBlob, filename);
     return { success: true, method: 'download-fallback' };
+  }
+}
+
+/**
+ * Email PDF via mailto link (opens default email client)
+ * Note: This creates a download and opens email client with instructions
+ * @param {Blob} pdfBlob - The PDF blob
+ * @param {string} filename - PDF filename
+ * @param {string} title - Email subject
+ * @returns {Promise<{success: boolean, method: string}>}
+ */
+async function emailPdfViaMailto(pdfBlob, filename, title) {
+  try {
+    // Download the PDF first (browser limitation - can't attach to mailto)
+    downloadPdfBlob(pdfBlob, filename);
+    
+    // Open email client with pre-filled subject and body
+    const subject = encodeURIComponent(title || 'Document from CollEco Travel');
+    const body = encodeURIComponent(
+      `Please find the attached document: ${filename}\n\n` +
+      `The PDF has been downloaded to your device. Please attach it to this email before sending.\n\n` +
+      `Shared from CollEco Travel\nwww.collecotravel.com`
+    );
+    
+    const mailtoLink = `mailto:?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    return { success: true, method: 'email-mailto' };
+  } catch (error) {
+    console.error('[pdfShare] Email via mailto failed:', error);
+    return { success: false, error: error.message };
   }
 }
 
@@ -233,6 +273,8 @@ export async function shareItineraryPdf(name, items, ref, action = 'share') {
  */
 export async function shareInvoicePdf(invoiceData, action = 'share') {
   try {
+    console.log('[shareInvoicePdf] Starting with action:', action, 'data:', invoiceData);
+    
     // Generate the invoice PDF
     // generateInvoicePdf currently auto-saves, need to get blob
     const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
@@ -240,24 +282,32 @@ export async function shareInvoicePdf(invoiceData, action = 'share') {
       import("jspdf-autotable")
     ]);
     
+    console.log('[shareInvoicePdf] Importing generateInvoicePdfBlob...');
     const { generateInvoicePdfBlob } = await import('./pdfGenerators');
+    
+    console.log('[shareInvoicePdf] Generating PDF blob...');
     const pdfBlob = await generateInvoicePdfBlob(invoiceData);
+    console.log('[shareInvoicePdf] PDF blob generated:', pdfBlob?.size, 'bytes');
     
     const invoiceNum = invoiceData.invoiceNumber || invoiceData.number || invoiceData.id || Date.now();
     const filename = `Invoice_${invoiceNum}.pdf`;
+    console.log('[shareInvoicePdf] Filename:', filename);
     
     // Perform requested action
     switch (action) {
       case 'print':
+        console.log('[shareInvoicePdf] Executing print action');
         await printPdfBlob(pdfBlob);
         return { success: true, method: 'print' };
       
       case 'download':
+        console.log('[shareInvoicePdf] Executing download action');
         downloadPdfBlob(pdfBlob, filename);
         return { success: true, method: 'download' };
       
       case 'share':
       default:
+        console.log('[shareInvoicePdf] Executing share action');
         return await sharePdfDocument(pdfBlob, filename, 'Share Invoice');
     }
   } catch (error) {

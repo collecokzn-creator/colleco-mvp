@@ -174,6 +174,18 @@ export default function Transfers() {
 
   async function submitRequest(e) {
     e.preventDefault();
+    e.stopPropagation();
+    
+    // Prevent double-submission on mobile with more robust check
+    if (loading) {
+      console.log('[Transfers] Already loading, ignoring submit');
+      return;
+    }
+    
+    if (showRideSelector) {
+      console.log('[Transfers] Ride selector already shown, ignoring submit');
+      return;
+    }
     
     // Validate form
     const errors = {};
@@ -191,8 +203,17 @@ export default function Transfers() {
     
     setFormErrors({});
     
-    // Show ride selector for user to pick their preferred ride
-    setShowRideSelector(true);
+    console.log('[Transfers] Starting ride request...');
+    
+    // Set loading state immediately to prevent double-tap
+    setLoading(true);
+    
+    // Small delay to ensure UI updates, then show ride selector
+    setTimeout(() => {
+      setShowRideSelector(true);
+      setLoading(false);
+      console.log('[Transfers] Ride selector shown');
+    }, 100);
   }
 
   function handleSkipRideSelection(rides) {
@@ -299,9 +320,36 @@ export default function Transfers() {
       
       setLoading(false);
       
+      // Store booking details in localStorage for PaymentSuccess page
+      const bookingData = {
+        id: requestId,
+        pickup,
+        dropoff,
+        date,
+        time,
+        pax,
+        vehicleType,
+        luggage,
+        driverName: ride.driver.name,
+        driverId: ride.driver.id,
+        vehicleModel: ride.vehicle.model,
+        vehiclePlate: ride.vehicle.plate,
+        brandName: ride.brand?.name || 'Independent Provider',
+        price: ride.price,
+        bookingType,
+        isRoundTrip,
+        returnDate: isRoundTrip ? returnDate : null,
+        returnTime: isRoundTrip ? returnTime : null,
+        specialRequirements: specialRequirements.trim()
+      };
+      
+      localStorage.setItem(`booking_${requestId}`, JSON.stringify(bookingData));
+      
       // Navigate to checkout with booking details
       if (shouldNavigate) {
         const checkoutUrl = `/checkout?bookingId=${requestId}&service=transfer&amount=${ride.price}`;
+        console.log('[transfers] Selected ride object:', ride);
+        console.log('[transfers] Selected ride price:', ride.price, 'type:', typeof ride.price);
         console.log('[transfers] Navigating to checkout:', checkoutUrl);
         navigate(checkoutUrl);
       }
@@ -397,6 +445,7 @@ export default function Transfers() {
                     max={30}
                     value={serviceDays}
                     onChange={e => setServiceDays(Number(e.target.value))}
+                    onFocus={(e) => e.target.select()}
                     className="w-32 border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
                   />
                 )}
@@ -686,6 +735,7 @@ export default function Transfers() {
                 max={12} 
                 value={pax} 
                 onChange={e => setPax(Number(e.target.value))} 
+                onFocus={(e) => e.target.select()}
                 required 
                 className="w-32 border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors" 
               />
@@ -724,6 +774,7 @@ export default function Transfers() {
                 max={20}
                 value={luggage}
                 onChange={e => setLuggage(Number(e.target.value))}
+                onFocus={(e) => e.target.select()}
                 className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
                 aria-label="Number of luggage pieces"
               />
@@ -770,9 +821,22 @@ export default function Transfers() {
         <Button 
           type="submit" 
           fullWidth
-          disabled={loading}
+          disabled={loading || showRideSelector}
+          onClick={(e) => {
+            // Ensure single tap on mobile by preventing event if already processing
+            if (loading || showRideSelector) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
+          className={loading ? 'pointer-events-none' : ''}
+          style={{ 
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
+            userSelect: 'none'
+          }}
         >
-          {loading ? "Sending Request..." : bookingType === 'instant' ? "Request Now" : "Schedule Transfer"}
+          {loading ? "Loading Rides..." : bookingType === 'instant' ? "Request Now" : "Schedule Transfer"}
         </Button>
       </form>
       

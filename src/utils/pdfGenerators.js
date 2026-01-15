@@ -289,7 +289,7 @@ export const generateQuotePdf = async (a, b, c, d) => {
   // Document details section
   let yPos = 48;
   doc.setFontSize(14);
-  doc.setTextColor(244, 124, 32); // Orange
+  doc.setTextColor(255, 110, 0); // Orange
   doc.setFont(undefined, 'bold');
   doc.text(documentType.toUpperCase(), 14, yPos); // Left margin 14
   doc.setTextColor(0, 0, 0);
@@ -672,7 +672,7 @@ export const generateItineraryPdf = async (name, items, ref) => {
 
   // Header with CollEco branding
   doc.setFontSize(20);
-  doc.setTextColor(244, 124, 32); // CollEco Orange
+  doc.setTextColor(255, 110, 0); // CollEco Orange
   doc.text(COMPANY_INFO.name, 10, 18);
   doc.setTextColor(0, 0, 0);
   
@@ -717,7 +717,7 @@ export const generateItineraryPdf = async (name, items, ref) => {
   doc.rect(10, clientBoxY, 95, 28);
   
   doc.setFontSize(9);
-  doc.setTextColor(244, 124, 32);
+  doc.setTextColor(255, 110, 0);
   doc.setFont(undefined, 'bold');
   doc.text('✈️ PREPARED FOR:', 12, clientBoxY + 6);
   doc.setFont(undefined, 'normal');
@@ -732,7 +732,7 @@ export const generateItineraryPdf = async (name, items, ref) => {
     doc.setTextColor(100, 100, 100);
     doc.text(`Booking Ref: ${ref}`, 12, clientBoxY + 18);
   }
-  doc.setTextColor(244, 124, 32);
+  doc.setTextColor(255, 110, 0);
   doc.text(`🗓️ Created: ${new Date().toLocaleDateString()}`, 12, clientBoxY + 24);
   doc.setTextColor(0, 0, 0);
   
@@ -831,7 +831,7 @@ export const generateItineraryPdf = async (name, items, ref) => {
       // Activity name
       doc.setFontSize(11);
       doc.setFont(undefined, 'bold');
-      doc.setTextColor(244, 124, 32); // Orange
+      doc.setTextColor(255, 110, 0); // Orange
       const activityName = item.name || item.title || 'Activity';
       doc.text(activityName, 16, currentY + (timeInfo ? 12 : 6));
       doc.setFont(undefined, 'normal');
@@ -886,7 +886,7 @@ export const generateItineraryPdf = async (name, items, ref) => {
   
   doc.setFontSize(10);
   doc.setFont(undefined, 'bold');
-  doc.setTextColor(244, 124, 32);
+  doc.setTextColor(255, 110, 0);
   doc.text('✨ IMPORTANT TRAVEL TIPS ✨', pageWidth / 2, footerY + 5, { align: 'center' });
   doc.setFont(undefined, 'normal');
   doc.setTextColor(0, 0, 0);
@@ -1035,7 +1035,7 @@ export const generateItineraryPdfBlob = async (name, items, ref) => {
 
   // Header with CollEco branding
   doc.setFontSize(20);
-  doc.setTextColor(244, 124, 32); // CollEco Orange
+  doc.setTextColor(255, 110, 0); // CollEco Orange
   doc.text(COMPANY_INFO.name, 10, 18);
   doc.setTextColor(0, 0, 0);
   
@@ -1080,7 +1080,7 @@ export const generateItineraryPdfBlob = async (name, items, ref) => {
   doc.rect(10, clientBoxY, 95, 28);
   
   doc.setFontSize(9);
-  doc.setTextColor(244, 124, 32);
+  doc.setTextColor(255, 110, 0);
   doc.setFont(undefined, 'bold');
   doc.text('✈️ PREPARED FOR:', 12, clientBoxY + 6);
   doc.setFont(undefined, 'normal');
@@ -1095,7 +1095,7 @@ export const generateItineraryPdfBlob = async (name, items, ref) => {
     doc.setTextColor(100, 100, 100);
     doc.text(`Booking Ref: ${ref}`, 12, clientBoxY + 18);
   }
-  doc.setTextColor(244, 124, 32);
+  doc.setTextColor(255, 110, 0);
   doc.text(`🗓️ Created: ${new Date().toLocaleDateString()}`, 12, clientBoxY + 24);
   doc.setTextColor(0, 0, 0);
   
@@ -1194,7 +1194,7 @@ export const generateItineraryPdfBlob = async (name, items, ref) => {
       // Activity name
       doc.setFontSize(11);
       doc.setFont(undefined, 'bold');
-      doc.setTextColor(244, 124, 32); // Orange
+      doc.setTextColor(255, 110, 0); // Orange
       const activityName = item.name || item.title || 'Activity';
       doc.text(activityName, 16, currentY + (timeInfo ? 12 : 6));
       doc.setFont(undefined, 'normal');
@@ -1249,7 +1249,7 @@ export const generateItineraryPdfBlob = async (name, items, ref) => {
   
   doc.setFontSize(10);
   doc.setFont(undefined, 'bold');
-  doc.setTextColor(244, 124, 32);
+  doc.setTextColor(255, 110, 0);
   doc.text('✨ IMPORTANT TRAVEL TIPS ✨', pageWidth / 2, footerY + 5, { align: 'center' });
   doc.setFont(undefined, 'normal');
   doc.setTextColor(0, 0, 0);
@@ -1284,39 +1284,44 @@ export const generateItineraryPdfBlob = async (name, items, ref) => {
 };
 
 /**
- * Generate invoice PDF and return as Blob (for sharing)
+ * Generate professional invoice PDF with branding and return as Blob (for sharing)
  */
 export const generateInvoicePdfBlob = async (a, b, c) => {
-  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
-    import("jspdf"),
-    import("jspdf-autotable")
-  ]);
-  const doc = new jsPDF();
-  const structured = typeof a === 'object' && a && Array.isArray(a.items);
+  try {
+    console.log('[generateInvoicePdfBlob] Starting invoice generation with data:', a);
+    
+    const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+      import("jspdf"),
+      import("jspdf-autotable")
+    ]);
+    const doc = new jsPDF();
+    const structured = typeof a === 'object' && a && Array.isArray(a.items);
 
-  let invoiceNum = '';
-  let safeName = 'Invoice';
-  let items = [];
-  let ref = c || '';
-  let currency = 'R';
-  let taxRate = 0;
-  let notes = '';
-  let dueDate;
+    let invoiceNum = '';
+    let safeName = 'Invoice';
+    let items = [];
+    let ref = c || '';
+    let currency = 'R';
+    let taxRate = 0;
+    let notes = '';
+    let dueDate;
 
-  if (structured) {
-    invoiceNum = a.invoiceNumber || a.number || '';
-    safeName = (a.clientName || 'Client').trim();
-    items = a.items || [];
-    ref = a.id || a.reference || ref;
-    currency = a.currency || currency;
-    taxRate = typeof a.taxRate === 'number' ? a.taxRate : 0;
-    notes = a.notes || '';
-    dueDate = a.dueDate;
-  } else {
-    safeName = (a?.trim?.() || 'Client');
-    items = b || [];
-    ref = c || '';
-  }
+    if (structured) {
+      invoiceNum = a.invoiceNumber || a.number || '';
+      safeName = (a.clientName || 'Client').trim();
+      items = a.items || [];
+      ref = a.id || a.reference || ref;
+      currency = a.currency || currency;
+      taxRate = typeof a.taxRate === 'number' ? a.taxRate : 0;
+      notes = a.notes || '';
+      dueDate = a.dueDate;
+      console.log('[generateInvoicePdfBlob] Structured data parsed:', { invoiceNum, safeName, itemCount: items.length, taxRate });
+    } else {
+      safeName = (a?.trim?.() || 'Client');
+      items = b || [];
+      ref = c || '';
+      console.log('[generateInvoicePdfBlob] Legacy format detected');
+    }
 
   const normalized = items.map(it => ({
     name: it.title || it.name || 'Item',
@@ -1325,49 +1330,149 @@ export const generateInvoicePdfBlob = async (a, b, c) => {
     unit: Number(it.unitPrice ?? it.price ?? it.amount ?? 0) || 0,
   }));
 
-  doc.setFontSize(20);
-  doc.text('💳 CollEco Travel – Invoice', 10, 18);
-  doc.setFontSize(12);
-  doc.text(`Invoice To: ${safeName}`, 10, 28);
-  if (invoiceNum) doc.text(`Invoice #: ${invoiceNum}`, 10, 34);
-  if (ref) doc.text(`Ref: ${ref}`, 10, 40);
-  if (dueDate) doc.text(`Due: ${new Date(dueDate).toLocaleDateString()}`, 10, 46);
+  const pageWidth = doc.internal.pageSize.width || 210;
+  const marginRight = 14;
 
-  const rows = normalized.map((it, idx) => [idx + 1, it.name, it.qty, formatCurrency(it.unit, currency), formatCurrency(it.unit * it.qty, currency)]);
+  // Try to load logo
+  let logoDataUrl;
+  try {
+    console.log('[generateInvoicePdfBlob] Attempting to load logo from:', LOGO_PATH);
+    logoDataUrl = await fetchImageDataUrl(LOGO_PATH);
+    console.log('[generateInvoicePdfBlob] Logo loaded successfully:', !!logoDataUrl);
+  } catch (e) {
+    console.warn('[generateInvoicePdfBlob] Logo load failed:', e);
+  }
+
+  // Add logo if available (top right) - proper aspect ratio to prevent stretching
+  if (logoDataUrl) {
+    try { 
+      doc.addImage(logoDataUrl, 'PNG', pageWidth - 35, 8, 25, 15); 
+      console.log('[generateInvoicePdfBlob] Logo added to PDF');
+    } catch (e) {
+      console.warn('[generateInvoicePdfBlob] Failed to add logo to PDF:', e);
+    }
+  }
+
+  // Header with CollEco branding
+  doc.setFontSize(24);
+  doc.setTextColor(255, 110, 0); // CollEco Orange
+  doc.text(COMPANY_INFO.name, 14, 20);
+  doc.setTextColor(0, 0, 0);
+  
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'italic');
+  doc.text(COMPANY_INFO.tagline, 14, 26);
+  doc.setFont(undefined, 'normal');
+  
+  doc.setFontSize(8);
+  doc.text(`${COMPANY_INFO.email} | ${COMPANY_INFO.phone}`, 14, 31);
+  doc.text(COMPANY_INFO.website, 14, 35);
+
+  // Invoice title
+  doc.setFontSize(16);
+  doc.setTextColor(58, 44, 26); // Brown
+  doc.text('INVOICE', 14, 45);
+  doc.setTextColor(0, 0, 0);
+
+  // Invoice details
+  doc.setFontSize(10);
+  let y = 52;
+  if (invoiceNum) { doc.text(`Invoice #: ${invoiceNum}`, 14, y); y += 5; }
+  if (ref) { doc.text(`Reference: ${ref}`, 14, y); y += 5; }
+  if (dueDate) { doc.text(`Date: ${new Date(dueDate).toLocaleDateString()}`, 14, y); y += 5; }
+  
+  y += 3;
+  doc.setFontSize(11);
+  doc.setFont(undefined, 'bold');
+  doc.text('Bill To:', 14, y);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(10);
+  doc.text(safeName, 14, y + 5);
+
+  // Items table
+  const rows = normalized.map((it, idx) => [
+    idx + 1, 
+    it.name + (it.desc ? `\n${it.desc}` : ''), 
+    it.qty, 
+    formatCurrency(it.unit, currency), 
+    formatCurrency(it.unit * it.qty, currency)
+  ]);
 
   autoTable(doc, {
-    startY: 54,
-    head: [['#', 'Item', 'Qty', 'Unit', 'Total']],
+    startY: y + 12,
+    head: [['#', 'Description', 'Qty', 'Unit Price', 'Amount']],
     body: rows,
+    theme: 'striped',
+    headStyles: { fillColor: [244, 124, 32], textColor: 255 }, // Orange header
+    styles: { fontSize: 9, cellPadding: 3 },
+    columnStyles: {
+      0: { cellWidth: 10 },
+      1: { cellWidth: 80 },
+      2: { cellWidth: 20 },
+      3: { cellWidth: 35 },
+      4: { cellWidth: 35, halign: 'right' }
+    }
   });
 
+  // Totals
   const subtotal = normalized.reduce((s, i) => s + (i.unit * i.qty), 0);
   const tax = taxRate ? (subtotal * (taxRate / 100)) : 0;
   const grandTotal = subtotal + tax;
 
-  let y = doc.lastAutoTable.finalY + 8;
-  doc.setFontSize(11);
-  doc.text(`Subtotal: ${formatCurrency(subtotal, currency)}`, 10, y); y += 6;
-  if (taxRate) { doc.text(`Tax (${taxRate.toFixed(2)}%): ${formatCurrency(tax, currency)}`, 10, y); y += 6; }
-  doc.setFontSize(13);
-  doc.text(`Amount Due: ${formatCurrency(grandTotal, currency)}`, 10, y); y += 8;
+  y = doc.lastAutoTable.finalY + 10;
+  const totalsX = pageWidth - 70;
+  
+  doc.setFontSize(10);
+  doc.text('Subtotal:', totalsX, y);
+  doc.text(formatCurrency(subtotal, currency), totalsX + 40, y, { align: 'right' });
+  
+  if (taxRate) {
+    y += 6;
+    doc.text(`VAT (${taxRate.toFixed(0)}%):`, totalsX, y);
+    doc.text(formatCurrency(tax, currency), totalsX + 40, y, { align: 'right' });
+  }
+  
+  y += 8;
+  doc.setFontSize(12);
+  doc.setFont(undefined, 'bold');
+  doc.setTextColor(255, 110, 0); // Orange
+  doc.text('TOTAL:', totalsX, y);
+  doc.text(formatCurrency(grandTotal, currency), totalsX + 40, y, { align: 'right' });
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(0, 0, 0);
 
+  // Notes section
   if (notes) {
-    const split = doc.splitTextToSize(`Notes: ${notes}`, 190);
+    y += 12;
     doc.setFontSize(10);
-    doc.text(split, 10, y);
+    doc.setFont(undefined, 'bold');
+    doc.text('Notes:', 14, y);
+    doc.setFont(undefined, 'normal');
+    doc.setFontSize(9);
+    const split = doc.splitTextToSize(notes, pageWidth - 28);
+    doc.text(split, 14, y + 5);
   }
 
-  // Add logo if available
-  try {
-    const dataUrl = await fetchImageDataUrl(LOGO_PATH);
-    if (dataUrl) {
-      try { doc.addImage(dataUrl, 'PNG', 150, 6, 36, 18); } catch (e) { /* ignore */ }
-    }
-  } catch (e) {}
+  // Footer with banking details (if space available)
+  const footerY = 260;
+  doc.setFontSize(8);
+  doc.setTextColor(100, 100, 100);
+  console.log('[generateInvoicePdfBlob] Adding banking footer:', COMPANY_INFO.banking);
+  if (COMPANY_INFO.banking && COMPANY_INFO.banking.accountNumber) {
+    doc.text(`Banking: ${COMPANY_INFO.banking.bankName} | Acc: ${COMPANY_INFO.banking.accountNumber}`, 14, footerY);
+    console.log('[generateInvoicePdfBlob] Banking details added to footer');
+  } else {
+    console.warn('[generateInvoicePdfBlob] Banking details missing or incomplete');
+  }
+  doc.text('Thank you for your business!', pageWidth / 2, footerY + 6, { align: 'center' });
 
+  console.log('[generateInvoicePdfBlob] PDF generation complete, returning blob');
   // Return as Blob instead of saving
   return doc.output('blob');
+  } catch (error) {
+    console.error('[generateInvoicePdfBlob] Fatal error during PDF generation:', error);
+    throw error;
+  }
 };
 
 /**
@@ -1385,7 +1490,7 @@ export const generateBookingConfirmationPdfBlob = async (bookingData) => {
   
   // Header with CollEco branding
   doc.setFontSize(20);
-  doc.setTextColor(244, 124, 32);
+  doc.setTextColor(255, 110, 0);
   doc.text(COMPANY_INFO.name, 10, 18);
   doc.setTextColor(0, 0, 0);
   
@@ -1395,31 +1500,31 @@ export const generateBookingConfirmationPdfBlob = async (bookingData) => {
   doc.setFont(undefined, 'normal');
   
   doc.setFontSize(9);
-  doc.text(`${COMPANY_INFO.email} | ${COMPANY_INFO.phone}`, 10, 28);
+  doc.text(COMPANY_INFO.website, 10, 28);
   
-  // Add logo
+  // Add logo (uniform size across all PDFs)
   if (_logoDataUrl) {
     try {
-      const logoW = 40;
-      const logoH = 40;
+      const logoW = 25;
+      const logoH = 15;
       const logoX = pageWidth - marginRight - logoW;
-      doc.addImage(_logoDataUrl, 'PNG', logoX, 6, logoW, logoH);
+      doc.addImage(_logoDataUrl, 'PNG', logoX, 8, logoW, logoH);
     } catch (e) {}
   }
   
   // Confirmation banner
   doc.setFillColor(46, 125, 50); // Green
-  doc.rect(0, 35, pageWidth, 16, 'F');
+  doc.rect(0, 38, pageWidth, 16, 'F');
   
   doc.setFontSize(18);
   doc.setTextColor(255, 255, 255);
   doc.setFont(undefined, 'bold');
-  doc.text('✅ BOOKING CONFIRMED', pageWidth / 2, 44, { align: 'center' });
+  doc.text('✅ BOOKING CONFIRMED', pageWidth / 2, 47, { align: 'center' });
   doc.setFont(undefined, 'normal');
   doc.setTextColor(0, 0, 0);
   
   // Confirmation details
-  let currentY = 60;
+  let currentY = 62;
   doc.setFontSize(11);
   doc.setFont(undefined, 'bold');
   doc.text('Confirmation Number:', 10, currentY);
@@ -1448,7 +1553,7 @@ export const generateBookingConfirmationPdfBlob = async (bookingData) => {
   currentY += 15;
   doc.setFontSize(13);
   doc.setFont(undefined, 'bold');
-  doc.setTextColor(244, 124, 32);
+  doc.setTextColor(255, 110, 0);
   doc.text('Booking Details', 10, currentY);
   doc.setTextColor(0, 0, 0);
   doc.setFont(undefined, 'normal');
@@ -1500,3 +1605,4 @@ export const generateBookingConfirmationPdfBlob = async (bookingData) => {
   // Return as Blob
   return doc.output('blob');
 };
+

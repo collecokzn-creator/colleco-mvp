@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, FileText, Lock, Check, X, AlertTriangle } from 'lucide-react';
+import { Shield, FileText, Lock, Check, X, AlertTriangle, Info } from 'lucide-react';
 
 /**
- * LegalConsentModal
- * Comprehensive legal agreement and consent collection for CollEco Travel
- * Handles Terms & Conditions, SLA, Privacy Policy, and POPI Act compliance
+ * Enhanced LegalConsentModal
+ * POPI Act Compliant Legal Agreement and Consent Collection
+ * - Protection of Personal Information Act (POPI) compliance
+ * - Clear data processing explanations
+ * - User rights information
+ * - Purpose limitation and data minimization
+ * - Lawful processing grounds
  */
 export default function LegalConsentModal({ 
   userId, 
@@ -20,17 +24,20 @@ export default function LegalConsentModal({
     sla: false,
     marketingCommunications: false,
     thirdPartySharing: false,
+    popiAcknowledgement: false,
   });
 
   const [showDetails, setShowDetails] = useState({
     terms: false,
     privacy: false,
     sla: false,
+    popi: false,
   });
 
   const [agreedAt, setAgreedAt] = useState(null);
   const [hasScrolledTerms, setHasScrolledTerms] = useState(false);
   const [hasScrolledPrivacy, setHasScrolledPrivacy] = useState(false);
+  const [hasScrolledPOPI, setHasScrolledPOPI] = useState(false);
 
   // Check if user has already accepted legal terms
   useEffect(() => {
@@ -49,6 +56,7 @@ export default function LegalConsentModal({
     if (scrolledToBottom) {
       if (type === 'terms') setHasScrolledTerms(true);
       if (type === 'privacy') setHasScrolledPrivacy(true);
+      if (type === 'popi') setHasScrolledPOPI(true);
     }
   };
 
@@ -57,11 +65,12 @@ export default function LegalConsentModal({
   };
 
   const canSubmit = () => {
-    // Required consents for all users
+    // Required consents for all users (POPI Act compliance)
     const requiredConsents = [
       'termsAndConditions',
       'privacyPolicy',
       'dataProcessing',
+      'popiAcknowledgement',
     ];
 
     // Partners must also accept SLA
@@ -382,6 +391,46 @@ export default function LegalConsentModal({
                 </span>
               </label>
             )}
+
+            {/* POPI Act Acknowledgement */}
+            <div className="border-t border-gray-300 pt-4 mt-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-3">
+                <div className="flex items-start gap-3">
+                  <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-blue-900">
+                    <h4 className="font-semibold mb-2">Protection of Personal Information (POPI Act)</h4>
+                    <p className="mb-2">
+                      Under South Africa's Protection of Personal Information Act (Act 4 of 2013), 
+                      you have the right to:
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 text-blue-800 ml-2">
+                      <li>Know what personal information we hold about you</li>
+                      <li>Request correction of inaccurate information</li>
+                      <li>Request deletion of your data (subject to legal requirements)</li>
+                      <li>Object to automated decision-making</li>
+                      <li>Lodge a complaint with the Information Regulator</li>
+                    </ul>
+                    <p className="mt-2 text-xs">
+                      <strong>Information Regulator Contact:</strong><br />
+                      Email: inforeg@justice.gov.za | Tel: 012 406 4818<br />
+                      Website: <a href="https://www.justice.gov.za/inforeg/" className="underline" target="_blank" rel="noopener noreferrer">justice.gov.za/inforeg</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={consents.popiAcknowledgement}
+                  onChange={() => toggleConsent('popiAcknowledgement')}
+                  className="mt-1 w-4 h-4 text-brand-orange focus:ring-brand-orange"
+                />
+                <span className="text-sm">
+                  <strong>I acknowledge my POPI Act rights</strong> and understand that I can exercise them at any time by contacting privacy@collecotravel.co.za {requiredIndicator}
+                </span>
+              </label>
+            </div>
 
             <div className="pt-4 border-t border-gray-300">
               <h4 className="font-semibold text-gray-700 mb-3">Optional Preferences</h4>

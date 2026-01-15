@@ -1,688 +1,590 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Footer from "../components/Footer.jsx";
-import { Building2, User, Phone, Mail, MapPin, FileText, CheckCircle2, ArrowRight, ArrowLeft, Briefcase, Globe, DollarSign } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { 
+  Sparkles, CheckCircle2, Mail, Phone, Shield, ArrowRight, 
+  ArrowLeft, Building2, FileText, Upload, Bell, DollarSign,
+  Clock, Award, TrendingUp, Users
+} from "lucide-react";
+import Button from "../components/ui/Button";
+import { useUser } from "../context/UserContext.jsx";
 
-const PARTNER_CATEGORIES = [
-  { value: "accommodation", label: "Accommodation (Hotels, Lodges, Guesthouses)", icon: Building2 },
-  { value: "tour_operator", label: "Tour Operator / DMC", icon: Briefcase },
-  { value: "transport", label: "Transport & Transfers", icon: Globe },
-  { value: "activity", label: "Activities & Experiences", icon: MapPin },
-  { value: "restaurant", label: "Restaurant / Catering", icon: Building2 },
-  { value: "airline", label: "Airline / Flight Services", icon: Globe },
-  { value: "car_rental", label: "Car Rental", icon: Globe },
-  { value: "travel_agent", label: "Travel Agent / Agency", icon: Briefcase },
-  { value: "content_creator", label: "Content Creator / Influencer", icon: User },
-  { value: "marketing", label: "Marketing / PR Partner", icon: Briefcase },
-  { value: "insurance", label: "Travel Insurance Provider", icon: FileText },
-  { value: "other", label: "Other Value-Add Partner", icon: DollarSign }
-];
-
-const BUSINESS_TYPES = [
-  { value: "sole_proprietor", label: "Sole Proprietor" },
-  { value: "pty_ltd", label: "Private Company (Pty Ltd)" },
-  { value: "llc", label: "LLC / Limited Company" },
-  { value: "partnership", label: "Partnership" },
-  { value: "ngo_npo", label: "NGO / NPO" },
-  { value: "other", label: "Other" }
-];
-
+/**
+ * Partner Onboarding - Post-Registration Setup
+ * - Welcome service providers after registration
+ * - Verification status tracking
+ * - Document upload guidance
+ * - Payment preferences setup
+ * - Service listing preparation
+ */
 export default function PartnerOnboarding() {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    // Step 1: Business Info
-    businessName: "",
-    tradingAs: "",
-    registrationNumber: "",
-    businessType: "",
-    category: "",
-    // Step 2: Contact Details
-    contactPerson: "",
-    email: "",
-    phone: "",
-    alternatePhone: "",
-    website: "",
-    // Step 3: Location
-    address: "",
-    city: "",
-    province: "",
-    country: "South Africa",
-    postalCode: "",
-    // Step 4: Business Details
-    yearsInBusiness: "",
-    description: "",
-    servicesOffered: "",
-    targetMarkets: "",
-    annualTurnover: "",
-    // Step 5: Agreement
-    agreedToTerms: false,
-    agreedToCommission: false,
-    preferredCommissionModel: "standard"
+  const [searchParams] = useSearchParams();
+  const { user, setUser } = useUser();
+  const [step, setStep] = useState(1);
+  const isNewPartner = searchParams.get('new') === 'true';
+
+  const [verificationStatus, setVerificationStatus] = useState({
+    email: user?.emailVerified || false,
+    phone: user?.phoneVerified || false,
+    business: false,
+    documents: false,
   });
 
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailCode, setEmailCode] = useState("");
+  const [phoneCode, setPhoneCode] = useState("");
+  const [generatedEmailCode] = useState(Math.floor(100000 + Math.random() * 900000).toString());
+  const [generatedPhoneCode] = useState(Math.floor(100000 + Math.random() * 900000).toString());
 
-  const updateField = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: null }));
+  const [preferences, setPreferences] = useState({
+    payoutFrequency: "monthly",
+    payoutMethod: "bank_transfer",
+    notifications: {
+      email: true,
+      sms: false,
+      push: true,
+      bookings: true,
+      reviews: true,
+    },
+    autoAcceptBookings: false,
+  });
+
+  useEffect(() => {
+    // Simulate sending verification codes
+    if (step === 2 && user?.email && !verificationStatus.email) {
+      console.log(`📧 Email verification code for ${user.email}: ${generatedEmailCode}`);
+    }
+    if (step === 2 && user?.phone && !verificationStatus.phone) {
+      console.log(`📱 SMS verification code for ${user.phone}: ${generatedPhoneCode}`);
+    }
+  }, [step, user, generatedEmailCode, generatedPhoneCode, verificationStatus]);
+
+  const verifyEmail = () => {
+    if (emailCode === generatedEmailCode) {
+      setVerificationStatus(prev => ({ ...prev, email: true }));
+      if (user) {
+        const updatedUser = { ...user, emailVerified: true };
+        localStorage.setItem("user:" + user.email, JSON.stringify(updatedUser));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser);
+      }
+    } else {
+      alert("Invalid verification code. Please try again.");
     }
   };
 
-  const validateStep = (step) => {
-    const newErrors = {};
-    
-    if (step === 1) {
-      if (!formData.businessName.trim()) newErrors.businessName = "Business name is required";
-      if (!formData.registrationNumber.trim()) newErrors.registrationNumber = "Registration number is required";
-      if (!formData.businessType) newErrors.businessType = "Please select business type";
-      if (!formData.category) newErrors.category = "Please select a category";
-    }
-    
-    if (step === 2) {
-      if (!formData.contactPerson.trim()) newErrors.contactPerson = "Contact person is required";
-      if (!formData.email.trim()) newErrors.email = "Email is required";
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "Invalid email format";
-      if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
-    }
-    
-    if (step === 3) {
-      if (!formData.address.trim()) newErrors.address = "Address is required";
-      if (!formData.city.trim()) newErrors.city = "City is required";
-      if (!formData.province.trim()) newErrors.province = "Province/State is required";
-    }
-    
-    if (step === 4) {
-      if (!formData.yearsInBusiness) newErrors.yearsInBusiness = "Years in business is required";
-      if (!formData.description.trim()) newErrors.description = "Business description is required";
-      if (formData.description.length < 50) newErrors.description = "Description must be at least 50 characters";
-    }
-    
-    if (step === 5) {
-      if (!formData.agreedToTerms) newErrors.agreedToTerms = "You must agree to the terms";
-      if (!formData.agreedToCommission) newErrors.agreedToCommission = "You must agree to the commission structure";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const nextStep = () => {
-    if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 5));
+  const verifyPhone = () => {
+    if (phoneCode === generatedPhoneCode) {
+      setVerificationStatus(prev => ({ ...prev, phone: true }));
+      if (user) {
+        const updatedUser = { ...user, phoneVerified: true };
+        localStorage.setItem("user:" + user.email, JSON.stringify(updatedUser));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser);
+      }
+    } else {
+      alert("Invalid verification code. Please try again.");
     }
   };
 
-  const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateStep(5)) return;
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch('/api/partners/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          appliedAt: new Date().toISOString(),
-          status: 'pending'
-        })
-      });
-
-      if (!response.ok) throw new Error('Application submission failed');
-
-      const result = await response.json();
-      
-      // Store application ID and category for tracking
-      localStorage.setItem('colleco.partner.applicationId', result.applicationId);
-      localStorage.setItem('colleco.partner.category', formData.category);
-      
-      // Navigate to verification page
-      navigate('/partner/verification', { 
-        state: { 
-          applicationId: result.applicationId, 
-          partnerCategory: formData.category,
-          step: 'documents' 
-        }
-      });
-    } catch (error) {
-      console.error('Submission error:', error);
-      setErrors({ submit: 'Failed to submit application. Please try again.' });
-    } finally {
-      setIsSubmitting(false);
+  const completeOnboarding = () => {
+    if (user) {
+      const updatedUser = {
+        ...user,
+        partnerOnboardingComplete: true,
+        preferences,
+        onboardedAt: new Date().toISOString(),
+      };
+      localStorage.setItem("user:" + user.email, JSON.stringify(updatedUser));
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
     }
+    navigate('/partner/dashboard');
   };
 
-  const renderStepIndicator = () => (
-    <div className="mb-8">
-      <div className="flex items-center justify-between max-w-3xl mx-auto">
-        {[
-          { num: 1, label: "Business Info" },
-          { num: 2, label: "Contact" },
-          { num: 3, label: "Location" },
-          { num: 4, label: "Details" },
-          { num: 5, label: "Agreement" }
-        ].map((step, idx, arr) => (
-          <div key={step.num} className="flex items-center flex-1">
-            <div className="flex flex-col items-center">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
-                currentStep > step.num ? 'bg-green-500 text-white' :
-                currentStep === step.num ? 'bg-brand-orange text-white' :
-                'bg-gray-200 text-gray-500'
-              }`}>
-                {currentStep > step.num ? <CheckCircle2 className="w-5 h-5" /> : step.num}
-              </div>
-              <span className={`mt-2 text-xs font-medium hidden sm:block ${
-                currentStep >= step.num ? 'text-brand-brown' : 'text-gray-400'
-              }`}>
-                {step.label}
-              </span>
-            </div>
-            {idx < arr.length - 1 && (
-              <div className={`flex-1 h-1 mx-2 transition-all ${
-                currentStep > step.num ? 'bg-green-500' : 'bg-gray-200'
-              }`} />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderStep1 = () => (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Business Name <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          value={formData.businessName}
-          onChange={(e) => updateField('businessName', e.target.value)}
-          className={`w-full px-4 py-3 rounded-lg border ${errors.businessName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-          placeholder="Enter registered business name"
-        />
-        {errors.businessName && <p className="text-red-500 text-sm mt-1">{errors.businessName}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">Trading As (if different)</label>
-        <input
-          type="text"
-          value={formData.tradingAs}
-          onChange={(e) => updateField('tradingAs', e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-          placeholder="Optional trading name"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Registration/Company Number <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          value={formData.registrationNumber}
-          onChange={(e) => updateField('registrationNumber', e.target.value)}
-          className={`w-full px-4 py-3 rounded-lg border ${errors.registrationNumber ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-          placeholder="e.g., 2024/123456/07"
-        />
-        {errors.registrationNumber && <p className="text-red-500 text-sm mt-1">{errors.registrationNumber}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Business Type <span className="text-red-500">*</span>
-        </label>
-        <select
-          value={formData.businessType}
-          onChange={(e) => updateField('businessType', e.target.value)}
-          className={`w-full px-4 py-3 rounded-lg border ${errors.businessType ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-        >
-          <option value="">Select business type</option>
-          {BUSINESS_TYPES.map(type => (
-            <option key={type.value} value={type.value}>{type.label}</option>
-          ))}
-        </select>
-        {errors.businessType && <p className="text-red-500 text-sm mt-1">{errors.businessType}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Partner Category <span className="text-red-500">*</span>
-        </label>
-        <select
-          value={formData.category}
-          onChange={(e) => updateField('category', e.target.value)}
-          className={`w-full px-4 py-3 rounded-lg border ${errors.category ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-        >
-          <option value="">Select your primary category</option>
-          {PARTNER_CATEGORIES.map(cat => (
-            <option key={cat.value} value={cat.value}>{cat.label}</option>
-          ))}
-        </select>
-        {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
-      </div>
-    </div>
-  );
-
-  const renderStep2 = () => (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Primary Contact Person <span className="text-red-500">*</span>
-        </label>
-        <div className="relative">
-          <User className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-          <input
-            type="text"
-            value={formData.contactPerson}
-            onChange={(e) => updateField('contactPerson', e.target.value)}
-            className={`w-full pl-11 pr-4 py-3 rounded-lg border ${errors.contactPerson ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-            placeholder="Full name"
-          />
-        </div>
-        {errors.contactPerson && <p className="text-red-500 text-sm mt-1">{errors.contactPerson}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Email Address <span className="text-red-500">*</span>
-        </label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) => updateField('email', e.target.value)}
-            className={`w-full pl-11 pr-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-            placeholder="business@example.com"
-          />
-        </div>
-        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Phone Number <span className="text-red-500">*</span>
-        </label>
-        <div className="relative">
-          <Phone className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-          <input
-            type="tel"
-            value={formData.phone}
-            onChange={(e) => updateField('phone', e.target.value)}
-            className={`w-full pl-11 pr-4 py-3 rounded-lg border ${errors.phone ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-            placeholder="+27 XX XXX XXXX"
-          />
-        </div>
-        {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">Alternate Phone</label>
-        <div className="relative">
-          <Phone className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-          <input
-            type="tel"
-            value={formData.alternatePhone}
-            onChange={(e) => updateField('alternatePhone', e.target.value)}
-            className="w-full pl-11 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-            placeholder="Optional alternate contact"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">Website</label>
-        <div className="relative">
-          <Globe className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-          <input
-            type="url"
-            value={formData.website}
-            onChange={(e) => updateField('website', e.target.value)}
-            className="w-full pl-11 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-            placeholder="https://www.example.com"
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderStep3 = () => (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Street Address <span className="text-red-500">*</span>
-        </label>
-        <div className="relative">
-          <MapPin className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-          <input
-            type="text"
-            value={formData.address}
-            onChange={(e) => updateField('address', e.target.value)}
-            className={`w-full pl-11 pr-4 py-3 rounded-lg border ${errors.address ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-            placeholder="Street address"
-          />
-        </div>
-        {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-semibold text-brand-brown mb-2">
-            City <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            value={formData.city}
-            onChange={(e) => updateField('city', e.target.value)}
-            className={`w-full px-4 py-3 rounded-lg border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-            placeholder="City"
-          />
-          {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-brand-brown mb-2">
-            Province/State <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            value={formData.province}
-            onChange={(e) => updateField('province', e.target.value)}
-            className={`w-full px-4 py-3 rounded-lg border ${errors.province ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-            placeholder="Province/State"
-          />
-          {errors.province && <p className="text-red-500 text-sm mt-1">{errors.province}</p>}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-semibold text-brand-brown mb-2">Country</label>
-          <input
-            type="text"
-            value={formData.country}
-            onChange={(e) => updateField('country', e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-brand-brown mb-2">Postal Code</label>
-          <input
-            type="text"
-            value={formData.postalCode}
-            onChange={(e) => updateField('postalCode', e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-            placeholder="Postal code"
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderStep4 = () => (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Years in Business <span className="text-red-500">*</span>
-        </label>
-        <select
-          value={formData.yearsInBusiness}
-          onChange={(e) => updateField('yearsInBusiness', e.target.value)}
-          className={`w-full px-4 py-3 rounded-lg border ${errors.yearsInBusiness ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-        >
-          <option value="">Select</option>
-          <option value="0-1">Less than 1 year</option>
-          <option value="1-3">1-3 years</option>
-          <option value="3-5">3-5 years</option>
-          <option value="5-10">5-10 years</option>
-          <option value="10+">10+ years</option>
-        </select>
-        {errors.yearsInBusiness && <p className="text-red-500 text-sm mt-1">{errors.yearsInBusiness}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">
-          Business Description <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          value={formData.description}
-          onChange={(e) => updateField('description', e.target.value)}
-          className={`w-full px-4 py-3 rounded-lg border ${errors.description ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
-          rows={5}
-          placeholder="Describe your business, target market, and unique offerings (minimum 50 characters)"
-        />
-        <div className="flex justify-between items-center mt-1">
-          {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
-          <p className="text-sm text-gray-500 ml-auto">{formData.description.length} characters</p>
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">Services/Products Offered</label>
-        <textarea
-          value={formData.servicesOffered}
-          onChange={(e) => updateField('servicesOffered', e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-          rows={3}
-          placeholder="List key services or products"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">Target Markets / Regions Served</label>
-        <input
-          type="text"
-          value={formData.targetMarkets}
-          onChange={(e) => updateField('targetMarkets', e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-          placeholder="e.g., Southern Africa, Europe, Corporate travelers"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-brand-brown mb-2">Estimated Annual Turnover (Optional)</label>
-        <select
-          value={formData.annualTurnover}
-          onChange={(e) => updateField('annualTurnover', e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
-        >
-          <option value="">Prefer not to say</option>
-          <option value="0-500k">Under R500k</option>
-          <option value="500k-2m">R500k - R2M</option>
-          <option value="2m-5m">R2M - R5M</option>
-          <option value="5m-10m">R5M - R10M</option>
-          <option value="10m+">Over R10M</option>
-        </select>
-      </div>
-    </div>
-  );
-
-  const renderStep5 = () => (
-    <div className="space-y-6">
-      <div className="bg-cream-light p-6 rounded-lg">
-        <h3 className="font-bold text-brand-brown mb-3">Commission Structure</h3>
-        <p className="text-sm text-gray-700 mb-4">
-          CollEco charges a commission on bookings generated through the platform. Choose your preferred model:
-        </p>
-        
-        <div className="space-y-3">
-          <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-brand-orange transition-colors">
-            <input
-              type="radio"
-              name="commissionModel"
-              value="standard"
-              checked={formData.preferredCommissionModel === "standard"}
-              onChange={(e) => updateField('preferredCommissionModel', e.target.value)}
-              className="mt-1"
-            />
-            <div>
-              <div className="font-semibold text-brand-brown">Standard (15%)</div>
-              <div className="text-sm text-gray-600">15% commission on all bookings. Standard listing placement.</div>
-            </div>
-          </label>
-
-          <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-brand-orange transition-colors">
-            <input
-              type="radio"
-              name="commissionModel"
-              value="premium"
-              checked={formData.preferredCommissionModel === "premium"}
-              onChange={(e) => updateField('preferredCommissionModel', e.target.value)}
-              className="mt-1"
-            />
-            <div>
-              <div className="font-semibold text-brand-brown">Premium (10%)</div>
-              <div className="text-sm text-gray-600">10% commission + Featured placement + Priority support + Marketing assistance</div>
-            </div>
-          </label>
-
-          <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-brand-orange transition-colors">
-            <input
-              type="radio"
-              name="commissionModel"
-              value="enterprise"
-              checked={formData.preferredCommissionModel === "enterprise"}
-              onChange={(e) => updateField('preferredCommissionModel', e.target.value)}
-              className="mt-1"
-            />
-            <div>
-              <div className="font-semibold text-brand-brown">Enterprise (Custom)</div>
-              <div className="text-sm text-gray-600">Negotiated rates for high-volume partners. Dedicated account manager.</div>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <label className="flex items-start gap-3">
-          <input
-            type="checkbox"
-            checked={formData.agreedToTerms}
-            onChange={(e) => updateField('agreedToTerms', e.target.checked)}
-            className="mt-1"
-          />
-          <span className="text-sm">
-            I agree to the <a href="/terms" target="_blank" className="text-brand-orange underline">Terms & Conditions</a> and <a href="/privacy" target="_blank" className="text-brand-orange underline">Privacy Policy</a> <span className="text-red-500">*</span>
-          </span>
-        </label>
-        {errors.agreedToTerms && <p className="text-red-500 text-sm">{errors.agreedToTerms}</p>}
-
-        <label className="flex items-start gap-3">
-          <input
-            type="checkbox"
-            checked={formData.agreedToCommission}
-            onChange={(e) => updateField('agreedToCommission', e.target.checked)}
-            className="mt-1"
-          />
-          <span className="text-sm">
-            I agree to the commission structure selected above and understand that CollEco will deduct this from bookings. <span className="text-red-500">*</span>
-          </span>
-        </label>
-        {errors.agreedToCommission && <p className="text-red-500 text-sm">{errors.agreedToCommission}</p>}
-      </div>
-
-      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-        <h4 className="font-semibold text-blue-900 mb-2">📋 Next Steps</h4>
-        <ul className="text-sm text-blue-800 space-y-1">
-          <li>• Submit your application</li>
-          <li>• Upload required documents (licenses, insurance, banking details)</li>
-          <li>• Our team reviews your application (typically 3-5 business days)</li>
-          <li>• Receive approval notification and activate your account</li>
-          <li>• Start listing your products and receiving bookings!</li>
-        </ul>
-      </div>
-    </div>
-  );
+  const totalSteps = 4;
 
   return (
-    <div className="min-h-screen bg-cream py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-brand-brown mb-2">
-            Join the CollEco Partner Network
-          </h1>
-          <p className="text-gray-600">
-            Complete the application to start your journey with CollEco Travel
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-white to-orange-50 py-12 px-4">
+      <div className="max-w-3xl mx-auto">
+        {/* Progress Bar */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-600">Step {step} of {totalSteps}</span>
+            <span className="text-sm text-gray-600">{Math.round((step / totalSteps) * 100)}% Complete</span>
+          </div>
+          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-brand-orange to-brand-gold transition-all duration-500"
+              style={{ width: `${(step / totalSteps) * 100}%` }}
+            />
+          </div>
         </div>
 
-        {/* Step Indicator */}
-        {renderStepIndicator()}
-
-        {/* Form */}
-        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-          <form onSubmit={handleSubmit}>
-            {currentStep === 1 && renderStep1()}
-            {currentStep === 2 && renderStep2()}
-            {currentStep === 3 && renderStep3()}
-            {currentStep === 4 && renderStep4()}
-            {currentStep === 5 && renderStep5()}
-
-            {errors.submit && (
-              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-700 text-sm">{errors.submit}</p>
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
+          
+          {/* Step 1: Welcome */}
+          {step === 1 && (
+            <div className="text-center space-y-6">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand-orange to-brand-gold rounded-full mb-4">
+                <Sparkles className="w-10 h-10 text-white" />
               </div>
-            )}
+              
+              <h1 className="text-4xl font-bold text-brand-brown">
+                Welcome, Partner! 🎉
+              </h1>
+              
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Thank you for joining the CollEco ecosystem. Let's get your business set up to start receiving bookings!
+              </p>
 
-            {/* Navigation Buttons */}
-            <div className="flex justify-between mt-8 pt-6 border-t">
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-8">
+                <h3 className="font-semibold text-brand-brown mb-3">What happens next?</h3>
+                <ul className="space-y-3 text-left text-gray-700">
+                  <li className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <strong>Verification (1-2 business days)</strong>
+                      <p className="text-sm text-gray-600 mt-1">Our team will review your business registration documents</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <FileText className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <strong>Document Submission</strong>
+                      <p className="text-sm text-gray-600 mt-1">Upload required legal documents (CIPC, tax clearance)</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Award className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <strong>Account Activation</strong>
+                      <p className="text-sm text-gray-600 mt-1">Once approved, start listing your services and accepting bookings</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6 mt-6">
+                <div className="flex items-start gap-3">
+                  <TrendingUp className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <div className="text-left">
+                    <h4 className="font-semibold text-brand-brown mb-2">Partner Benefits</h4>
+                    <ul className="text-sm text-gray-700 space-y-1">
+                      <li>• Access to thousands of travelers</li>
+                      <li>• Secure payment processing</li>
+                      <li>• Marketing & promotional support</li>
+                      <li>• Real-time booking management</li>
+                      <li>• Analytics & reporting tools</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <Button onClick={() => setStep(2)} size="lg" className="mt-8">
+                Get Started
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+
               <button
-                type="button"
-                onClick={prevStep}
-                disabled={currentStep === 1}
-                className="flex items-center gap-2 px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                onClick={() => navigate('/partner/dashboard')}
+                className="text-sm text-gray-500 hover:text-gray-700 mt-4 block"
               >
-                <ArrowLeft className="w-4 h-4" />
-                Previous
+                Skip for now
               </button>
+            </div>
+          )}
 
-              {currentStep < 5 ? (
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="flex items-center gap-2 px-6 py-3 rounded-lg bg-brand-orange text-white font-semibold hover:bg-orange-600 transition-colors"
+          {/* Step 2: Verify Email & Phone */}
+          {step === 2 && (
+            <div className="space-y-8">
+              <div className="text-center mb-8">
+                <Shield className="w-16 h-16 mx-auto mb-4 text-brand-orange" />
+                <h2 className="text-3xl font-bold text-brand-brown mb-2">Verify Your Contact</h2>
+                <p className="text-gray-600">
+                  Verified contact information helps customers trust your business and ensures you receive booking notifications.
+                </p>
+              </div>
+
+              {/* Email Verification */}
+              <div className="border border-gray-200 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Mail className="w-6 h-6 text-brand-orange" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-brand-brown">Email Verification</h3>
+                    <p className="text-sm text-gray-600">{user?.email}</p>
+                  </div>
+                  {verificationStatus.email && (
+                    <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  )}
+                </div>
+
+                {!verificationStatus.email ? (
+                  <div className="space-y-3">
+                    <p className="text-sm text-gray-600">
+                      We've sent a 6-digit code to your email. Please enter it below:
+                    </p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={emailCode}
+                        onChange={(e) => setEmailCode(e.target.value)}
+                        placeholder="Enter 6-digit code"
+                        maxLength={6}
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                      />
+                      <Button onClick={verifyEmail} disabled={emailCode.length !== 6}>
+                        Verify
+                      </Button>
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Demo code: <code className="bg-gray-100 px-2 py-1 rounded">{generatedEmailCode}</code>
+                    </p>
+                  </div>
+                ) : (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-green-700 text-sm">
+                    ✓ Email verified successfully!
+                  </div>
+                )}
+              </div>
+
+              {/* Phone Verification */}
+              <div className="border border-gray-200 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Phone className="w-6 h-6 text-brand-orange" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-brand-brown">Phone Verification</h3>
+                    <p className="text-sm text-gray-600">{user?.phone}</p>
+                  </div>
+                  {verificationStatus.phone && (
+                    <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  )}
+                </div>
+
+                {!verificationStatus.phone ? (
+                  <div className="space-y-3">
+                    <p className="text-sm text-gray-600">
+                      We've sent a 6-digit code to your phone. Please enter it below:
+                    </p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={phoneCode}
+                        onChange={(e) => setPhoneCode(e.target.value)}
+                        placeholder="Enter 6-digit code"
+                        maxLength={6}
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                      />
+                      <Button onClick={verifyPhone} disabled={phoneCode.length !== 6}>
+                        Verify
+                      </Button>
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      Demo code: <code className="bg-gray-100 px-2 py-1 rounded">{generatedPhoneCode}</code>
+                    </p>
+                  </div>
+                ) : (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-green-700 text-sm">
+                    ✓ Phone verified successfully!
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button variant="outline" onClick={() => setStep(1)}>
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
+                </Button>
+                <Button 
+                  onClick={() => setStep(3)} 
+                  className="flex-1"
+                  disabled={!verificationStatus.email && !verificationStatus.phone}
                 >
-                  Next
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex items-center gap-2 px-6 py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  {isSubmitting ? 'Submitting...' : 'Submit Application'}
-                  <CheckCircle2 className="w-4 h-4" />
-                </button>
+                  Continue
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
+
+              {!verificationStatus.email && !verificationStatus.phone && (
+                <p className="text-sm text-gray-500 text-center">
+                  Please verify at least one contact method to continue
+                </p>
               )}
             </div>
-          </form>
-        </div>
+          )}
 
-        {/* Help Section */}
-        <div className="mt-8 text-center text-sm text-gray-600">
-          <p>
-            Need help? Contact our Partner Support team at{' '}
-            <a href="mailto:partners@collecotravel.com" className="text-brand-orange underline">
-              partners@collecotravel.com
-            </a>
-          </p>
+          {/* Step 3: Business Verification Status */}
+          {step === 3 && (
+            <div className="space-y-6">
+              <div className="text-center mb-8">
+                <Building2 className="w-16 h-16 mx-auto mb-4 text-brand-orange" />
+                <h2 className="text-3xl font-bold text-brand-brown mb-2">Verification Status</h2>
+                <p className="text-gray-600">
+                  Track the progress of your business verification and document review.
+                </p>
+              </div>
+
+              {/* Verification Checklist */}
+              <div className="space-y-4">
+                <div className="border border-gray-200 rounded-xl p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 mt-1">
+                      {verificationStatus.email ? (
+                        <CheckCircle2 className="w-6 h-6 text-green-500" />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full border-2 border-gray-300" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-brand-brown">Email Verified</h4>
+                      <p className="text-sm text-gray-600 mt-1">Your email address has been confirmed</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border border-gray-200 rounded-xl p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 mt-1">
+                      {verificationStatus.phone ? (
+                        <CheckCircle2 className="w-6 h-6 text-green-500" />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full border-2 border-gray-300" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-brand-brown">Phone Verified</h4>
+                      <p className="text-sm text-gray-600 mt-1">Your phone number has been confirmed</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border border-orange-200 rounded-xl p-5 bg-orange-50">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 mt-1">
+                      <Clock className="w-6 h-6 text-orange-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-brand-brown">Business Verification</h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Our team is reviewing your CIPC registration and tax documents
+                      </p>
+                      <div className="mt-3 text-xs text-gray-600">
+                        <strong>Estimated time:</strong> 1-2 business days
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border border-gray-200 rounded-xl p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-6 h-6 rounded-full border-2 border-gray-300" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-brand-brown">Document Upload</h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Upload required documents for final approval
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-3"
+                        onClick={() => setVerificationStatus(prev => ({ ...prev, documents: true }))}
+                      >
+                        <Upload className="w-4 h-4 mr-2" />
+                        Upload Documents
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mt-6">
+                <h4 className="font-semibold text-brand-brown mb-2">Required Documents:</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• CIPC Company Registration Certificate</li>
+                  <li>• Tax Clearance Certificate (SARS)</li>
+                  <li>• Director/Owner ID Documents</li>
+                  <li>• Proof of Bank Account</li>
+                  <li>• Professional Licenses (if applicable)</li>
+                </ul>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button variant="outline" onClick={() => setStep(2)}>
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
+                </Button>
+                <Button onClick={() => setStep(4)} className="flex-1">
+                  Continue
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Payment & Preferences */}
+          {step === 4 && (
+            <div className="space-y-6">
+              <div className="text-center mb-8">
+                <DollarSign className="w-16 h-16 mx-auto mb-4 text-brand-orange" />
+                <h2 className="text-3xl font-bold text-brand-brown mb-2">Payment & Preferences</h2>
+                <p className="text-gray-600">
+                  Configure how you receive payments and manage booking notifications.
+                </p>
+              </div>
+
+              {/* Payout Settings */}
+              <div>
+                <h3 className="font-semibold text-brand-brown mb-4">Payout Settings</h3>
+                
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Payout Frequency
+                    </label>
+                    <select
+                      value={preferences.payoutFrequency}
+                      onChange={(e) => setPreferences(prev => ({ ...prev, payoutFrequency: e.target.value }))}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                    >
+                      <option value="weekly">Weekly</option>
+                      <option value="biweekly">Bi-weekly (Every 2 weeks)</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Payout Method
+                    </label>
+                    <select
+                      value={preferences.payoutMethod}
+                      onChange={(e) => setPreferences(prev => ({ ...prev, payoutMethod: e.target.value }))}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                    >
+                      <option value="bank_transfer">Bank Transfer (EFT)</option>
+                      <option value="paypal">PayPal</option>
+                      <option value="payoneer">Payoneer</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+                  <strong>Commission:</strong> CollEco charges a 15% commission on all bookings.
+                  Payments are processed securely and transferred according to your selected frequency.
+                </div>
+              </div>
+
+              {/* Booking Preferences */}
+              <div>
+                <h3 className="font-semibold text-brand-brown mb-4">Booking Management</h3>
+                
+                <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                  <input
+                    type="checkbox"
+                    checked={preferences.autoAcceptBookings}
+                    onChange={(e) => setPreferences(prev => ({ ...prev, autoAcceptBookings: e.target.checked }))}
+                    className="w-5 h-5 text-brand-orange rounded focus:ring-brand-orange"
+                  />
+                  <div className="flex-1">
+                    <span className="font-semibold text-brand-brown">Auto-accept Bookings</span>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Automatically accept booking requests (recommended for high availability)
+                    </p>
+                  </div>
+                </label>
+              </div>
+
+              {/* Notification Preferences */}
+              <div>
+                <h3 className="font-semibold text-brand-brown mb-4">Notification Preferences</h3>
+                
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                    <input
+                      type="checkbox"
+                      checked={preferences.notifications.email}
+                      onChange={(e) => setPreferences(prev => ({
+                        ...prev,
+                        notifications: { ...prev.notifications, email: e.target.checked }
+                      }))}
+                      className="w-5 h-5 text-brand-orange rounded focus:ring-brand-orange"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-5 h-5 text-brand-orange" />
+                        <span className="font-semibold text-brand-brown">Email Notifications</span>
+                      </div>
+                      <p className="text-sm text-gray-600 mt-1">Booking confirmations, reviews, and updates</p>
+                    </div>
+                  </label>
+
+                  <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                    <input
+                      type="checkbox"
+                      checked={preferences.notifications.sms}
+                      onChange={(e) => setPreferences(prev => ({
+                        ...prev,
+                        notifications: { ...prev.notifications, sms: e.target.checked }
+                      }))}
+                      className="w-5 h-5 text-brand-orange rounded focus:ring-brand-orange"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-5 h-5 text-brand-orange" />
+                        <span className="font-semibold text-brand-brown">SMS Notifications</span>
+                      </div>
+                      <p className="text-sm text-gray-600 mt-1">Urgent booking alerts and customer inquiries</p>
+                    </div>
+                  </label>
+
+                  <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                    <input
+                      type="checkbox"
+                      checked={preferences.notifications.push}
+                      onChange={(e) => setPreferences(prev => ({
+                        ...prev,
+                        notifications: { ...prev.notifications, push: e.target.checked }
+                      }))}
+                      className="w-5 h-5 text-brand-orange rounded focus:ring-brand-orange"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <Bell className="w-5 h-5 text-brand-orange" />
+                        <span className="font-semibold text-brand-brown">Push Notifications</span>
+                      </div>
+                      <p className="text-sm text-gray-600 mt-1">Real-time booking and review notifications</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-brand-orange to-brand-gold rounded-xl p-8 text-white text-center mt-8">
+                <Award className="w-12 h-12 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold mb-2">Setup Complete!</h3>
+                <p className="text-orange-50 mb-6">
+                  You're all set! Access your partner dashboard to start listing services and managing bookings.
+                </p>
+                <Button 
+                  onClick={completeOnboarding}
+                  variant="outline"
+                  className="bg-white text-brand-orange border-white hover:bg-orange-50"
+                >
+                  Go to Partner Dashboard
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button variant="outline" onClick={() => setStep(3)}>
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
-        
-        <Footer />
       </div>
     </div>
   );

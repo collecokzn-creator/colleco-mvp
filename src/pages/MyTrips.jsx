@@ -20,6 +20,64 @@ const SORT_OPTIONS = [
   { value: "amount_asc", label: "Lowest Amount" }
 ];
 
+// Mock data for development
+const mockTrips = [
+  {
+    id: "TRV001",
+    bookingRef: "COL-2025-001",
+    destination: "Kruger National Park Safari",
+    startDate: "2025-12-15",
+    endDate: "2025-12-20",
+    duration: 5,
+    travelers: 2,
+    status: "confirmed",
+    accommodation: "Sabi Sabi Private Lodge",
+    flight: true,
+    transport: true,
+    currency: "ZAR",
+    totalAmount: 35900,
+    hasMessages: true,
+    unreadMessages: 2,
+    image: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&q=80"
+  },
+  {
+    id: "TRV002",
+    bookingRef: "COL-2025-002",
+    destination: "Cape Town & Winelands",
+    startDate: "2025-11-28",
+    endDate: "2025-12-03",
+    duration: 5,
+    travelers: 4,
+    status: "confirmed",
+    accommodation: "Table Bay Hotel",
+    flight: false,
+    transport: true,
+    currency: "ZAR",
+    totalAmount: 28500,
+    hasMessages: false,
+    unreadMessages: 0,
+    image: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80"
+  },
+  {
+    id: "TRV003",
+    bookingRef: "COL-2025-003",
+    destination: "Zanzibar Beach Escape",
+    startDate: "2025-10-10",
+    endDate: "2025-10-17",
+    duration: 7,
+    travelers: 2,
+    status: "completed",
+    accommodation: "The Rock Resort",
+    flight: true,
+    transport: true,
+    currency: "ZAR",
+    totalAmount: 42000,
+    hasMessages: true,
+    unreadMessages: 0,
+    image: "https://images.unsplash.com/photo-1505881502353-a1986add3762?w=800&q=80"
+  }
+];
+
 export default function MyTrips() {
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
@@ -125,16 +183,41 @@ export default function MyTrips() {
     return { label: "Pending", color: "bg-gray-100 text-gray-800", icon: Clock, borderColor: "border-gray-300" };
   };
 
-  const renderTripCard = (trip) => {
+  const TripCard = ({ trip }) => {
     const statusConfig = getStatusConfig(trip);
     const StatusIcon = statusConfig.icon;
+    const [imageError, setImageError] = useState(false);
 
     return (
       <div 
-        key={trip.id}
-        className={`bg-white rounded-lg border-2 ${statusConfig.borderColor} hover:shadow-lg transition-all cursor-pointer`}
-        onClick={() => navigate(`/bookings/${trip.id}`)}
+        className={`bg-white rounded-lg border-2 ${statusConfig.borderColor} hover:shadow-lg transition-all cursor-pointer overflow-hidden`}
+        onClick={() => {
+          // Navigate to trip basket or details
+          if (trip.status === 'pending_payment') {
+            navigate('/trip-basket');
+          } else {
+            navigate(`/my-trips/${trip.id}`);
+          }
+        }}
       >
+        {/* Trip Image */}
+        {trip.image && !imageError ? (
+          <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+            <img 
+              src={trip.image} 
+              alt={trip.destination}
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+              onError={() => setImageError(true)}
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+            <div className={`absolute top-4 right-4 flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold ${statusConfig.color} backdrop-blur-sm`}>
+              <StatusIcon className="w-3 h-3" />
+              {statusConfig.label}
+            </div>
+          </div>
+        ) : null}
+        
         <div className="p-6">
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
@@ -143,10 +226,12 @@ export default function MyTrips() {
                 <h3 className="text-xl font-bold text-brand-brown hover:text-brand-orange transition-colors">
                   {trip.destination}
                 </h3>
-                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.color}`}>
-                  <StatusIcon className="w-3 h-3" />
-                  {statusConfig.label}
-                </div>
+                {!trip.image || imageError ? (
+                  <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.color}`}>
+                    <StatusIcon className="w-3 h-3" />
+                    {statusConfig.label}
+                  </div>
+                ) : null}
               </div>
               <p className="text-sm text-gray-500">Ref: {trip.bookingRef}</p>
             </div>
@@ -197,21 +282,39 @@ export default function MyTrips() {
           {/* Actions */}
           <div className="flex flex-wrap gap-2 pt-4 border-t">
             <button
-              onClick={(e) => { e.stopPropagation(); navigate(`/bookings/${trip.id}`); }}
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                navigate(`/my-trips/${trip.id}`); 
+              }}
               className="flex items-center gap-1 px-4 py-2 bg-brand-orange text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition-colors"
             >
               <FileText className="w-4 h-4" />
               View Details
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); /* Download action */ }}
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                alert('Download feature coming soon!');
+              }}
               className="flex items-center gap-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
             >
               <Download className="w-4 h-4" />
               Download
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); /* Share action */ }}
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                if (navigator.share) {
+                  navigator.share({
+                    title: trip.destination,
+                    text: `Check out my trip to ${trip.destination}!`,
+                    url: window.location.href
+                  });
+                } else {
+                  alert('Share link copied to clipboard!');
+                  navigator.clipboard?.writeText(window.location.href);
+                }
+              }}
               className="flex items-center gap-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
             >
               <Share2 className="w-4 h-4" />
@@ -350,7 +453,9 @@ export default function MyTrips() {
           </div>
         ) : (
           <div className="space-y-6">
-            {filteredTrips.map(renderTripCard)}
+            {filteredTrips.map(trip => (
+              <TripCard key={trip.id} trip={trip} />
+            ))}
           </div>
         )}
 
@@ -365,62 +470,8 @@ export default function MyTrips() {
             </button>
           </div>
         )}
+
       </div>
     </div>
   );
 }
-
-// Mock data for development
-const mockTrips = [
-  {
-    id: "TRV001",
-    bookingRef: "COL-2025-001",
-    destination: "Kruger National Park Safari",
-    startDate: "2025-12-15",
-    endDate: "2025-12-20",
-    duration: 5,
-    travelers: 2,
-    status: "confirmed",
-    accommodation: "Sabi Sabi Private Lodge",
-    flight: true,
-    transport: true,
-    currency: "ZAR",
-    totalAmount: 35900,
-    hasMessages: true,
-    unreadMessages: 2
-  },
-  {
-    id: "TRV002",
-    bookingRef: "COL-2025-002",
-    destination: "Cape Town & Winelands",
-    startDate: "2025-11-28",
-    endDate: "2025-12-03",
-    duration: 5,
-    travelers: 4,
-    status: "confirmed",
-    accommodation: "Table Bay Hotel",
-    flight: false,
-    transport: true,
-    currency: "ZAR",
-    totalAmount: 28500,
-    hasMessages: false,
-    unreadMessages: 0
-  },
-  {
-    id: "TRV003",
-    bookingRef: "COL-2025-003",
-    destination: "Zanzibar Beach Escape",
-    startDate: "2025-10-10",
-    endDate: "2025-10-17",
-    duration: 7,
-    travelers: 2,
-    status: "completed",
-    accommodation: "The Rock Resort",
-    flight: true,
-    transport: true,
-    currency: "ZAR",
-    totalAmount: 42000,
-    hasMessages: true,
-    unreadMessages: 0
-  }
-];

@@ -1,14 +1,39 @@
 /**
  * Zola - Concise Travel Assistant
  * Brief, user-directed assistance focused on clarifying questions
+ * Enhanced with page context awareness
  */
 
-export function getZolaResponse(userMessage) {
+// Helper function to detect current page
+function getPageContext() {
+  if (typeof window === 'undefined') return 'unknown';
+  const path = window.location.pathname;
+  if (path.includes('/trip-basket')) return 'basket';
+  if (path.includes('/checkout')) return 'checkout';
+  if (path.includes('/my-trips')) return 'mytrips';
+  if (path.includes('/plan-trip')) return 'plantrip';
+  if (path.includes('/accommodation')) return 'accommodation';
+  if (path.includes('/transfers')) return 'transfers';
+  if (path.includes('/payment-success')) return 'success';
+  return 'general';
+}
+
+export function getZolaResponse(userMessage, context = null) {
   const _lower = userMessage.toLowerCase();
+  const pageContext = context || getPageContext();
   
-  // Greetings
+  // Greetings with context awareness
   if (/^(hi|hello|hey|howdy|good morning|good afternoon|good evening|what's up|sup|sawubona|sanibonani)\b/i.test(userMessage)) {
-    return "Hi I'm Zola, I'm here to assist you. What can I help you with today?";
+    const contextGreetings = {
+      'basket': "Hi I'm Zola! I see you're reviewing your trip basket. Need help with pricing, adding more items, or ready to checkout?",
+      'checkout': "Hi I'm Zola! Almost there! Any questions about payment, security, or your booking before you complete your purchase?",
+      'mytrips': "Hi I'm Zola! Looking at your trips? I can help you manage bookings, create itineraries, or suggest activities!",
+      'plantrip': "Hi I'm Zola! Exciting! What kind of trip are you planning? Beach, safari, adventure, or a mix?",
+      'accommodation': "Hi I'm Zola! Looking for the perfect place to stay? I can help with recommendations, pricing, and booking!",
+      'transfers': "Hi I'm Zola! Need a safe, reliable ride? I can explain our Pick My Ride service and help you book!",
+      'success': "Hi I'm Zola! Congratulations on your booking! Need an itinerary, invoice, or have any questions?",
+    };
+    return contextGreetings[pageContext] || "Hi I'm Zola, I'm here to assist you. What can I help you with today?";
   }
 
   // About Zola

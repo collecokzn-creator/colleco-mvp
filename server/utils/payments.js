@@ -71,23 +71,41 @@ async function generatePaymentUrl(params) {
 
   if (processor === 'yoco') {
     const yoco = config.yoco;
+    console.log('[yoco] Config loaded:', { 
+      hasSecretKey: !!yoco.secretKey, 
+      hasPublicKey: !!yoco.publicKey,
+      secretKeyPrefix: yoco.secretKey ? yoco.secretKey.substring(0, 10) + '...' : 'NONE',
+      testMode: yoco.testMode 
+    });
+    
     if (!yoco.secretKey || !yoco.publicKey) {
       throw new Error('Yoco credentials not configured');
     }
 
+    const isTestMode = yoco.secretKey.startsWith('sk_test_') || yoco.testMode;
+    console.log(`[yoco] Mode: ${isTestMode ? 'TEST' : 'LIVE'} - Creating checkout session`);
+
     // Create a Yoco hosted checkout session via Yoco API and return the redirect URL
-    const apiBase = (yoco.apiUrl || '').replace(/\/$/, '') || 'https://online.yoco.com/api/v1';
-    const endpoint = `${apiBase}/checkouts`;
+    // This works with both test and live keys!
+    // Yoco API base URL - use v1/checkouts endpoint
+    const apiBase = 'https://payments.yoco.com/api/checkouts';
+    const endpoint = apiBase;
     const amountInCents = Math.round(Number(amount) * 100);
 
     const payload = {
-      amountInCents,
-      reference: bookingId,
-      success_url: returnUrl || yoco.successUrl,
-      cancel_url: cancelUrl || yoco.cancelUrl,
-      metadata: { bookingId },
-      name: itemName,
+      amount: amountInCents,  // Yoco API expects 'amount' field in cents
+      currency: 'ZAR',
+      successUrl: returnUrl || yoco.successUrl,
+      cancelUrl: cancelUrl || yoco.cancelUrl,
+      metadata: { bookingId, reference: bookingId }
     };
+    
+    // Only add optional fields if they are provided
+    if (itemName) {
+      payload.name = itemName;
+    }
+
+    console.log('[yoco] Payload:', JSON.stringify(payload, null, 2));
 
     try {
       const resp = await fetch(endpoint, {
