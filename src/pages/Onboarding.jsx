@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
-  Sparkles, CheckCircle2, Mail, Phone, MapPin, Camera, 
-  Upload, Gift, Bell, Heart, Calendar, Shield, ArrowRight, 
-  ArrowLeft, Star, Palmtree, Mountain, Building2, Users
+  Sparkles, CheckCircle2, Mail, Phone, 
+  Gift, Bell, Heart, Calendar, Shield, ArrowRight, 
+  ArrowLeft, Star, Palmtree, Mountain, Building2
 } from "lucide-react";
 import Button from "../components/ui/Button";
 import { useUser } from "../context/UserContext.jsx";
@@ -28,7 +28,7 @@ export default function Onboarding() {
   const [generatedEmailCode] = useState(Math.floor(100000 + Math.random() * 900000).toString());
   const [generatedPhoneCode] = useState(Math.floor(100000 + Math.random() * 900000).toString());
 
-  const isNewUser = searchParams.get('new') === 'true';
+  const _isNewUser = searchParams.get('new') === 'true';
 
   const [preferences, setPreferences] = useState({
     interests: [],

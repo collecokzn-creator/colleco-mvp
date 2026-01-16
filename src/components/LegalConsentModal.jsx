@@ -37,7 +37,7 @@ export default function LegalConsentModal({
   const [agreedAt, setAgreedAt] = useState(null);
   const [hasScrolledTerms, setHasScrolledTerms] = useState(false);
   const [hasScrolledPrivacy, setHasScrolledPrivacy] = useState(false);
-  const [hasScrolledPOPI, setHasScrolledPOPI] = useState(false);
+  const [_hasScrolledPOPI, setHasScrolledPOPI] = useState(false);
 
   // Check if user has already accepted legal terms
   useEffect(() => {

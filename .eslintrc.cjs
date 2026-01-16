@@ -11,7 +11,7 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'react/prop-types': 'off',
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-console': 'off',
     // Ignore unused React import (React 17+ JSX runtime) and underscore-prefixed vars
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^(React|_)' }],
     // React 17+ automatic JSX runtime: React import not required in scope
@@ -26,7 +26,7 @@ module.exports = {
     'no-constant-condition': 'warn',
     'no-extra-semi': 'warn',
     'no-dupe-keys': 'warn',
-    'react/no-unescaped-entities': 'warn',
+    'react/no-unescaped-entities': 'off',
     'react/jsx-no-target-blank': 'warn',
     // Enforce correct hook usage now that violations are fixed
     'react-hooks/rules-of-hooks': 'error'

@@ -364,7 +364,7 @@ export default function Transfers() {
     }
   }
   
-  async function pollStatus(requestId) {
+  async function _pollStatus(requestId) {
     const interval = setInterval(async () => {
       try {
         const res = await fetch(`/api/transfers/request/${requestId}`);

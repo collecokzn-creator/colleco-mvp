@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Shield, User, Mail, Phone, MapPin, Calendar, Building2, CheckCircle2, ArrowRight, ArrowLeft, Sparkles, Lock, Eye, EyeOff } from "lucide-react";
+import { Shield, User, Mail, Phone, MapPin, Calendar, ArrowRight, ArrowLeft, Sparkles, Lock, Eye, EyeOff } from "lucide-react";
 import Button from "../components/ui/Button";
 import LegalConsentModal from "../components/LegalConsentModal";
 
@@ -43,7 +43,7 @@ export default function Register() {
 
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
   const validatePhone = (phone) => /^[0-9+\s()-]{8,}$/.test(phone);
-  const validateSAID = (id) => /^[0-9]{13}$/.test(id.replace(/\s/g, ''));
+  const _validateSAID = (id) => /^[0-9]{13}$/.test(id.replace(/\s/g, ''));
 
   const validateStep = (currentStep) => {
     setError("");

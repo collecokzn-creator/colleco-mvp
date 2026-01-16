@@ -65,7 +65,7 @@ export default function RideSelector({
       const languages = ['English', 'Zulu', 'Xhosa', 'Afrikaans'];
       const specialties = ['Airport Transfers', 'Long Distance', 'Business Travel', 'Family Friendly'];
 
-      const basePrice = 150;
+      
       const out = [];
       for (let i = 0; i < 10; i++) {
         const brand = brands[i % brands.length];

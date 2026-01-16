@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Shield, User, Mail, Phone, MapPin, Calendar, Building2, CheckCircle2, ArrowRight, ArrowLeft, Sparkles, Lock, Eye, EyeOff, Briefcase } from "lucide-react";
+import { Shield, User, Mail, Phone, Building2, CheckCircle2, ArrowRight, ArrowLeft, Lock, Eye, EyeOff, Briefcase } from "lucide-react";
 import Button from "../components/ui/Button";
 import LegalConsentModal from "../components/LegalConsentModal";
 

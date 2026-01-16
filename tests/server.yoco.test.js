@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import request from 'supertest'
-import { vi } from 'vitest'
 
 const app = require('../server/server')
 
@@ -18,7 +17,7 @@ describe('Yoco checkout integration (mocked)', () => {
   it('returns redirect URL when Yoco creates checkout', async () => {
     // Arrange: mock global fetch to return a Yoco-style response
     const mockedRedirect = 'https://online.yoco.com/checkout/redirect/abcdef'
-    global.fetch = async (input, init) => {
+    global.fetch = async (input, _init) => {
       const url = typeof input === 'string' ? input : input.url
       if (url && url.endsWith('/checkouts')) {
         return {

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   Sparkles, CheckCircle2, Mail, Phone, Shield, ArrowRight, 
   ArrowLeft, Building2, FileText, Upload, Bell, DollarSign,
-  Clock, Award, TrendingUp, Users
+  Clock, Award, TrendingUp
 } from "lucide-react";
 import Button from "../components/ui/Button";
 import { useUser } from "../context/UserContext.jsx";
@@ -21,7 +21,7 @@ export default function PartnerOnboarding() {
   const [searchParams] = useSearchParams();
   const { user, setUser } = useUser();
   const [step, setStep] = useState(1);
-  const isNewPartner = searchParams.get('new') === 'true';
+  const _isNewPartner = searchParams.get('new') === 'true';
 
   const [verificationStatus, setVerificationStatus] = useState({
     email: user?.emailVerified || false,

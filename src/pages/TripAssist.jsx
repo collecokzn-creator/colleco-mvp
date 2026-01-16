@@ -17,8 +17,8 @@ export default function TripAssist() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'timeline'
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [showShareModal, setShowShareModal] = useState(false);
+  const [_showSaveModal, setShowSaveModal] = useState(false);
+  const [_showShareModal, setShowShareModal] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState([]);
   
   // Quick Filters State
@@ -126,11 +126,11 @@ export default function TripAssist() {
     const peopleMatch = lower.match(/(\d+)\s*(adult|people)/i);
     const adults = peopleMatch ? parseInt(peopleMatch[1]) : (lower.includes('family') ? 4 : 2);
     
-    let budget = 10000;
-    if (lower.includes('kruger') || lower.includes('safari')) budget = 15000;
-    if (lower.includes('luxury') || lower.includes('premium')) budget *= 2;
-    if (lower.includes('budget') || lower.includes('cheap')) budget *= 0.6;
-    budget = budget * (nights / 3) * (adults / 2);
+    let _budgetLocal = 10000;
+    if (lower.includes('kruger') || lower.includes('safari')) _budgetLocal = 15000;
+    if (lower.includes('luxury') || lower.includes('premium')) _budgetLocal *= 2;
+    if (lower.includes('budget') || lower.includes('cheap')) _budgetLocal *= 0.6;
+    _budgetLocal = _budgetLocal * (nights / 3) * (adults / 2);
     
     const isRelaxing = /relax|beach|chill|spa|wine/i.test(lower);
     
@@ -380,22 +380,22 @@ export default function TripAssist() {
     return services;
   };
 
-  const acceptService = (serviceId) => {
+  const acceptService = (_serviceId) => {
     setSelectedServices(prev =>
-      prev.map(s => s.id === serviceId ? { ...s, status: 'accepted' } : s)
+      prev.map(s => s.id === _serviceId ? { ...s, status: 'accepted' } : s)
     );
   };
 
-  const removeService = (serviceId) => {
-    setSelectedServices(prev => prev.filter(s => s.id !== serviceId));
+  const removeService = (_serviceId) => {
+    setSelectedServices(prev => prev.filter(s => s.id !== _serviceId));
   };
 
-  const handleReplaceService = (serviceId) => {
+  const handleReplaceService = (_serviceId) => {
     alert('Alternative service suggestions coming soon!');
   };
 
 
-  const handleSaveTrip = () => {
+  const _handleSaveTrip = () => {
     try {
       const savedTrips = JSON.parse(localStorage.getItem('colleco.savedTrips') || '[]');
       const newTrip = {
@@ -412,8 +412,8 @@ export default function TripAssist() {
       alert('Failed to save trip');
     }
   };
-
-  const handleShareTrip = () => {
+  
+  const _handleShareTrip = () => {
     const shareText = `Check out my ${prompt} itinerary on CollEco Travel!`;
     if (navigator.share) {
       navigator.share({ title: 'My Trip', text: shareText, url: window.location.href });

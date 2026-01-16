@@ -14,7 +14,7 @@
  * - Email PDF
  */
 
-import { generateQuotePdf, generateItineraryPdf, generateInvoicePdf } from './pdfGenerators';
+import { generateQuotePdf } from './pdfGenerators';
 
 /**
  * Share a PDF document via Web Share API or fallback to download
@@ -86,7 +86,7 @@ export async function sharePdfDocument(pdfBlob, filename, title = 'Share Documen
  * @param {string} title - Email subject
  * @returns {Promise<{success: boolean, method: string}>}
  */
-async function emailPdfViaMailto(pdfBlob, filename, title) {
+async function _emailPdfViaMailto(pdfBlob, filename, title) {
   try {
     // Download the PDF first (browser limitation - can't attach to mailto)
     downloadPdfBlob(pdfBlob, filename);
@@ -231,7 +231,7 @@ export async function shareItineraryPdf(name, items, ref, action = 'share') {
   try {
     // Generate itinerary - need to modify generateItineraryPdf to return blob instead of auto-saving
     // For now, we'll create a wrapper that captures the PDF
-    const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    const [{ default: _jsPDF }, { default: _autoTable }] = await Promise.all([
       import("jspdf"),
       import("jspdf-autotable")
     ]);
@@ -277,7 +277,7 @@ export async function shareInvoicePdf(invoiceData, action = 'share') {
     
     // Generate the invoice PDF
     // generateInvoicePdf currently auto-saves, need to get blob
-    const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    const [{ default: _jsPDF }, { default: _autoTable }] = await Promise.all([
       import("jspdf"),
       import("jspdf-autotable")
     ]);
@@ -324,7 +324,7 @@ export async function shareInvoicePdf(invoiceData, action = 'share') {
  */
 export async function shareBookingConfirmationPdf(bookingData, action = 'share') {
   try {
-    const [{ default: jsPDF }] = await Promise.all([import("jspdf")]);
+    const [{ default: _jsPDF }] = await Promise.all([import("jspdf")]);
     
     const { generateBookingConfirmationPdfBlob } = await import('./pdfGenerators');
     const pdfBlob = await generateBookingConfirmationPdfBlob(bookingData);

@@ -656,7 +656,7 @@ export async function exportQuotePdfData(a) {
 }
 
 export const generateItineraryPdf = async (name, items, ref) => {
-  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+  const [{ default: jsPDF }, { default: _autoTable }] = await Promise.all([
     import("jspdf"),
     import("jspdf-autotable")
   ]);
@@ -802,7 +802,7 @@ export const generateItineraryPdf = async (name, items, ref) => {
     }
     
     // Activities for this day
-    dayItems.forEach((item, itemIndex) => {
+    dayItems.forEach((item, _itemIndex) => {
       // Check page break for each activity
       if (currentY > 250) {
         doc.addPage();
@@ -1019,7 +1019,7 @@ export const generateInvoicePdf = async (a, b, c) => {
  * @returns {Promise<Blob>} PDF blob
  */
 export const generateItineraryPdfBlob = async (name, items, ref) => {
-  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+  const [{ default: jsPDF }, { default: _autoTable }] = await Promise.all([
     import("jspdf"),
     import("jspdf-autotable")
   ]);
@@ -1165,7 +1165,7 @@ export const generateItineraryPdfBlob = async (name, items, ref) => {
     }
     
     // Activities for this day
-    dayItems.forEach((item, itemIndex) => {
+    dayItems.forEach((item, _itemIndex) => {
       // Check page break for each activity
       if (currentY > 250) {
         doc.addPage();
@@ -1331,7 +1331,7 @@ export const generateInvoicePdfBlob = async (a, b, c) => {
   }));
 
   const pageWidth = doc.internal.pageSize.width || 210;
-  const marginRight = 14;
+  const _marginRight = 14;
 
   // Try to load logo
   let logoDataUrl;
