@@ -19,35 +19,42 @@ export const NotificationProvider = ({ children }) => {
       read: false,
       timestamp: new Date().toISOString()
     };
-    
-    setNotifications(prev => [newNotification, ...prev]);
+    setNotifications(prev => {
+      const all = [newNotification, ...prev];
+      try { localStorage.setItem('notifications', JSON.stringify(all)); } catch (e) { /* ignore */ }
+      return all;
+    });
     setUnreadCount(prev => prev + 1);
-    
-    // Save to localStorage
-    const allNotifications = [newNotification, ...notifications];
-    localStorage.setItem('notifications', JSON.stringify(allNotifications));
   };
 
   const markAsRead = (notificationId) => {
-    setNotifications(prev =>
-      prev.map(notif =>
-        notif.id === notificationId ? { ...notif, read: true } : notif
-      )
-    );
+    setNotifications(prev => {
+      const updated = prev.map(notif => notif.id === notificationId ? { ...notif, read: true } : notif);
+      try { localStorage.setItem('notifications', JSON.stringify(updated)); } catch (e) { /* ignore */ }
+      return updated;
+    });
     setUnreadCount(prev => Math.max(0, prev - 1));
   };
 
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
+    setNotifications(prev => {
+      const updated = prev.map(notif => ({ ...notif, read: true }));
+      try { localStorage.setItem('notifications', JSON.stringify(updated)); } catch (e) { /* ignore */ }
+      return updated;
+    });
     setUnreadCount(0);
   };
 
   const deleteNotification = (notificationId) => {
-    setNotifications(prev => prev.filter(notif => notif.id !== notificationId));
-    const notification = notifications.find(n => n.id === notificationId);
-    if (notification && !notification.read) {
-      setUnreadCount(prev => Math.max(0, prev - 1));
-    }
+    setNotifications(prev => {
+      const notification = prev.find(n => n.id === notificationId);
+      const next = prev.filter(notif => notif.id !== notificationId);
+      if (notification && !notification.read) {
+        setUnreadCount(u => Math.max(0, u - 1));
+      }
+      try { localStorage.setItem('notifications', JSON.stringify(next)); } catch (e) { /* ignore */ }
+      return next;
+    });
   };
 
   useEffect(() => {
