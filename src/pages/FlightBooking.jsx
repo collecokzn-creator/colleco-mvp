@@ -241,6 +241,7 @@ export default function FlightBooking(){
                   max={9}
                   value={passengers}
                   onChange={e => setPassengers(Number(e.target.value))}
+                  onFocus={(e) => e.target.select()}
                   required
                   className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
                 />

@@ -52,5 +52,41 @@
       "itinerary": []
     },
     "createdAt": 1765794831806
+  },
+  "61ubuavjpmpmkg2okqh": {
+    "id": "61ubuavjpmpmkg2okqh",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1768519221497
+  },
+  "ejn21mtkro6mkg2t3bs": {
+    "id": "ejn21mtkro6mkg2t3bs",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1768519432216
+  },
+  "k5hgtas2jbmkg2w7vj": {
+    "id": "k5hgtas2jbmkg2w7vj",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1768519578079
+  },
+  "btbjb800vmnmkg2yy9z": {
+    "id": "btbjb800vmnmkg2yy9z",
+    "prompt": "Sample trip",
+    "data": {
+      "nights": 2,
+      "itinerary": []
+    },
+    "createdAt": 1768519705607
   }
 }

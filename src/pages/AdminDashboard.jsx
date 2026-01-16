@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { BarChart3, Users, Package, DollarSign, TrendingUp, Shield, Settings } from "lucide-react";
+import { Users, Package, DollarSign, TrendingUp, Shield, Settings } from "lucide-react";
 import GamificationWidget from "../components/GamificationWidget";
 
 export default function AdminDashboard() {
@@ -190,7 +190,7 @@ export default function AdminDashboard() {
   );
 }
 
-function StatCard({ icon: Icon, label, value, change, positive }) {
+function StatCard({ icon: Icon, label, value, change, positive: _positive }) {
   return (
     <div className="rounded-2xl border border-cream-border bg-white/85 p-5 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex items-center justify-between">
@@ -225,7 +225,7 @@ function ActionButton({ icon: Icon, label, to }) {
   );
 }
 
-function ActivityItem({ title, time, type }) {
+function ActivityItem({ title, time, type: _type }) {
   return (
     <div className="flex items-start gap-3 border-b border-cream-border pb-3 last:border-0 last:pb-0">
       <div className="mt-1 h-2 w-2 rounded-full bg-brand-orange"></div>

@@ -31,7 +31,7 @@ function getPaymentConfig() {
     yoco: {
       secretKey: process.env.YOCO_SECRET_KEY || config.yoco?.secretKey || '',
       publicKey: process.env.YOCO_PUBLIC_KEY || config.yoco?.publicKey || '',
-      apiUrl: process.env.YOCO_API_URL || config.yoco?.apiUrl || 'https://online.yoco.com/api/v1',
+      apiUrl: process.env.YOCO_API_URL || config.yoco?.apiUrl || 'https://payments.yoco.com/api/checkouts',
       testMode: process.env.YOCO_TEST_MODE === '1' || config.yoco?.testMode !== false,
       webhookSecret: process.env.YOCO_WEBHOOK_SECRET || config.yoco?.webhookSecret || '',
       successUrl: process.env.YOCO_SUCCESS_URL || config.yoco?.successUrl || 'https://staging.colleco.travel/pay/success',

@@ -1,10 +1,39 @@
-import React, { useEffect, useState, useRef } from 'react';import { motion } from 'framer-motion';import {
-  MessageSquare, Phone, PhoneOff, Video, Search, BellOff, Bell,
-  Shield, Lock, UserPlus, UserMinus, UserCheck, AlertCircle,
-  Mic, MicOff, VideoIcon, VideoOff, Heart, Maximize, Minimize,
-  Calendar, MonitorUp, X, FileText, Upload, Image as ImageIcon,
-  Paintbrush, CircleDot, Disc, StickyNote, BarChart3, MapPin,
-  PictureInPicture, Subtitles, FileUp, Download, Check, ExternalLink,
+import React, { useEffect, useState, useRef } from 'react';
+import { motion } from 'framer-motion';
+import {
+  MessageSquare,
+  Phone,
+  PhoneOff,
+  Video,
+  Search,
+  BellOff,
+  Bell,
+  Shield,
+  Lock,
+  UserPlus,
+  UserMinus,
+  UserCheck,
+  AlertCircle,
+  Mic,
+  MicOff,
+  Heart,
+  Maximize,
+  Minimize,
+  Calendar,
+  MonitorUp,
+  X,
+  FileText,
+  Upload,
+  Image as ImageIcon,
+  Paintbrush,
+  Disc,
+  StickyNote,
+  BarChart3,
+  MapPin,
+  PictureInPicture,
+  Subtitles,
+  Download,
+  ExternalLink,
   Trash2
 } from 'lucide-react';
 import { ensureThread, ROLES, CHANNELS, loadThreads, saveThreads } from '../utils/collabStore.js';
@@ -76,7 +105,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
   const [showNotes, setShowNotes] = useState(false);
   const [callNotes, setCallNotes] = useState('');
   const [showPoll, setShowPoll] = useState(false);
-  const [activePoll, setActivePoll] = useState(null);
+  const [_activePoll, _setActivePoll] = useState(null);
   const [showTravelShare, setShowTravelShare] = useState(false);
   const [backgroundBlur, setBackgroundBlur] = useState(false);
   const [isPiPMode, setIsPiPMode] = useState(false);
@@ -148,7 +177,7 @@ export default function ProductOwnerChatModal({ bookingId, clientName, _productO
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [showWhiteboard, whiteboardColor]);
+  }, [showWhiteboard, whiteboardColor, isDrawing]);
 
   // Load messages for selected contact
   useEffect(() => {

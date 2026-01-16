@@ -177,7 +177,7 @@ export default function Navbar() {
 							</Link>
 					) : (
 						<Link
-							to="/login"
+							to="/register"
 							className="px-4 py-2 text-sm font-semibold text-white bg-brand-orange hover:bg-brand-highlight active:opacity-100 rounded-md shadow-sm transition-colors"
 						>
 							Start Living

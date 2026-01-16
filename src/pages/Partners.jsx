@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Search, Building2, Mail, Phone, MapPin, Calendar, 
-  CheckCircle2, XCircle, AlertCircle, Eye, Filter, Download 
+  CheckCircle2, XCircle, AlertCircle, Eye, Filter
 } from "lucide-react";
 
 export default function Partners() {
@@ -13,13 +13,36 @@ export default function Partners() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchPartners();
   }, []);
 
+  const filterPartnersCb = useCallback(() => {
+    let filtered = partners;
+
+    // Apply search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(p => 
+        p.businessName?.toLowerCase().includes(query) ||
+        p.contactPerson?.toLowerCase().includes(query) ||
+        p.email?.toLowerCase().includes(query) ||
+        p.city?.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply status filter
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(p => p.status === statusFilter);
+    }
+
+    setFilteredPartners(filtered);
+  }, [partners, searchQuery, statusFilter]);
+
   useEffect(() => {
-    filterPartners();
-  }, [searchQuery, statusFilter, partners]);
+    filterPartnersCb();
+  }, [filterPartnersCb]);
 
   const fetchPartners = async () => {
     setLoading(true);
@@ -87,27 +110,7 @@ export default function Partners() {
     }
   };
 
-  const filterPartners = () => {
-    let filtered = partners;
-
-    // Apply search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(p => 
-        p.businessName?.toLowerCase().includes(query) ||
-        p.contactPerson?.toLowerCase().includes(query) ||
-        p.email?.toLowerCase().includes(query) ||
-        p.city?.toLowerCase().includes(query)
-      );
-    }
-
-    // Apply status filter
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(p => p.status === statusFilter);
-    }
-
-    setFilteredPartners(filtered);
-  };
+  
 
   const getStatusBadge = (status) => {
     const badges = {

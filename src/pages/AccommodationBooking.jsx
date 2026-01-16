@@ -381,6 +381,7 @@ function AccommodationBookingInner(){
                   max={20}
                   value={guests}
                   onChange={e => setGuests(Number(e.target.value))}
+                  onFocus={(e) => e.target.select()}
                   required
                   className="w-full border-2 border-cream-border rounded-lg px-3 py-2 focus:border-brand-orange focus:outline-none transition-colors"
                 />
@@ -515,8 +516,8 @@ function AccommodationBookingInner(){
             <div className="p-6 border-b bg-gradient-to-r from-green-50 to-emerald-50">
               <div className="flex items-start justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-brand-brown mb-1">Booking Confirmed</h2>
-                  <p className="text-sm text-gray-600">Confirmation ID: ACC-{Date.now().toString().slice(-8)}</p>
+                  <h2 className="text-2xl font-bold text-brand-brown mb-1">Property Selected</h2>
+                  <p className="text-sm text-gray-600">Review your selection and proceed to checkout</p>
                 </div>
                 <ShareButton 
                   bookingId={selectedProperty.id || 'ACC-' + Date.now().toString().slice(-8)}
