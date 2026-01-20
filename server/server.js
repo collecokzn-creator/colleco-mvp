@@ -265,6 +265,21 @@ if(HYBRID_LLM){
 
 app.use(express.json({ limit: '2mb' }));
 
+// Handle malformed JSON bodies gracefully (body-parser SyntaxError)
+app.use((err, req, res, next) => {
+  try {
+    if (!err) return next();
+    const isSyntaxError = err instanceof SyntaxError || err.type === 'entity.parse.failed' || err.status === 400;
+    if (isSyntaxError && req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
+      console.warn('[server] JSON parse error on %s %s from %s: %s', req.method, req.originalUrl, req.ip, sanitizeLog(err.message));
+      return res.status(400).json({ error: 'invalid_json', message: 'Request body contained malformed JSON' });
+    }
+  } catch (e) {
+    // If our handler errors, fall through to default error handling
+  }
+  return next(err);
+});
+
 // --- Auth middleware ---
 function authCheck(req, res, next) {
   if (!API_TOKEN) return next(); // auth disabled if no token set
