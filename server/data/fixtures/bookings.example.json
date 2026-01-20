@@ -1,0 +1,11 @@
+[
+  {
+    "id": "BK-EXAMPLE-001",
+    "supplier": "example-supplier",
+    "lineItems": [
+      { "description": "Example transfer", "quantity": 1, "total": 500 }
+    ],
+    "metadata": { "customerName": "Example Customer", "customerEmail": "test@example.com" },
+    "createdAt": "2025-01-01T00:00:00Z"
+  }
+]
