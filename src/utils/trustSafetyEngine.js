@@ -388,8 +388,11 @@ function calculateRiskScore(userId, userType, transactionData) {
 
   // Account age (0-10 points)
   const accountAge = getAccountAge(userId);
-  if (accountAge < 7) score += 10;
-  else if (accountAge < 30) score += 5;
+  // Only penalize account age when a creation date exists
+  if (accountAge > 0) {
+    if (accountAge < 7) score += 10;
+    else if (accountAge < 30) score += 5;
+  }
 
   return Math.min(score, 100);
 }

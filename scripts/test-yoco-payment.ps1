@@ -37,9 +37,17 @@ $ErrorActionPreference = "Stop"
 $API_BASE = "http://localhost:4000"
 $FRONTEND_BASE = "http://localhost:5173"
 $TEST_AMOUNT = 1000.00
-$WEBHOOK_SECRET = "whsec_test_7f5e8d9a2b3c4e5f6a7b8c9d0e1f2a3b"
-$YOCO_SECRET_KEY = "sk_test_a0cd6efbOgaAN69e54148299e760"
-$YOCO_PUBLIC_KEY = "pk_test_2dc62e2c0qvDRbz83e94"
+# Read secrets from environment variables to avoid committing credentials
+$WEBHOOK_SECRET = $env:YOCO_WEBHOOK_SECRET
+$YOCO_SECRET_KEY = $env:YOCO_SECRET_KEY
+$YOCO_PUBLIC_KEY = $env:YOCO_PUBLIC_KEY
+
+# Validate required environment variables
+if (-not $YOCO_SECRET_KEY -or -not $YOCO_PUBLIC_KEY -or -not $WEBHOOK_SECRET) {
+    Write-Host "❌ Required environment variables not set: YOCO_SECRET_KEY, YOCO_PUBLIC_KEY, YOCO_WEBHOOK_SECRET" -ForegroundColor Red
+    Write-Host "   Copy server/.env.example to server/.env and set the values, or export them in your shell." -ForegroundColor Yellow
+    exit 1
+}
 
 Write-Host "🧪 Yoco Payment Integration Test" -ForegroundColor Cyan
 Write-Host "=================================" -ForegroundColor Cyan

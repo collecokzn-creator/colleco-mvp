@@ -101,8 +101,8 @@ export default function PdfShareButtons({
     }
   };
 
-  // Brand-styled buttons with responsive design
-  const baseButtonClass = "inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2";
+  // Brand-styled buttons with responsive design - compact but balanced
+  const baseButtonClass = "inline-flex items-center justify-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-md font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-1 focus:ring-offset-1 text-xs whitespace-nowrap";
   
   const shareButtonClass = compact
     ? `${baseButtonClass} p-2 bg-gradient-to-r from-brand-orange to-[#ff9a4d] text-white hover:shadow-lg hover:scale-105`
@@ -113,11 +113,11 @@ export default function PdfShareButtons({
     : `${baseButtonClass} bg-white border-2 border-brand-orange text-brand-orange hover:bg-cream hover:shadow-md focus:ring-brand-orange`;
   
   const printButtonClass = compact
-    ? `${baseButtonClass} p-2 bg-brand-brown text-white hover:bg-opacity-90 hover:shadow-md`
-    : `${baseButtonClass} bg-brand-brown text-white hover:bg-opacity-90 hover:shadow-md focus:ring-brand-brown`;
+    ? `${baseButtonClass} p-2 bg-white border-2 border-brand-orange text-brand-orange hover:bg-cream hover:shadow-md`
+    : `${baseButtonClass} bg-white border-2 border-brand-orange text-brand-orange hover:bg-cream hover:shadow-md focus:ring-brand-orange`;
 
   return (
-    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+    <div className="flex flex-row items-center gap-1.5 sm:gap-2 justify-center flex-wrap">
       {/* Share Button */}
       {onShare && (
         <button
@@ -126,10 +126,10 @@ export default function PdfShareButtons({
           className={shareButtonClass}
           title="Share document via WhatsApp, Email, etc."
         >
-          <svg className="h-5 w-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
           </svg>
-          {!compact && <span className="text-sm font-semibold">{isSharing ? 'Sharing...' : 'Share'}</span>}
+          {!compact && <span className="font-semibold">{isSharing ? 'Sharing...' : 'Share'}</span>}
         </button>
       )}
 
@@ -141,14 +141,14 @@ export default function PdfShareButtons({
           className={downloadButtonClass}
           title="Download PDF to your device"
         >
-          <svg className="h-5 w-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
-          {!compact && <span className="text-sm font-semibold">{isDownloading ? 'Downloading...' : 'Download'}</span>}
+          {!compact && <span className="font-semibold">{isDownloading ? 'Downloading...' : 'Download'}</span>}
         </button>
       )}
 
-      {/* Print Button */}
+      {/* Print Button - White with Orange Text */}
       {onPrint && (
         <button
           onClick={handlePrint}
@@ -156,10 +156,10 @@ export default function PdfShareButtons({
           className={printButtonClass}
           title="Print document"
         >
-          <svg className="h-5 w-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
           </svg>
-          {!compact && <span className="text-sm font-semibold">{isPrinting ? 'Printing...' : 'Print'}</span>}
+          {!compact && <span className="font-semibold">{isPrinting ? 'Printing...' : 'Print'}</span>}
         </button>
       )}
 

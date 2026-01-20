@@ -8,11 +8,11 @@
 cd server
 Copy-Item .env.example .env
 
-# Add these test credentials to .env:
-YOCO_SECRET_KEY=sk_test_a0cd6efbOgaAN69e54148299e760
-YOCO_PUBLIC_KEY=pk_test_2dc62e2c0qvDRbz83e94
-YOCO_TEST_MODE=1
-YOCO_WEBHOOK_SECRET=whsec_test_7f5e8d9a2b3c4e5f6a7b8c9d0e1f2a3b
+# Add these test credentials to .env (use real values or set as environment variables):
+# YOCO_SECRET_KEY=REPLACE_WITH_YOCO_SECRET_KEY
+# YOCO_PUBLIC_KEY=REPLACE_WITH_YOCO_PUBLIC_KEY
+# YOCO_TEST_MODE=1
+# YOCO_WEBHOOK_SECRET=REPLACE_WITH_YOCO_WEBHOOK_SECRET
 ```
 
 ### 2. Start Servers

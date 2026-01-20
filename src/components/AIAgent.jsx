@@ -59,11 +59,31 @@ export default function AIAgent() {
   // Example: user preferences, trip readiness, partner compliance, etc.
   const [progress, setProgress] = useState({ badge: 'Bronze', readiness: 40 });
   const [isListening, setIsListening] = useState(false);
+  const [showProactiveGreeting, setShowProactiveGreeting] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const dragScopeRef = useRef(null);
   const messagesRef = useRef(null);
+  const proactiveTimerRef = useRef(null);
   
   // Hide Zola during active calls
   const [isCallActive, setIsCallActive] = useState(false);
+  
+  // Proactive greeting after 30 seconds of inactivity
+  useEffect(() => {
+    if (hasInteracted || open) return; // Don't show if user already interacted
+    
+    proactiveTimerRef.current = setTimeout(() => {
+      setShowProactiveGreeting(true);
+      // Auto-hide after 10 seconds
+      setTimeout(() => setShowProactiveGreeting(false), 10000);
+    }, 30000); // 30 seconds
+    
+    return () => {
+      if (proactiveTimerRef.current) {
+        clearTimeout(proactiveTimerRef.current);
+      }
+    };
+  }, [hasInteracted, open]);
   
   useEffect(() => {
     const checkCallStatus = () => {
@@ -324,36 +344,150 @@ export default function AIAgent() {
           )}
           <div ref={messagesRef} className="p-4 h-48 overflow-y-auto text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
             {messages.map((m, i) => (
-              <div
-                key={i}
-                className={`mb-2 inline-block max-w-[90%] rounded-lg px-2 py-1 ${
-                  m.from === 'agent'
-                    ? 'bg-white text-brand-russty border border-amber-100'
-                    : m.from === 'user'
-                    ? 'bg-cream-sand text-brand-russty'
-                    : 'bg-transparent text-brand-orange font-semibold'
-                } ${m.from === 'user' ? 'text-right' : ''}`}
-              >
-                {m.text}
+              <div key={i} className="mb-3">
+                <div
+                  className={`inline-block max-w-[90%] rounded-lg px-2 py-1 ${
+                    m.from === 'agent'
+                      ? 'bg-white text-brand-russty border border-amber-100'
+                      : m.from === 'user'
+                      ? 'bg-cream-sand text-brand-russty'
+                      : 'bg-transparent text-brand-orange font-semibold'
+                  } ${m.from === 'user' ? 'text-right' : ''}`}
+                >
+                  {m.text}
+                </div>
+                {/* Feedback buttons for agent messages */}
+                {m.from === 'agent' && i > 0 && (
+                  <div className="flex gap-1 mt-1">
+                    <button
+                      onClick={() => {
+                        console.log('Feedback: Helpful -', m.text);
+                        setMessages(msgs => msgs.map((msg, idx) => 
+                          idx === i ? { ...msg, feedback: 'helpful' } : msg
+                        ));
+                      }}
+                      className={`p-0.5 text-xs hover:scale-110 transition-transform ${
+                        m.feedback === 'helpful' ? 'text-green-600' : 'text-gray-400 hover:text-green-600'
+                      }`}
+                      title="Helpful"
+                    >
+                      👍
+                    </button>
+                    <button
+                      onClick={() => {
+                        console.log('Feedback: Not helpful -', m.text);
+                        setMessages(msgs => msgs.map((msg, idx) => 
+                          idx === i ? { ...msg, feedback: 'not-helpful' } : msg
+                        ));
+                      }}
+                      className={`p-0.5 text-xs hover:scale-110 transition-transform ${
+                        m.feedback === 'not-helpful' ? 'text-red-600' : 'text-gray-400 hover:text-red-600'
+                      }`}
+                      title="Not helpful"
+                    >
+                      👎
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
+          </div>
+          {/* Quick Action Buttons for Document Generation */}
+          <div className="px-4 pb-2 flex gap-2 overflow-x-auto">
+            <button
+              onClick={() => {
+                send("Generate a quotation for my trip");
+                setHasInteracted(true);
+              }}
+              className="flex-shrink-0 text-xs bg-orange-50 hover:bg-orange-100 text-brand-orange px-3 py-1.5 rounded-lg border border-brand-orange/30 transition-colors"
+            >
+              📄 Quote
+            </button>
+            <button
+              onClick={() => {
+                send("Create an itinerary");
+                setHasInteracted(true);
+              }}
+              className="flex-shrink-0 text-xs bg-orange-50 hover:bg-orange-100 text-brand-orange px-3 py-1.5 rounded-lg border border-brand-orange/30 transition-colors"
+            >
+              📋 Itinerary
+            </button>
+            <button
+              onClick={() => {
+                send("Generate invoice");
+                setHasInteracted(true);
+              }}
+              className="flex-shrink-0 text-xs bg-orange-50 hover:bg-orange-100 text-brand-orange px-3 py-1.5 rounded-lg border border-brand-orange/30 transition-colors"
+            >
+              🧾 Invoice
+            </button>
+            <button
+              onClick={() => {
+                toggleVoice();
+                setHasInteracted(true);
+              }}
+              className={`flex-shrink-0 text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+                isListening 
+                  ? 'bg-red-500 text-white border-red-600' 
+                  : 'bg-orange-50 hover:bg-orange-100 text-brand-orange border-brand-orange/30'
+              }`}
+            >
+              {isListening ? '🎤 Stop' : '🎤 Voice'}
+            </button>
           </div>
           <AIAgentInput onSend={send} />
         </motion.div>
       ) : (
         <div className="flex flex-col items-center gap-1">
+          {/* Proactive Greeting Notification */}
+          {showProactiveGreeting && !open && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="mb-2 bg-white border-2 border-brand-orange rounded-lg p-3 shadow-lg max-w-[200px]"
+            >
+              <p className="text-xs text-brand-brown font-semibold mb-1">Need help planning? 👋</p>
+              <p className="text-xs text-gray-600">I'm Zola, your travel assistant!</p>
+            </motion.div>
+          )}
+          
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              setOpen(true);
+              setHasInteracted(true);
+              setShowProactiveGreeting(false);
+            }}
             className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-white/90 shadow-2xl shadow-brand-brown/25 backdrop-blur"
             aria-label="Open Zola AI chat"
             title="Chat with Zola"
           >
             <span className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-orange/40 via-transparent to-brand-brown/40 blur-xl" aria-hidden></span>
             <img src={logoPng} alt="Zola" className="relative h-8 w-8 object-contain" />
+            {/* Voice mode indicator */}
+            {isListening && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-white"></span>
+            )}
           </motion.button>
-          <span className="text-xs font-semibold text-brand-brown bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Zola</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-brand-brown bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Zola</span>
+            {/* Voice mode toggle button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleVoice();
+                setHasInteracted(true);
+              }}
+              className={`p-1.5 rounded-full transition-colors ${
+                isListening ? 'bg-red-500 text-white' : 'bg-white/90 text-brand-orange hover:bg-orange-50'
+              }`}
+              title={isListening ? 'Stop voice mode' : 'Start voice mode'}
+            >
+              {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
       )}
       </motion.div>

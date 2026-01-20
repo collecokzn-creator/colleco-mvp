@@ -203,18 +203,18 @@ YOCO_API_URL=https://online.yoco.com/api/v1  # Optional override
 
 ### Method 1: Automated Test (Recommended)
 ```powershell
-# 1. Set up test environment variables in server/.env
-YOCO_SECRET_KEY=sk_test_960bfde0VBrLlpK098e4ffeb53e1
-YOCO_PUBLIC_KEY=pk_test_ed3c54a6gOol69qa7f45
-YOCO_TEST_MODE=1
-YOCO_WEBHOOK_SECRET=whsec_test_7f5e8d9a2b3c4e5f6a7b8c9d0e1f2a3b
+# 1. Set up test environment variables in server/.env or export them in your shell
+# YOCO_SECRET_KEY=REPLACE_WITH_YOCO_SECRET_KEY
+# YOCO_PUBLIC_KEY=REPLACE_WITH_YOCO_PUBLIC_KEY
+# YOCO_TEST_MODE=1
+# YOCO_WEBHOOK_SECRET=REPLACE_WITH_YOCO_WEBHOOK_SECRET
 
 # 2. Start servers
 npm run server   # Terminal 1
 npm run dev      # Terminal 2
 
-# 3. Run test script
-.\scripts\test-yoco-payment.ps1
+# 3. Run test script (optional - use env vars instead)
+# .\scripts\test-yoco-payment.ps1
 
 # Expected output:
 # ✅ API Health Check

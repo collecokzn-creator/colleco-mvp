@@ -759,19 +759,23 @@ function Login() {
               <button
                 type="button"
                 onClick={() => {
-                  setTab(tab === "login" ? "register" : "login");
-                  setError("");
-                  setSuccess("");
-                  setName("");
-                  setUserType("client");
-                  setBusinessName("");
-                  setBusinessType("");
-                  setBusinessAddress("");
-                  setRegistrationNumber("");
+                  if (tab === "login") {
+                    navigate('/register');
+                  } else {
+                    setTab("login");
+                    setError("");
+                    setSuccess("");
+                    setName("");
+                    setUserType("client");
+                    setBusinessName("");
+                    setBusinessType("");
+                    setBusinessAddress("");
+                    setRegistrationNumber("");
+                  }
                 }}
                 className="text-brand-orange font-semibold hover:text-brand-gold transition-colors"
               >
-                {tab === "login" ? "Register here" : "Login here"}
+                {tab === "login" ? "Create Account" : "Sign In"}
               </button>
             </p>
           </div>

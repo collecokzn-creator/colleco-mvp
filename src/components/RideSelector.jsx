@@ -65,7 +65,7 @@ export default function RideSelector({
       const languages = ['English', 'Zulu', 'Xhosa', 'Afrikaans'];
       const specialties = ['Airport Transfers', 'Long Distance', 'Business Travel', 'Family Friendly'];
 
-      const basePrice = 150;
+      
       const out = [];
       for (let i = 0; i < 10; i++) {
         const brand = brands[i % brands.length];
@@ -86,6 +86,8 @@ export default function RideSelector({
         else if (vehicleType === 'van') priceMultiplier += 0.5;
         else if (vehicleType === 'luxury') priceMultiplier += 1.0;
         priceMultiplier += (Math.random() * 0.2 - 0.1);
+        // Use more realistic base pricing that matches estimates (200-450 range)
+        const basePrice = 300;
         const price = Math.round(basePrice * priceMultiplier / 5) * 5;
         const vehicleFeatures = features.filter((_, idx) => (i + idx) % 2 === 0).slice(0, 3);
         const driverLangs = languages.filter((_, idx) => (i + idx) % 2 === 0).slice(0, 2);

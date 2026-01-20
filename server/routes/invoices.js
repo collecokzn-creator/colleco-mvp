@@ -79,10 +79,43 @@ router.post('/generate', (req, res) => {
 router.get('/:bookingId/download', (req, res) => {
   try {
     const { bookingId } = req.params;
-    const { invoiceNumber: queryInvoiceNumber } = req.query;
+    const { invoiceNumber: queryInvoiceNumber, amount, service } = req.query;
 
-    // Get booking to verify it exists
+    // Demo mode: if amount is provided and booking not found, generate demo invoice
     const booking = getBooking(bookingId);
+    if (!booking && amount) {
+      console.log('[invoices] Demo mode: generating invoice from params');
+      const amountNum = parseFloat(amount);
+      const subtotal = amountNum / 1.15;
+      const vat = amountNum - subtotal;
+      
+      const lines = [
+        'COLLECO TRAVEL - INVOICE',
+        '==================================================',
+        '',
+        'Invoice #: ' + bookingId,
+        'Date: ' + new Date().toLocaleDateString('en-ZA'),
+        'Type: ' + (service || 'Transfer') + ' Service',
+        '',
+        'DEMO MODE - For testing purposes only',
+        '',
+        'ITEMS:',
+        (service || 'Transfer') + ' Service',
+        '  R' + amountNum.toFixed(2),
+        '',
+        '==================================================',
+        'Subtotal: R' + subtotal.toFixed(2),
+        'VAT (15%): R' + vat.toFixed(2),
+        'TOTAL: R' + amountNum.toFixed(2),
+        '',
+        'Thank you for choosing CollEco Travel!'
+      ];
+      
+      res.setHeader('Content-Type', 'text/plain');
+      res.setHeader('Content-Disposition', 'attachment; filename="invoice-' + bookingId + '.txt"');
+      return res.send(lines.join('\n'));
+    }
+    
     if (!booking) {
       return res.status(404).json({ error: `Booking ${bookingId} not found` });
     }

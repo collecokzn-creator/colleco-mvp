@@ -38,21 +38,21 @@ The Yoco payment integration is **fully functional and ready for testing**. This
 
 ### 1. Configure Environment Variables
 
-Create `server/.env` file with Yoco test credentials:
+Create `server/.env` file with Yoco credentials (use placeholders or set env vars):
 
 ```env
-# Yoco Test Mode Configuration
-YOCO_SECRET_KEY=sk_test_a0cd6efbOgaAN69e54148299e760
-YOCO_PUBLIC_KEY=pk_test_2dc62e2c0qvDRbz83e94
-YOCO_TEST_MODE=1
-YOCO_WEBHOOK_SECRET=whsec_test_7f5e8d9a2b3c4e5f6a7b8c9d0e1f2a3b
+# Yoco Test/Live Configuration
+# YOCO_SECRET_KEY=REPLACE_WITH_YOCO_SECRET_KEY
+# YOCO_PUBLIC_KEY=REPLACE_WITH_YOCO_PUBLIC_KEY
+# YOCO_TEST_MODE=1
+# YOCO_WEBHOOK_SECRET=REPLACE_WITH_YOCO_WEBHOOK_SECRET
 
 # Optional: Override API URL (defaults to production URL)
-YOCO_API_URL=https://online.yoco.com/api/v1
+# YOCO_API_URL=https://online.yoco.com/api/v1
 
 # Success/Cancel URLs (local development)
-YOCO_SUCCESS_URL=http://localhost:5173/pay/success
-YOCO_CANCEL_URL=http://localhost:5173/pay/cancel
+# YOCO_SUCCESS_URL=http://localhost:5173/pay/success
+# YOCO_CANCEL_URL=http://localhost:5173/pay/cancel
 ```
 
 **Important:** These are **test credentials**. Replace with your actual Yoco credentials from https://developer.yoco.com/

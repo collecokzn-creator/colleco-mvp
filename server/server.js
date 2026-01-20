@@ -265,6 +265,21 @@ if(HYBRID_LLM){
 
 app.use(express.json({ limit: '2mb' }));
 
+// Handle malformed JSON bodies gracefully (body-parser SyntaxError)
+app.use((err, req, res, next) => {
+  try {
+    if (!err) return next();
+    const isSyntaxError = err instanceof SyntaxError || err.type === 'entity.parse.failed' || err.status === 400;
+    if (isSyntaxError && req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
+      console.warn('[server] JSON parse error on %s %s from %s: %s', req.method, req.originalUrl, req.ip, sanitizeLog(err.message));
+      return res.status(400).json({ error: 'invalid_json', message: 'Request body contained malformed JSON' });
+    }
+  } catch (e) {
+    // If our handler errors, fall through to default error handling
+  }
+  return next(err);
+});
+
 // --- Auth middleware ---
 function authCheck(req, res, next) {
   if (!API_TOKEN) return next(); // auth disabled if no token set
@@ -742,10 +757,10 @@ app.post('/api/transfers/estimate', (req, res) => {
     
     // Simple distance-based pricing (in production, use Google Distance Matrix API)
     const baseFare = {
-      sedan: 50,
-      suv: 80,
-      van: 120,
-      luxury: 150
+      sedan: 300,
+      suv: 400,
+      van: 500,
+      luxury: 600
     };
     
     // Mock distance calculation (in km)
@@ -828,12 +843,21 @@ app.post('/api/transfers/request/:id/cancel', (req, res) => {
 // POST /api/transfers/request - Create a new transfer request
 app.post('/api/transfers/request', (req, res) => {
   try {
-    const { pickup, dropoff, date, time, pax, bookingType, isRoundTrip, isMultiStop, additionalStops, returnDate, returnTime, multiDayService, serviceDays, recurringDays } = req.body || {};
+    const { 
+      pickup, dropoff, date, time, pax, bookingType, isRoundTrip, isMultiStop, 
+      additionalStops, returnDate, returnTime, multiDayService, serviceDays, 
+      recurringDays, selectedRide 
+    } = req.body || {};
+    
     if (!pickup || !dropoff) {
       return res.status(400).json({ ok: false, error: 'pickup_dropoff_required' });
     }
     
     const requestId = crypto.randomBytes(6).toString('hex');
+    
+    // Use the agreed price from selected ride if available, otherwise calculate
+    const agreedPrice = selectedRide?.agreedPrice || calculateTransferPrice(pickup, dropoff, pax);
+    
     const request = {
       id: requestId,
       pickup,
@@ -851,7 +875,8 @@ app.post('/api/transfers/request', (req, res) => {
       serviceDays: Number(serviceDays || 1),
       recurringDays: recurringDays || [],
       status: 'searching',
-      price: calculateTransferPrice(pickup, dropoff, pax),
+      price: agreedPrice,
+      selectedRide: selectedRide || null,
       createdAt: Date.now(),
       customerIp: req.ip,
       driver: null,
@@ -997,12 +1022,22 @@ app.post('/api/transfers/request/:id/status', (req, res) => {
 
 // Helper: Calculate transfer price based on distance/locations
 function calculateTransferPrice(pickup, dropoff, pax) {
-  // Simple pricing logic - in production, use distance API
-  const basePrice = 150;
-  const perPaxPrice = 50;
-  const distanceMultiplier = 1.5; // Assume average distance
+  // Use same logic as estimate endpoint for consistency
+  const vehicleType = 'sedan'; // default for estimate
+  const baseFare = 300;
   
-  return Math.round((basePrice + (pax * perPaxPrice)) * distanceMultiplier);
+  // Mock distance calculation (in km) - same as estimate
+  const hashCode = (pickup + dropoff).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const baseDistance = 10 + (hashCode % 40); // 10-50km
+  
+  // Calculate price: base fare + R8/km
+  const perKmRate = 8;
+  let amount = baseFare + (baseDistance * perKmRate);
+  
+  // Round to nearest R10
+  amount = Math.round(amount / 10) * 10;
+  
+  return amount;
 }
 
 // POST /api/transfers/request/:id/rate - Rate a driver

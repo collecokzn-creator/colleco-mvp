@@ -149,6 +149,50 @@
               }
             },
             {
+              "path": "/register",
+              "name": "Create Account",
+              "component": "Register",
+              "meta": {
+                "title": "Join CollEco",
+                "description": "Create your account and start discovering amazing travel experiences.",
+                "requiresAuth": false,
+                "layout": "auth"
+              }
+            },
+            {
+              "path": "/onboarding",
+              "name": "Welcome",
+              "component": "Onboarding",
+              "meta": {
+                "title": "Welcome to CollEco",
+                "description": "Complete your profile setup and start exploring.",
+                "requiresAuth": false,
+                "layout": "auth"
+              }
+            },
+            {
+              "path": "/service-provider-registration",
+              "name": "Partner Registration",
+              "component": "ServiceProviderRegistration",
+              "meta": {
+                "title": "Join as Service Provider",
+                "description": "Register your business to sell services on CollEco.",
+                "requiresAuth": false,
+                "layout": "auth"
+              }
+            },
+            {
+              "path": "/partner-onboarding",
+              "name": "Partner Onboarding",
+              "component": "PartnerOnboarding",
+              "meta": {
+                "title": "Partner Setup",
+                "description": "Complete your partner account setup.",
+                "requiresAuth": false,
+                "layout": "auth"
+              }
+            },
+            {
               "path": "/loyalty",
               "name": "CollEco Passport",
               "component": "LoyaltyDashboard",
@@ -1711,17 +1755,12 @@
           "routes": [
             {
               "path": "/ai",
-              "name": "AI Content Studio",
-              "component": "AIGeneratorPage",
+              "name": "Trip Assist",
+              "component": "TripAssist",
               "meta": {
-                "title": "AI Content Generator",
-                "requiresAuth": true,
-                "roles": [
-                  "admin",
-                  "partner",
-                  "agent"
-                ],
-                "layout": "workspace"
+                "title": "Trip Assist - AI Travel Planner",
+                "requiresAuth": false,
+                "layout": "default"
               }
             },
             {

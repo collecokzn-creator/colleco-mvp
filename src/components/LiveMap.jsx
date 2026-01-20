@@ -236,20 +236,20 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
       const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
       _log('log', '[LiveMap] API Key present:', !!apiKey, 'Length:', apiKey?.length);
       if (!apiKey || apiKey === 'YOUR_API_KEY') {
-        const errorMsg = 'Google Maps API key not configured. Map preview unavailable. Set VITE_GOOGLE_MAPS_API_KEY in environment variables.';
-        _log('warn', '[LiveMap]', errorMsg);
-        setError(errorMsg);
+        // Graceful fallback: render an OpenStreetMap iframe when Google Maps API key is not configured
+        _log('warn', '[LiveMap] Google Maps API key not configured - falling back to OpenStreetMap iframe');
+        setError(null);
         setLoading(false);
         return;
       }
-      
+
       const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
       _log('log', '[LiveMap] Adding Google Maps script to page');
       document.head.appendChild(script);
-      
+
       script.onload = () => {
         _log('log', '[LiveMap] Google Maps script loaded successfully');
         setTimeout(() => {
@@ -257,7 +257,7 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
           initMap();
         }, 100);
       };
-      
+
       script.onerror = (e) => {
         const errorMsg = 'Failed to load Google Maps script - check API key and billing';
         _log('error', '[LiveMap]', errorMsg, e);
@@ -328,7 +328,16 @@ export default function LiveMap({ pickup, dropoff, driverLocation, showRoute = t
 
   return (
     <div className="relative w-full rounded-lg overflow-hidden border-2 border-gray-300" style={{ height }}>
-      <div ref={mapRef} className="w-full h-full" />
+      {/* If Google Maps not available and we set loading false above, render a simple OpenStreetMap iframe as fallback */}
+      {!window.google && !error ? (
+        <iframe
+          title="OpenStreetMap"
+          src={`https://www.openstreetmap.org/export/embed.html?bbox=31.005, -29.87,31.035,-29.845&layer=mapnik`}
+          className="w-full h-full border-0"
+        />
+      ) : (
+        <div ref={mapRef} className="w-full h-full" />
+      )}
       
       {/* Loading overlay */}
       {loading && (

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, MapPin } from "lucide-react";
 import { useBasketState } from "../utils/useBasketState";
-import AddToTripButton from "../components/AddToTripButton";
 import { PRODUCTS } from "../data/products";
 import { searchEvents } from "../utils/eventsApi";
 
