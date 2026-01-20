@@ -1,0 +1,47 @@
+name: CI Smoke
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    env:
+      VITE_API_BASE: ${{ secrets.VITE_API_BASE }}
+      API_TOKEN: ${{ secrets.COLLECO_API_TOKEN }}
+      YOCO_SECRET_KEY: ${{ secrets.YOCO_SECRET_KEY }}
+      YOCO_PUBLIC_KEY: ${{ secrets.YOCO_PUBLIC_KEY }}
+      YOCO_WEBHOOK_SECRET: ${{ secrets.YOCO_WEBHOOK_SECRET }}
+      PAYFAST_MERCHANT_ID: ${{ secrets.PAYFAST_MERCHANT_ID }}
+      PAYFAST_MERCHANT_KEY: ${{ secrets.PAYFAST_MERCHANT_KEY }}
+      PAYFAST_PASSPHRASE: ${{ secrets.PAYFAST_PASSPHRASE }}
+      VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Start backend and static server, then run smoke tests
+        run: |
+          npm run smoke:build
+          npm run smoke:start:stack &
+          npx wait-on http://localhost:4010/health --timeout 120000
+          npm run smoke:run
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
