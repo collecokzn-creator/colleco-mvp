@@ -88,7 +88,7 @@ API_TOKEN=your_secure_api_token_for_backend
 After deploying to production:
 
 1. **Go to Yoco Dashboard**: https://portal.yoco.com/online/settings/webhooks
-2. **Add webhook URL**: `https://api.colleco.travel/api/webhooks/yoco`
+2. **Add webhook URL**: `https://www.travelcolleco.com/api/webhooks/yoco`
 3. **Copy webhook secret** and add to environment variables as `YOCO_WEBHOOK_SECRET`
 4. **Test webhook** using Yoco's test webhook feature
 
@@ -129,7 +129,7 @@ cancelUrl: 'https://staging.colleco.travel/pay/cancel'    // ← Override with e
 1. **Create production `.env` file** on server (not in Git!)
 2. **Add all production environment variables**
 3. **Restart services**: `pm2 restart all` or similar
-4. **Verify health**: `curl https://api.colleco.travel/health`
+4. **Verify health**: `curl https://www.travelcolleco.com/health`
 5. **Test with small live transaction**
 
 ---

@@ -76,7 +76,7 @@ npm run dev
 ### Step 4: Configure Yoco Webhooks (After Deployment)
 
 1. Go to: https://portal.yoco.com/online/settings/webhooks
-2. Add webhook URL: `https://api.colleco.travel/api/webhooks/yoco`
+2. Add webhook URL: `https://www.travelcolleco.com/api/webhooks/yoco`
 3. Copy webhook secret → Add to environment variables as `YOCO_WEBHOOK_SECRET`
 4. Test webhook using Yoco's test feature
 

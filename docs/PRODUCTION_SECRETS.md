@@ -6,7 +6,7 @@ This document lists the environment variables and secrets required to run CollEc
 
 - **Core / Server**:
   - `API_TOKEN` : Bearer token used by protected API endpoints
-  - `VITE_API_BASE` : Backend URL used by frontend (example: https://api.colleco.travel)
+  - `VITE_API_BASE` : Backend URL used by frontend (https://www.travelcolleco.com)
 
 - **Payments**:
   - PayFast:

@@ -479,7 +479,7 @@ npm run mobile:all
 
 #### Frontend (VITE_):
 ```env
-VITE_API_BASE=https://api.colleco.travel
+VITE_API_BASE=https://www.travelcolleco.com
 VITE_BASE_PATH=/
 VITE_USE_HASH=0
 VITE_GOOGLE_MAPS_API_KEY=your_key
