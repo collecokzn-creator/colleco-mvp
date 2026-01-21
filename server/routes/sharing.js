@@ -122,7 +122,7 @@ function generateConfirmationEmail(booking, serviceType) {
           <ul>
             <li>Save this confirmation for your records</li>
             <li>You'll receive additional details closer to your travel date</li>
-            <li>For any changes, contact support@colleco.co.za or use the CollEco app</li>
+            <li>For any changes, contact plantrip@travelcolleco.com or use the CollEco app</li>
             <li>Keep all booking references handy for check-in</li>
           </ul>
           
@@ -131,7 +131,7 @@ function generateConfirmationEmail(booking, serviceType) {
           </p>
         </div>
         <div class="footer">
-          <p>CollEco Travel | support@colleco.co.za | +27 31 123 4567</p>
+          <p>CollEco Travel | plantrip@travelcolleco.com | +27 31 123 4567</p>
           <p>This email contains your booking confirmation. Please keep it safe.</p>
         </div>
       </body>

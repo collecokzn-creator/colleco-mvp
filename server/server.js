@@ -388,7 +388,7 @@ try {
 } catch {}
 
 const CONTACT_TO = process.env.CONTACT_TO || process.env.VITE_CONTACT_EMAIL || 'collecotravel@gmail.com';
-const CONTACT_FROM = process.env.CONTACT_FROM || process.env.SMTP_USER || 'web@travelcolleco.com';
+const CONTACT_FROM = process.env.CONTACT_FROM || process.env.SMTP_USER || 'plantrip@travelcolleco.com';
 
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body || {};

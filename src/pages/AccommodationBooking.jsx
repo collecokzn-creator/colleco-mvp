@@ -881,7 +881,7 @@ function AccommodationBookingInner(){
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                     <div>
                       <p className="text-gray-500">Email Support</p>
-                      <p className="font-semibold text-gray-700">support@colleco.co.za</p>
+                      <p className="font-semibold text-gray-700">plantrip@travelcolleco.com</p>
                       <p className="text-xs text-gray-400">Zola routes to specialist</p>
                     </div>
                     <div>
