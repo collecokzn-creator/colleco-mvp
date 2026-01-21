@@ -332,4 +332,149 @@ router.post('/yoco', express.json(), async (req, res) => {
   res.status(200).json({ ok: true });
 });
 
+/**
+ * Paystack Webhook
+ * POST /api/webhooks/paystack
+ * Payload: application/json
+ * Headers: x-paystack-signature (HMAC SHA512)
+ * https://paystack.com/docs/payments/webhooks
+ */
+router.post('/paystack', express.json(), async (req, res) => {
+  const payload = JSON.stringify(req.body);
+  const signature = req.headers['x-paystack-signature'] || '';
+  const ip = req.ip || 'unknown';
+
+  const data = req.body || {};
+  const event = data.event || '';
+
+  console.log('[webhook] Paystack webhook received:', {
+    event,
+    reference: data.data?.reference,
+    ip,
+  });
+
+  // Verify signature (if webhookSecret is configured)
+  const webhookSecret = process.env.PAYSTACK_WEBHOOK_SECRET || '';
+  if (webhookSecret) {
+    const crypto = require('crypto');
+    const hash = crypto.createHmac('sha512', webhookSecret).update(payload).digest('hex');
+    if (hash !== signature) {
+      console.warn('[webhook] Paystack signature verification failed');
+      logPaymentEvent({
+        ts: Date.now(),
+        processor: 'paystack',
+        type: 'signature_failed',
+        event,
+        ip,
+      });
+      return res.status(400).json({ error: 'signature_mismatch' });
+    }
+  } else {
+    console.warn('[webhook] Paystack webhook signature validation skipped (no PAYSTACK_WEBHOOK_SECRET)');
+  }
+
+  // Handle charge.success event
+  if (event !== 'charge.success') {
+    // Acknowledge other events without processing
+    return res.status(200).json({ ok: true });
+  }
+
+  const paymentData = data.data || {};
+  const reference = paymentData.reference; // This is the bookingId
+  const paidAmount = paymentData.amount ? paymentData.amount / 100 : 0; // Paystack uses kobo (cents)
+  const transactionId = paymentData.id;
+
+  if (!reference) {
+    console.warn('[webhook] Paystack: no reference in payment data');
+    logPaymentEvent({
+      ts: Date.now(),
+      processor: 'paystack',
+      type: 'no_reference',
+      event,
+      ip,
+    });
+    return res.status(200).json({ ok: true });
+  }
+
+  const bookings = loadBookings();
+  const booking = bookings[reference];
+
+  if (!booking) {
+    console.warn('[webhook] Paystack: booking not found', reference);
+    logPaymentEvent({
+      ts: Date.now(),
+      processor: 'paystack',
+      type: 'booking_not_found',
+      bookingId: reference,
+      event,
+      ip,
+    });
+    return res.status(200).json({ ok: true });
+  }
+
+  // Verify amount
+  const expectedAmount = Number((booking.pricing && booking.pricing.total) || booking.amount || booking.fees?.total || 0);
+  if (Math.abs(paidAmount - expectedAmount) > 0.01) {
+    console.warn('[webhook] Paystack: amount mismatch', {
+      expected: expectedAmount,
+      received: paidAmount,
+    });
+    logPaymentEvent({
+      ts: Date.now(),
+      processor: 'paystack',
+      type: 'amount_mismatch',
+      bookingId: reference,
+      expected: expectedAmount,
+      received: paidAmount,
+      event,
+      ip,
+    });
+    // Still process payment but log the discrepancy
+  }
+
+  // Update booking to paid
+  booking.paymentStatus = 'paid';
+  booking.paymentId = transactionId;
+  booking.lastPaymentUpdate = new Date().toISOString();
+  booking.paymentProcessor = 'paystack';
+  booking.paidAt = new Date().toISOString();
+
+  console.log('[webhook] Paystack payment successful:', reference);
+
+  // Send confirmation and receipt emails
+  try {
+    const customerEmail = booking.metadata?.customerEmail || booking.email;
+    if (customerEmail) {
+      await sendBookingConfirmation(booking, customerEmail);
+      await sendPaymentReceipt(booking, customerEmail, {
+        processor: 'paystack',
+        amount: paidAmount,
+        transactionId,
+        paidAt: new Date().toISOString(),
+      });
+
+      console.log('[webhook] Confirmation and receipt emails sent:', reference);
+    } else {
+      console.warn('[webhook] No customer email for booking:', reference);
+    }
+  } catch (emailError) {
+    console.error('[webhook] Failed to send confirmation emails:', emailError.message);
+  }
+
+  saveBookings(bookings);
+
+  logPaymentEvent({
+    ts: Date.now(),
+    processor: 'paystack',
+    type: 'notification_received',
+    bookingId: reference,
+    event,
+    status: 'paid',
+    transactionId,
+    ip,
+  });
+
+  res.status(200).json({ ok: true });
+});
+
 module.exports = router;
