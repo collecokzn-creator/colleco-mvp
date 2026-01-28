@@ -7,6 +7,7 @@ import LegalConsentModal from "../components/LegalConsentModal.jsx";
 function Login() {
   const [tab, setTab] = useState("login");
   const [userType, setUserType] = useState("client"); // client or partner
+    const [userType, setUserType] = useState("client"); // 'client' | 'business_client' | 'partner_applicant'
   const [loginIdentifier, setLoginIdentifier] = useState(""); // email or phone for login
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -227,7 +228,7 @@ function Login() {
     }
     
     // Partner-specific validation
-    if (userType === "partner") {
+    if (userType === "partner_applicant") {
       if (!businessName || businessName.trim().length < 2) {
         setError("Please enter your business name.");
         return;
@@ -250,6 +251,7 @@ function Login() {
     // Use email or phone as unique identifier
     const identifier = email || phone;
     
+    const mappedRole = userType === 'partner_applicant' ? 'partner_applicant' : (userType === 'business_client' ? 'business_client' : 'client');
     const newUser = { 
       email: email || '', 
       password, 
@@ -257,12 +259,12 @@ function Login() {
       phone: phone.trim() || '',
       country: country.trim(),
       dateOfBirth: dateOfBirth || '',
-      role: userType, // 'client' or 'partner'
+      role: mappedRole,
       createdAt: new Date().toISOString()
     };
     
     // Add partner-specific fields
-    if (userType === "partner") {
+    if (userType === "partner_applicant") {
       newUser.businessName = businessName.trim();
       newUser.businessType = businessType;
       newUser.businessAddress = businessAddress.trim();
@@ -284,7 +286,7 @@ function Login() {
     try { localStorage.setItem('user:biometrics', useBiometrics ? '1' : '0'); } catch (e) {}
     setShowLegalConsent(false);
     setPendingUserData(null);
-    if (user.role === "partner") {
+    if (user.role === "partner_applicant") {
       setSuccess("Registration successful! Redirecting to onboarding...");
       setUser(user);
       try {
@@ -298,7 +300,7 @@ function Login() {
           }
         }
       } catch (e) {}
-      setTimeout(() => navigate("/partner/onboarding"), 800);
+      setTimeout(() => navigate("/partner/onboarding?new=true"), 800);
     } else {
       setSuccess("Registration successful! Redirecting to home...");
       setUser(user);
@@ -481,7 +483,7 @@ function Login() {
 
               <div className="mb-4">
                 <label className="block mb-2 text-brand-brown font-semibold text-sm">
-                  {userType === "partner" ? "Contact Name *" : "Name *"}
+                  {userType === "partner_applicant" ? "Contact Name *" : "Name *"}
                 </label>
                 <input
                   type="text"
@@ -497,7 +499,7 @@ function Login() {
               </div>
 
               {/* Partner-specific fields */}
-              {userType === "partner" && (
+              {userType === "partner_applicant" && (
                 <>
                   <div className="mb-4">
                     <label className="block mb-2 text-brand-brown font-semibold text-sm">Business Name *</label>
@@ -551,7 +553,35 @@ function Login() {
                       onChange={e => setRegistrationNumber(e.target.value)}
                       placeholder="Business/Tax registration number (optional)"
                     />
-                    <p className="text-xs text-brand-russty mt-1">Optional - helps verify your business</p>
+                      <p className="text-xs text-brand-russty mt-1">Optional - helps verify your business</p>
+                                {/* Business client specific (manage travel only) */}
+                                {userType === "business_client" && (
+                                  <>
+                                    <div className="mb-4">
+                                      <label className="block mb-2 text-brand-brown font-semibold text-sm">Company Name *</label>
+                                      <input
+                                        type="text"
+                                        className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                                        value={businessName}
+                                        onChange={e => setBusinessName(e.target.value)}
+                                        placeholder="Company / Organisation name"
+                                        required
+                                      />
+                                    </div>
+
+                                    <div className="mb-4">
+                                      <label className="block mb-2 text-brand-brown font-semibold text-sm">Company Registration Number</label>
+                                      <input
+                                        type="text"
+                                        className="w-full px-4 py-3 border-2 border-cream-border rounded-lg focus:border-brand-orange focus:outline-none transition-colors"
+                                        value={registrationNumber}
+                                        onChange={e => setRegistrationNumber(e.target.value)}
+                                        placeholder="Registration number (optional)"
+                                      />
+                                      <p className="text-xs text-brand-russty mt-1">Optional - useful for accounting</p>
+                                    </div>
+                                  </>
+                                )}
                   </div>
                 </>
               )}

@@ -304,8 +304,13 @@ export default function Sidebar() {
   useEffect(() => {
     if (!userCtx) return;
     try {
-      if (userCtx.user && userCtx.user.role && userCtx.user.role !== role) setRole(userCtx.user.role);
-      else if (userCtx.isAdmin && role !== 'admin') setRole('admin');
+      // Map intermediate roles to stable sidebar roles. partner_applicant is treated
+      // as a client context in the sidebar but we preserve the applicant state on the
+      // user object for display elsewhere.
+      if (userCtx.user && userCtx.user.role && userCtx.user.role !== role) {
+        const mapped = userCtx.user.role === 'partner_applicant' ? 'client' : userCtx.user.role;
+        setRole(mapped);
+      } else if (userCtx.isAdmin && role !== 'admin') setRole('admin');
       else if (userCtx.isPartner && role !== 'partner') setRole('partner');
       else if (userCtx.isClient && role !== 'client') setRole('client');
     } catch (e) {}
@@ -833,6 +838,11 @@ export default function Sidebar() {
                     </li>
                   ))}
                 </motion.ul>
+              )}
+              {userCtx && userCtx.user && userCtx.user.role === 'partner_applicant' && (
+                <div className="mt-3 p-3 rounded-md bg-orange-50 border border-orange-200 text-sm text-orange-800">
+                  Partner application: pending review — <button type="button" onClick={() => navigate('/partner/onboarding?new=true')} className="underline font-semibold">Open onboarding</button>
+                </div>
               )}
             </div>
           </motion.header>
