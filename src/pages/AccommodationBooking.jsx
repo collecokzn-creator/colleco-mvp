@@ -95,13 +95,14 @@ function AccommodationBookingInner(){
   }, []);
   const confirmPropertySelection = useCallback(async (property) => {
     setSelectedProperty(property);
+    setPropertyId(property.id); // Always set propertyId when property is selected
     setShowPropertySelector(false);
     setPropertyPending(false);
     setLoading(true);
 
     try {
       // Get selected property details to derive supplier
-      const selectedProp = properties.find(p => p.id === propertyId);
+      const selectedProp = properties.find(p => p.id === property.id);
       if (!selectedProp) {
         throw new Error('Please select a property first');
       }
@@ -291,7 +292,10 @@ function AccommodationBookingInner(){
                         name="property"
                         value={prop.id}
                         checked={propertyId === prop.id}
-                        onChange={e => setPropertyId(e.target.value)}
+                        onChange={e => {
+                          setPropertyId(e.target.value);
+                          setSelectedProperty(prop);
+                        }}
                         className="mt-1"
                       />
                       <div className="flex-1">
