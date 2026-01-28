@@ -119,7 +119,9 @@ self.addEventListener('fetch', (event) => {
         const resp = await fetch(req);
         if (resp.ok) return resp;
       } catch {}
-      return new Response('', { status: 204 }); // empty placeholder keeps broken image icon away
+      // 204 responses must not include a body. Return a null-body 204 to signal
+      // 'No Content' without triggering constructor/type errors in browsers.
+      return new Response(null, { status: 204 });
     })());
     return;
   }
