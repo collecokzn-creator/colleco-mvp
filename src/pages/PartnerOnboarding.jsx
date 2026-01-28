@@ -48,6 +48,8 @@ export default function PartnerOnboarding() {
     autoAcceptBookings: false,
   });
 
+  const onboardingFee = import.meta.env.VITE_ONBOARDING_FEE || 'R15 per booking (flat)';
+
   useEffect(() => {
     // Simulate sending verification codes
     if (step === 2 && user?.email && !verificationStatus.email) {
@@ -471,7 +473,7 @@ export default function PartnerOnboarding() {
                 </div>
 
                 <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
-                  <strong>Commission:</strong> CollEco charges a 15% commission on all bookings.
+                  <strong>Fee:</strong> CollEco charges a per-transaction fee — {onboardingFee}.
                   Payments are processed securely and transferred according to your selected frequency.
                 </div>
               </div>
