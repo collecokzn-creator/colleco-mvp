@@ -147,11 +147,16 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       const cache = await caches.open(STATIC_CACHE);
       const cached = await cache.match(req);
-      const network = fetch(req).then(resp => {
-        cache.put(req, resp.clone()).catch(() => {});
-        return resp;
-      }).catch(() => undefined);
-      return cached || network || fetch(req);
+      try {
+        const resp = await fetch(req);
+        try { cache.put(req, resp.clone()).catch(() => {}); } catch {}
+        // Prefer cached if already present to give fast response, otherwise return network
+        return cached || resp;
+      } catch (e) {
+        // Network failed — return cached if available, otherwise a clear fallback
+        if (cached) return cached;
+        return new Response('Network error', { status: 502, headers: { 'Content-Type': 'text/plain' } });
+      }
     })());
   }
 });
