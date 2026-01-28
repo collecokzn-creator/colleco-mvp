@@ -844,6 +844,20 @@ export default function Sidebar() {
                   Partner application: pending review — <button type="button" onClick={() => navigate('/partner/onboarding?new=true')} className="underline font-semibold">Open onboarding</button>
                 </div>
               )}
+              {userCtx && userCtx.user && userCtx.user.role === 'business_client' && (
+                <div className="mt-3 p-3 rounded-md bg-blue-50 border border-blue-200 text-sm text-brand-brown">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>Need to list services? Apply to be a Partner.</div>
+                    <button
+                      type="button"
+                      onClick={() => navigate('/service-provider-registration')}
+                      className="ml-2 inline-flex items-center gap-2 px-3 py-1.5 bg-brand-orange text-white rounded-md text-sm font-semibold"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </motion.header>
 
